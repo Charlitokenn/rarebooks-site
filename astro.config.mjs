@@ -32,7 +32,7 @@ export default defineConfig({
               './src/styles/global.css',
           ],
           components: {
-              Footer: './src/components/Footer.astro',
+              footer: './src/components/Footer.astro',
           },
       }),
 	],
