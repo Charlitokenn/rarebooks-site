@@ -1,0 +1,264 @@
+---
+interface Props {
+    avatarSrc?: string;
+    avatarAlt?: string;
+    ctaHref?: string;
+    ctaLabel?: string;
+}
+
+const {
+    avatarSrc = "/src/assets/developer.jpg",
+    avatarAlt = "Charles, founder of post bridge",
+    ctaHref  = "#",
+    ctaLabel = "Try it for free",
+} = Astro.props;
+---
+
+<section class="founder-root " aria-label="Founder story">
+    <div class="founder-card">
+
+        <!-- Avatar -->
+        <div class="founder-avatar-wrap" aria-hidden="true">
+            <img
+                    src={avatarSrc}
+                    alt={avatarAlt}
+                    class="founder-avatar"
+                    width="88"
+                    height="88"
+                    loading="lazy"
+                    decoding="async"
+            />
+        </div>
+
+        <!-- Identity -->
+        <div class="founder-identity">
+            <h2 class="founder-name">
+                hey! it's <span class="founder-name__accent">Charles</span>
+            </h2>
+            <p class="founder-subtitle">(the guy who made RareBooks)</p>
+        </div>
+
+        <!-- Story paragraphs -->
+        <div class="founder-story" role="article">
+            <p>
+                for <strong>more than half a decade</strong> i have worked closely with small and growing businesses helping them automate their business operations.
+                i kept seeing the exact same problems everywhere.
+            </p>
+            <ul class="founder-story__list">
+                <li>
+                    business owners managing stock, sales and expenses with notebooks.
+                </li>
+                <li>
+                    sales records written manually.
+                </li>
+                <li>
+                    expenses tracked in spreadsheets.
+                </li>
+                <li>
+                    employees <strong>forgetting to record sales</strong> properly.
+                </li>
+                <li>
+                    owners having <strong>no clear visibility</strong> of what was happening in their own businesses <strong>unless they were physically present.</strong>
+                </li>
+            </ul>
+            <p>
+                and when stock went missing, or profits didn’t match expectations, they had to spend hours manually checking notebooks
+                against shelves and warehouse stock just to figure out what happened.
+                what surprised me most was this:
+            </p>
+            <p>
+                most existing softwares weren’t actually built for these businesses.
+            </p>
+            <p>
+               the systems were too expensive, too complicated, and often required accounting or technical knowledge that many SMEs simply don’t have.
+            </p>
+            <p>
+                many businesses employ hardworking people with <strong>little or no technical background</strong> — not accountants, not analysts, not computer experts.
+                they just needed something simple enough for anyone to use. something that helps the owner stay in control without needing to sit in the shop all day.
+            </p>
+            <p>
+                so <strong>i built Rarebooks.</strong>
+            </p>
+            <p>
+                a simple business operating system designed specifically for SMEs.
+                with Rarebooks, business owners can instantly know:
+            </p>
+            <ul>
+                <li>
+                    what stock was sold,
+                </li>
+                <li>
+                    when stock is running low,
+                </li>
+                <li>
+                    when new stock arrives,
+                </li>
+                <li>
+                    daily revenues and expenses,
+                </li>
+                <li>
+                    profit & loss,
+                </li>
+                <li>
+                    and what’s happening in the business even while they are away.
+                </li>
+            </ul>
+            <p>
+                employees don’t need accounting degrees or advanced computer skills to use it.
+            </p>
+            <p>
+                the system is built to be simple, practical, and easy to operate from day one.
+            </p>
+            <p>
+                what started from observing the struggles of businesses during consulting has now become <strong>a platform helping SMEs run with more clarity, accountability, and confidence.</strong>
+            </p>
+            <p>
+                because small businesses shouldn’t need complicated enterprise software just to stay organized.
+            </p>
+            <p>
+                they deserve tools built for the reality of how they actually operate.
+            </p>
+            <p>
+                and that’s why Rarebooks exists.
+            </p>
+        </div>
+
+        <!-- CTA -->
+        <div class="founder-cta-wrap">
+            <a href={ctaHref} class="founder-cta">{ctaLabel}</a>
+        </div>
+
+    </div>
+</section>
+
+<style>
+    /* ─── Tokens ──────────────────────────────────────────── */
+    .founder-root {
+        --green:       #22c55e;
+        --green-dim:   #16a34a;
+        --ink:         #1a2332;
+        --ink-body:    #374151;
+        --ink-muted:   #6b7280;
+        --border:      #d1fae5;        /* soft green tint */
+        --bg-page:     #f9fafb;
+        --bg-card:     #f4faf6;
+        --radius-card: 20px;
+        --font-sans:   "DM Sans", system-ui, sans-serif;
+
+        //background: var(--bg-page);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: clamp(32px, 5vw, 72px) clamp(16px, 4vw, 32px);
+        font-family: var(--font-sans);
+    }
+
+    /* ─── Card ────────────────────────────────────────────── */
+    .founder-card {
+        width: 100%;
+        max-width: 640px;
+        background: var(--bg-card);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-card);
+        padding: clamp(32px, 5vw, 52px) clamp(24px, 5vw, 52px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+
+    /* ─── Avatar ──────────────────────────────────────────── */
+    .founder-avatar-wrap {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid white;
+        box-shadow: 0 2px 12px rgba(34, 197, 94, .2);
+        margin-bottom: 8px;
+        flex-shrink: 0;
+        background: var(--border);   /* placeholder tint if img missing */
+    }
+    .founder-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* ─── Identity ────────────────────────────────────────── */
+    .founder-identity {
+        text-align: center;
+        margin-bottom: 18px;
+    }
+    .founder-name {
+        font-size: 1.35rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin: 0 0 4px;
+        line-height: 1.2;
+    }
+    .founder-name__accent { color: var(--green); }
+
+    .founder-subtitle {
+        font-size: 0.8rem;
+        color: var(--ink-muted);
+        margin: 0;
+        font-weight: 400;
+    }
+
+    /* ─── Story body ──────────────────────────────────────── */
+    .founder-story {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 36px;
+    }
+    .founder-story p {
+        margin: 0;
+        font-size: clamp(0.9rem, 1.6vw, 0.975rem);
+        line-height: 1.68;
+        color: var(--ink-body);
+        font-weight: 400;
+    }
+    .founder-story strong {
+        font-weight: 700;
+        color: var(--ink);
+    }
+    .founder-story__free {
+        color: var(--green);
+        font-weight: 700;
+    }
+
+    /* ─── CTA ─────────────────────────────────────────────── */
+    .founder-cta-wrap {
+        display: flex;
+        justify-content: center;
+    }
+    .founder-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 13px 36px;
+        border-radius: 999px;
+        background: var(--green);
+        color: #fff;
+        font-size: 0.925rem;
+        font-weight: 600;
+        text-decoration: none;
+        letter-spacing: 0.01em;
+        box-shadow: 0 2px 14px rgba(34, 197, 94, .32);
+        transition: opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .founder-cta:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(34, 197, 94, .42);
+    }
+    .founder-cta:active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+</style>

@@ -2,25 +2,42 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+import tailwindcss from '@tailwindcss/vite';
+
 // https://astro.build/config
 export default defineConfig({
-	integrations: [
-		starlight({
-			title: 'My Docs',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
-			sidebar: [
-				{
-					label: 'Guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
-				},
-				{
-					label: 'Reference',
-					items: [{ autogenerate: { directory: 'reference' } }],
-				},
-			],
-		}),
+  integrations: [
+      starlight({
+          title: 'RareBooks',
+          social: [
+              { icon: 'facebook', label: 'Facebook', href: 'https://github.com/withastro/starlight' },
+              { icon: 'instagram', label: 'Facebook', href: 'https://github.com/withastro/starlight' },
+              { icon: 'tiktok', label: 'TikTok', href: 'https://tiktok.com/@rarebooks_' }
+          ],
+          sidebar: [
+              { label: 'Getting Started', items: [{ autogenerate: { directory: 'getting-started', collapsed: false } }] },
+              { label: 'Basics', items: [{ autogenerate: { directory: 'basics', collapsed: true } }] },
+              { label: 'Financial Reports', items: [{ autogenerate: { directory: 'financial-reports', collapsed: true } }] },
+              { label: 'Inventory', items: [{ autogenerate: { directory: 'inventory', collapsed: true } }] },
+              { label: 'Masters', items: [{ autogenerate: { directory: 'masters', collapsed: true } }] },
+              { label: 'Settings', items: [{ autogenerate: { directory: 'settings', collapsed: true } }] },
+              { label: 'Transactions', items: [{ autogenerate: { directory: 'transactions', collapsed: true } }] },
+          ],
+          logo: {
+              src: './src/assets/houston.webp',
+              replacesTitle: false,
+          },
+          customCss: [
+              // Path to your Tailwind base styles:
+              './src/styles/global.css',
+          ],
+          components: {
+              Footer: './src/components/Footer.astro',
+          },
+      }),
 	],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

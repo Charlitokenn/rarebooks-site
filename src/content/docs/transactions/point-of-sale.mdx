@@ -1,0 +1,163 @@
+---
+sidebar_position: 1
+sidebar_label: Point Of Sale
+title: Point Of Sale
+---
+
+**POS** (Point of Sale) refers to the time and place where retail transactions occur. This system enables efficient sales processing, payment reconciliation, and shift management for retail environments.
+
+### 1. Open POS Shift
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-11%2009-48-11.png&#41;)
+
+Before initiating sales, a POS shift must be opened to record opening balances and enable accurate tracking of cash and other payment methods throughout the session.
+
+**Steps to Create an Open POS Shift**
+
+1. Cash in Denominations
+
+Enter the quantity of each currency denomination (e.g., ₹1000, ₹500, ₹100). The system will automatically calculate the total opening cash amount based on these inputs.
+
+2. Opening Amounts by Payment Method
+
+* The calculated cash amount is automatically populated under the “Cash” payment method.
+
+* Opening balances for other payment methods (e.g., Card, UPI, Wallet) can be entered if applicable.
+
+3. Once all amounts are verified, click Submit. The POS shift will be marked as open, recording the shift’s opening date and time.
+
+
+### 2. Creating a POS Invoice
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-11%2010-16-20.png&#41;)
+
+After opening a POS shift, sales billing can begin through the POS interface.
+
+**How to create a POS Invoice ?**
+
+1. Go to the POS interface and choose a customer for the sale.
+2. From the item list displayed on the left, click on the items to add them to the cart.
+3. Adjust the quantity for each item as needed.
+4. To change item rates or apply discounts, ensure these options are enabled in the POS Settings.
+5. Verify the grand total and the total quantity in the summary section at the bottom.
+6. Click the Pay button and select the desired payment method.
+7. Submit the sales invoice when prompted to complete the transaction.
+8. Once the invoice is submitted, you can print the POS invoice directly by selecting the Pay and Print option.
+
+
+
+### 3. Adding an Item
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-11%2011-24-53.png&#41;)
+
+
+Items can be selected in two ways: by clicking on the item name or by scanning the barcode.
+
+* Enter Barcode / Weight-enabled barcode in the box as shown in the image, the item will be automatically added to the cart.
+
+* If the product list in the dropdown is very long, use the search field by typing the product name in the search box.
+
+**Filter by Group:** A field that allows filtering and displaying items based on their assigned item group. When an item group is selected from the dropdown list, only items belonging to that group are shown.
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-11%2011-10-06.png&#41;)
+
+* To change the quantity of an item, click the expand arrow and either enter the desired quantity in the **Transfer Quantity** field or use the up/down arrows to adjust it.
+
+* To remove an item from the cart, click the delete button next to the corresponding item.
+
+### 4. Additional POS Features
+
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-12%2011-30-14.png&#41;)
+
+**1.Grid View:** Displays items in a grid format with images when the grid view icon is clicked.
+
+**2.[Sales Invoice](https://docs.frappe.io/books/sales-invoices) List:** Redirects to the Sales Invoice List.
+
+**3.[Loyalty Program](https://docs.frappe.io/books/loyalty-program):** Shows the loyalty points earned by the selected customer. Points can be redeemed from this view. The button is disabled if the customer has no loyalty points.
+
+**4.[Coupon Code](https://docs.frappe.io/books/coupon-code):** Allows redemption and application of available coupon codes for the selected items. The button is disabled if no coupon codes are available.
+
+**5.[Price List](https://docs.frappe.io/books/price-list):** Displays applicable price lists for the selected items, allowing you to apply them. The button is disabled if no price list is available.
+
+**6.[Item Enquiry](https://docs.frappe.io/books/item-enquiry):** Allows the user to record and track specific item-related queries.This feature helps maintain detailed records of customer enquiries for better follow-up and service.
+
+### 5. Cart Actions
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-11%2012-06-19.png&#41;)
+
+* Total Quantity: The Total Quantity refers to the combined number of all items included in a transaction or order.
+
+* Item Discounts: The Item Discounts refer to price reductions applied to specific products or services in the order.
+
+* Grand Total: The Grand Total is the final amount payable after applying all discounts, charges, and taxes to the subtotal.
+
+* Save Button: The system immediately stores the current transaction as a Draft Invoice, retaining all entered details for future review, modification, or completion.
+
+* Cancel Button: The system discards the current transaction and resets the POS interface to its default state, ready for a new entry.
+
+* Held Button: The system displays two sections:
+
+* Saved - Shows all transactions that have been saved but not yet submitted.
+
+* Submitted – Displays all submitted invoices, including those that are partially paid.
+
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-11%2014-22-42.png&#41;)
+
+A search function is available within the Held section to quickly locate invoices by their invoice name.
+
+* Return Button: It displays a list of all return invoices, and selecting an invoice will redirect the user and add its items to the POS cart.
+
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-11%2014-28-48.png&#41;)
+
+A search function is available to quickly locate invoices by their invoice name.
+
+* PAY Button: After adding items and selecting the customer, click the **Pay** button to view available payment methods, including **Cash**, **Bank**, and **Transfer**; upon selection, the payable amount will be displayed for confirmation.
+
+### 6. Payment Workflow
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-11%2014-30-54.png&#41;)
+
+1. Click Pay after adding items and selecting the customer.
+
+2. Choose a payment method (e.g., Cash, Bank, Transfer). The payable amount is displayed for confirmation.
+
+Available payment actions:
+
+* Submit: Marks the invoice as submitted and saves it under Held > Submitted.
+
+* Cancel: Cancels the payment process and closes the payment interface.
+
+* Pay: Completes the payment and generates the invoice.
+
+* Pay & Print: Completes the payment, generates the invoice, and prints it immediately.
+
+### 7. Close POS Shift
+
+[//]: # (![]&#40;/private/files/Screenshot%20from%202025-08-11%2014-53-23.png&#41;)
+
+The Close POS Shift feature is used to end a POS shift by recording final cash counts, calculating payment totals, and reconciling amounts.
+
+1. Closing Cash
+
+* The cashier can manually enter the quantity of each cash note or coin, with values initially pre-filled from the Opening Cash.
+
+* When the counts are updated, the system automatically recalculates the total Closing Cash and displays the difference between the Closing Amount and the Expected Amount.
+
+2. Closing Amounts
+
+* It displays a read-only table showing the Payment Method, Opening Amount, Expected Amount, Closing Amount, and Difference Amount for each payment type.
+
+* This section is used for reconciliation, helping identify any cash shortages or surpluses by comparing the Closing Amount (entered for Cash; zero for non-cash) against the Expected Amount.
+
+
+The **Submit** button validates all closing amounts, sets the Closing Date, and links the record to the Opening Shift.
+
+
+
+
+
+
+

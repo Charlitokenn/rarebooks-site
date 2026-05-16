@@ -1,0 +1,139 @@
+---
+// PricingSection.astro
+
+// import '../styles/global.css';
+
+const leftFeatures = [
+    {
+        icon: "star",
+        title: "Unlimited Templates:",
+        description: "Insight gives you the tools & resources you need to design a website.",
+    },
+    {
+        icon: "users",
+        title: "Collaborative Workspace:",
+        description: "Insight provides you with the tools & resources you need to work as a team.",
+    },
+    {
+        icon: "chart",
+        title: "Performance Analytics:",
+        description: "Insight gives you the tools & resources you need to track your website's success.",
+    },
+];
+
+const planFeatures = {
+        name: "Yearly License",
+        currency: "Tshs.",
+        price: 490000,
+        duration: "/year",
+        subtitle: "per business, billed annually",
+        trial: "Start 14 days free trial",
+        benefits: [
+            "1x Business account & Cards",
+            "1x Business account & Cards",
+            "1x Account",
+            "1x Account",
+            "30 transfer or direct debit",
+            "30 transfer or direct debit",
+            "10+ Integrations",
+            "10+ Integrations",
+        ]
+    }
+---
+
+<section class="px-6 py-16">
+    <span class="flex text-3xl items-center justify-center font-bold">Pricing</span>
+
+    <hr class="border-t-2 my-6" />
+
+    <div class="mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 md:grid-cols-2">
+
+        <!-- Left Column -->
+        <div>
+            <h2 class="mb-4 text-4xl font-extrabold leading-tight tracking-tight ">
+                Access All Features
+            </h2>
+            <p class="mb-9 max-w-md text-base leading-relaxed">
+                Insight provides you with the tools &amp; resources you need to build a
+                stunning e-commerce site, portfolio, or dashboard for your business.
+            </p>
+
+            <ul class="flex flex-col gap-7">
+                {leftFeatures.map((feat) => (
+                        <li class="flex items-start gap-4">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center ">
+              {feat.icon === "star" && (
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg>
+              )}
+                {feat.icon === "users" && (
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                )}
+                {feat.icon === "chart" && (
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                            <path d="M22 12A10 10 0 0 0 12 2v10z" />
+                        </svg>
+                )}
+            </span>
+
+                            <p class="pt-1 text-md leading-relaxed ">
+                                <strong class="font-bold">{feat.title}</strong>{" "}
+                                {feat.description}
+                            </p>
+                        </li>
+                ))}
+            </ul>
+        </div>
+
+        <!-- Right Column: Pricing Card -->
+        <div class="overflow-hidden rounded-2xl dark:border bg-accent-100 dark:bg-gray-800 shadow-xl shadow-primary-200">
+
+            <!-- Card Header -->
+            <div class="dark:border-b-2 border-b-2 border-b-gray-100 px-8 py-4">
+                <p class="mb-2 text-2xl font-bold ">{planFeatures.name}</p>
+                <div class="mb-2 flex items-end gap-1 leading-none">
+                    <span class="pb-2 text-xl font-semibold ">{planFeatures.currency}</span>
+                    <span class="text-7xl font-black tracking-tighter ">{planFeatures.price.toLocaleString()}</span>
+                    <span class="pb-2 text-base font-medium">{planFeatures.duration}</span>
+                </div>
+                <p class="text-sm ">{planFeatures.subtitle}</p>
+            </div>
+
+            <!-- Card Body -->
+            <div class="px-8 py-2">
+                <p class="mb-2 text-xs font-bold uppercase tracking-widest text-primary-400">
+                    What you get
+                </p>
+
+                <ul class="mb-5 grid grid-cols-2 gap-x-3 gap-y-3.5">
+                    {planFeatures.benefits.map((benefit) => (
+                            <li class="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <span class="shrink-0 ">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </span>
+                                {benefit}
+                            </li>
+                    ))}
+                </ul>
+
+                <a
+                        href="#"
+                        class="block w-full rounded-xl py-2 mb-2 bg-accent-600 text-white text-center text-base font-semibold shadow-lg shadow-accent-300 dark:shadow-none transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-700"
+                >
+                    {planFeatures.trial}
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>

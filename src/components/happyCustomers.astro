@@ -1,0 +1,31 @@
+---
+const avatars = [
+    { seed: "felix", color: "#f4a261" },
+    { seed: "alex", color: "#2a9d8f" },
+    { seed: "sam", color: "#457b9d" },
+    { seed: "jordan", color: "#6d6875" },
+];
+const customerCount = 121
+---
+
+<div class="flex items-center justify-center gap-3 py-2 -mt-12 flex-nowrap">
+        <div class="flex -space-x-2 overflow-hidden">
+            {avatars.map((avatar, i) => (
+                    <div class="relative size-12 rounded-full border-2 border-white overflow-hidden shadow-sm flex-shrink-0" >
+                        <img
+                                src={`https://api.dicebear.com/7.x/notionists/svg?seed=${avatar.seed}&backgroundColor=${avatar.color.replace("#", "")}`}
+                                alt={`Customer ${i + 1}`}
+                                class="w-full h-full object-cover bg-gray-100"
+                        />
+                    </div>
+            ))}
+        </div>
+
+        <p class="text-md text-gray-600">
+            Used by{" "}
+            <span class="font-bold text-lg text-gray-900 dark:text-white">
+            {customerCount}
+        </span>
+            happy customers
+        </p>
+    </div>
