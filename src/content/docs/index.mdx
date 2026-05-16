@@ -1,0 +1,48 @@
+---
+title: RareBooks — Know Your Stock. Stop Losing Money.
+description: Inventory management and bookkeeping for retail SMEs. Replace notebooks with real-time stock visibility, accurate bookkeeping, and stress-free tax prep.
+template: splash
+banner:
+    content: 'We just launched our latest documentation! <a href="/getting-started/getting-started-with-rarebooks/">Check it out</a>'
+hero:
+    title: <b>Know your stock</b>. Stop losing money.
+    tagline: Replace your notebooks with a clear, real-time view of every product you own, every shilling you're owed, and every profit you've earned — all in one place.
+    image:
+        alt: RareBooks dashboard showing cashflow and sales data
+        file: /src/assets/light-dashboard.jpg
+        dark: /src/assets/dark-dashboard.jpg
+        light: /src/assets/light-dashboard.jpg
+    actions:
+        - text: Try it for free →
+          link: /signup
+          variant: primary
+        - text: See how it works
+          link: '#demo'
+          variant: secondary
+---
+
+import HappyCustomers from '../../components/happyCustomers.astro';
+import Demo from '../../components/demo.astro';
+import Faq from '../../components/faq.astro';
+import Pricing from '../../components/pricing.astro';
+import Cta from '../../components/cta.astro';
+import Benefits from '../../components/benefits.astro';
+import FounderStory from '../../components/founderStory.astro';
+
+<HappyCustomers />
+<section id="demo">
+    <Demo/>
+</section>
+<section id="benefits">
+    <Benefits/>
+</section>
+<section id="faq">
+    <Faq/>
+</section>
+<section id="founder-story">
+    <FounderStory/>
+</section>
+<section id="pricing">
+    <Pricing/>
+</section>
+<Cta/>
