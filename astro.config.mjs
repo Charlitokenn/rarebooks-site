@@ -24,7 +24,7 @@ export default defineConfig({
               { label: 'Transactions', items: [{ autogenerate: { directory: 'transactions', collapsed: true } }] },
           ],
           logo: {
-              src: './src/assets/houston.webp',
+              src: './src/assets/logo.png',
               replacesTitle: false,
           },
           customCss: [

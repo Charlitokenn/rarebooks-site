@@ -4,21 +4,22 @@ description: Getting Started With Rarebooks
 sidebar:
     order: 1
 ---
+import { AppConfig } from "../../../constants/index.ts"
 
 Let’s start applying what we have learned so far by setting up your company in RareBooks.
 
-If you have not downloaded RareBooks, you can download it from the [Microsoft Store](https://apps.microsoft.com/detail/9NTLP4V32WGS).
+If you have not downloaded {AppConfig.appName}, you can download it from the <a href={AppConfig.storeUrl}>Microsoft Store</a>.
 
 ## Setup Instance
 
-When you open RareBooks, you’ll be presented two options: **New File** and **Existing File**. If this is the first time you are opening Frappe Books, click on **New File**.
+When you open {AppConfig.appName}, you’ll be presented two options: **New File** and **Existing File**. If this is the first time you are opening {AppConfig.appName}, click on **New File**.
 
 Now select an appropriate location where you want to store the file and give it a name.
 
 ![New File](https://github.com/frappe/books_docs/raw/master/docs/setting-up/images/new-file.png)
 
 :::tip[File Location]
-RareBooks stores all your company data and transactions on a local `.db` file on your computer.
+{AppConfig.appName} stores all your company data and transactions on a local `.db` file on your computer.
 You can change the location of this `.db` file. If you have done so you can find it again by selecting the **Existing File** option.
 :::
 

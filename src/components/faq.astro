@@ -38,48 +38,41 @@ const faqs = [
 ];
 ---
 
-<section class="w-full max-w-6xl mx-auto px-6 py-16 mt-18">
+<section class="w-full max-w-6xl mx-auto px-6 py-16 mt-18 bg-white dark:bg-zinc-900"">
     <div class="flex flex-col lg:flex-row gap-16">
 
-        <!-- Left: Header -->
         <div class="lg:w-2/5 flex-shrink-0">
-            <h3 class="text-gray-900 text-4xl font-bold leading-tight">
+            <h3 class="text-gray-900 dark:text-gray-100 text-4xl font-bold leading-tight">
                 Frequently Asked Questions
             </h3>
-            <p>
+            <p class="mt-4 text-gray-600 dark:text-gray-400">
                 Have another question? Contact me on{" "}
-                <a href="https://wa.me/255689255545" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/255689255545" target="_blank" rel="noopener noreferrer" class="text-accent-600 dark:text-accent-400 hover:underline">
                     WhatsApp
                 </a>{" "}
                 or by{" "}
-                <a href="mailto:nkonoki.charles@gmail.com" target="_blank" rel="noopener noreferrer">
+                <a href="mailto:nkonoki.charles@gmail.com" target="_blank" rel="noopener noreferrer" class="text-accent-600 dark:text-accent-400 hover:underline">
                     Email
                 </a>.
             </p>
-
         </div>
 
-        <!-- Right: Accordion -->
         <div class="lg:w-3/5">
             {faqs.map((faq) => (
-                    <details name="faq" class="faq-item group border-t border-gray-200 last:border-b">
+                    <details name="faq" class="faq-item group border-t border-gray-200 dark:border-gray-800 last:border-b dark:last:border-gray-800">
                         <summary class="flex items-center justify-between gap-4 py-5 cursor-pointer list-none select-none">
-            <span class="text-gray-800 text-base font-medium group-hover:text-accent-600 transition-colors duration-200">
-              {faq.question}
-            </span>
+                        <span class="text-gray-800 dark:text-gray-200 text-base font-medium group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors duration-200">
+                            {faq.question}
+                        </span>
 
-                            <!-- Plus / Minus icon via CSS -->
-                            <span class="faq-icon flex-shrink-0 relative w-5 h-5 text-gray-400 group-hover:text-accent-500 transition-colors duration-200">
-              <!-- Horizontal bar (always visible) -->
-              <span class="absolute inset-y-1/2 left-0 right-0 h-px bg-current rounded" />
-                                <!-- Vertical bar (fades & rotates away when open) -->
-              <span class="absolute inset-x-1/2 top-0 bottom-0 w-px bg-current rounded transition-all duration-300 origin-center faq-vertical-bar" />
-            </span>
+                            <span class="faq-icon flex-shrink-0 relative w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-accent-500 dark:group-hover:text-accent-400 transition-colors duration-200">
+                            <span class="absolute inset-y-1/2 left-0 right-0 h-px bg-current rounded" />
+                            <span class="absolute inset-x-1/2 top-0 bottom-0 w-px bg-current rounded transition-all duration-300 origin-center faq-vertical-bar" />
+                        </span>
                         </summary>
 
-                        <!-- Grid-row trick: animates height without JS -->
                         <div class="faq-body overflow-hidden">
-                            <p class="text-gray-500 text-sm leading-relaxed pb-5 min-h-0">
+                            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed pb-5 min-h-0">
                                 {faq.answer}
                             </p>
                         </div>
@@ -91,32 +84,17 @@ const faqs = [
 </section>
 
 <style>
-    /* Smooth open/close via grid-template-rows — zero JS */
     .faq-body {
         display: grid;
         grid-template-rows: 0fr;
         transition: grid-template-rows 0.3s ease;
     }
-
-    .faq-body p {
-        overflow: hidden;
-    }
-
-    details[open] .faq-body {
-        grid-template-rows: 1fr;
-    }
-
-    /* Collapse the vertical bar when open, turning + into — */
+    .faq-body p { overflow: hidden; }
+    details[open] .faq-body { grid-template-rows: 1fr; }
     details[open] .faq-vertical-bar {
         transform: rotate(90deg);
         opacity: 0;
     }
-
-    /* Remove the native browser triangle marker */
-    details > summary {
-        list-style: none;
-    }
-    details > summary::-webkit-details-marker {
-        display: none;
-    }
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
 </style>

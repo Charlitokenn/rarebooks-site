@@ -1,8 +1,4 @@
 ---
-// FeaturesSection.astro
-// Social media management platform — features showcase component
-// Astro best practices: scoped styles, semantic HTML, no unnecessary JS, CSS custom props
-
 interface StatItem {
     value: string;
     label: string;
@@ -74,72 +70,62 @@ const stats: StatItem[] = [
 ];
 ---
 
-<section class="features-root mt-18" aria-label="Platform features">
-    <div class="features-wrapper">
+<section class="mt-18 bg-white dark:bg-zinc-900" aria-label="Platform features">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col gap-[clamp(64px,8vw,120px)]">
 
         {features.map((f) => (
-                <article
-                        class={`feature-row feature-row--${f.imagePosition}`}
-                        aria-label={f.tag}
-                >
-                    <!-- Text column -->
-                    <div class="feature-text">
-                        <p class="feature-tag">
-                            <span class="feature-tag__icon" aria-hidden="true">{f.tagIcon}</span>
+                <article class="feature-row grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 items-center" aria-label={f.tag}>
+                    <div class={`flex flex-col justify-center ${f.imagePosition === 'left' ? 'md:order-2' : ''}`}>
+                        <p class="inline-flex items-center gap-2 text-accent-600 dark:text-accent-400 text-xs font-semibold tracking-widest uppercase mb-3">
+                            <span aria-hidden="true">{f.tagIcon}</span>
                             {f.tag}
                         </p>
-                        <h2 class="feature-heading">
+                        <h2 class="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-gray-900 dark:text-gray-50 tracking-tight leading-[1.1] mb-4">
                             {f.headline}{" "}
-                            <span class="feature-heading__accent">{f.accentWord}</span>
+                            <span class="text-accent-600 dark:text-accent-400">{f.accentWord}</span>
                         </h2>
-                        <p class="feature-body">{f.body}</p>
-                        <div class="feature-ctas">
-                            <a href="#" class="btn btn--primary">
+                        <p class="text-base md:text-lg text-gray-500 dark:text-gray-400 leading-[1.7] max-w-[42ch] mb-7">
+                            {f.body}
+                        </p>
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <a href="#" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-600 hover:bg-accent-700 dark:bg-accent-600 dark:hover:bg-accent-500 text-white text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 shadow-[0_2px_12px_rgba(99,102,241,0.35)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.45)]">
                                 {f.primaryCta}
                                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                                     <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </a>
-                            <a href="#" class="btn btn--ghost">{f.secondaryCta}</a>
+                            <a href="#" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm font-semibold hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200">
+                                {f.secondaryCta}
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Visual / Mockup column -->
-                    <div class="feature-visual">
-                        <div class={`mockup mockup--${f.mockupType}`} aria-hidden="true">
+                    <div class={`flex items-center justify-center ${f.imagePosition === 'left' ? 'md:order-1' : ''}`}>
+                        <div class="w-full max-w-[480px] rounded-[18px] bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-[0_2px_24px_0_rgba(15,23,42,.07)] dark:shadow-[0_2px_24px_0_rgba(0,0,0,.3)] overflow-hidden" aria-hidden="true">
 
                             {f.mockupType === "network" && (
                                     <div class="mockup-network">
                                         <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" class="network-svg">
-                                            <!-- Connection lines -->
                                             <line x1="120" y1="140" x2="190" y2="140" stroke="#e2e8f0" stroke-width="1.5"/>
                                             <line x1="220" y1="140" x2="280" y2="56"  stroke="#e2e8f0" stroke-width="1.5"/>
                                             <line x1="220" y1="140" x2="280" y2="98"  stroke="#e2e8f0" stroke-width="1.5"/>
                                             <line x1="220" y1="140" x2="280" y2="140" stroke="#e2e8f0" stroke-width="1.5"/>
                                             <line x1="220" y1="140" x2="280" y2="182" stroke="#e2e8f0" stroke-width="1.5"/>
                                             <line x1="220" y1="140" x2="280" y2="224" stroke="#e2e8f0" stroke-width="1.5"/>
-                                            <!-- User node -->
                                             <circle cx="100" cy="140" r="26" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
                                             <text x="100" y="145" text-anchor="middle" font-size="18" fill="#94a3b8">👤</text>
-                                            <!-- Hub node -->
                                             <circle cx="205" cy="140" r="26" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
-                                            <path d="M196 133 a9 9 0 0 1 18 0 v14 a9 9 0 0 1-18 0z" fill="#22c55e" opacity="0.15"/>
-                                            <circle cx="205" cy="140" r="7" fill="#22c55e"/>
-                                            <!-- Social platform nodes -->
-                                            <!-- Facebook -->
+                                            <path d="M196 133 a9 9 0 0 1 18 0 v14 a9 9 0 0 1-18 0z" fill="#6366f1" opacity="0.15"/>
+                                            <circle cx="205" cy="140" r="7" fill="#6366f1"/>
                                             <circle cx="300" cy="56" r="22" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
                                             <text x="300" y="63" text-anchor="middle" font-size="16" fill="#1877f2">f</text>
-                                            <!-- Instagram -->
                                             <circle cx="300" cy="98" r="22" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
                                             <rect x="291" y="89" width="18" height="18" rx="5" fill="none" stroke="#e1306c" stroke-width="1.5"/>
                                             <circle cx="300" cy="98" r="4.5" fill="none" stroke="#e1306c" stroke-width="1.5"/>
-                                            <!-- X/Twitter -->
                                             <circle cx="300" cy="140" r="22" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
                                             <text x="300" y="146" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">𝕏</text>
-                                            <!-- LinkedIn -->
                                             <circle cx="300" cy="182" r="22" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
                                             <text x="300" y="188" text-anchor="middle" font-size="14" font-weight="700" fill="#0a66c2">in</text>
-                                            <!-- TikTok -->
                                             <circle cx="300" cy="224" r="22" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
                                             <text x="300" y="230" text-anchor="middle" font-size="14" fill="#0f172a">♪</text>
                                         </svg>
@@ -199,7 +185,7 @@ const stats: StatItem[] = [
                                             <span class="mockup-window__dot"></span>
                                             <span class="mockup-window__dot"></span>
                                             <span class="mockup-window__dot"></span>
-                                            <div class="mockup-window__title" style="color:#94a3b8">Scheduled Posts</div>
+                                            <div class="mockup-window__title" style="color:var(--color-gray-400)">Scheduled Posts</div>
                                         </div>
                                         <div class="mockup-window__body">
                                             <div class="mock-posts-header">
@@ -263,15 +249,14 @@ const stats: StatItem[] = [
                 </article>
         ))}
 
-        <!-- Stats bar -->
-        <div class="stats-bar" role="region" aria-label="Platform statistics">
+        <div class="stats-bar flex items-center justify-around flex-wrap gap-0 border border-gray-200 dark:border-gray-800 rounded-[18px] px-6 md:px-10 py-8 md:py-12 bg-gray-50 dark:bg-gray-900/50" role="region" aria-label="Platform statistics">
             {stats.map((s, i) => (
                     <>
-                        <div class="stat-item">
-                            <span class="stat-item__value">{s.value}</span>
-                            <span class="stat-item__label">{s.label}</span>
+                        <div class="flex flex-col items-center gap-1.5 flex-1 min-w-[140px]">
+                            <span class="text-[clamp(1.8rem,4vw,3rem)] font-bold text-gray-900 dark:text-gray-50 tracking-tighter leading-none">{s.value}</span>
+                            <span class="text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400 text-center">{s.label}</span>
                         </div>
-                        {i < stats.length - 1 && <div class="stat-divider" aria-hidden="true"></div>}
+                        {i < stats.length - 1 && <div class="hidden sm:block w-px h-14 bg-gray-200 dark:bg-gray-700" aria-hidden="true"></div>}
                     </>
             ))}
         </div>
@@ -280,451 +265,248 @@ const stats: StatItem[] = [
 </section>
 
 <style>
-    /* ─── Tokens ─────────────────────────────────────────────────── */
-    .features-root {
-        --green:        #22c55e;
-        --green-dim:    #16a34a;
-        --green-muted:  #dcfce7;
-        --ink:          #0f172a;
-        --ink-muted:    #475569;
-        --border:       #e2e8f0;
-        --bg:           #ffffff;
-        --bg-card:      #f8fafc;
-        --radius-card:  18px;
-        --radius-btn:   999px;
-        --shadow-card:  0 2px 24px 0 rgba(15,23,42,.07);
-        --font-display: "DM Sans", "Outfit", system-ui, sans-serif;
-        --font-body:    "DM Sans", system-ui, sans-serif;
-        --section-gap:  clamp(64px, 8vw, 120px);
-
-        background: var(--bg);
-        font-family: var(--font-body);
-        color: var(--ink);
-    }
-
-    /* ─── Layout ─────────────────────────────────────────────────── */
-    .features-wrapper {
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: var(--section-gap);
-    }
-
-    /* Feature row: alternating image-left / image-right */
-    .feature-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: clamp(32px, 5vw, 80px);
-        align-items: center;
-    }
-
-    .feature-row--right .feature-text  { order: 1; }
-    .feature-row--right .feature-visual { order: 2; }
-    .feature-row--left  .feature-text  { order: 2; }
-    .feature-row--left  .feature-visual { order: 1; }
-
-    @media (max-width: 768px) {
-        .feature-row {
-            grid-template-columns: 1fr;
-            gap: 32px;
-        }
-        .feature-row--right .feature-text,
-        .feature-row--right .feature-visual,
-        .feature-row--left  .feature-text,
-        .feature-row--left  .feature-visual { order: unset; }
-    }
-
-    /* ─── Feature text ───────────────────────────────────────────── */
-    .feature-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--green);
-        margin: 0 0 14px;
-    }
-    .feature-tag__icon { font-style: normal; font-size: 0.9rem; }
-
-    .feature-heading {
-        font-family: var(--font-display);
-        font-size: clamp(2rem, 3.5vw, 2.75rem);
-        font-weight: 700;
-        line-height: 1.1;
-        letter-spacing: -0.02em;
-        margin: 0 0 18px;
-        color: var(--ink);
-    }
-    .feature-heading__accent { color: var(--green); }
-
-    .feature-body {
-        font-size: clamp(0.9rem, 1.2vw, 1rem);
-        line-height: 1.7;
-        color: var(--ink-muted);
-        margin: 0 0 28px;
-        max-width: 42ch;
-    }
-
-    /* ─── Buttons ────────────────────────────────────────────────── */
-    .feature-ctas {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 10px 20px;
-        border-radius: var(--radius-btn);
-        font-size: 0.875rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
-        cursor: pointer;
-    }
-    .btn:hover { opacity: 0.88; transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
-
-    .btn--primary {
-        background: var(--green);
-        color: #fff;
-        box-shadow: 0 2px 12px rgba(34,197,94,.35);
-    }
-    .btn--primary:hover { box-shadow: 0 4px 20px rgba(34,197,94,.45); }
-
-    .btn--ghost {
-        background: transparent;
-        color: var(--ink);
-        border: 1.5px solid var(--border);
-    }
-    .btn--ghost:hover { border-color: var(--ink-muted); }
-
-    /* ─── Mockup wrapper ─────────────────────────────────────────── */
-    .feature-visual {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .mockup {
-        width: 100%;
-        max-width: 480px;
-        border-radius: var(--radius-card);
-        background: var(--bg-card);
-        border: 1.5px solid var(--border);
-        box-shadow: var(--shadow-card);
-        overflow: hidden;
-    }
-
-    /* ─── Network mockup ─────────────────────────────────────────── */
-    .mockup--network {
-        padding: 24px;
-        min-height: 240px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: white;
-    }
+    .mockup-network { padding: 24px; min-height: 240px; display: flex; align-items: center; justify-content: center; }
     .network-svg { width: 100%; height: auto; max-height: 240px; }
 
-    /* ─── Window-style mockup shared ────────────────────────────── */
-    .mockup-window { border-radius: var(--radius-card); overflow: hidden; }
+    .mockup-window { border-radius: 18px; overflow: hidden; }
 
     .mockup-window__bar {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 10px 14px;
-        background: #f1f5f9;
-        border-bottom: 1px solid var(--border);
+        display: flex; align-items: center; gap: 6px; padding: 10px 14px;
+        background: var(--color-gray-100); border-bottom: 1px solid var(--color-gray-200);
     }
-    .mockup-window__bar--dark { background: #1e293b; border-color: #334155; }
+    :global(.dark) .mockup-window__bar {
+        background: var(--color-gray-800); border-color: var(--color-gray-700);
+    }
+
+    .mockup-window__bar--dark {
+        background: var(--color-gray-800); border-color: var(--color-gray-700);
+    }
+    :global(.dark) .mockup-window__bar--dark {
+        background: var(--color-gray-950); border-color: var(--color-gray-800);
+    }
 
     .mockup-window__dot {
-        width: 9px; height: 9px;
-        border-radius: 50%;
-        background: #cbd5e1;
-        flex-shrink: 0;
+        width: 9px; height: 9px; border-radius: 50%; background: var(--color-gray-300); flex-shrink: 0;
     }
     .mockup-window__dot:nth-child(1) { background: #f87171; }
     .mockup-window__dot:nth-child(2) { background: #fbbf24; }
     .mockup-window__dot:nth-child(3) { background: #4ade80; }
 
     .mockup-window__title {
-        margin-left: 8px;
-        font-size: 0.72rem;
-        font-weight: 600;
-        color: var(--ink-muted);
-        letter-spacing: 0.01em;
+        margin-left: 8px; font-size: 0.72rem; font-weight: 600;
+        color: var(--color-gray-500); letter-spacing: 0.01em;
+    }
+    :global(.dark) .mockup-window__title {
+        color: var(--color-gray-400);
     }
 
     .mockup-window__body { padding: 14px 16px 16px; }
 
-    /* ─── Scheduler mockup internals ────────────────────────────── */
     .mock-field { margin-bottom: 10px; }
     .mock-field__label {
-        font-size: 0.65rem;
-        font-weight: 600;
-        color: var(--ink-muted);
-        margin-bottom: 4px;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
+        font-size: 0.65rem; font-weight: 600; color: var(--color-gray-500);
+        margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em;
     }
+    :global(.dark) .mock-field__label { color: var(--color-gray-400); }
+
     .mock-field__input {
-        height: 22px;
-        background: var(--border);
-        border-radius: 4px;
+        height: 22px; background: var(--color-gray-200); border-radius: 4px;
     }
+    :global(.dark) .mock-field__input { background: var(--color-gray-700); }
     .mock-field__input--short { width: 60%; }
 
     .mock-account-list { display: flex; flex-direction: column; gap: 5px; }
     .mock-account {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.65rem;
-        color: var(--ink-muted);
+        display: flex; align-items: center; gap: 8px;
+        font-size: 0.65rem; color: var(--color-gray-500);
     }
+    :global(.dark) .mock-account { color: var(--color-gray-400); }
+
     .mock-account__avatar {
-        width: 18px; height: 18px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--green-muted), var(--green));
+        width: 18px; height: 18px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--color-accent-100), var(--color-accent-500));
         flex-shrink: 0;
     }
-    .mock-account__name { flex: 1; font-size: 0.65rem; color: var(--ink); font-weight: 500; }
+    :global(.dark) .mock-account__avatar {
+        background: linear-gradient(135deg, var(--color-accent-900), var(--color-accent-600));
+    }
+
+    .mock-account__name { flex: 1; font-size: 0.65rem; color: var(--color-gray-900); font-weight: 500; }
+    :global(.dark) .mock-account__name { color: var(--color-gray-100); }
+
     .mock-account__user {
         width: 50px; height: 8px;
-        background: var(--border);
-        border-radius: 3px;
+        background: var(--color-gray-200); border-radius: 3px;
     }
+    :global(.dark) .mock-account__user { background: var(--color-gray-700); }
 
     .mock-calendar-popup {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 8px;
-        margin: 8px 0;
-        box-shadow: 0 4px 12px rgba(0,0,0,.08);
-        width: fit-content;
+        background: white; border: 1px solid var(--color-gray-200);
+        border-radius: 8px; padding: 8px; margin: 8px 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,.08); width: fit-content;
     }
+    :global(.dark) .mock-calendar-popup {
+        background: var(--color-gray-900); border-color: var(--color-gray-700);
+        box-shadow: 0 4px 12px rgba(0,0,0,.3);
+    }
+
     .mock-cal-tabs { display: flex; gap: 4px; margin-bottom: 6px; }
     .mock-cal-tab {
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 0.6rem;
-        font-weight: 600;
-        background: #f1f5f9;
-        color: var(--ink-muted);
+        padding: 2px 8px; border-radius: 4px;
+        font-size: 0.6rem; font-weight: 600;
+        background: var(--color-gray-100); color: var(--color-gray-500);
     }
-    .mock-cal-tab--active { background: var(--green); color: white; }
+    :global(.dark) .mock-cal-tab { background: var(--color-gray-800); color: var(--color-gray-400); }
+
+    .mock-cal-tab--active { background: var(--color-accent-500); color: white; }
+    :global(.dark) .mock-cal-tab--active { background: var(--color-accent-600); }
+
     .mock-cal-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2px;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
     }
     .mock-cal-cell {
-        padding: 3px 6px;
-        font-size: 0.6rem;
-        text-align: center;
-        color: var(--ink-muted);
-        border-radius: 3px;
-        background: #f8fafc;
+        padding: 3px 6px; font-size: 0.6rem; text-align: center;
+        color: var(--color-gray-500); border-radius: 3px;
+        background: var(--color-gray-50);
     }
+    :global(.dark) .mock-cal-cell { background: var(--color-gray-800); color: var(--color-gray-400); }
 
     .mock-schedule-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 8px;
+        display: flex; align-items: center; gap: 8px; margin-top: 8px;
     }
     .mock-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .mock-dot--green { background: var(--green); }
-    .mock-bar { height: 8px; border-radius: 3px; background: var(--border); }
+    .mock-dot--green { background: var(--color-accent-500); }
+    .mock-bar { height: 8px; border-radius: 3px; background: var(--color-gray-200); }
+    :global(.dark) .mock-bar { background: var(--color-gray-700); }
     .mock-bar--date { width: 80px; }
 
-    /* ─── Content mgmt mockup internals ─────────────────────────── */
-    .mockup-window--dark { background: #0f172a; }
-    .mockup-window--dark .mockup-window__body { background: #0f172a; }
+    .mockup-window--dark { background: var(--color-gray-900); }
+    :global(.dark) .mockup-window--dark { background: var(--color-gray-950); }
+    .mockup-window--dark .mockup-window__body { background: var(--color-gray-900); }
+    :global(.dark) .mockup-window--dark .mockup-window__body { background: var(--color-gray-950); }
 
     .mock-posts-header {
-        font-size: 0.6rem;
-        color: #64748b;
-        padding-bottom: 6px;
-        border-bottom: 1px solid #1e293b;
+        font-size: 0.6rem; color: var(--color-gray-400);
+        padding-bottom: 6px; border-bottom: 1px solid var(--color-gray-800);
         margin-bottom: 8px;
     }
+    :global(.dark) .mock-posts-header { color: var(--color-gray-500); border-color: var(--color-gray-800); }
+
     .mock-posts-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4px;
+        display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
     }
     .mock-post-item {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 7px;
-        border-radius: 6px;
-        background: #1e293b;
+        display: flex; align-items: center; gap: 6px;
+        padding: 5px 7px; border-radius: 6px;
+        background: var(--color-gray-800);
     }
-    .mock-post-item--highlight { background: #166534; }
+    :global(.dark) .mock-post-item { background: var(--color-gray-800); }
+    .mock-post-item--highlight { background: var(--color-accent-900); }
+    :global(.dark) .mock-post-item--highlight { background: var(--color-accent-900); }
+
     .mock-post-avatar {
-        width: 16px; height: 16px;
-        border-radius: 50%;
-        background: #334155;
-        flex-shrink: 0;
+        width: 16px; height: 16px; border-radius: 50%;
+        background: var(--color-gray-600); flex-shrink: 0;
     }
-    .mock-post-name { font-size: 0.58rem; color: #94a3b8; font-weight: 500; }
+    :global(.dark) .mock-post-avatar { background: var(--color-gray-700); }
+
+    .mock-post-name { font-size: 0.58rem; color: var(--color-gray-400); font-weight: 500; }
+    :global(.dark) .mock-post-name { color: var(--color-gray-400); }
+
     .mock-delete-btn {
-        margin-top: 10px;
-        width: fit-content;
-        background: #ef4444;
-        color: white;
-        font-size: 0.6rem;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 4px;
+        margin-top: 10px; width: fit-content;
+        background: #ef4444; color: white;
+        font-size: 0.6rem; font-weight: 600;
+        padding: 4px 10px; border-radius: 4px;
     }
 
-    /* ─── Studio mockup internals ────────────────────────────────── */
     .mock-studio-tag { display: flex; gap: 6px; margin-bottom: 10px; }
     .mock-tag {
-        font-size: 0.6rem;
-        font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 999px;
+        font-size: 0.6rem; font-weight: 700;
+        padding: 2px 8px; border-radius: 999px;
     }
-    .mock-tag--green { background: var(--green-muted); color: var(--green-dim); }
-    .mock-tag--gray  { background: #f1f5f9; color: var(--ink-muted); }
+    .mock-tag--green { background: var(--color-accent-100); color: var(--color-accent-700); }
+    :global(.dark) .mock-tag--green { background: var(--color-accent-900); color: var(--color-accent-400); }
+
+    .mock-tag--gray { background: var(--color-gray-100); color: var(--color-gray-500); }
+    :global(.dark) .mock-tag--gray { background: var(--color-gray-800); color: var(--color-gray-400); }
 
     .mock-studio-hero {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 10px;
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        margin-bottom: 10px;
+        display: flex; align-items: flex-start; gap: 10px;
+        padding: 10px; background: white;
+        border: 1px solid var(--color-gray-200);
+        border-radius: 8px; margin-bottom: 10px;
     }
+    :global(.dark) .mock-studio-hero {
+        background: var(--color-gray-900); border-color: var(--color-gray-700);
+    }
+
     .mock-studio-icon {
-        width: 32px; height: 32px;
-        border-radius: 6px;
-        background: var(--green-muted);
-        color: var(--green);
-        font-size: 12px;
-        display: flex; align-items: center; justify-content: center;
+        width: 32px; height: 32px; border-radius: 6px;
+        background: var(--color-accent-100); color: var(--color-accent-600);
+        font-size: 12px; display: flex; align-items: center; justify-content: center;
         flex-shrink: 0;
     }
+    :global(.dark) .mock-studio-icon {
+        background: var(--color-accent-900); color: var(--color-accent-400);
+    }
+
     .mock-studio-copy { flex: 1; }
-    .mock-studio-title { font-size: 0.65rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .mock-studio-title { font-size: 0.65rem; font-weight: 700; color: var(--color-gray-900); margin-bottom: 4px; }
+    :global(.dark) .mock-studio-title { color: var(--color-gray-100); }
+
     .mock-studio-desc {
-        height: 6px;
-        background: var(--border);
-        border-radius: 3px;
-        margin-bottom: 3px;
-        width: 90%;
+        height: 6px; background: var(--color-gray-200);
+        border-radius: 3px; margin-bottom: 3px; width: 90%;
     }
+    :global(.dark) .mock-studio-desc { background: var(--color-gray-700); }
     .mock-studio-desc--short { width: 60%; }
+
     .mock-btn-pill {
-        font-size: 0.58rem;
-        font-weight: 600;
-        background: var(--green);
-        color: white;
-        padding: 4px 8px;
-        border-radius: 999px;
-        white-space: nowrap;
-        align-self: center;
+        font-size: 0.58rem; font-weight: 600;
+        background: var(--color-accent-500); color: white;
+        padding: 4px 8px; border-radius: 999px;
+        white-space: nowrap; align-self: center;
     }
+    :global(.dark) .mock-btn-pill { background: var(--color-accent-600); }
 
     .mock-template-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
     }
     .mock-template-card {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 8px;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
+        background: white; border: 1px solid var(--color-gray-200);
+        border-radius: 8px; padding: 8px;
+        display: flex; flex-direction: column; gap: 4px;
     }
+    :global(.dark) .mock-template-card {
+        background: var(--color-gray-900); border-color: var(--color-gray-700);
+    }
+
     .mock-template-thumb {
         height: 48px;
-        background: linear-gradient(135deg, #f1f5f9, var(--green-muted));
-        border-radius: 5px;
-        margin-bottom: 2px;
+        background: linear-gradient(135deg, var(--color-gray-100), var(--color-accent-100));
+        border-radius: 5px; margin-bottom: 2px;
     }
-    .mock-template-name { font-size: 0.58rem; font-weight: 600; color: var(--ink); }
-    .mock-template-stat { font-size: 0.55rem; color: var(--ink-muted); }
+    :global(.dark) .mock-template-thumb {
+        background: linear-gradient(135deg, var(--color-gray-800), var(--color-accent-900));
+    }
+
+    .mock-template-name { font-size: 0.58rem; font-weight: 600; color: var(--color-gray-900); }
+    :global(.dark) .mock-template-name { color: var(--color-gray-100); }
+
+    .mock-template-stat { font-size: 0.55rem; color: var(--color-gray-500); }
+    :global(.dark) .mock-template-stat { color: var(--color-gray-400); }
+
     .mock-btn-sm {
-        margin-top: 2px;
-        font-size: 0.55rem;
-        font-weight: 600;
-        color: var(--green);
-        text-align: center;
-        background: var(--green-muted);
-        padding: 3px 6px;
-        border-radius: 4px;
+        margin-top: 2px; font-size: 0.55rem; font-weight: 600;
+        color: var(--color-accent-600); text-align: center;
+        background: var(--color-accent-100);
+        padding: 3px 6px; border-radius: 4px;
+    }
+    :global(.dark) .mock-btn-sm {
+        color: var(--color-accent-400); background: var(--color-accent-900);
     }
 
-    /* ─── Stats bar ──────────────────────────────────────────────── */
-    .stats-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 0;
-        border: 1.5px solid var(--border);
-        border-radius: var(--radius-card);
-        padding: clamp(28px, 4vw, 48px) clamp(16px, 4vw, 40px);
-        background: var(--bg-card);
-    }
-
-    .stat-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-        flex: 1;
-        min-width: 140px;
-    }
-    .stat-item__value {
-        font-family: var(--font-display);
-        font-size: clamp(1.8rem, 4vw, 3rem);
-        font-weight: 700;
-        letter-spacing: -0.03em;
-        color: var(--ink);
-        line-height: 1;
-    }
-    .stat-item__label {
-        font-size: 0.72rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.07em;
-        color: var(--ink-muted);
-        text-align: center;
-    }
-    .stat-divider {
-        width: 1px;
-        height: 56px;
-        background: var(--border);
-        flex-shrink: 0;
-    }
-    @media (max-width: 560px) {
-        .stat-divider { display: none; }
-        .stats-bar { gap: 24px; }
-    }
-
-    /* ─── Entry animations ───────────────────────────────────────── */
     @media (prefers-reduced-motion: no-preference) {
         .feature-row {
             opacity: 0;
@@ -744,9 +526,8 @@ const stats: StatItem[] = [
     }
 </style>
 
-<!-- Intersection Observer for scroll-reveal (progressive enhancement) -->
 <script>
-    const targets = document.querySelectorAll<HTMLElement>(".feature-row, .stats-bar");
+    const targets = document.querySelectorAll(".feature-row, .stats-bar");
     if ("IntersectionObserver" in window) {
         const io = new IntersectionObserver(
             (entries) => {
@@ -761,7 +542,6 @@ const stats: StatItem[] = [
         );
         targets.forEach((el) => io.observe(el));
     } else {
-        // Fallback for environments without IntersectionObserver
         targets.forEach((el) => el.classList.add("is-visible"));
     }
 </script>
