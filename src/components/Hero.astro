@@ -1,5 +1,6 @@
 ---
-const logos = ["Sequoia", "a16z", "Y Combinator", "Stripe", "Ramp"]
+import {AppConfig} from "../constants";
+const logos = AppConfig.featuredClients
 ---
 
 <section id="top" class="relative overflow-hidden">
@@ -21,7 +22,7 @@ const logos = ["Sequoia", "a16z", "Y Combinator", "Stripe", "Ramp"]
     </h1>
 
     <p class="mx-auto mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted">
-      Ledgerly connects your bank, categorizes every transaction automatically, and keeps your
+      {AppConfig.appName} connects your bank, categorizes every transaction automatically, and keeps your
       financials tax-ready year round — so you always know exactly where your money stands.
     </p>
 
@@ -53,7 +54,7 @@ const logos = ["Sequoia", "a16z", "Y Combinator", "Stripe", "Ramp"]
       <div style="position: relative; padding-bottom: calc(61.23893805309735% + 41px); height: 0; width: 100%;">
         <iframe
           src="https://demo.arcade.software/FeRaybGnq8w8icVFYOSu?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
-          title="Ledgerly Interactive Demo"
+          title={`${AppConfig.appName} Interactive Demo`}
           frameborder="0"
           loading="lazy"
           allowfullscreen

@@ -1,10 +1,11 @@
 ---
 import { BookOpen } from "lucide-astro"
+import { AppConfig } from "../constants"
 
 const links = [
   { label: "Features", href: "#features" },
   { label: "How it works", href: "#how" },
-  { label: "Ledgerly in Action", href: "#guarantee" },
+  { label: `${AppConfig.appName} in Action`, href: "#guarantee" },
   { label: "Pricing", href: "#pricing" },
 ]
 ---
@@ -17,7 +18,7 @@ const links = [
       <span class="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white">
         <BookOpen size={18} />
       </span>
-      <span class="text-lg font-bold tracking-tight text-ink font-display">Ledgerly</span>
+      <span class="text-lg font-bold tracking-tight text-ink font-display">{AppConfig.appName}</span>
     </a>
 
     <div class="hidden items-center gap-8 md:flex">

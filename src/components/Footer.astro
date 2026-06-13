@@ -1,5 +1,6 @@
 ---
 import { BookOpen } from "lucide-astro"
+import { AppConfig } from "../constants"
 
 const columns = [
   {
@@ -39,7 +40,7 @@ const columns = [
           <span class="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white">
             <BookOpen size={18} />
           </span>
-          <span class="font-display text-lg font-bold text-ink">Ledgerly</span>
+          <span class="font-display text-lg font-bold text-ink">{AppConfig.appName}</span>
         </a>
         <p class="mt-4 max-w-xs text-sm leading-relaxed text-muted">
           Automated bookkeeping for growth-stage founders. Real numbers, in real time.
@@ -67,7 +68,7 @@ const columns = [
       }
     </div>
     <div class="mt-12 flex flex-col items-center justify-between gap-3 border-t border-black/5 pt-6 sm:flex-row">
-      <p class="text-sm text-muted">© 2026 Ledgerly, Inc. All rights reserved.</p>
+      <p class="text-sm text-muted">© 2026 {AppConfig.appName}, Inc. All rights reserved.</p>
       <div class="flex gap-6">
         <a href="/privacy/" class="text-sm text-muted transition-colors hover:text-ink">Privacy</a>
         <a href="/terms/" class="text-sm text-muted transition-colors hover:text-ink">Terms</a>

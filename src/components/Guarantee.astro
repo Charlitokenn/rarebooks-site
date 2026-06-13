@@ -1,5 +1,6 @@
 ---
 import { Notebook, Store, GraduationCap, CalendarClock, FileSpreadsheet, ShieldCheck } from "lucide-astro"
+import { AppConfig } from "../constants"
 
 const steps = [
   {
@@ -7,14 +8,14 @@ const steps = [
     label: "Digitize",
     icon: Notebook,
     title: "We digitize your notebooks.",
-    body: "Hand us your handwritten ledgers and Excel sheets. We turn years of stock, sales, and expense records into clean, structured data inside Ledgerly.",
+    body: `Hand us your handwritten ledgers and Excel sheets. We turn years of stock, sales, and expense records into clean, structured data inside ${AppConfig.appName}.`,
     bullet: "Your notebooks & spreadsheets, transcribed for you — nothing left behind.",
   },
   {
     num: "2",
     label: "Set up",
     icon: Store,
-    title: "We set up your business on Ledgerly.",
+    title: `We set up your business on ${AppConfig.appName}.`,
     body: "Your shop, products, suppliers, and pricing are configured to match how you actually operate — so the system fits your business from day one.",
     bullet: "A fully structured digital system, tailored to your real workflow.",
   },
@@ -22,7 +23,7 @@ const steps = [
     num: "3",
     label: "Train",
     icon: GraduationCap,
-    title: "We train you how to use Ledgerly.",
+    title: `We train you how to use ${AppConfig.appName}.`,
     body: "A specialist walks you and your team through tracking sales, managing stock, and recording expenses until everyone is confident and self-sufficient.",
     bullet: "Hands-on guidance — no technical experience required.",
   },
@@ -31,14 +32,14 @@ const steps = [
     label: "Try free",
     icon: CalendarClock,
     title: "You get a full 14-day FREE trial.",
-    body: "Run your real business operations in Ledgerly — track live sales, stock, and expenses — with zero commitment and nothing to pay upfront.",
+    body: `Run your real business operations in ${AppConfig.appName} — track live sales, stock, and expenses — with zero commitment and nothing to pay upfront.`,
     bullet: "Try out every feature on your actual data. No commitment.",
   },
   {
     num: "5",
     label: "Your choice",
     icon: FileSpreadsheet,
-    title: "Continue with Ledgerly — or take your data elsewhere.",
+    title: `Continue with ${AppConfig.appName} — or take your data elsewhere.`,
     body: "If it works for you, purchase the annual license key and keep going without interruption. If not, we export all your records into a clean, structured Excel file — ready to use anywhere.",
     bullet: "Not satisfied? We hand over your digitized data. No questions asked.",
   },
@@ -57,7 +58,7 @@ const steps = [
         Risk-free guarantee
       </div>
       <h2 class="text-balance font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-        Ledgerly in Action
+        {AppConfig.appName} in Action
       </h2>
       <p class="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted">
         Try out all features — no commitment. We get your entire business records digitized,
