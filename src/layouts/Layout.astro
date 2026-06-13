@@ -1,12 +1,13 @@
 ---
+import {AppConfig} from "../constants";
 interface Props {
   title?: string
   description?: string
 }
 
 const {
-  title = "RareBooks — Bookkeeping that runs itself",
-  description = "RareBooks automates your bookkeeping so growth-stage founders can close the books in minutes, not weeks. Real-time numbers, automatic categorization, and tax-ready reports.",
+  title = AppConfig.appName,
+  description = AppConfig.description,
 } = Astro.props
 
 import "../styles/global.css"
