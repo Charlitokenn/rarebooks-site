@@ -1,0 +1,6 @@
+name = "rarebooks"
+compatibility_date = "2026-06-13"
+compatibility_flags = [ "nodejs_compat" ]
+
+[build]
+command = "npm run build"
