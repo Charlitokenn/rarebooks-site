@@ -1,0 +1,28 @@
+---
+interface Props {
+  title?: string
+  description?: string
+}
+
+const {
+  title = "RareBooks — Bookkeeping that runs itself",
+  description = "RareBooks automates your bookkeeping so growth-stage founders can close the books in minutes, not weeks. Real-time numbers, automatic categorization, and tax-ready reports.",
+} = Astro.props
+
+import "../styles/global.css"
+---
+
+<!doctype html>
+<html lang="en" class="bg-background">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fbfafc" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen overflow-x-hidden">
+    <slot />
+  </body>
+</html>

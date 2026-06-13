@@ -1,110 +1,54 @@
-@layer base, starlight, theme, components, utilities;
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&display=swap");
 
-@import '@astrojs/starlight-tailwind';
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
-
-:root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.148 0.004 228.8);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.148 0.004 228.8);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.148 0.004 228.8);
-    --primary: oklch(0.488 0.243 264.376);
-    --primary-foreground: oklch(0.97 0.014 254.604);
-    --secondary: oklch(0.967 0.001 286.375);
-    --secondary-foreground: oklch(0.21 0.006 285.885);
-    --muted: oklch(0.963 0.002 197.1);
-    --muted-foreground: oklch(0.56 0.021 213.5);
-    --accent: oklch(0.963 0.002 197.1);
-    --accent-foreground: oklch(0.218 0.008 223.9);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.925 0.005 214.3);
-    --input: oklch(0.925 0.005 214.3);
-    --ring: oklch(0.723 0.014 214.4);
-    --chart-1: oklch(0.809 0.105 251.813);
-    --chart-2: oklch(0.623 0.214 259.815);
-    --chart-3: oklch(0.546 0.245 262.881);
-    --chart-4: oklch(0.488 0.243 264.376);
-    --chart-5: oklch(0.424 0.199 265.638);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.987 0.002 197.1);
-    --sidebar-foreground: oklch(0.148 0.004 228.8);
-    --sidebar-primary: oklch(0.546 0.245 262.881);
-    --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
-    --sidebar-accent: oklch(0.963 0.002 197.1);
-    --sidebar-accent-foreground: oklch(0.218 0.008 223.9);
-    --sidebar-border: oklch(0.925 0.005 214.3);
-    --sidebar-ring: oklch(0.723 0.014 214.4);
-}
-
-.dark {
-    --background: oklch(0.148 0.004 228.8);
-    --foreground: oklch(0.987 0.002 197.1);
-    --card: oklch(0.218 0.008 223.9);
-    --card-foreground: oklch(0.987 0.002 197.1);
-    --popover: oklch(0.218 0.008 223.9);
-    --popover-foreground: oklch(0.987 0.002 197.1);
-    --primary: oklch(0.424 0.199 265.638);
-    --primary-foreground: oklch(0.97 0.014 254.604);
-    --secondary: oklch(0.274 0.006 286.033);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.275 0.011 216.9);
-    --muted-foreground: oklch(0.723 0.014 214.4);
-    --accent: oklch(0.275 0.011 216.9);
-    --accent-foreground: oklch(0.987 0.002 197.1);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.56 0.021 213.5);
-    --chart-1: oklch(0.809 0.105 251.813);
-    --chart-2: oklch(0.623 0.214 259.815);
-    --chart-3: oklch(0.546 0.245 262.881);
-    --chart-4: oklch(0.488 0.243 264.376);
-    --chart-5: oklch(0.424 0.199 265.638);
-    --sidebar: oklch(0.218 0.008 223.9);
-    --sidebar-foreground: oklch(0.987 0.002 197.1);
-    --sidebar-primary: oklch(0.623 0.214 259.815);
-    --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
-    --sidebar-accent: oklch(0.275 0.011 216.9);
-    --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.56 0.021 213.5);
-}
+@import "tailwindcss";
 
 @theme {
-    /* Your preferred text font. Starlight uses a system font stack by default. */
-    --font-sans: 'Atkinson Hyperlegible';
-    /* Your preferred code font. Starlight uses system monospace fonts by default. */
-    --font-mono: 'IBM Plex Mono';
-    /* Your preferred accent color. Indigo is closest to Starlight’s defaults. */
-    --color-accent-50: var(--color-indigo-50);
-    --color-accent-100: var(--color-indigo-100);
-    --color-accent-200: var(--color-indigo-200);
-    --color-accent-300: var(--color-indigo-300);
-    --color-accent-400: var(--color-indigo-400);
-    --color-accent-500: var(--color-indigo-500);
-    --color-accent-600: var(--color-indigo-600);
-    --color-accent-700: var(--color-indigo-700);
-    --color-accent-800: var(--color-indigo-800);
-    --color-accent-900: var(--color-indigo-900);
-    --color-accent-950: var(--color-indigo-950);
-    /* Your preferred gray scale. Zinc is closest to Starlight’s defaults. */
-    --color-gray-50: var(--color-zinc-50);
-    --color-gray-100: var(--color-zinc-100);
-    --color-gray-200: var(--color-zinc-200);
-    --color-gray-300: var(--color-zinc-300);
-    --color-gray-400: var(--color-zinc-400);
-    --color-gray-500: var(--color-zinc-500);
-    --color-gray-600: var(--color-zinc-600);
-    --color-gray-700: var(--color-zinc-700);
-    --color-gray-800: var(--color-zinc-800);
-    --color-gray-900: var(--color-zinc-900);
-    --color-gray-950: var(--color-zinc-950);
+  /* Colors */
+  --color-background: #fbfafc;
+  --color-foreground: #0e0c12;
+  --color-muted: #6b6776;
+  --color-brand: #5b3df5;
+  --color-brand-soft: #efeafe;
+  --color-accent-pink: #f7a8d8;
+  --color-accent-coral: #f78a8a;
+  --color-ink: #15131c;
+
+  /* Font families */
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+
+  /* Border radius */
+  --radius-pill: 999px;
+
+  /* Box shadows */
+  --shadow-soft: 0 20px 60px -20px rgba(40, 20, 90, 0.18);
+  --shadow-card: 0 10px 40px -12px rgba(40, 20, 90, 0.12);
 }
-.hero-image {
-    object-fit: contain;
-    max-height: 420px;
-    width: 100%;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .dotted-bg {
+    background-image: radial-gradient(circle, rgba(91, 61, 245, 0.12) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .hero-glow {
+    background:
+            radial-gradient(60% 50% at 75% 18%, rgba(247, 168, 216, 0.35) 0%, transparent 60%),
+            radial-gradient(55% 45% at 90% 5%, rgba(91, 61, 245, 0.18) 0%, transparent 55%),
+            radial-gradient(45% 40% at 10% 10%, rgba(247, 138, 138, 0.14) 0%, transparent 60%);
+  }
+  .text-gradient {
+    background: linear-gradient(100deg, #f78a8a 0%, #f7a8d8 38%, #5b3df5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }

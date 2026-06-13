@@ -1,0 +1,28 @@
+---
+import DefaultSidebar from '@astrojs/starlight/components/Sidebar.astro';
+---
+
+<DefaultSidebar {...Astro.props} />
+
+<style is:inline>
+    /* Chrome, Safari, Edge */
+    .sidebar-pane::-webkit-scrollbar,
+    .sidebar-content::-webkit-scrollbar,
+    aside::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Firefox */
+    .sidebar-pane,
+    .sidebar-content,
+    aside {
+        scrollbar-width: none;
+    }
+
+    /* IE/Edge legacy */
+    .sidebar-pane,
+    .sidebar-content,
+    aside {
+        -ms-overflow-style: none;
+    }
+</style>
