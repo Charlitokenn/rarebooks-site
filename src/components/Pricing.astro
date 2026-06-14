@@ -66,9 +66,10 @@ const isLocal =  isTanzania(countryCode);
                     </li>
                 ))}
               </ul>
-              <a
-                  href="#cta"
-                  class={`mt-8 inline-flex items-center justify-center rounded-pill px-6 py-3 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
+              <button
+                  type="button"
+                  data-open-modal={isCustom ? undefined : "trial-modal" }
+                  class={`mt-8 inline-flex cursor-pointer items-center justify-center rounded-pill px-6 py-3 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
                       plan.featured
                           ? "bg-white text-ink"
                           : "bg-ink text-white"
@@ -77,7 +78,7 @@ const isLocal =  isTanzania(countryCode);
                 {isCustom
                     ? "Contact sales"
                     : "Start free trial"}
-              </a>
+              </button>
             </div>
         );
       })

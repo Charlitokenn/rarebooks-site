@@ -13,6 +13,6 @@ export const AppConfig = {
         instagram: 'https://www.instagram.com/rarebooks',
         tiktok: 'https://tiktok.com/@rarebooks_',
     },
-    featuredClients: ["TAJ Home Appliances", "Powerlink Electronics"],
+    featuredClients: ["TAJ Home Appliances", "Powerlink Innovations"],
     pricingPlans
 }

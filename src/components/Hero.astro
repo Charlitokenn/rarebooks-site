@@ -1,6 +1,6 @@
 ---
-import {AppConfig} from "../constants";
-const logos = AppConfig.featuredClients
+import { AppConfig } from "../constants";
+const logos = AppConfig.featuredClients;
 ---
 
 <section id="top" class="relative overflow-hidden">
@@ -8,14 +8,14 @@ const logos = AppConfig.featuredClients
 
   <div class="relative mx-auto max-w-6xl px-4 pb-16 pt-36 -mt-8 text-center sm:pt-40">
     <div
-      class="mx-auto mb-6 inline-flex items-center gap-2 rounded-pill border border-black/5 bg-white/70 px-4 py-1.5 text-sm font-medium text-muted backdrop-blur"
+        class="mx-auto mb-6 inline-flex items-center gap-2 rounded-pill border border-black/5 bg-white/70 px-4 py-1.5 text-sm font-medium text-muted backdrop-blur"
     >
       <span class="h-2 w-2 rounded-full bg-brand"></span>
       Built for growth-stage founders
     </div>
 
     <h1
-      class="mx-auto max-w-4xl text-balance font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl md:text-7xl"
+        class="mx-auto max-w-4xl text-balance font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl md:text-7xl"
     >
       Bookkeeping on autopilot.<br />Close your books in
       <span class="text-gradient">minutes, not weeks.</span>
@@ -27,25 +27,28 @@ const logos = AppConfig.featuredClients
     </p>
 
     <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-      <a
-        href="#cta"
-        class="inline-flex items-center rounded-pill bg-ink px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform hover:-translate-y-0.5"
-      >
-        Start free trial
-      </a>
-      <a
-        href="#demo"
-        class="inline-flex items-center rounded-pill border border-black/10 bg-white px-8 py-4 text-base font-semibold text-ink transition-colors hover:bg-black/5"
-      >
-        Interactive Demo
-      </a>
+
+        <button
+            type="button"
+            data-open-modal="trial-modal"
+            class="inline-flex cursor-pointer items-center rounded-pill bg-ink px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform "
+        >
+          Start free trial
+        </button>
+
+        <a
+            href="#demo"
+            class="inline-flex items-center cursor-pointer rounded-pill border border-black/10 bg-white px-8 py-4 text-base font-semibold text-ink transition-colors hover:bg-black/5"
+        >
+          Interactive Demo
+        </a>
     </div>
 
     <p class="mt-12 text-sm font-medium text-muted">Trusted by founders backed by top investors</p>
     <div class="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
       {
         logos.map((logo) => (
-          <span class="font-display text-xl font-bold text-ink/30">{logo}</span>
+            <span class="font-display text-xl font-bold text-ink/30">{logo}</span>
         ))
       }
     </div>
@@ -53,13 +56,13 @@ const logos = AppConfig.featuredClients
     <div id="demo" class="relative mx-auto mt-16 max-w-full rounded-lg scroll-mt-28">
       <div style="position: relative; padding-bottom: calc(61.23893805309735% + 41px); height: 0; width: 100%;">
         <iframe
-          src="https://demo.arcade.software/FeRaybGnq8w8icVFYOSu?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
-          title={`${AppConfig.appName} Interactive Demo`}
-          frameborder="0"
-          loading="lazy"
-          allowfullscreen
-          allow="clipboard-write"
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"
+            src="https://demo.arcade.software/FeRaybGnq8w8icVFYOSu?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
+            title={`${AppConfig.appName} Interactive Demo`}
+            frameborder="0"
+            loading="lazy"
+            allowfullscreen
+            allow="clipboard-write"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"
         ></iframe>
       </div>
     </div>

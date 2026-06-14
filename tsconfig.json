@@ -19,6 +19,8 @@
       "@blocks/*": [
         "src/blocks/*"
       ]
-    }
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   }
 }

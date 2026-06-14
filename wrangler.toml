@@ -4,3 +4,8 @@ compatibility_flags = [ "nodejs_compat" ]
 
 [build]
 command = "npm run build"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rarebooks"
+database_id = "fa09e96d-eb57-4425-95b3-34edc6a32d6e"
