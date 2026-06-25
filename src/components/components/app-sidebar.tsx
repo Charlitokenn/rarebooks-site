@@ -11,10 +11,11 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
+  SidebarRail, useSidebar,
 } from "@components/components/ui/sidebar"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { LayoutBottomIcon, AudioWave01Icon, CommandIcon, ComputerTerminalIcon, RoboticIcon, BookOpen02Icon, Settings05Icon, CropIcon, PieChartIcon, MapsIcon } from "@hugeicons/core-free-icons"
+import {useEffect, useState} from "react";
 
 // This is sample data.
 const data = {
@@ -167,10 +168,33 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { state } = useSidebar()
+  const isCollapsed = state === 'collapsed'
+  const [showText, setShowText] = useState(state === 'expanded')
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>
+
+    if (state === 'expanded') {
+      // wait for sidebar animation to finish before showing text
+      timer = setTimeout(() => setShowText(true), 200)
+    } else {
+      // defer to next tick instead of calling synchronously
+      timer = setTimeout(() => setShowText(false), 0)
+    }
+
+    return () => clearTimeout(timer)
+  }, [state])
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <div
+            onClick={(e) => isCollapsed && e.stopPropagation()}
+            style={{ pointerEvents: isCollapsed ? 'none' : 'auto' }}
+        >
+          <TeamSwitcher teams={data.teams} />
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
