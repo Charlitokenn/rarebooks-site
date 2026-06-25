@@ -1,0 +1,39 @@
+---
+import {AppConfig} from "../constants";
+interface Props {
+    title?: string
+    description?: string
+}
+
+const {
+    title = AppConfig.appName,
+    description = AppConfig.description,
+} = Astro.props
+
+import "../styles/global.css"
+import { Show, UserButton, SignInButton, SignUpButton } from '@clerk/astro/components'
+---
+
+<!doctype html>
+<html lang="en" class="bg-background">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fbfafc" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <title>{title}</title>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+<header>
+    <Show when="signed-out">
+        <SignInButton mode="modal" />
+        <SignUpButton mode="modal" />
+    </Show>
+    <Show when="signed-in">
+        <UserButton />
+    </Show>
+</header>
+<slot />
+</body>
+</html>

@@ -1,11 +1,13 @@
 ---
-import { BookOpen } from "@lucide/astro"
+import { BookOpen, UserKey } from "@lucide/astro"
 import { AppConfig } from "../constants"
+import AppLogo from "@components/AppLogo.tsx";
 
 const links = [
+  { label: "Demo", href: "#demo" },
   { label: "Features", href: "#features" },
-  { label: "How it works", href: "#how" },
-  { label: `${AppConfig.appName} in Action`, href: "#guarantee" },
+  // { label: "How it works", href: "#how" },
+  { label: "Free Trial", href: "#guarantee" },
   { label: "Pricing", href: "#pricing" },
 ]
 ---
@@ -14,13 +16,7 @@ const links = [
   <nav
     class="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-pill border border-black/5 bg-white/80 px-4 py-2.5 shadow-card backdrop-blur-md"
   >
-    <a href="#top" class="flex items-center gap-2.5 pl-1">
-      <span class="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white">
-        <BookOpen size={18} />
-      </span>
-      <span class="text-lg font-bold tracking-tight text-ink font-display">{AppConfig.appName}</span>
-    </a>
-
+    <AppLogo link="#top"/>
     <div class="hidden items-center gap-8 md:flex">
       {
         links.map((link) => (
@@ -36,10 +32,11 @@ const links = [
 
     <div class="flex items-center gap-2">
       <a
-        href="#cta"
-        class="inline-flex items-center rounded-pill bg-ink px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
+        href={`/client-portal`}
+        class="inline-flex items-center rounded-pill bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
       >
-        Get Started
+        <UserKey class="size-5 mr-1.5"/>
+        Client Portal
       </a>
     </div>
   </nav>

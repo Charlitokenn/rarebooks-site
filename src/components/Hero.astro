@@ -1,6 +1,10 @@
 ---
 import { AppConfig } from "../constants";
+import {isTanzania} from "../constants/pricing.ts";
 const logos = AppConfig.featuredClients;
+
+const countryCode = Astro.locals.countryCode || "US";
+const isLocal =  isTanzania(countryCode);
 ---
 
 <section id="top" class="relative overflow-hidden">
@@ -11,27 +15,35 @@ const logos = AppConfig.featuredClients;
         class="mx-auto mb-6 inline-flex items-center gap-2 rounded-pill border border-black/5 bg-white/70 px-4 py-1.5 text-sm font-medium text-muted backdrop-blur"
     >
       <span class="h-2 w-2 rounded-full bg-brand"></span>
-      Built for growth-stage founders
+      Built for growth-focused businesses
     </div>
 
-    <h1
-        class="mx-auto max-w-4xl text-balance font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl md:text-7xl"
-    >
-      Bookkeeping on autopilot.<br />Close your books in
-      <span class="text-gradient">minutes, not weeks.</span>
-    </h1>
-
-    <p class="mx-auto mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted">
-      {AppConfig.appName} connects your bank, categorizes every transaction automatically, and keeps your
-      financials tax-ready year round — so you always know exactly where your money stands.
-    </p>
+    { isLocal ?
+        <h1 class="mx-auto max-w-4xl text-balance font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl md:text-7xl">
+            Your stock. Your business<br /> always<br/>
+                 <span class="text-gradient">accurate & current</span>
+        </h1>
+        <p class="mx-auto mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted">
+          {AppConfig.appName} turns your handwritten stock counts into live, searchable data - so you know exactly what's on the shelf, what's running low, and what's making you money.
+          No more flipping pages or guessing.
+        </p>
+        :
+        <h1 class="mx-auto max-w-4xl text-balance font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl md:text-7xl">
+          Clear books. Confident stock <br/>
+          <span class="text-gradient"> Calm mind</span>
+        </h1>
+        <p class="mx-auto mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted">
+         {AppConfig.appName} keeps your accounting, invoicing, payments and stock levels in one unified system.
+          Gain financial clarity, avoid stockouts, and stay tax-ready year-round.
+        </p>
+    }
 
     <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
 
         <button
             type="button"
             data-open-modal="trial-modal"
-            class="inline-flex cursor-pointer items-center rounded-pill bg-ink px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform "
+            class="inline-flex cursor-pointer items-center rounded-pill bg-brand px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform "
         >
           Start free trial
         </button>
@@ -44,7 +56,7 @@ const logos = AppConfig.featuredClients;
         </a>
     </div>
 
-    <p class="mt-12 text-sm font-medium text-muted">Trusted by founders backed by top investors</p>
+    <p class="mt-12 text-sm font-medium text-muted">Trusted by growing businesses</p>
     <div class="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
       {
         logos.map((logo) => (

@@ -1,6 +1,10 @@
 ---
 import { Notebook, Store, GraduationCap, CalendarClock, FileSpreadsheet, ShieldCheck } from "@lucide/astro"
 import { AppConfig } from "../constants"
+import {isTanzania} from "../constants/pricing.ts";
+
+const countryCode = Astro.locals.countryCode || "US";
+const isLocal =  isTanzania(countryCode);
 
 const steps = [
   {
@@ -16,7 +20,7 @@ const steps = [
     label: "Set up",
     icon: Store,
     title: `We set up your business on ${AppConfig.appName}.`,
-    body: "Your shop, products, suppliers, and pricing are configured to match how you actually operate — so the system fits your business from day one.",
+    body: "Your business, products, suppliers, and pricing are configured to match how you actually operate — so the system fits your business from day one.",
     bullet: "A fully structured digital system, tailored to your real workflow.",
   },
   {
@@ -31,7 +35,7 @@ const steps = [
     num: "4",
     label: "Try free",
     icon: CalendarClock,
-    title: "You get a full 14-day FREE trial.",
+    title: `You get a full ${isLocal ? AppConfig.trial.localDuration : AppConfig.trial.abroadDuration} Days FREE trial.`,
     body: `Run your real business operations in ${AppConfig.appName} — track live sales, stock, and expenses — with zero commitment and nothing to pay upfront.`,
     bullet: "Try out every feature on your actual data. No commitment.",
   },
@@ -51,14 +55,8 @@ const steps = [
 
   <div class="relative mx-auto max-w-6xl px-4">
     <div class="mx-auto mb-6 max-w-3xl text-center">
-      <div
-        class="mx-auto mb-6 inline-flex items-center gap-2 rounded-pill border border-brand/20 bg-brand-soft px-4 py-1.5 text-sm font-semibold text-brand"
-      >
-        <ShieldCheck size={16} />
-        Risk-free guarantee
-      </div>
       <h2 class="text-balance font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-        {AppConfig.appName} in Action
+        Get started with our <br/>{isLocal ? `${AppConfig.trial.localDuration}`: `${AppConfig.trial.abroadDuration}` } Days - Risk Free Trial
       </h2>
       <p class="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted">
         Try out all features — no commitment. We get your entire business records digitized,
@@ -69,13 +67,13 @@ const steps = [
     <div class="relative mt-20">
       <!-- center vertical dotted timeline line -->
       <div
-        class="absolute left-1/2 top-0 hidden h-full -translate-x-1/2 border-l-2 border-dotted border-black/20 md:block"
+        class="absolute left-1/2 top-0 hidden h-full -translate-x-1/2 border-l-2 border-dashed border-black/20 md:block"
         aria-hidden="true"
       >
       </div>
       <!-- mobile dotted line -->
       <div
-        class="absolute left-6 top-0 h-full border-l-2 border-dotted border-black/20 md:hidden"
+        class="absolute left-6 top-0 h-full border-l-2 border-dashed border-black/20 md:hidden"
         aria-hidden="true"
       >
       </div>
@@ -150,7 +148,7 @@ const steps = [
         Start free trial
       </button>
       <p class="mt-4 text-sm font-medium text-muted">
-        14 days free · No card required · Your data, your choice
+        {isLocal ? `${AppConfig.trial.localDuration}`: `${AppConfig.trial.abroadDuration}` } Days free · No payment required · Your data, your choice
       </p>
     </div>
   </div>

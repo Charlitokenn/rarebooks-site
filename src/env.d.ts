@@ -1,9 +1,12 @@
 declare namespace App {
-    interface Locals extends import("@astrojs/cloudflare").Runtime<Env> {
+    interface Locals {
         countryCode: string;
     }
 }
 
 interface Env {
     DB: import("@cloudflare/workers-types").D1Database;
+    KEYMINT_API_KEY: string;
+    RESEND_API_KEY: string;
+    STORE_URL: string;
 }

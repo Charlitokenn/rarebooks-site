@@ -1,6 +1,7 @@
 ---
 import { BookOpen } from "@lucide/astro"
 import { AppConfig } from "../constants"
+import AppLogo from "../components/AppLogo"
 
 const columns = [
   {
@@ -8,42 +9,35 @@ const columns = [
     links: [
       { label: "Features", href: "/#features" },
       { label: "Pricing", href: "/#pricing" },
-      { label: "Integrations", href: "#" },
-      { label: "Changelog", href: "#" },
+      { label: "Demo", href: "/#demo" },
     ],
   },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Blog", href: "#" },
-      { label: "Contact", href: "#" },
-    ],
-  },
+  // {
+  //   title: "Company",
+  //   links: [
+  //     { label: "About", href: "#" },
+  //     { label: "Careers", href: "#" },
+  //     { label: "Blog", href: "#" },
+  //     { label: "Contact", href: "#" },
+  //   ],
+  // },
   {
     title: "Resources",
     links: [
       { label: "Documentation", href: "/getting-started/getting-started-with-rarebooks/" },
-      { label: "Tax guides", href: "#" },
-      { label: "API docs", href: "#" },
     ],
   },
 ]
+const year = new Date().getFullYear()
 ---
 
 <footer class="border-t border-black/5 bg-background">
   <div class="mx-auto max-w-6xl px-4 py-14">
     <div class="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
       <div>
-        <a href="#top" class="flex items-center gap-2.5">
-          <span class="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white">
-            <BookOpen size={18} />
-          </span>
-          <span class="font-display text-lg font-bold text-ink">{AppConfig.appName}</span>
-        </a>
+        <AppLogo link="#top"/>
         <p class="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-          Automated bookkeeping for growth-stage founders. Real numbers, in real time.
+          {AppConfig.description}
         </p>
       </div>
       {
@@ -68,11 +62,11 @@ const columns = [
       }
     </div>
     <div class="mt-12 flex flex-col items-center justify-between gap-3 border-t border-black/5 pt-6 sm:flex-row">
-      <p class="text-sm text-muted">© 2026 {AppConfig.appName}, Inc. All rights reserved.</p>
+      <p class="text-sm text-muted">© {year} {AppConfig.appName}. All rights reserved.</p>
       <div class="flex gap-6">
-        <a href="/privacy/" class="text-sm text-muted transition-colors hover:text-ink">Privacy</a>
-        <a href="/terms/" class="text-sm text-muted transition-colors hover:text-ink">Terms</a>
-        <a href="/security/" class="text-sm text-muted transition-colors hover:text-ink">Security</a>
+        <!--<a href="/privacy/" class="text-sm text-muted transition-colors hover:text-ink">Privacy</a>-->
+        <!--<a href="/terms/" class="text-sm text-muted transition-colors hover:text-ink">Terms</a>-->
+        <!--<a href="/security/" class="text-sm text-muted transition-colors hover:text-ink">Security</a>-->
       </div>
     </div>
   </div>

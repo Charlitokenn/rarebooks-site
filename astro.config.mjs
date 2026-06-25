@@ -9,18 +9,24 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 
 import { loadEnv } from 'vite';
-const { KEYMINT_API_KEY } = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
+// import node from '@astrojs/node'
+import clerk from '@clerk/astro'
+
+const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
+const { KEYMINT_API_KEY, RESEND_API_KEY, STORE_URL } = env;
 
 // https://astro.build/config
 export default defineConfig({
     // adapter: netlify(),
     adapter: cloudflare({
         platformProxy: {
-            enabled: true
+            enabled: true,
+            persist: false
         },
         // Disable image processing if not needed
         imageService: 'passthrough'
     }),
+    // adapter: node({ mode: 'standalone' }),
   integrations: [starlight({
       title: 'RareBooks',
       social: [
@@ -31,11 +37,11 @@ export default defineConfig({
       sidebar: [
           { label: 'Getting Started', items: [{ autogenerate: { directory: 'getting-started', collapsed: false } }] },
           { label: 'Basics', items: [{ autogenerate: { directory: 'basics', collapsed: true } }] },
+          { label: 'Transactions', items: [{ autogenerate: { directory: 'transactions', collapsed: true } }] },
+          { label: 'Masters', items: [{ autogenerate: { directory: 'masters', collapsed: true } }] },
           { label: 'Financial Reports', items: [{ autogenerate: { directory: 'financial-reports', collapsed: true } }] },
           { label: 'Inventory', items: [{ autogenerate: { directory: 'inventory', collapsed: true } }] },
-          { label: 'Masters', items: [{ autogenerate: { directory: 'masters', collapsed: true } }] },
           { label: 'Settings', items: [{ autogenerate: { directory: 'settings', collapsed: true } }] },
-          { label: 'Transactions', items: [{ autogenerate: { directory: 'transactions', collapsed: true } }] },
       ],
       logo: {
           src: './src/assets/logo.png',
@@ -56,12 +62,14 @@ export default defineConfig({
           Pagination: './src/components/Pagination.astro',
       },
       disable404Route: true,
-  }), webcore(), react()],
-
+  }), webcore(), react(),clerk()],
+    output: "server",
   vite: {
     plugins: [tailwindcss()], 
     define: {
         'import.meta.env.KEYMINT_API_KEY': JSON.stringify(KEYMINT_API_KEY),
+        'import.meta.env.RESEND_API_KEY': JSON.stringify(RESEND_API_KEY),
+        'import.meta.env.STORE_URL': JSON.stringify(STORE_URL),
     },
     css: {
           preprocessorOptions: {

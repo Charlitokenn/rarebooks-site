@@ -1,10 +1,15 @@
 ---
+import {isTanzania} from "../constants/pricing.ts";
+import { AppConfig } from "../constants"
+
 export interface Props {
     id: string;
     title?: string;
 }
 
-const countryCode = Astro.locals.countryCode || "US"
+const countryCode = Astro.locals.countryCode || "US";
+const isLocal =  isTanzania(countryCode);
+
 import { TrialLicenseForm } from './TrialLicenseForm';
 const { id, title = "Start your free trial" } = Astro.props;
 ---
@@ -27,9 +32,9 @@ const { id, title = "Start your free trial" } = Astro.props;
         <div class="modal-content grid grid-cols-1 md:grid-cols-[1fr_1.2fr]">
             <!-- Left: Instructions -->
             <div class="instructions flex flex-col justify-center bg-brand-soft/40 p-6 md:p-8">
-                <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                </div>
+                <!--<div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-white">-->
+                <!--    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>-->
+                <!--</div>-->
                 <h3 class="font-display text-xl font-bold text-ink">{title}</h3>
                 <p class="mt-3 text-sm leading-relaxed text-muted">
                     Please provide your actual details. A trial license key will be sent to your email.
@@ -41,11 +46,11 @@ const { id, title = "Start your free trial" } = Astro.props;
                     </li>
                     <li class="flex items-start gap-2.5 text-sm text-muted">
                         <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-xs font-bold text-brand">2</span>
-                        <span>Full access for 14 days</span>
+                        <span>Full access for {isLocal ? `${AppConfig.trial.localDuration}`: `${AppConfig.trial.abroadDuration}` } days</span>
                     </li>
                     <li class="flex items-start gap-2.5 text-sm text-muted">
                         <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-xs font-bold text-brand">3</span>
-                        <span>No credit card required</span>
+                        <span>No payment required</span>
                     </li>
                 </ul>
             </div>

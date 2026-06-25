@@ -1,0 +1,44 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { RedemptionForm } from "../components/RedeemForm"
+import { Button } from "../components/components/ui/button.tsx";
+import { Home } from "@lucide/astro"
+import { AppConfig } from "../constants"
+import AppLogo from "@components/AppLogo.tsx";
+import React from "react";
+---
+
+<Layout>
+    <section class="dotted-bg">
+        <a
+                href={AppConfig.rootUrl}
+                class="flex items-center gap-1 px-2 absolute -left-8 top-4 py-1 text-sm ml-12 rounded-md text-brand-soft bg-brand cursor-pointer"
+        >
+            <Home class="size-4"/>
+            <span class="text-sm font-semibold">Go Home</span>
+        </a>
+        <div class="flex items-center justify-center h-screen">
+            <div class="grid grid-cols-1 md:grid-cols-[1.3fr_1fr] md:max-w-2/3 mx-4 bg-white borderless rounded-lg drop-shadow-lg">
+                <div class="instructions flex flex-col justify-center bg-brand-soft/40 p-6 md:p-8">
+                    <AppLogo link={AppConfig.rootUrl} />
+                    <h3 class="font-display text-xl mt-8 font-bold text-ink">License Redemption</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-muted">
+                        To redeem your AppSumo lifetime deal, create an account with your redeem code. You'll receive;
+                    </p>
+                    <ul class="mt-4 space-y-2">
+                        <li class="flex items-start gap-2.5 text-sm text-muted">
+                            <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-xs font-bold text-brand">1</span>
+                            <span>Instant lifetime license key delivery to your email</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-sm text-muted">
+                            <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-xs font-bold text-brand">2</span>
+                            <span>Access to client portal to manage your device activations</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <RedemptionForm client:load/>
+            </div>
+        </div>
+    </section>
+</Layout>

@@ -7,13 +7,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "./components/ui/input"
 import { PhoneInput } from "./reui/phone-input"
 import { Button } from "./components/ui/button"
-import { AppConfig } from "../constants/index"
+import {Alert, AlertDescription, AlertTitle} from "./components/ui/alert"
+import { AppConfig } from "../constants"
 import { isValidPhoneNumber } from "react-phone-number-input"
+import { Loader2, AlertCircle } from "lucide-react"
+import { normalizeEmail } from "@components/lib/utils.ts"
 
 const formSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  email: z.email("Please enter a valid email address"),
+  email: z.email("Please enter a valid email address").transform(normalizeEmail),
   mobile: z.string().refine(isValidPhoneNumber, {
     message: "Please enter a valid mobile number",
   }),
@@ -28,6 +31,8 @@ interface TrialLicenseFormProps {
 
 export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
   const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [status, setStatus] = useState<string>("")
 
   const {
     register,
@@ -48,7 +53,12 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
   const mobileValue = watch("mobile")
 
   const onSubmit = async (data: FormValues) => {
+    setError(null);
     try {
+      setStatus("Generating license with your info...");
+      // Artificial delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 800));
+
       const response = await fetch("/api/license", {
         method: "POST",
         headers: {
@@ -57,14 +67,22 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
         body: JSON.stringify(data),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to send license key");
+        throw new Error(result.message || "Failed to send license key");
       }
 
+      setStatus("Sending license to your email...");
+      // Artificial delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 800));
+
       setIsSuccess(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting form:", error);
-      alert("Something went wrong. Please try again later.");
+      setError(error.message || "Something went wrong. Please try again later.");
+    } finally {
+      setStatus("");
     }
   }
 
@@ -178,6 +196,7 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
               {...register("firstName")}
               aria-invalid={!!errors.firstName}
               className="mt-1"
+              disabled={isSubmitting}
             />
             {errors.firstName && (
               <p className="mt-0.5 text-xs text-accent-coral">{errors.firstName.message}</p>
@@ -194,6 +213,7 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
               {...register("lastName")}
               aria-invalid={!!errors.lastName}
               className="mt-1"
+              disabled={isSubmitting}
             />
             {errors.lastName && (
               <p className="mt-0.5 text-xs text-accent-coral">{errors.lastName.message}</p>
@@ -213,6 +233,7 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
             {...register("email")}
             aria-invalid={!!errors.email}
             className="mt-1"
+            disabled={isSubmitting}
           />
           {errors.email && (
             <p className="mt-0.5 text-xs text-accent-coral">{errors.email.message}</p>
@@ -228,10 +249,11 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
                 countryCallingCodeEditable={false}
                 defaultCountry={country}
               id={`${id}-mobile`}
-              placeholder={country === "TZ" ? "255 712 000 000" : "1 555 555 1234"}
+              placeholder={country === "TZ" ? "+255 712 000 000" : "+1 555 555 1234"}
               value={mobileValue as any}
               onChange={(v) => setValue("mobile", v || "", { shouldValidate: true })}
               aria-invalid={!!errors.mobile}
+              disabled={isSubmitting}
             />
           </div>
           {errors.mobile && (
@@ -239,12 +261,27 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
           )}
         </div>
 
+        {error && (
+            <Alert className="mt-6 max-w-md border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error sending license key!</AlertTitle>
+              <AlertDescription className="whitespace-nowrap">{error}</AlertDescription>
+            </Alert>
+        )}
+
         <Button
           type="submit"
-          className="mt-2 w-full rounded-pill bg-brand px-6 py-3 text-sm font-semibold text-white shadow-soft transition-transform cursor-pointer hover:bg-brand/90"
+          className="mt-2 w-full rounded-lg bg-brand px-6 py-4 text-sm font-semibold text-white shadow-soft transition-transform cursor-pointer hover:bg-brand/90"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Sending license key..." : "Send my Free License Key"}
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {status || "Processing..."}
+            </>
+          ) : (
+            "Send my Free License Key"
+          )}
         </Button>
       </form>
     </div>

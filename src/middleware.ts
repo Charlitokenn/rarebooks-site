@@ -1,16 +1,21 @@
-import { defineMiddleware } from "astro:middleware";
+import { clerkMiddleware, createRouteMatcher } from '@clerk/astro/server';
 
-export const onRequest = defineMiddleware(async (context, next) => {
+const isProtectedRoute = createRouteMatcher(['/client-portal(.*)']);
+
+export const onRequest = clerkMiddleware((auth, context) => {
+    // Geo logic (always runs)
     const headers = context.request.headers;
-
-    // Try multiple geo headers for cross-platform compatibility
-    let countryCode =
-        headers.get("cf-ipcountry") ||                // Cloudflare
-        headers.get("x-vercel-ip-country") ||         // Vercel
-        headers.get("x-country") ||                   // Netlify
-        headers.get("cloudfront-viewer-country") ||   // AWS
-        "US";                                               // Fallback
+    let countryCode = headers.get("cf-ipcountry") ||
+                             headers.get("x-vercel-ip-country") ||
+                             headers.get("x-country") ||
+                             headers.get("cloudfront-viewer-country") ||
+                             "US";
 
     context.locals.countryCode = countryCode;
-    return next();
+
+    // Auth logic (only blocks protected routes)
+    const { isAuthenticated, redirectToSignIn } = auth();
+    if (!isAuthenticated && isProtectedRoute(context.request)) {
+        return redirectToSignIn();
+    }
 });
