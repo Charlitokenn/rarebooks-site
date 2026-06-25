@@ -11,7 +11,7 @@ const {
 } = Astro.props
 
 import "../styles/global.css"
-import { Show, UserButton, SignInButton, SignUpButton } from '@clerk/astro/components'
+import { Show, UserButton, SignIn, SignUp } from '@clerk/astro/components'
 ---
 
 <!doctype html>
@@ -27,8 +27,7 @@ import { Show, UserButton, SignInButton, SignUpButton } from '@clerk/astro/compo
 <body class="min-h-screen overflow-x-hidden">
 <header>
     <Show when="signed-out">
-        <SignInButton mode="modal" />
-        <SignUpButton mode="modal" />
+        <SignIn />
     </Show>
     <Show when="signed-in">
         <UserButton />

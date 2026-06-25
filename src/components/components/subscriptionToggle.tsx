@@ -54,7 +54,7 @@ export const Subscriptions = ({ plans, isLocal, countryCode } : Props) => {
                         const price = getPrice(plan, countryCode);
                         const symbol = getCurrencySymbol(countryCode);
                         const isCustom = price === "Custom";
-    console.log("Plan:",price)
+
                         return (
                             <div
                                 className={`flex flex-col rounded-3xl p-8 ${

@@ -4,26 +4,17 @@ import { AppSidebar } from "../components/components/app-sidebar.tsx"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "../components/components/ui/sidebar.tsx"
 import { Show, UserButton, SignInButton, SignUpButton } from '@clerk/astro/components'
 import React from "react";
+import { AppConfig } from "../constants";
+import { SignIn } from '@clerk/astro/components'
 ---
 
-<!--<Layout>-->
-<!--    <SidebarProvider client:load>-->
-<!--        <SidebarInset>-->
-<!--            <div class="p-4">-->
-<!--                <SidebarTrigger client:load/>-->
-<!--            </div>-->
-<!--            <section class="dotted-bg flex-1">-->
-<!--                <h1>Client Portal</h1>-->
-<!--                <p>Welcome to your portal.</p>-->
-<!--            </section>-->
-<!--        </SidebarInset>-->
-<!--    </SidebarProvider>-->
-<!--</Layout>-->
 <Layout title="Client Portal">
     <Show when="signed-out">
-        <p>Sign in to try Clerk out!</p>
+        <SignIn />
     </Show>
     <Show when="signed-in">
-        <p>You are signed in!</p>
+        <SidebarProvider client:load>
+            <AppSidebar/>
+        </SidebarProvider>
     </Show>
 </Layout>
