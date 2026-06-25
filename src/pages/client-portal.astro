@@ -6,15 +6,9 @@ import { Show, UserButton, SignInButton, SignUpButton } from '@clerk/astro/compo
 import React from "react";
 import { AppConfig } from "../constants";
 import { SignIn } from '@clerk/astro/components'
+import { ClientPortalShell } from "../components/components/clientPortalShell.tsx";
 ---
 
 <Layout title="Client Portal">
-    <Show when="signed-out">
-        <SignIn />
-    </Show>
-    <Show when="signed-in">
-        <SidebarProvider client:load>
-            <AppSidebar/>
-        </SidebarProvider>
-    </Show>
+    <ClientPortalShell client:load/>
 </Layout>

@@ -1,9 +1,9 @@
 "use client"
 
 import { MoonIcon, SunIcon, Check } from "lucide-react"
-import { Switch } from "/src/components/components/ui/switch"
+import { Switch } from "../components/ui/switch"
 import React, { useState } from "react"
-import { cn } from "/src/components/lib/utils"
+import { cn } from "../lib/utils"
 import { getPrice, getCurrencySymbol, isTanzania } from "../../constants/pricing";
 
 interface Props {
