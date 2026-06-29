@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState } from "react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
@@ -12,7 +10,6 @@ import { AppConfig } from "../constants"
 import { isValidPhoneNumber } from "react-phone-number-input"
 import { Loader2, AlertCircle } from "lucide-react"
 import { normalizeEmail } from "@components/lib/utils.ts"
-import { env } from "cloudflare:workers";
 
 const formSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -68,7 +65,15 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();
+      // DEBUG: Log what came back
+      const text = await response.text();
+      console.log("Status:", response.status);
+      console.log("Body:", text);
+
+      // Now parse manually
+      const result = JSON.parse(text);
+
+      // const result = await response.json();
 
       if (!response.ok) {
         throw new Error(result.message || "Failed to send license key");
@@ -287,11 +292,13 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
         </Button>
       </form>
       <div
-          className="cf-turnstile"
+          id="turnstile-container"
+          className="cf-turnstile mt-1"
           data-sitekey="0x4AAAAAADq5yBe8MOqSJN7v"
-          data-theme="auto"
+          data-theme="light"
           data-size="flexible"
-          data-callback="onSuccess"
+          data-callback="onTurnstileSuccess"
+          data-error-callback="onTurnstileError"
       ></div>
     </div>
   )

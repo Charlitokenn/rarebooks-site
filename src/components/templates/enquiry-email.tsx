@@ -12,10 +12,6 @@ import {
     Text,
 } from "react-email";
 import {AppConfig} from "../../constants";
-import {isTanzania} from "../../constants/pricing";
-
-const countryCode = Astro.locals.countryCode || "US";
-const isLocal =  isTanzania(countryCode);
 
 interface TrialLicenseEmailProps {
     firstName?: string;
@@ -23,6 +19,7 @@ interface TrialLicenseEmailProps {
     licenseKey?: string;
     expiryDate?: string;
     storeUrl?: string;
+    isLocal? : boolean;
 }
 
 export default function TrialLicenseEmail({
@@ -30,6 +27,7 @@ export default function TrialLicenseEmail({
                                               licenseKey = "XXXX-XXXX-XXXX-XXXX",
                                               expiryDate = "14 days from today",
                                               storeUrl = "https://apps.microsoft.com",
+                                              isLocal = false
                                           }: TrialLicenseEmailProps) {
     return (
         <Html>

@@ -33,3 +33,14 @@ import "../styles/global.css"
     <slot />
   </body>
 </html>
+
+<script is:inline>
+  (function onTurnstileError(errorCode) {
+      console.error("Turnstile error:", errorCode);
+      document.getElementById("send-free-license").disabled = true;
+    }
+  )();
+  (function onTurnstileSuccess() {
+    document.getElementById("turnstile-container").hidden = true;
+  })()
+</script>

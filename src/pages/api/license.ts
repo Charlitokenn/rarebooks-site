@@ -96,7 +96,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const expiryDate = new Date();
-    const daysToExpiry = isLocal ? AppConfig.trial.localDuration : AppConfig.trial.abroadDuration;
+    const daysToExpiry = isLocal ? +AppConfig.trial.localDuration : +AppConfig.trial.abroadDuration;
     expiryDate.setDate(expiryDate.getDate() + daysToExpiry);
 
     const keymintBody = {
@@ -180,11 +180,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
                 year: 'numeric',
               }),
               storeUrl: AppConfig.storeUrl,
+              isLocal: isLocal,
             })
         );
 
         await resend.emails.send({
-          from: 'Charles | RareBooks <onboarding@resend.dev>',
+          from: 'Charles | RareBooks <support@rarebooks.cc>',
           to: normalizedEmail,
           subject: 'Your Trial License Key',
           html,
@@ -229,4 +230,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
     console.error('Error in license API route:', error);
     return new Response(JSON.stringify({ message: 'Internal server error' }), { status: 500 });
   }
+};
+
+export const GET: APIRoute = async () => {
+  return new Response(JSON.stringify({ ok: true, env: Object.keys(env)  }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
 };
