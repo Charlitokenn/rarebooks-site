@@ -82,21 +82,21 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const normalizedEmail = normalizeEmail(rawEmail);
 
     // ✅ FIX: Instantiate checker INSIDE the handler, not at module level
-    const checker = new DisposableEmailChecker({
-      disposableDomainsUrl:
-          "https://cdn.jsdelivr.net/gh/ali-master/disposable-email-domains@latest/domains.json",
-      enableCaching: true,
-      cacheSize: 1000,
-      checkMxRecord: false,
-    });
+    // const checker = new DisposableEmailChecker({
+    //   disposableDomainsUrl:
+    //       "https://cdn.jsdelivr.net/gh/ali-master/disposable-email-domains@latest/domains.json",
+    //   enableCaching: true,
+    //   cacheSize: 1000,
+    //   checkMxRecord: false,
+    // });
 
-    const checkResult = await checker.checkEmail(normalizedEmail);
-    if (checkResult.isDisposable) {
-      return new Response(
-          JSON.stringify({ message: "Disposable email addresses are not allowed" }),
-          { status: 400, headers: jsonHeaders }
-      );
-    }
+    // const checkResult = await checker.checkEmail(normalizedEmail);
+    // if (checkResult.isDisposable) {
+    //   return new Response(
+    //       JSON.stringify({ message: "Disposable email addresses are not allowed" }),
+    //       { status: 400, headers: jsonHeaders }
+    //   );
+    // }
 
     const apiKey = env.KEYMINT_API_KEY;
     if (!apiKey) {
