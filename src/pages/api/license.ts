@@ -270,7 +270,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
           firstName,
           lastName,
           emailAddress: [normalizedEmail],
-          ...(mobile ? { phoneNumber: [mobile] } : {}),
           // Generate a secure 8-character password using the Web Crypto API
           // (globally available in the Cloudflare Worker runtime, no import needed).
           password: userPassword,
