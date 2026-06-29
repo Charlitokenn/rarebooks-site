@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "./components/ui/input"
 import { Button } from "./components/ui/button"
-import {Alert, AlertDescription, AlertTitle} from "./components/ui/alert"
+import {Alert, AlertDescription, AlertTitle} from "./components/ui/alert.tsx"
 import { Loader2, AlertCircle } from "lucide-react"
 import {normalizeEmail} from "@components/lib/utils.ts";
 

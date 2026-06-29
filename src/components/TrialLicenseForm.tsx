@@ -270,15 +270,6 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
               <AlertDescription className="whitespace-nowrap">{error}</AlertDescription>
             </Alert>
         )}
-          <div
-              className="cf-turnstile"
-              data-sitekey="0x4AAAAAADq5yBe8MOqSJN7v"
-              data-theme="auto"
-              data-size="flexible"
-              data-callback="onSuccess"
-              data-error-callback="onTurnstileError"
-          ></div>
-
         <Button
             id="send-free-license"
             type="submit"
@@ -295,6 +286,13 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
           )}
         </Button>
       </form>
+      <div
+          className="cf-turnstile"
+          data-sitekey="0x4AAAAAADq5yBe8MOqSJN7v"
+          data-theme="auto"
+          data-size="flexible"
+          data-callback="onSuccess"
+      ></div>
     </div>
   )
 }
