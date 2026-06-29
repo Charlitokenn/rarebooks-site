@@ -13,7 +13,7 @@ import { loadEnv } from 'vite';
 import clerk from '@clerk/astro'
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
-const { KEYMINT_API_KEY, RESEND_API_KEY, STORE_URL } = env;
+const { KEYMINT_API_KEY, RESEND_API_KEY, STORE_URL, TURNSTILE_KEY } = env;
 
 // https://astro.build/config
 export default defineConfig({
@@ -30,8 +30,8 @@ export default defineConfig({
   integrations: [starlight({
       title: 'RareBooks',
       social: [
-          { icon: 'facebook', label: 'Facebook', href: 'https://github.com/withastro/starlight' },
-          { icon: 'instagram', label: 'Facebook', href: 'https://github.com/withastro/starlight' },
+          { icon: 'facebook', label: 'Facebook', href: 'https://facebook.com/rarebooks' },
+          { icon: 'instagram', label: 'Facebook', href: 'https://instagram.com/rarebooks' },
           { icon: 'tiktok', label: 'TikTok', href: 'https://tiktok.com/@rarebooks_' }
       ],
       sidebar: [
@@ -70,6 +70,7 @@ export default defineConfig({
         'import.meta.env.KEYMINT_API_KEY': JSON.stringify(KEYMINT_API_KEY),
         'import.meta.env.RESEND_API_KEY': JSON.stringify(RESEND_API_KEY),
         'import.meta.env.STORE_URL': JSON.stringify(STORE_URL),
+        'import.meta.env.TURNSTILE_KEY': JSON.stringify(TURNSTILE_KEY),
     },
     css: {
           preprocessorOptions: {

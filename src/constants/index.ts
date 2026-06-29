@@ -12,7 +12,7 @@ export const AppConfig = {
       abroadDuration: "21",
     },
     rootUrl: "https://rarebooks.cc",
-    documentationUrl: "rarebooks.uk/getting-started/getting-started-with-rarebooks/",
+    documentationUrl: "rarebooks.cc/getting-started/getting-started-with-rarebooks/",
     storeUrl: 'https://apps.microsoft.com/detail/9NTLP4V32WGS',
     socials: {
         facebook: 'https://www.facebook.com/rarebooks',

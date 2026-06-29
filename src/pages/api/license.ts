@@ -1,26 +1,53 @@
 import type { APIRoute } from 'astro';
+import { z } from 'zod';
 import { Resend } from 'resend';
 import { render } from '@react-email/render';
 import React from 'react';
 import { env } from 'cloudflare:workers';
+import { DisposableEmailChecker } from '@usex/disposable-email-domains';
 
 import { AppConfig } from '../../constants';
 import TrialLicenseEmail from '../../components/templates/trial-license-sent';
-
-import {isTanzania} from "../../constants/pricing";
+import { isTanzania } from '../../constants/pricing';
 
 export const prerender = false;
 
-const countryCode = Astro.locals.countryCode || "US";
-const isLocal =  isTanzania(countryCode);
+// Initialize checker with remote URL (lightweight, no heavy bundle)
+const checker = new DisposableEmailChecker({
+  disposableDomainsUrl: 'https://cdn.jsdelivr.net/gh/ali-master/disposable-email-domains@latest/domains.json',
+  enableCaching: true,
+  cacheSize: 1000,
+  checkMxRecord: false,
+});
 
-const resendKey = import.meta.env.RESEND_API_KEY;
-// Note: We don't initialize Resend here globally because it might fail if the key is missing at load time.
-// We'll initialize it inside the handler if needed, or use it carefully.
+function normalizeEmail(email: string): string {
+  const [local, domain] = email.toLowerCase().trim().split('@');
+
+  if (domain === 'gmail.com' || domain === 'googlemail.com') {
+    return local.replace(/\./g, '').split('+')[0] + '@gmail.com';
+  }
+
+  if (['outlook.com', 'hotmail.com', 'live.com'].includes(domain)) {
+    return local.split('+')[0] + '@' + domain;
+  }
+
+  return local + '@' + domain;
+}
+
+const trialSchema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  email: z.email('Please enter a valid email address'),
+  mobile: z.string().optional(),
+});
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const resend = new Resend(resendKey || env.RESEND_API_KEY);
+    // Country code must be read inside the handler, not at module level
+    const countryCode = (locals as any).countryCode || 'US';
+    const isLocal = isTanzania(countryCode);
+
+    const resend = new Resend(env.RESEND_API_KEY);
     const contentType = request.headers.get('content-type') || '';
     let data: any;
 
@@ -30,8 +57,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       const formData = await request.formData();
       data = Object.fromEntries(formData.entries());
     } else {
-      // Fallback for cases where content-type might be missing or different
-      // but the body is still JSON-like or form-data-like
       const text = await request.text();
       try {
         data = JSON.parse(text);
@@ -41,60 +66,74 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     }
 
-    const { firstName, lastName, email, mobile } = data;
-
-    console.log('License submission data:', { firstName, lastName, email, mobile: !!mobile });
-
-    if (!firstName || !lastName || !email) {
-      console.warn('Missing required fields:', { firstName: !!firstName, lastName: !!lastName, email: !!email });
-      return new Response(JSON.stringify({ message: 'Missing required fields' }), { status: 400 });
+    // 1. Zod validation (format only)
+    const parseResult = trialSchema.safeParse(data);
+    if (!parseResult.success) {
+      const firstError = parseResult.error.errors[0]?.message || 'Invalid input';
+      return new Response(JSON.stringify({ message: firstError }), { status: 400 });
     }
 
-    const apiKey = import.meta.env.KEYMINT_API_KEY || env.KEYMINT_API_KEY;
+    const { firstName, lastName, email: rawEmail, mobile } = parseResult.data;
+
+    // 2. Normalize email
+    const normalizedEmail = normalizeEmail(rawEmail);
+
+    // 3. Check disposable (async — after Zod)
+    const checkResult = await checker.checkEmail(normalizedEmail);
+    if (checkResult.isDisposable) {
+      return new Response(
+          JSON.stringify({ message: 'Disposable email addresses are not allowed' }),
+          { status: 400 }
+      );
+    }
+
+    console.log('License submission data:', { firstName, lastName, email: normalizedEmail, mobile: !!mobile, isLocal });
+
+    const apiKey = env.KEYMINT_API_KEY;
     if (!apiKey) {
       console.error('KEYMINT_API_KEY is not defined');
       return new Response(JSON.stringify({ message: 'Server configuration error' }), { status: 500 });
     }
 
     const expiryDate = new Date();
-    const daysToExpiry = islocal ? AppConfig.trial.localDuration : AppConfig.trial.abroadDuration
+    const daysToExpiry = isLocal ? AppConfig.trial.localDuration : AppConfig.trial.abroadDuration;
     expiryDate.setDate(expiryDate.getDate() + daysToExpiry);
 
     const keymintBody = {
       productId: AppConfig.keymint.productId,
-      maxActivations: "2",
+      maxActivations: '2',
       newCustomer: {
         name: `${firstName} ${lastName}`,
-        email: email,
+        email: normalizedEmail,
       },
       metadata: {
         is_trial: true,
       },
-      amountKeys: "1",
+      amountKeys: '1',
       expiryDate: expiryDate.toISOString(),
       format: {
         sections: 4,
         sectionLength: 5,
-        separator: "-",
-        charset: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-        prefix: "RARE-",
-        suffix: "-BOOKS",
-        case: "upper",
+        separator: '-',
+        charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+        prefix: 'RARE-',
+        suffix: '-BOOKS',
+        case: 'upper',
       },
     };
 
-    const response = await fetch("https://api.keymint.dev/key", {
-      method: "POST",
+    const response = await fetch('https://api.keymint.dev/key', {
+      method: 'POST',
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(keymintBody),
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      
+
       let userMessage = 'Failed to generate license key';
       const errorCode = errorData.code;
 
@@ -109,54 +148,49 @@ export const POST: APIRoute = async ({ request, locals }) => {
       } else if (response.status === 404) {
         userMessage = 'Product or resource not found.';
       } else if (response.status === 409) {
-        userMessage = 'A trial license has already been issued for this email address/mobile.';
+        userMessage = 'A trial license has already been issued for this email address.';
       } else if (response.status === 429) {
         userMessage = 'Too many requests. Please try again later.';
       }
 
-      return new Response(JSON.stringify({
-        message: userMessage,
-        details: errorData.message || null,
-        code: errorCode
-      }), { status: response.status });
+      return new Response(
+          JSON.stringify({
+            message: userMessage,
+            details: errorData.message || null,
+            code: errorCode,
+          }),
+          { status: response.status }
+      );
     }
 
     const result = await response.json();
-    
-    // KeyMint returns an array of keys when amountKeys > 1, or a single object/array depending on the endpoint.
-    // Based on the code, it expects result[0]?.key
     const licenseKey = Array.isArray(result) ? result[0]?.key : result?.key;
-
-    const storeUrl = import.meta.env.STORE_URL || env.STORE_URL || AppConfig.storeUrl || '#';
 
     if (licenseKey) {
       try {
-        console.log('Attempting to send email via Resend to:', email);
+        console.log('Attempting to send email via Resend to:', normalizedEmail);
 
         const html = await render(
-          React.createElement(TrialLicenseEmail, {
-            firstName: firstName,
-            licenseKey: licenseKey,
-            expiryDate: expiryDate.toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric'
-            }),
-            storeUrl: storeUrl
-          })
+            React.createElement(TrialLicenseEmail, {
+              firstName: firstName,
+              licenseKey: licenseKey,
+              expiryDate: expiryDate.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              }),
+              storeUrl: AppConfig.storeUrl,
+            })
         );
 
-        const emailResult = await resend.emails.send({
-          //TODO: Change this email in production
+        await resend.emails.send({
           from: 'Charles | RareBooks <onboarding@resend.dev>',
-          to: email,
+          to: normalizedEmail,
           subject: 'Your Trial License Key',
           html,
         });
       } catch (emailError) {
         console.error('Error sending email with Resend:', emailError);
-        // We don't necessarily want to fail the whole request if the email fails, 
-        // but we should probably log it. The user already has the key in the response result.
       }
 
       // Save to Cloudflare D1
@@ -164,17 +198,20 @@ export const POST: APIRoute = async ({ request, locals }) => {
         const db = env.DB;
 
         if (db) {
-          const dbResult = await db.prepare(
-            'INSERT INTO trials (first_name, last_name, email, mobile, expiry_date, license_key, subscription_amount) VALUES (?, ?, ?, ?, ?, ?, ?)'
-          ).bind(
-            firstName,
-            lastName,
-            email,
-            mobile || null,
-            expiryDate.toISOString(),
-            licenseKey,
-            0 // Trial license has 0 subscription amount
-          ).run();
+          await db
+              .prepare(
+                  'INSERT INTO trials (first_name, last_name, email, mobile, expiry_date, license_key, subscription_amount) VALUES (?, ?, ?, ?, ?, ?, ?)'
+              )
+              .bind(
+                  firstName,
+                  lastName,
+                  normalizedEmail,
+                  mobile || null,
+                  expiryDate.toISOString(),
+                  licenseKey,
+                  0
+              )
+              .run();
         } else {
           console.error('D1 Database binding (DB) not found in env. Available env keys:', Object.keys(env));
         }
@@ -182,9 +219,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
         console.error('Error saving to D1 database:', {
           message: dbError.message,
           cause: dbError.cause,
-          stack: dbError.stack
+          stack: dbError.stack,
         });
-        // Again, don't fail the whole request if saving to DB fails, but log it.
       }
     }
 

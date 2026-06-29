@@ -1,5 +1,5 @@
 import { MoonIcon, SunIcon } from "lucide-react"
-import { Switch } from "/src/components/components/ui/switch"
+import { Switch } from "./switch.tsx"
 import { useState } from "react"
 
 export const SubscriptionToggle = () => {

@@ -1,7 +1,7 @@
 "use client"
 
 import {
-  ComponentProps,
+  type ComponentProps,
   createContext,
   useContext,
   useMemo,

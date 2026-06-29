@@ -115,7 +115,7 @@ export default function TrialLicenseEmail({
                                                             className="m-0 text-sm font-bold text-zinc-900"
                                                             style={{ letterSpacing: "0.05em" }}
                                                         >
-                                                            {firstName} {lastName}
+                                                            {firstName}
                                                         </Text>
                                                     </td>
                                                 </tr>

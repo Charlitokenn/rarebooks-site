@@ -12,7 +12,7 @@ import {
     Text,
 } from "react-email";
 import {AppConfig} from "../../constants";
-import {isTanzania} from "../constants/pricing.ts";
+import {isTanzania} from "../../constants/pricing.ts";
 
 const countryCode = Astro.locals.countryCode || "US";
 const isLocal =  isTanzania(countryCode);

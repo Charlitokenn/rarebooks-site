@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/astro/server';
 
-const isProtectedRoute = createRouteMatcher(['/client-portal(.*)']);
+const isProtectedRoute = createRouteMatcher(['/redemption(.*)']);
 
 export const onRequest = clerkMiddleware((auth, context) => {
     // Geo logic (always runs)
@@ -15,6 +15,7 @@ export const onRequest = clerkMiddleware((auth, context) => {
 
     // Auth logic (only blocks protected routes)
     const { isAuthenticated, redirectToSignIn } = auth();
+
     if (!isAuthenticated && isProtectedRoute(context.request)) {
         return redirectToSignIn();
     }
