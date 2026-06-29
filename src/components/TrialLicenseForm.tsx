@@ -152,7 +152,7 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
                     Microsoft Store.
                   </p>
                   <a
-                      href={AppConfig.storeUrl}
+                      href={AppConfig.urls.storeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-2 inline-flex items-center gap-1.5 rounded-pill bg-ink px-4 py-2 text-xs font-semibold text-white transition-transform"

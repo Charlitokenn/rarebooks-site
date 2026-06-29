@@ -39,7 +39,7 @@ export default function TrialLicenseEmail({
   return (
     <Html>
       <Head />
-      <Preview>Your RareBooks Trial License Key is ready</Preview>
+      <Preview>Your Trial License Key is ready</Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="mx-auto px-4 py-5 max-w-[580px]">
@@ -193,7 +193,7 @@ export default function TrialLicenseEmail({
                 4. If you opted for the "Do it Yourself plan", our documentation
                 to setup and use the app can be found{" "}
                 <a
-                  href={AppConfig.documentationUrl}
+                  href={AppConfig.urls.documentationUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -216,7 +216,7 @@ export default function TrialLicenseEmail({
                 <tr>
                   <td>
                     <Button
-                      className="flex items-center justify-center rounded-[8px] bg-zinc-900 px-[24px] py-[12px] text-[14px] font-semibold text-white"
+                      className="flex items-center justify-center rounded-[8px] bg-brand px-[24px] py-[12px] text-[14px] font-semibold text-white"
                       href={storeUrl}
                     >
                       Download from Store →

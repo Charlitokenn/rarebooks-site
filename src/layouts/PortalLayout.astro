@@ -32,6 +32,7 @@ const autoCrumbs = segments.map((seg, i) => {
 const { breadcrumbs = autoCrumbs } = Astro.props;
 
 const userDetails = Astro.locals.currentUser()
+console.log(userDetails)
 ---
 
 <!doctype html>

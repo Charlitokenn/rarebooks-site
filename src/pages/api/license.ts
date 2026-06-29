@@ -3,11 +3,15 @@ import { Resend } from "resend";
 import { render } from "@react-email/render";
 import React from "react";
 import { env } from "cloudflare:workers";
+import { createClerkClient } from "@clerk/backend";
 import { AppConfig } from "../../constants";
 import TrialLicenseEmail from "../../components/templates/trial-license-sent";
 import { isTanzania } from "../../constants/pricing";
+import PortalAccessEmail from "@components/templates/portal-access-email.tsx";
 
 export const prerender = false;
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function normalizeEmail(email: string): string {
   const [local, domain] = email.toLowerCase().trim().split("@");
@@ -20,7 +24,21 @@ function normalizeEmail(email: string): string {
   return local + "@" + domain;
 }
 
+// Uses the Web Crypto API available globally in the Cloudflare Worker runtime.
+const CHARSET =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+
+function generatePassword(length = 8): string {
+  const bytes = new Uint8Array(length);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes)
+      .map((b) => CHARSET[b % CHARSET.length])
+      .join("");
+}
+
 const jsonHeaders = { "Content-Type": "application/json" };
+
+// ── Routes ────────────────────────────────────────────────────────────────────
 
 export const GET: APIRoute = async () => {
   return new Response(JSON.stringify({ ok: true }), {
@@ -182,6 +200,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const licenseKey = Array.isArray(result) ? result[0]?.key : result?.key;
 
     if (licenseKey) {
+      // ── 1. Send trial license email via Resend ──────────────────────────────
       try {
         const html = await render(
             React.createElement(TrialLicenseEmail, {
@@ -192,14 +211,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
                 day: "numeric",
                 year: "numeric",
               }),
-              storeUrl: AppConfig.storeUrl,
+              storeUrl: AppConfig.urls.storeUrl,
               isLocal,
             })
         );
 
         const resend = new Resend(env.RESEND_API_KEY);
         await resend.emails.send({
-          from: "Charles | RareBooks <support@rarebooks.cc>",
+          from: `Charles | RareBooks <${AppConfig.supportEmail}>`,
           to: normalizedEmail,
           subject: "Your Trial License Key",
           html,
@@ -208,6 +227,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         console.error("Email send failed:", emailError);
       }
 
+      // ── 2. Persist trial record to D1 ──────────────────────────────────────
       try {
         const db = env.DB;
         if (db) {
@@ -228,6 +248,65 @@ export const POST: APIRoute = async ({ request, locals }) => {
         }
       } catch (dbError: any) {
         console.error("D1 save failed:", dbError.message);
+      }
+
+      // ── 3. Provision a Clerk account for the trial user ─────────────────────
+      // Best-effort: a failure here must not affect the license key response.
+      //
+      // Per Clerk docs, createUser() auto-verifies any email address and phone
+      // number — no separate verification calls needed.
+      // See: https://clerk.com/docs/reference/backend/user/create-user
+      //
+      // `env` is imported from "cloudflare:workers" (Astro 6 + @astrojs/cloudflare
+      // pattern). No locals.runtime.env needed.
+      try {
+        const clerk = createClerkClient({
+          secretKey: (env as any).CLERK_SECRET_KEY,
+        });
+
+        const userPassword = generatePassword(8)
+
+        const newUser = await clerk.users.createUser({
+          firstName,
+          lastName,
+          emailAddress: [normalizedEmail],
+          ...(mobile ? { phoneNumber: [mobile] } : {}),
+          // Generate a secure 8-character password using the Web Crypto API
+          // (globally available in the Cloudflare Worker runtime, no import needed).
+          password: userPassword,
+          // Store the trial license key and expiry in public metadata so it is
+          // readable from Clerk's frontend SDK without a backend call.
+        });
+
+        const html = await render(
+            React.createElement(PortalAccessEmail, {
+              firstName: newUser.firstName!,
+              email: newUser.emailAddresses[0].emailAddress,
+              password: userPassword,
+            })
+        );
+
+        const resend = new Resend(env.RESEND_API_KEY);
+        await resend.emails.send({
+          from: `Charles | RareBooks <${AppConfig.supportEmail}>`,
+          to: normalizedEmail,
+          subject: `${firstName}, your client portal is ready!`,
+          html
+        });
+      } catch (clerkError: any) {
+        const code = clerkError?.errors?.[0]?.code;
+        if (code === "form_identifier_exists") {
+          // The user already has a Clerk account (re-submission or returning
+          // trial requester). Not a problem — log and move on.
+          console.warn(
+              `[Clerk] Account already exists for ${normalizedEmail} — skipping creation.`
+          );
+        } else {
+          console.error(
+              "[Clerk] User provisioning failed:",
+              clerkError?.errors ?? clerkError?.message
+          );
+        }
       }
     }
 
