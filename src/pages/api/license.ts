@@ -2,8 +2,7 @@ import type { APIRoute } from "astro";
 import { Resend } from "resend";
 import { render } from "@react-email/render";
 import React from "react";
-// import { DisposableEmailChecker } from "@usex/disposable-email-domains";
-
+import { env } from "cloudflare:workers";
 import { AppConfig } from "../../constants";
 import TrialLicenseEmail from "../../components/templates/trial-license-sent";
 import { isTanzania } from "../../constants/pricing";
@@ -32,9 +31,6 @@ export const GET: APIRoute = async () => {
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const runtime = (locals as any)?.runtime;
-    const env = runtime?.env || {};
-
     const countryCode = (locals as any)?.countryCode || "US";
     const isLocal = isTanzania(countryCode);
 
@@ -65,38 +61,28 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const trimString = (value: unknown) =>
-              typeof value === "string" ? value.trim() : "";
+        typeof value === "string" ? value.trim() : "";
 
     const firstName = trimString(data?.firstName);
     const lastName = trimString(data?.lastName);
     const rawEmail = trimString(data?.email);
     const mobile = trimString(data?.mobile) || undefined;
 
-    if (!firstName || !lastName || !rawEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail)) {
+    if (
+        !firstName ||
+        !lastName ||
+        !rawEmail ||
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail)
+    ) {
       return new Response(
-          JSON.stringify({ message: "First name, last name, and a valid email are required" }),
+          JSON.stringify({
+            message: "First name, last name, and a valid email are required",
+          }),
           { status: 400, headers: jsonHeaders }
       );
     }
 
     const normalizedEmail = normalizeEmail(rawEmail);
-
-    // ✅ FIX: Instantiate checker INSIDE the handler, not at module level
-    // const checker = new DisposableEmailChecker({
-    //   disposableDomainsUrl:
-    //       "https://cdn.jsdelivr.net/gh/ali-master/disposable-email-domains@latest/domains.json",
-    //   enableCaching: true,
-    //   cacheSize: 1000,
-    //   checkMxRecord: false,
-    // });
-
-    // const checkResult = await checker.checkEmail(normalizedEmail);
-    // if (checkResult.isDisposable) {
-    //   return new Response(
-    //       JSON.stringify({ message: "Disposable email addresses are not allowed" }),
-    //       { status: 400, headers: jsonHeaders }
-    //   );
-    // }
 
     const apiKey = env.KEYMINT_API_KEY;
     if (!apiKey) {
@@ -142,7 +128,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       body: JSON.stringify(keymintBody),
     });
 
-    // ✅ FIX: Read body as text first, then safely parse
     const responseText = await kmResponse.text();
 
     if (!kmResponse.ok) {
@@ -167,13 +152,18 @@ export const POST: APIRoute = async ({ request, locals }) => {
       } else if (kmResponse.status === 404) {
         userMessage = "Product not found.";
       } else if (kmResponse.status === 409) {
-        userMessage = "A trial license has already been issued for this email.";
+        userMessage =
+            "A trial license has already been issued for this email.";
       } else if (kmResponse.status === 429) {
         userMessage = "Too many requests.";
       }
 
       return new Response(
-          JSON.stringify({ message: userMessage, details: errorData.message || null, code: errorCode }),
+          JSON.stringify({
+            message: userMessage,
+            details: errorData.message || null,
+            code: errorCode,
+          }),
           { status: kmResponse.status, headers: jsonHeaders }
       );
     }
@@ -204,7 +194,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
               }),
               storeUrl: AppConfig.storeUrl,
               isLocal,
-            }),
+            })
         );
 
         const resend = new Resend(env.RESEND_API_KEY);
@@ -225,7 +215,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
               .prepare(
                   "INSERT INTO trials (first_name, last_name, email, mobile, expiry_date, license_key, subscription_amount) VALUES (?, ?, ?, ?, ?, ?, ?)"
               )
-              .bind(firstName, lastName, normalizedEmail, mobile || null, expiryDate.toISOString(), licenseKey, 0)
+              .bind(
+                  firstName,
+                  lastName,
+                  normalizedEmail,
+                  mobile || null,
+                  expiryDate.toISOString(),
+                  licenseKey,
+                  0
+              )
               .run();
         }
       } catch (dbError: any) {
