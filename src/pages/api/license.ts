@@ -15,7 +15,7 @@ export const prerender = false;
 // Initialize checker with remote URL (lightweight, no heavy bundle)
 const checker = new DisposableEmailChecker({
   disposableDomainsUrl:
-    "https://cdn.jsdelivr.net/gh/ali-master/disposable-email-domains@latest/domains.json",
+      "https://cdn.jsdelivr.net/gh/ali-master/disposable-email-domains@latest/domains.json",
   enableCaching: true,
   cacheSize: 1000,
   checkMxRecord: false,
@@ -34,6 +34,8 @@ function normalizeEmail(email: string): string {
 
   return local + "@" + domain;
 }
+
+const jsonHeaders = { "Content-Type": "application/json" };
 
 const trialSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -71,9 +73,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const parseResult = trialSchema.safeParse(data);
     if (!parseResult.success) {
       const firstError =
-        parseResult.error.errors[0]?.message || "Invalid input";
+          parseResult.error.errors[0]?.message || "Invalid input";
       return new Response(JSON.stringify({ message: firstError }), {
         status: 400,
+        headers: jsonHeaders,
       });
     }
 
@@ -86,10 +89,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const checkResult = await checker.checkEmail(normalizedEmail);
     if (checkResult.isDisposable) {
       return new Response(
-        JSON.stringify({
-          message: "Disposable email addresses are not allowed",
-        }),
-        { status: 400 },
+          JSON.stringify({
+            message: "Disposable email addresses are not allowed",
+          }),
+          { status: 400, headers: jsonHeaders },
       );
     }
 
@@ -105,15 +108,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
     if (!apiKey) {
       console.error("KEYMINT_API_KEY is not defined");
       return new Response(
-        JSON.stringify({ message: "Server configuration error" }),
-        { status: 500 },
+          JSON.stringify({ message: "Server configuration error" }),
+          { status: 500, headers: jsonHeaders },
       );
     }
 
     const expiryDate = new Date();
     const daysToExpiry = isLocal
-      ? +AppConfig.trial.localDuration
-      : +AppConfig.trial.abroadDuration;
+        ? +AppConfig.trial.localDuration
+        : +AppConfig.trial.abroadDuration;
     expiryDate.setDate(expiryDate.getDate() + daysToExpiry);
 
     const keymintBody = {
@@ -148,8 +151,17 @@ export const POST: APIRoute = async ({ request, locals }) => {
       body: JSON.stringify(keymintBody),
     });
 
+    // ── FIX: Read body as text first, then safely parse ──
+    const responseText = await response.text();
+    let result: any;
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
+      let errorData: any = {};
+      try {
+        errorData = JSON.parse(responseText);
+      } catch {
+        /* ignore parse errors for error bodies */
+      }
 
       let userMessage = "Failed to generate license key";
       const errorCode = errorData.code;
@@ -167,22 +179,34 @@ export const POST: APIRoute = async ({ request, locals }) => {
         userMessage = "Product or resource not found.";
       } else if (response.status === 409) {
         userMessage =
-          "A trial license has already been issued for this email address.";
+            "A trial license has already been issued for this email address.";
       } else if (response.status === 429) {
         userMessage = "Too many requests. Please try again later.";
       }
 
       return new Response(
-        JSON.stringify({
-          message: userMessage,
-          details: errorData.message || null,
-          code: errorCode,
-        }),
-        { status: response.status },
+          JSON.stringify({
+            message: userMessage,
+            details: errorData.message || null,
+            code: errorCode,
+          }),
+          { status: response.status, headers: jsonHeaders },
       );
     }
 
-    const result = await response.json();
+    // Safe parse for success responses too
+    try {
+      result = JSON.parse(responseText);
+    } catch {
+      console.error("Keymint returned non-JSON body:", responseText);
+      return new Response(
+          JSON.stringify({
+            message: "Invalid response from license server. Please try again later.",
+          }),
+          { status: 502, headers: jsonHeaders },
+      );
+    }
+
     const licenseKey = Array.isArray(result) ? result[0]?.key : result?.key;
 
     if (licenseKey) {
@@ -190,17 +214,17 @@ export const POST: APIRoute = async ({ request, locals }) => {
         console.log("Attempting to send email via Resend to:", normalizedEmail);
 
         const html = await render(
-          React.createElement(TrialLicenseEmail, {
-            firstName: firstName,
-            licenseKey: licenseKey,
-            expiryDate: expiryDate.toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
+            React.createElement(TrialLicenseEmail, {
+              firstName: firstName,
+              licenseKey: licenseKey,
+              expiryDate: expiryDate.toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              }),
+              storeUrl: AppConfig.storeUrl,
+              isLocal: isLocal,
             }),
-            storeUrl: AppConfig.storeUrl,
-            isLocal: isLocal,
-          }),
         );
 
         await resend.emails.send({
@@ -219,23 +243,23 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
         if (db) {
           await db
-            .prepare(
-              "INSERT INTO trials (first_name, last_name, email, mobile, expiry_date, license_key, subscription_amount) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            )
-            .bind(
-              firstName,
-              lastName,
-              normalizedEmail,
-              mobile || null,
-              expiryDate.toISOString(),
-              licenseKey,
-              0,
-            )
-            .run();
+              .prepare(
+                  "INSERT INTO trials (first_name, last_name, email, mobile, expiry_date, license_key, subscription_amount) VALUES (?, ?, ?, ?, ?, ?, ?)",
+              )
+              .bind(
+                  firstName,
+                  lastName,
+                  normalizedEmail,
+                  mobile || null,
+                  expiryDate.toISOString(),
+                  licenseKey,
+                  0,
+              )
+              .run();
         } else {
           console.error(
-            "D1 Database binding (DB) not found in env. Available env keys:",
-            Object.keys(env),
+              "D1 Database binding (DB) not found in env. Available env keys:",
+              Object.keys(env),
           );
         }
       } catch (dbError: any) {
@@ -247,11 +271,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     }
 
-    return new Response(JSON.stringify(result), { status: 200 });
+    return new Response(JSON.stringify(result), {
+      status: 200,
+      headers: jsonHeaders,
+    });
   } catch (error) {
     console.error("Error in license API route:", error);
     return new Response(JSON.stringify({ message: "Internal server error" }), {
       status: 500,
+      headers: jsonHeaders,
     });
   }
 };
@@ -259,6 +287,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
 export const GET: APIRoute = async () => {
   return new Response(JSON.stringify({ ok: true, env: Object.keys(env) }), {
     status: 200,
-    headers: { "Content-Type": "application/json" },
+    headers: jsonHeaders,
   });
 };
