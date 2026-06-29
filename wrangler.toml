@@ -14,3 +14,25 @@ database_id = "fa09e96d-eb57-4425-95b3-34edc6a32d6e"
 [[kv_namespaces]]
 binding = "SESSION"
 id = "c1344d3efc2a437dbd016ecc56bfb550"
+
+[vars]
+KEYMINT_API_KEY=at_9Me1jdfmH1f1SVu4UXZRhJibZZdSbhV86FT1ZoTRX1c2dba52391aad870f50861f83a06dfb937
+RESEND_API_KEY=re_8tcLeruF_9ovknAw7R9d8zjRtst3USteR
+PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_cHVtcGVkLXR1cmtleS0yNi5jbGVyay5hY2NvdW50cy5kZXYk
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1
+
+
