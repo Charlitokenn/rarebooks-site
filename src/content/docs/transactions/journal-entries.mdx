@@ -3,13 +3,12 @@ sidebar_position: 3
 sidebar_label: Journal Entries
 title: Journal Entries
 sidebar:
-    order: 5
+  order: 5
 ---
 
 Journal Entries are transactional entries used to record transactions that don’t strictly identify as a Sale or Purchase. Such as the transfer of funds from a Bank Account to a Cash Account.
 
-Creating Journal Entries
-------------------------
+## Creating Journal Entries
 
 To create a Journal Entry first navigate to the Journal Entry page
 
@@ -18,7 +17,6 @@ To create a Journal Entry first navigate to the Journal Entry page
 Then click on the blue `+` button to open a new Journal Entry form.
 
 [![Journal Entry Form](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/journal-entry.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/journal-entry.png)
-
 
 1. Set the type of Journal Entry.
 2. Add rows for each Account and set the amounts being credited and debited.
@@ -30,8 +28,7 @@ After clicking Submit, RareBooks will the make ledger entries and update the acc
 
 You can check the entries by clicking Ledger Entries under the `...` menu.
 
-Examples
---------
+## Examples
 
 These are two examples of how you can make direct Journal Entries to account for transactions that are different from Sales or Purchases.
 
@@ -43,12 +40,10 @@ To do so add two rows to a new Journal Entry form, one for Debit and one for Cre
 
 Let’s say you incur an expense of ₹5,000 for traveling to a client site, and you paid it directly from your Bank Account, then you must add the following rows:
 
-
-
-| Account | Debit | Credit |
-| --- | --- | --- |
-| Bank Account |  | ₹5,000 |
-| Travel Expenses | ₹5,000 |  |
+| Account         | Debit  | Credit |
+| --------------- | ------ | ------ |
+| Bank Account    |        | ₹5,000 |
+| Travel Expenses | ₹5,000 |        |
 
 ### Recording Prepayments
 
@@ -59,13 +54,7 @@ To make an entry that reflects this, add two rows to a new Journal Entry form.
 1. One which Debits the amount into the Bank Account because you have received the payment.
 2. Another which Credits the amount into a Liability account you may create known as Prepayments.
 
-
-
-| Account | Debit | Credit |
-| --- | --- | --- |
-| Bank Account | ₹5,000 |  |
-| Prepayment |  | ₹5,000 |
-
-
-
-
+| Account      | Debit  | Credit |
+| ------------ | ------ | ------ |
+| Bank Account | ₹5,000 |        |
+| Prepayment   |        | ₹5,000 |

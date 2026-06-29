@@ -3,7 +3,7 @@ sidebar_position: 5
 sidebar_label: Import Wizard
 title: Import Wizard
 sidebar:
-    order: 5
+  order: 5
 ---
 
 The Import Wizard is a powerful tool that can allow you to:
@@ -11,8 +11,7 @@ The Import Wizard is a powerful tool that can allow you to:
 1. Import Data from a `.csv` file
 2. Make multiple entries quickly
 
-Basics
-------
+## Basics
 
 To use the Import Wizard navigate to it using the sidebar: `Setup > Import Wizard`. Or alternatively open the Quick Search, type "Import Wizard" and hit enter.
 
@@ -22,11 +21,9 @@ Once the Import Wizard has been opened you will have to select and Import Type w
 
 [![Select Import Type](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/select-import-type.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/select-import-type.png)
 
-
 After selecting the import type, you'll see the additional controls that are now available.
 
 [![Import Wizard Controls](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-wizard-controls.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-wizard-controls.png)
-
 
 ### Using a Template
 
@@ -39,13 +36,12 @@ The Template.csv file The Template.csv file can be filled using any spreadsheet 
 
 [![Import Template CSV](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-template-csv.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-template-csv.png)
 
-
 The Import Template has three rows:
 
 1. Entry type row: Some entries have child tables and this indicates whether the column belongs to the child table.
 2. Field label row: This tells us which field of the entry (or its child table) does the column belong to.
 3. Field key row: This row allows the Import Wizard to auto assign the columns when the file is selected. If this row is not present then Column Assignment Bar can be used to assign the fields.
-:::
+   :::
 
 To use the Template.csv file you must
 
@@ -60,7 +56,6 @@ Once you have exported the `.csv` file, click on Select File to select the file.
 You can now check the imported values and if everything seems right. If you want to remove a row, click on the row index to delete it.
 
 [![Import File Selected](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-file-selected.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-file-selected.png)
-
 
 :::tip
 The Add Row button You can click on the Add Row button to add an additional empty row to the bottom of the import table which can be edited to enter the required values.
@@ -84,7 +79,6 @@ Once import is done, you'll see the Import Complete modal
 
 [![Import Complete](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-complete.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-complete.png)
 
-
 Clicking on Show Me will take you to the List View of the newly created entries. Clicking on Done will reset the Import Wizard allowing you to make more entries.
 
 :::note
@@ -93,15 +87,13 @@ Fixing Failed Imports If certain entries could not be imported then you can clic
 Clicking it will clear all the successful imports and allow you to fix the failed ones and retry.
 :::
 
-Picking Import Columns
-----------------------
+## Picking Import Columns
 
 You can pick the specific columns you want to import by clicking on the `...` button and then clicking on `Pick Import Columns`.
 
 This will open the Pick Import Columns modal
 
 [![Pick Import Column](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/picking-import-columns.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/picking-import-columns.png)
-
 
 The fields marked by the red `*` are required fields and cannot be unselected. Other than these you can choose to keep or remove the rest of the columns.
 
@@ -110,18 +102,15 @@ Removing a column will:
 1. Remove it from the exported template.
 2. Prevent it from being assigned to a column.
 
-Column Assignment Bar
----------------------
+## Column Assignment Bar
 
 The Column Assignment Bar is used to mark a column in the table as a certain field. This is useful if the file you have selected doesn't use the Import Wizard's template.
 
 Along with assigning columns you can even de-assign columns by selecting None [![Import Column Assignment](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-column-assignment.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-column-assignment.png)
 
-
 If None is selected then that column is ignored while importing data.
 
-Importing Entries with Child Tables
------------------------------------
+## Importing Entries with Child Tables
 
 Sales Invoice is an example of an entry with a child table. Here child table refers to the items table which lists all the items included in the sale.
 
@@ -133,15 +122,13 @@ When importing entry with a child table:
 
 For Example
 
-
-
 | Invoice Name | Customer | Item (Table Row) | Amount (Table Row) |
-| --- | --- | --- | --- |
-| A | Lin | Bat | 100 |
-| A | Lin | Ball | 50 |
-| B | Andy | Pen | 200 |
-| B | Andy | Pencil | 10 |
-| B | Andy | Ink | 80 |
+| ------------ | -------- | ---------------- | ------------------ |
+| A            | Lin      | Bat              | 100                |
+| A            | Lin      | Ball             | 50                 |
+| B            | Andy     | Pen              | 200                |
+| B            | Andy     | Pencil           | 10                 |
+| B            | Andy     | Ink              | 80                 |
 
 Here the import table has two Sales Invoices with unique names A, and B.
 
@@ -152,7 +139,3 @@ And for every child table row in the import table the non child table data, i.e.
 :::caution
 Not following these guidelines may either cause the data to not be imported properly or to fail altogether.
 :::
-
-
-
-

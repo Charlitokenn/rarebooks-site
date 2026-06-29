@@ -1,84 +1,89 @@
 export interface PricingPlan {
-    name: string;
-    priceUSD: {
-        monthly: string;
-        yearly: string;
-    };
-    priceTZS: string;
-    period: string;
-    blurb: string;
-    features: string[];
-    featured: boolean;
+  name: string;
+  priceUSD: {
+    monthly: string;
+    yearly: string;
+  };
+  priceTZS: string;
+  period: string;
+  blurb: string;
+  features: string[];
+  featured: boolean;
 }
 
 export const pricingPlans: PricingPlan[] = [
-    {
-        name: "Do It Yourself",
-        priceUSD: {
-            monthly: "20",
-            yearly: "216"
-        },
-        priceTZS: "198,000",
-        period: "/Year",
-        blurb: "For businesses on a budget and are confident in following the documentations",
-        features: [
-            "Usage on up to 2 devices.astro",
-            "Double entry accounting",
-            "Inventory management",
-            "Stock level mobile notifications",
-            "Barcode scanner integration",
-            "Daily backups & latest 7 days recovery",
-            "Whatsapp support & documentations"
-        ],
-        featured: false,
+  {
+    name: "Do It Yourself",
+    priceUSD: {
+      monthly: "20",
+      yearly: "216",
     },
-    {
-        name: "Done For You",
-        priceUSD: {
-            monthly: "49",
-            yearly: "540"
-        },
-        priceTZS: "300,000",
-        period: "/Year",
-        blurb: "For businesses that need everything setup for them, so they can focus on daily operations",
-        features: [
-            "Usage on up to 5 devices.astro",
-            "Everything on Do It Yourself plan",
-            "All business records digitized for you",
-            "Over the shoulder software training",
-            "Daily backups & latest 21 days recovery",
-            "Priority support",
-        ],
-        featured: true,
+    priceTZS: "198,000",
+    period: "/Year",
+    blurb:
+      "For businesses on a budget and are confident in following the documentations",
+    features: [
+      "Usage on up to 2 devices.astro",
+      "Double entry accounting",
+      "Inventory management",
+      "Stock level mobile notifications",
+      "Barcode scanner integration",
+      "Daily backups & latest 7 days recovery",
+      "Whatsapp support & documentations",
+    ],
+    featured: false,
+  },
+  {
+    name: "Done For You",
+    priceUSD: {
+      monthly: "49",
+      yearly: "540",
     },
-    {
-        name: "Scale",
-        priceUSD: {
-            monthly: "Custom",
-            yearly: "Custom"
-        },
-        priceTZS: "Custom",
-        period: "",
-        blurb: "For larger businesses with multiple locations.",
-        features: [
-            "Everything in Done for You plan",
-            "Multi-locations consolidation",
-            "Custom features & integrations",
-            "Dedicated success manager",
-        ],
-        featured: false,
+    priceTZS: "300,000",
+    period: "/Year",
+    blurb:
+      "For businesses that need everything setup for them, so they can focus on daily operations",
+    features: [
+      "Usage on up to 5 devices.astro",
+      "Everything on Do It Yourself plan",
+      "All business records digitized for you",
+      "Over the shoulder software training",
+      "Daily backups & latest 21 days recovery",
+      "Priority support",
+    ],
+    featured: true,
+  },
+  {
+    name: "Scale",
+    priceUSD: {
+      monthly: "Custom",
+      yearly: "Custom",
     },
+    priceTZS: "Custom",
+    period: "",
+    blurb: "For larger businesses with multiple locations.",
+    features: [
+      "Everything in Done for You plan",
+      "Multi-locations consolidation",
+      "Custom features & integrations",
+      "Dedicated success manager",
+    ],
+    featured: false,
+  },
 ];
 
 export function getCurrencySymbol(countryCode: string): string {
-    return countryCode === "TZ" ? "TZS " : "$";
+  return countryCode === "TZ" ? "TZS " : "$";
 }
 
 export function getPrice(plan: PricingPlan, countryCode: string): string {
-    if (plan.priceUSD.monthly && plan.priceUSD.yearly === "Custom") return "Custom";
-    return countryCode === "TZ" ? plan.priceTZS : [plan.priceUSD.monthly , plan.priceUSD.yearly];
+  if (plan.priceUSD.monthly && plan.priceUSD.yearly === "Custom")
+    return "Custom";
+  return countryCode === "TZ"
+    ? plan.priceTZS
+    : [plan.priceUSD.monthly, plan.priceUSD.yearly];
 }
 
 export function isTanzania(countryCode: string): boolean {
-    return countryCode === "TZ";
+  return countryCode === "TZ";
 }

@@ -3,15 +3,14 @@ sidebar_position: 6
 sidebar_label: Purchase Receipt
 title: Purchase Receipt
 sidebar:
-    order: 4
+  order: 4
 ---
 
 Purchase Receipt is an inventory transaction that records the receipt stock from a supplier after a purchase has been made.
 
 Purchase Receipts record inward movement of stock.
 
-Creating a Purchase Receipt
----------------------------
+## Creating a Purchase Receipt
 
 There are two ways to create a Purchase Receipt.
 
@@ -22,7 +21,6 @@ Since a receipt of stock follows a purchase, you can create a Purchase Receipt a
 To do this select Purchase Receipt from under the Create menu button.
 
 [![Create Purchase Receipt From a Purchase Invoice](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/from-purchase-invoice.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/from-purchase-invoice.png)
-
 
 ::: tip Back Reference
 
@@ -44,24 +42,20 @@ After selecting one of the above two methods of creating a Purchase Receipt, you
 
 [![Purchase Receipt Form](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/purchase-receipt-form.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/purchase-receipt-form.png)
 
-
 If you created the Purchase Receipt from a Purchase Invoice, all the rows will be filled out for you. Else you will have to enter the Purchase Receipt details.
 
 Once the Purchase Receipt details have been entered, click on Save and then Submit to make the Purchase Receipt entry.
 
 A Purchase Receipt can have one of the four following statuses:
 
-
-
-| Status | Description |
-| --- | --- |
-| Submitted | Purchase Receipt entry submitted |
-| Return | Purchase Receipt Return entry submitted |
+| Status        | Description                                   |
+| ------------- | --------------------------------------------- |
+| Submitted     | Purchase Receipt entry submitted              |
+| Return        | Purchase Receipt Return entry submitted       |
 | Return Issued | Return entry created against Purchase Receipt |
-| Cancelled | Purchase Receipt entry cancelled |
+| Cancelled     | Purchase Receipt entry cancelled              |
 
-Purchase Receipt Return
------------------------
+## Purchase Receipt Return
 
 If you created a Purchase Receipt for an item that you returned, you can create a Purchase Receipt Return entry to reflect the return.
 
@@ -80,25 +74,16 @@ To create Purchase Receipt Returns the Stock Returns feature needs to be enabled
 
 ::: info Item quantity and Payment amount will be in negative to indicate that it is a return. :::
 
-How does Purchase Receipt Return affect General Ledger
-------------------------------------------------------
+## How does Purchase Receipt Return affect General Ledger
 
 The Purchase Receipt Return entry will create General Ledger entries to reverse the impact of the original Purchase Receipt.
 
 [![Purchase Receipt Return in General Ledger](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/purchase-receipt-return-in-general-ledger.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/purchase-receipt-return-in-general-ledger.png)
 
-
-View Ledger Entries
--------------------
+## View Ledger Entries
 
 After a Purchase Receipt is submitted, both Stock Ledger and General Ledger entries are created.
 
 To view these you can click on the View button and select the one you would like to see.
 
 [![View Ledger Entries](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/view-purchase-receipt-ledger-entries.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/view-purchase-receipt-ledger-entries.png)
-
-
-
-
-
-

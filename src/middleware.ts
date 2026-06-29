@@ -1,23 +1,24 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/astro/server';
+import { clerkMiddleware, createRouteMatcher } from "@clerk/astro/server";
 
 //TODO: Change back to dashboard
-const isProtectedRoute = createRouteMatcher(['/dashboard(.*)']);
+const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 
 export const onRequest = clerkMiddleware((auth, context) => {
-    // Geo logic (always runs)
-    const headers = context.request.headers;
-    let countryCode = headers.get("cf-ipcountry") ||
-                             headers.get("x-vercel-ip-country") ||
-                             headers.get("x-country") ||
-                             headers.get("cloudfront-viewer-country") ||
-                             "US";
+  // Geo logic (always runs)
+  const headers = context.request.headers;
+  let countryCode =
+    headers.get("cf-ipcountry") ||
+    headers.get("x-vercel-ip-country") ||
+    headers.get("x-country") ||
+    headers.get("cloudfront-viewer-country") ||
+    "US";
 
-    context.locals.countryCode = countryCode;
+  context.locals.countryCode = countryCode;
 
-    // Auth logic (only blocks protected routes)
-    const { isAuthenticated, redirectToSignIn } = auth();
+  // Auth logic (only blocks protected routes)
+  const { isAuthenticated, redirectToSignIn } = auth();
 
-    if (!isAuthenticated && isProtectedRoute(context.request)) {
-        return redirectToSignIn();
-    }
+  if (!isAuthenticated && isProtectedRoute(context.request)) {
+    return redirectToSignIn();
+  }
 });

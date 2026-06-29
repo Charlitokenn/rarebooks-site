@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   DropdownMenu,
@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@components/components/ui/dropdown-menu"
+} from "@components/components/ui/dropdown-menu";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -15,20 +15,25 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@components/components/ui/sidebar"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { MoreHorizontalCircle01Icon, FolderIcon, ArrowRightIcon, Delete02Icon } from "@hugeicons/core-free-icons"
+} from "@components/components/ui/sidebar";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  MoreHorizontalCircle01Icon,
+  FolderIcon,
+  ArrowRightIcon,
+  Delete02Icon,
+} from "@hugeicons/core-free-icons";
 
 export function NavProjects({
   projects,
 }: {
   projects: {
-    name: string
-    url: string
-    icon: React.ReactNode
-  }[]
+    name: string;
+    url: string;
+    icon: React.ReactNode;
+  }[];
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -48,7 +53,10 @@ export function NavProjects({
                   showOnHover
                   className="aria-expanded:bg-muted"
                 >
-                  <HugeiconsIcon icon={MoreHorizontalCircle01Icon} strokeWidth={2} />
+                  <HugeiconsIcon
+                    icon={MoreHorizontalCircle01Icon}
+                    strokeWidth={2}
+                  />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
@@ -76,11 +84,15 @@ export function NavProjects({
         ))}
         <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
-            <HugeiconsIcon icon={MoreHorizontalCircle01Icon} strokeWidth={2} className="text-sidebar-foreground/70" />
+            <HugeiconsIcon
+              icon={MoreHorizontalCircle01Icon}
+              strokeWidth={2}
+              className="text-sidebar-foreground/70"
+            />
             <span>More</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

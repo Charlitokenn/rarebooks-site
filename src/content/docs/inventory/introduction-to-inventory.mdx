@@ -3,13 +3,12 @@ sidebar_position: 6
 sidebar_label: Introduction To Inventory
 title: Introduction To Inventory
 sidebar:
-    order: 1
+  order: 1
 ---
 
 RareBooks' inventory features allows you to track the movement of your items as you perform your business transactions.
 
-Inventory Features
-------------------
+## Inventory Features
 
 The inventory module of RareBooks consists of the following features:
 
@@ -19,13 +18,11 @@ The inventory module of RareBooks consists of the following features:
 4. [Stock Ledger](https://github.com/frappe/books_docs/blob/master/inventory/stock-ledger): report that keeps a record of all the stock transactions.
 5. [Stock Balance](https://github.com/frappe/books_docs/blob/master/inventory/stock-balance): report that displays the stock balance quantities.
 
-Enabling Inventory
-------------------
+## Enabling Inventory
 
 To enable inventory you will have to first check the Enable Inventory. To navigate: `Setup > Settings > General Tab`.
 
 [![Enable Inventory](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/enable-inventory.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/enable-inventory.png)
-
 
 Once that is done you will have to restart RareBooks to see the Inventory item in the sidebar.
 
@@ -33,13 +30,11 @@ Once that is done you will have to restart RareBooks to see the Inventory item i
 
 Inventory cannot be disabled once it has been enabled. :::
 
-Tracking an Item
-----------------
+## Tracking an Item
 
 Since you may not want to track the movement of all items, item tracking has to be enabled by setting the Track Item checkbox when creating an item.
 
 [![Track Item](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/track-item.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/track-item.png)
-
 
 ::: info
 
@@ -47,13 +42,12 @@ Track Item can be enabled only while creating the item. :::
 
 Once you have created an item with tracking enabled, you can track its movement by making inventory specific transactions.
 
-Location
---------
+## Location
 
-In RareBooks the movement of an item takes place to and from a *Location*. There are two kinds of movements that can take place:
+In RareBooks the movement of an item takes place to and from a _Location_. There are two kinds of movements that can take place:
 
-1. Inward movement: When you move an item to a *Location*, the quantity of the item at that location increases.
-2. Outward movement: When you move an item from a *Location*, the quantity of the item at that location decreases.
+1. Inward movement: When you move an item to a _Location_, the quantity of the item at that location increases.
+2. Outward movement: When you move an item from a _Location_, the quantity of the item at that location decreases.
 
 The source or destination location for an outward or inward transaction is selected when making the transaction.
 
@@ -65,8 +59,7 @@ RareBooks has a default location called Stores set. This can be changed from the
 
 Additional locations can be created when making an inventory transaction. To do so click the Create option in the Location selection dropdown. :::
 
-Stock Quantity
---------------
+## Stock Quantity
 
 Since an outward movement reduces the stock quantity at a location, if the location has an insufficient quantity of stock, the transaction will not be allowed.
 
@@ -81,12 +74,6 @@ To enable the outward movement, two things can be done:
 
 To check which Location has sufficient quantity of an Item check the Stock Balance report. :::
 
-
-
 ---
 
 Now that you know how to enable inventory and are familiar with the basic concepts, you can move onto reading about the inventory transactions.
-
-
-
-

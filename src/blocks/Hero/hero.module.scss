@@ -1,29 +1,31 @@
-@use 'webcoreui/config' as *;
+@use "webcoreui/config" as *;
 
 .hero {
-    .wrapper, img {
-        flex: 1;
-    }
+  .wrapper,
+  img {
+    flex: 1;
+  }
 
-    h1 {
-        @include spacing(m0);
-        @include typography('5xl');
-    }
+  h1 {
+    @include spacing(m0);
+    @include typography("5xl");
+  }
 
-    h2 {
-        @include typography('xl', primary-10, regular, 400);
-        @include spacing(mt-xxs);
-    }
+  h2 {
+    @include typography("xl", primary-10, regular, 400);
+    @include spacing(mt-xxs);
+  }
 
-    img {
-        @include size('w100%');
-    }
-    
-    .badge {
-        @include spacing(mb-xs);
-    }
+  img {
+    @include size("w100%");
+  }
 
-    .cta, .avatar {
-        @include spacing(mt-md);
-    }
+  .badge {
+    @include spacing(mb-xs);
+  }
+
+  .cta,
+  .avatar {
+    @include spacing(mt-md);
+  }
 }
