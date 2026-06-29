@@ -96,7 +96,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const expiryDate = new Date();
-    const daysToExpiry = isLocal ? AppConfig.trial.localDuration : AppConfig.trial.abroadDuration;
+    const daysToExpiry = isLocal ? +AppConfig.trial.localDuration : +AppConfig.trial.abroadDuration;
     expiryDate.setDate(expiryDate.getDate() + daysToExpiry);
 
     const keymintBody = {
