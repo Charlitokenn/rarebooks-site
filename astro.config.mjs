@@ -24,7 +24,7 @@ export default defineConfig({
       persist: false,
     },
     // Disable image processing if not needed
-    imageService: "passthrough",
+    // imageService: "passthrough",
   }),
   // adapter: node({ mode: 'standalone' }),
   integrations: [
