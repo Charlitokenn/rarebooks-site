@@ -70,7 +70,7 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
       try {
         result = JSON.parse(responseText);
       } catch {
-        throw new Error(responseText || `Server returned invalid response (status ${response.status})`);
+        throw new Error(`Server returned invalid response (status ${response.status})`);
       }
 
       if (!response.ok) {
@@ -87,7 +87,7 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
       setStatus("");
     }
   };
-  
+
   if (isSuccess) {
     return (
         <div
@@ -116,7 +116,7 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
               You're all set!
             </h3>
             <p className="mt-1 text-sm text-muted">
-              Your 14-day trial license key is on its way.
+              Your trial license key is on its way.
             </p>
           </div>
 

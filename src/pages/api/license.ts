@@ -72,14 +72,17 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     }
 
-    const firstName = data?.firstName?.trim();
-    const lastName = data?.lastName?.trim();
-    const rawEmail = data?.email?.trim();
-    const mobile = data?.mobile?.trim() || undefined;
+    const trimString = (value: unknown) =>
+              typeof value === "string" ? value.trim() : "";
 
-    if (!firstName || !lastName || !rawEmail) {
+    const firstName = trimString(data?.firstName);
+    const lastName = trimString(data?.lastName);
+    const rawEmail = trimString(data?.email);
+    const mobile = trimString(data?.mobile) || undefined;
+
+    if (!firstName || !lastName || !rawEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail)) {
       return new Response(
-          JSON.stringify({ message: "First name, last name, and email are required" }),
+          JSON.stringify({ message: "First name, last name, and a valid email are required" }),
           { status: 400, headers: jsonHeaders }
       );
     }
