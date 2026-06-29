@@ -8,6 +8,7 @@ import { AppConfig } from "../../constants";
 import TrialLicenseEmail from "../../components/templates/trial-license-sent";
 import { isTanzania } from "../../constants/pricing";
 import PortalAccessEmail from "@components/templates/portal-access-email.tsx";
+import { Capitalize } from "../../components/lib/utils.ts"
 
 export const prerender = false;
 
@@ -15,18 +16,18 @@ export const prerender = false;
 
 function normalizeEmail(email: string): string {
   const [local, domain] = email.toLowerCase().trim().split("@");
+
   if (domain === "gmail.com" || domain === "googlemail.com") {
-    return local.replace(/\./g, "").split("+")[0] + "@gmail.com";
+    // Gmail: dots ignored, + aliases ignored
+    return local.replace(/\./g, ".").split("+")[0] + "@gmail.com";
   }
-  if (["outlook.com", "hotmail.com", "live.com"].includes(domain)) {
-    return local.split("+")[0] + "@" + domain;
-  }
+
+  // All other providers: preserve dots and +, only normalize case
   return local + "@" + domain;
 }
 
 // Uses the Web Crypto API available globally in the Cloudflare Worker runtime.
-const CHARSET =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 
 function generatePassword(length = 8): string {
   const bytes = new Uint8Array(length);
@@ -81,8 +82,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const trimString = (value: unknown) =>
         typeof value === "string" ? value.trim() : "";
 
-    const firstName = trimString(data?.firstName);
-    const lastName = trimString(data?.lastName);
+    const firstName = trimString(Capitalize(data?.firstName));
+    const lastName = trimString(Capitalize(data?.lastName));
     const rawEmail = trimString(data?.email);
     const mobile = trimString(data?.mobile) || undefined;
 
