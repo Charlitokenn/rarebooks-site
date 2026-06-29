@@ -12,7 +12,7 @@ const {
 } = Astro.props
 
 import "../styles/global.css"
-import { Show, SignIn } from '@clerk/astro/components'
+import { Show, SignIn, SignUp } from '@clerk/astro/components'
 
 import { ClientPortalShell, type Crumb } from "../components/components/clientPortalShell.tsx";
 import React from "react";
@@ -48,6 +48,7 @@ const userDetails = Astro.locals.currentUser()
     <Show when="signed-out">
         <div class="flex h-screen items-center justify-center">
             <SignIn />
+            <SignUp />
         </div>
     </Show>
     <Show when="signed-in">
