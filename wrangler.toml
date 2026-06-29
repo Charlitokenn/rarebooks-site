@@ -3,9 +3,6 @@ account_id = "aa2e3d3c8224d09194e8635aca7eff6f"
 compatibility_date = "2026-06-13"
 compatibility_flags = [ "nodejs_compat" ]
 
-[build]
-command = "npm run build"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "rarebooks"

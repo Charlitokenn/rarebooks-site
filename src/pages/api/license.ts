@@ -180,11 +180,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
                 year: 'numeric',
               }),
               storeUrl: AppConfig.storeUrl,
+              isLocal: isLocal,
             })
         );
 
         await resend.emails.send({
-          from: 'Charles | RareBooks <onboarding@resend.dev>',
+          from: 'Charles | RareBooks <support@rarebooks.cc>',
           to: normalizedEmail,
           subject: 'Your Trial License Key',
           html,
