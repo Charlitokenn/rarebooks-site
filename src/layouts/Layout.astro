@@ -40,4 +40,7 @@ import "../styles/global.css"
       document.getElementById("send-free-license").disabled = true;
     }
   )();
+  (function onTurnstileSuccess() {
+    document.getElementById("turnstile-container").hidden = true;
+  })()
 </script>
