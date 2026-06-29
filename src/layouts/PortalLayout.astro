@@ -51,7 +51,7 @@ const userDetails = Astro.locals.currentUser()
         </div>
     </Show>
     <Show when="signed-in">
-        <ClientPortalShell breadcrumbs={breadcrumbs} path={path} user={userDetails} client:only="react" transition:persist>
+        <ClientPortalShell breadcrumbs={breadcrumbs} path={path} user={userDetails} client:only="react">
             <slot />
         </ClientPortalShell>
     </Show>

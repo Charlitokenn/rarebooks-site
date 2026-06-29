@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/astro/server';
 
 //TODO: Change back to dashboard
-const isProtectedRoute = createRouteMatcher(['/redemption(.*)']);
+const isProtectedRoute = createRouteMatcher(['/dashboard(.*)']);
 
 export const onRequest = clerkMiddleware((auth, context) => {
     // Geo logic (always runs)
