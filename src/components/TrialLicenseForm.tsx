@@ -65,15 +65,7 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
         body: JSON.stringify(data),
       });
 
-      // DEBUG: Log what came back
-      const text = await response.text();
-      console.log("Status:", response.status);
-      console.log("Body:", text);
-
-      // Now parse manually
-      const result = JSON.parse(text);
-
-      // const result = await response.json();
+      const result = await response.json();
 
       if (!response.ok) {
         throw new Error(result.message || "Failed to send license key");
@@ -303,5 +295,3 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
     </div>
   )
 }
-
-
