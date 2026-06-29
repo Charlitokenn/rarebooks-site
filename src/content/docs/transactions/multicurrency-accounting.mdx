@@ -3,15 +3,14 @@ sidebar_position: 3
 sidebar_label: Multicurrency Accounting
 title: Multicurrency Accounting
 sidebar:
-    order: 8
+  order: 8
 ---
 
 RareBooks allows you to create and print invoices in your customers currency.
 
 ::: tip Suppliers and Purchase Invoices The same applies procedure applies for creating a Multi Currency Purchase Invoice. Just set a different currency when creating a Supplier entry. :::
 
-Creating a Multi Currency Invoice
----------------------------------
+## Creating a Multi Currency Invoice
 
 To enable a multi currency invoice you need to do two things:
 
@@ -22,42 +21,33 @@ This will display the [exchange rate](https://github.com/frappe/books_docs/blob/
 
 [![Multi Currency Invoicing](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/multicurrency-invoice.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/multicurrency-invoice.png)
 
-
 ::: info Fields using Company Currency The Base Grand Total and Outstanding Amounts are displayed in the company currency. :::
 
-Printing
---------
+## Printing
 
 After submitting, on clicking Print, the invoice can be printed in the customers currency. [![Multi Currency Invoice Printing](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/multi-currency-print.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/multi-currency-print.png)
 
-
-Payments
---------
+## Payments
 
 Payments entries are made in the company currency. The exchange rate set when submitting the invoice is used to decide the amount to be paid.
 
 [![Multi Currency Payment](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/multi-currency-payments.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/multi-currency-payments.png)
 
-
 On making the payment the Outstanding Amount will be updated accordingly, and any rounding differences will be balanced using the [Round Off Account](https://github.com/frappe/books_docs/blob/master/miscellaneous/settings#general-settings).
 
-Ledger Entries
---------------
+## Ledger Entries
 
 Ledger Entries are created using the company currency. The exchange rate set when submitting the invoice is used to decide the recorded amounts.
 
 [![Multi Currency Ledger Entries](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/multi-currency-ledger-entries.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/multi-currency-ledger-entries.png)
 
-
-Exchange Rate
--------------
+## Exchange Rate
 
 When a multi currency invoice is made, the ledger entries are created in the company currency.
 
 ::: info Exchange Rate Company Currency = Customer Currency ⨉ Exchange Rate :::
 
-Customer and Company Currency
------------------------------
+## Customer and Company Currency
 
 Multi currency invoice is possible only if the two currencies are different from each other.
 
@@ -67,14 +57,8 @@ This is set when a [Customer](https://github.com/frappe/books_docs/blob/master/e
 
 [![Customer Currency](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/customer-currency.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/customer-currency.png)
 
-
 ### Company Currency
 
 This is set when [initializing](https://github.com/frappe/books_docs/blob/master/setting-up/getting-started) a new RareBooks instance
 
 [![Company Currency](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/company-currency.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/company-currency.png)
-
-
-
-
-

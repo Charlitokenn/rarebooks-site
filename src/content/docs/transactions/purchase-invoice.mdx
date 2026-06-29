@@ -3,15 +3,14 @@ sidebar_position: 3
 sidebar_label: Purchase Invoice
 title: Purchase Invoice
 sidebar:
-    order: 3
+  order: 3
 ---
 
 Purchase Invoices are bills that your supplier sends you when you make a purchase.
 
 It is a transactional entry that denotes a purchase.
 
-Creating Purchase Invoices
---------------------------
+## Creating Purchase Invoices
 
 If you have set up your RareBooks with Accounts, Taxes, Purchase Items, and Suppliers, creating a Purchase Invoice is as simple as it gets.
 
@@ -23,17 +22,15 @@ Then click on the blue `+` button to open the Purchase Invoice form.
 
 [![Purchase Invoice Form](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/purchase-invoice.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/purchase-invoice.png)
 
-
 1. Select the Supplier from whom you will be making a purchase.
 2. Click on Add Row and select the Item being purchased. Default Tax will be fetched you can change it if required.
 3. Enter the Quantity.
 4. You can add more items or if you are done, click on Save.
 5. Once finalized, click on Submit. RareBooks will do the required ledger entries against the appropriate accounts.
 
-This invoice is now in *“Submitted”* state, it cannot be edited. The purchase transaction has been recorded.
+This invoice is now in _“Submitted”_ state, it cannot be edited. The purchase transaction has been recorded.
 
-Making Purchase Payments
-------------------------
+## Making Purchase Payments
 
 Once a purchase invoice has been submitted, you’ll need to record payment against it to denote that you’ve paid the money.
 
@@ -41,11 +38,9 @@ To make a Payment first navigate to the Purchase Invoice, then click on the `...
 
 [![Purchase Invoice Status](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/purchase-payment.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/purchase-payment.png)
 
-
 This will open the Payment quick edit form with the outstanding amount auto-filled.
 
 [![Purchase Invoice Payment](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/purchase-payment-quickedit.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/purchase-payment-quickedit.png)
-
 
 You can change the values and click on Save. This will Save and Submit the Payment.
 
@@ -59,10 +54,9 @@ Once the Outstanding Amount reaches 0, the status will change to **Paid**. :::
 
 ### Auto Payments
 
-You can simplify the *Purchase Invoice → Payment* workflow by using Auto Payments. For this you just need to set the default accounts for Purchase Payment.
+You can simplify the _Purchase Invoice → Payment_ workflow by using Auto Payments. For this you just need to set the default accounts for Purchase Payment.
 
 This can be done in `Setup > Settings > Defaults > Auto Payments`: [![Payment Accounts](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/payment-accounts.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/payment-accounts.png)
-
 
 Once this is set, whenever you Submit a Purchase Invoice a Payment entry will automatically be created.
 
@@ -72,8 +66,7 @@ You can disable Auto Payment for a single Purchase Invoice by unchecking the Mak
 
 [![Disable Auto Payment](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/auto-payment.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/auto-payment.png) :::
 
-Purchase Invoice Return
------------------------
+## Purchase Invoice Return
 
 The user can create a Purchase Invoice Return directly from the original Purchase Invoice document or manually from the New Purchase Invoice Entry.
 
@@ -93,14 +86,8 @@ The user can create a Purchase Invoice Return directly from the original Purchas
 3. Fill Item details.
 4. Save and Submit.
 
-Purchase Invoice impact on General Ledger
------------------------------------------
+## Purchase Invoice impact on General Ledger
 
 The Purchase Invoice Return entry will create General Ledger entries to reverse the impact of the original Purchase Invoice.
 
 [![Purchase Invoice Return in General Ledger](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/pinv-return-in-gl.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/pinv-return-in-gl.png)
-
-
-
-
-

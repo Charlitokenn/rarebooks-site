@@ -1,19 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { NavMain } from "@components/components/nav-main"
-import { NavUser } from "@components/components/nav-user"
+import { NavMain } from "@components/components/nav-main";
+import { NavUser } from "@components/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail, useSidebar,
-} from "@components/components/ui/sidebar"
+  SidebarRail,
+  useSidebar,
+} from "@components/components/ui/sidebar";
 import AppLogo from "@components/AppLogo.tsx";
 import { Wallet, LayoutDashboard } from "lucide-react";
-import {AppConfig} from "../../constants";
+import { AppConfig } from "../../constants";
 
 const data = {
   user: {
@@ -25,39 +26,37 @@ const data = {
     {
       title: "Dashboard",
       url: "/dashboard",
-      icon: <LayoutDashboard/>,
+      icon: <LayoutDashboard />,
       isActive: true,
     },
     {
       title: "Billing",
       url: "/dashboard/billing",
-      icon: <Wallet/>,
+      icon: <Wallet />,
       isActive: false,
     },
   ],
-}
+};
 
 interface Props {
-  path: string
-  user: any
-  props: React.ComponentProps<typeof Sidebar>
-
+  path: string;
+  user: any;
+  props: React.ComponentProps<typeof Sidebar>;
 }
 
-export function AppSidebar({ path, user, ...props } : Props) {
-
+export function AppSidebar({ path, user, ...props }: Props) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="font-bold">
-          <AppLogo link="/"/>
+        <AppLogo link="/" />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} pathname={path} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

@@ -2,7 +2,7 @@
 title: Dashboard
 description: Dashboard
 sidebar:
-    order: 2
+  order: 2
 ---
 
 Dashboard show an overview of Cash Flow, Profit and Loss, Pending Payments and Expenses.
@@ -11,29 +11,23 @@ You can access the Dashboard from the sidebar.
 
 [![Dashboard](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/dashboard.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/dashboard.png)
 
-
-Period Selector
----------------
+## Period Selector
 
 All sections of the Dashboard have a Period Selector. The default value is **This Year**. There are three options.
 
 Consider today's date as 16 Jun, 2022. The three options will show analytics for the given range:
 
-
-
-| # | Option | From | Until (Today) |
-| --- | --- | --- | --- |
-| 1 | This Year | 16 Jun, 2021 | 16 Jun, 2022 |
-| 2 | This Quarter | 16 Mar, 2022 | 16 Jun, 2022 |
-| 3 | This Month | 16 May, 2022 | 16 Jun, 2022 |
+| #   | Option       | From         | Until (Today) |
+| --- | ------------ | ------------ | ------------- |
+| 1   | This Year    | 16 Jun, 2021 | 16 Jun, 2022  |
+| 2   | This Quarter | 16 Mar, 2022 | 16 Jun, 2022  |
+| 3   | This Month   | 16 May, 2022 | 16 Jun, 2022  |
 
 ::: info Options The Cashflow and the Profit and Loss chart don't show the **This Month** option. :::
 
-Cashflow
---------
+## Cashflow
 
 [![Cashflow](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/cashflow.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/cashflow.png)
-
 
 The Cashflow chart shows the total amount of money being transferred into and out of your company over a period.
 
@@ -41,11 +35,9 @@ The Cashflow chart shows the total amount of money being transferred into and ou
 
 ::: info Hover Hover tooltip shows the Inflow or Outflow amount for that month. :::
 
-Pending Payments
-----------------
+## Pending Payments
 
 [![Pending Payments](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/pending-payments.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/pending-payments.png)
-
 
 Pending Payments shows the invoice paid and unpaid (outstanding) amounts. It has two sub-sections
 
@@ -54,8 +46,7 @@ Pending Payments shows the invoice paid and unpaid (outstanding) amounts. It has
 
 ::: info Hover Hover tooltip shows the number of Paid and Unpaid invoices. :::
 
-Profit and Loss
----------------
+## Profit and Loss
 
 [![Profit and Loss Bar](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/pnl-bar.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/pnl-bar.png) This chart shows the profit (or loss) per month for a given period.
 
@@ -63,16 +54,10 @@ Profit and Loss
 
 ::: info Hover Hover tooltip shows the Profit or Loss amount for that month. :::
 
-Top Expenses
-------------
+## Top Expenses
 
 [![Top Expenses](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/top-expenses.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/top-expenses.png)
-
 
 This section shows your top five expenses sorted from your highest expenses to lowest expenses by category.
 
 ::: tip Expenses The Top Expenses chart is calculated from the Expense account balances. :::
-
-
-
-
