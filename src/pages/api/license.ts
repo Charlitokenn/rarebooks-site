@@ -23,19 +23,11 @@ function normalizeEmail(email: string): string {
 
 const jsonHeaders = { "Content-Type": "application/json" };
 
-export const GET: APIRoute = async ({ locals }) => {
-  const runtime = (locals as any)?.runtime;
-  const env = runtime?.env || {};
-  return new Response(
-      JSON.stringify({
-        ok: true,
-        envKeys: Object.keys(env),
-        hasDb: !!env.DB,
-        hasResend: !!env.RESEND_API_KEY,
-        hasKeymint: !!env.KEYMINT_API_KEY,
-      }),
-      { status: 200, headers: jsonHeaders }
-  );
+export const GET: APIRoute = async () => {
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: jsonHeaders,
+  });
 };
 
 export const POST: APIRoute = async ({ request, locals }) => {
