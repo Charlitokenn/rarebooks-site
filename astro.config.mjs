@@ -7,13 +7,8 @@ import cloudflare from "@astrojs/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 
 import react from "@astrojs/react";
-
-import { loadEnv } from "vite";
 // import node from '@astrojs/node'
 import clerk from "@clerk/astro";
-
-const env = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
-const { KEYMINT_API_KEY, RESEND_API_KEY, STORE_URL, TURNSTILE_KEY } = env;
 
 // https://astro.build/config
 export default defineConfig({
@@ -97,12 +92,6 @@ export default defineConfig({
         // Path to your Tailwind base styles:
         "./src/styles/global.css",
       ],
-      // defaultLocale: 'en',
-      // locales: {
-      //     en: {
-      //         label: 'English',
-      //     },
-      // },
       components: {
         Sidebar: "./src/components/Sidebar.astro",
         Pagination: "./src/components/Pagination.astro",
@@ -116,12 +105,7 @@ export default defineConfig({
   output: "server",
   vite: {
     plugins: [tailwindcss()],
-    define: {
-      "import.meta.env.KEYMINT_API_KEY": JSON.stringify(KEYMINT_API_KEY),
-      "import.meta.env.RESEND_API_KEY": JSON.stringify(RESEND_API_KEY),
-      "import.meta.env.STORE_URL": JSON.stringify(STORE_URL),
-      "import.meta.env.TURNSTILE_KEY": JSON.stringify(TURNSTILE_KEY),
-    },
+    define: {},
     css: {
       preprocessorOptions: {
         scss: {

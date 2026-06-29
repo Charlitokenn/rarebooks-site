@@ -56,26 +56,21 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
     setError(null);
     try {
       setStatus("Generating license with your info...");
-      // Artificial delay for better UX
       await new Promise((resolve) => setTimeout(resolve, 800));
 
       const response = await fetch("/api/license", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      // ── FIX: Read body as text first, then safely parse ──
+      // ✅ FIX: Read text first, then parse
       const responseText = await response.text();
       let result: any;
       try {
         result = JSON.parse(responseText);
       } catch {
-        throw new Error(
-            responseText || `Server returned invalid response (status ${response.status})`
-        );
+        throw new Error(responseText || `Server returned invalid response (status ${response.status})`);
       }
 
       if (!response.ok) {
@@ -83,20 +78,16 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
       }
 
       setStatus("Sending license to your email...");
-      // Artificial delay for better UX
       await new Promise((resolve) => setTimeout(resolve, 800));
-
       setIsSuccess(true);
     } catch (error: any) {
       console.error("Error submitting form:", error);
-      setError(
-          error.message || "Something went wrong. Please try again later.",
-      );
+      setError(error.message || "Something went wrong. Please try again later.");
     } finally {
       setStatus("");
     }
   };
-
+  
   if (isSuccess) {
     return (
         <div
