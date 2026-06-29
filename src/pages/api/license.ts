@@ -73,7 +73,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const parseResult = trialSchema.safeParse(data);
     if (!parseResult.success) {
       const firstError =
-          parseResult.error.errors[0]?.message || "Invalid input";
+          parseResult.error.message || "Invalid input";
       return new Response(JSON.stringify({ message: firstError }), {
         status: 400,
         headers: jsonHeaders,
