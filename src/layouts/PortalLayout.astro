@@ -15,18 +15,6 @@ import "../styles/global.css"
 import { Show, SignIn } from '@clerk/astro/components'
 
 import { ClientPortalShell, type Crumb } from "../components/components/clientPortalShell.tsx";
-import {TooltipProvider} from "@components/components/ui/tooltip.tsx";
-import {SidebarInset, SidebarProvider, SidebarTrigger} from "@components/components/ui/sidebar.tsx";
-import {AppSidebar} from "@components/components/app-sidebar.tsx";
-import {Separator} from "@components/components/ui/separator.tsx";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList, BreadcrumbPage,
-    BreadcrumbSeparator
-} from "@components/components/ui/breadcrumb.tsx";
-import {Home} from "lucide-react";
 import React from "react";
 
 const path = Astro.url.pathname;
@@ -58,7 +46,9 @@ const userDetails = Astro.locals.currentUser()
 </head>
 <body class="min-h-screen overflow-x-hidden">
     <Show when="signed-out">
-        <SignIn />
+        <div class="flex h-screen items-center justify-center">
+            <SignIn />
+        </div>
     </Show>
     <Show when="signed-in">
         <ClientPortalShell breadcrumbs={breadcrumbs} path={path} user={userDetails} client:only="react">
