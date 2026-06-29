@@ -233,7 +233,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 };
 
 export const GET: APIRoute = async () => {
-  return new Response(JSON.stringify({ ok: true }), {
+  return new Response(JSON.stringify({ ok: true, env: Object.keys(env)  }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });
