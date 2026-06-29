@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import { Resend } from "resend";
 import { render } from "@react-email/render";
 import React from "react";
-import { DisposableEmailChecker } from "@usex/disposable-email-domains";
+// import { DisposableEmailChecker } from "@usex/disposable-email-domains";
 
 import { AppConfig } from "../../constants";
 import TrialLicenseEmail from "../../components/templates/trial-license-sent";
