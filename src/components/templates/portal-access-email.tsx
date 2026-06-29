@@ -167,7 +167,7 @@ export default function PortalAccessEmail({
                 <tr>
                   <td>
                     <Button
-                      className="flex items-center justify-center rounded-[8px] bg-brand px-[24px] py-[12px] text-[14px] font-semibold text-white"
+                      className="flex items-center justify-center rounded-[8px] bg-slate-900 px-[24px] py-[12px] text-[14px] font-semibold text-white"
                       href={AppConfig.urls.portalUrl}
                     >
                       Access Client Portal →
