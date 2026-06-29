@@ -231,3 +231,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return new Response(JSON.stringify({ message: 'Internal server error' }), { status: 500 });
   }
 };
+
+export const GET: APIRoute = async () => {
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
