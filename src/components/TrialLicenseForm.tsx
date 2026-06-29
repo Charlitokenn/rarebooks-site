@@ -10,7 +10,6 @@ import { AppConfig } from "../constants"
 import { isValidPhoneNumber } from "react-phone-number-input"
 import { Loader2, AlertCircle } from "lucide-react"
 import { normalizeEmail } from "@components/lib/utils.ts"
-import { env } from "cloudflare:workers";
 
 const formSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
