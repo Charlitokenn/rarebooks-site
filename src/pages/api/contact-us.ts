@@ -57,11 +57,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
           html: `
             <h1>Hey,</h1>
             <p>Enquiry Details</p>
-            <p>From: `{firstName} {lastName}` </p>
-            <p>Business: `{businessName}`</p>
-            <p>Email: `{email}`</p>
-            <p>Mobile: `{mobile}`</p>
-            <p>Message: `{message}`</p>
+            <p>From: {firstName} {lastName}</p>
+            <p>Business: {businessName}</p>
+            <p>Email: {email}</p>
+            <p>Mobile: {mobile}</p>
+            <p>Message: {message}</p>
           `,
         })
       } catch (emailError) {

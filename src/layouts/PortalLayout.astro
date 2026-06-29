@@ -3,6 +3,7 @@ import {AppConfig} from "../constants";
 interface Props {
     title?: string
     description?: string
+    breadcrumbs?: Crumb[];
 }
 
 const {
@@ -11,7 +12,26 @@ const {
 } = Astro.props
 
 import "../styles/global.css"
-import { Show, UserButton, SignIn, SignUp } from '@clerk/astro/components'
+import { Show, SignIn, SignUp } from '@clerk/astro/components'
+
+import { ClientPortalShell, type Crumb } from "../components/components/clientPortalShell.tsx";
+import React from "react";
+
+const path = Astro.url.pathname;
+const segments = path.split('/').filter(Boolean);
+
+const autoCrumbs = segments.map((seg, i) => {
+    const href = '/' + segments.slice(0, i + 1).join('/');
+    const label = seg.charAt(0).toUpperCase() + seg.slice(1);
+    return i === segments.length - 1
+        ? { label }          // last segment = current page, no link
+        : { label, href };
+});
+
+// Use autoCrumbs as the default, allow pages to override via prop
+const { breadcrumbs = autoCrumbs } = Astro.props;
+
+const userDetails = Astro.locals.currentUser()
 ---
 
 <!doctype html>
@@ -19,20 +39,21 @@ import { Show, UserButton, SignIn, SignUp } from '@clerk/astro/components'
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#fbfafc" />
+    <meta name="theme-color" content="#5b3df5" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <title>{title}</title>
 </head>
 <body class="min-h-screen overflow-x-hidden">
-<header>
     <Show when="signed-out">
-        <SignIn />
+        <div class="flex h-screen items-center justify-center">
+            <SignIn />
+        </div>
     </Show>
     <Show when="signed-in">
-        <UserButton />
+        <ClientPortalShell breadcrumbs={breadcrumbs} path={path} user={userDetails} client:only="react">
+            <slot />
+        </ClientPortalShell>
     </Show>
-</header>
-<slot />
 </body>
 </html>

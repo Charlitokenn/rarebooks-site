@@ -12,16 +12,17 @@ import {
     Text,
 } from "react-email";
 import {AppConfig} from "../../constants";
-import {isTanzania} from "../constants/pricing.ts";
-
-const countryCode = Astro.locals.countryCode || "US";
-const isLocal =  isTanzania(countryCode);
+// import {isTanzania} from "../../constants/pricing.ts";
+//
+// const countryCode = Astro.locals.countryCode || "US";
+// const isLocal =  isTanzania(countryCode);
 
 interface TrialLicenseEmailProps {
     firstName?: string;
     licenseKey?: string;
     expiryDate?: string;
     storeUrl?: string;
+    isLocal? : boolean;
 }
 
 export default function TrialLicenseEmail({
@@ -29,7 +30,12 @@ export default function TrialLicenseEmail({
                                               licenseKey = "XXXX-XXXX-XXXX-XXXX",
                                               expiryDate = "14 days from today",
                                               storeUrl = "https://apps.microsoft.com",
+                                              isLocal = false,
                                           }: TrialLicenseEmailProps) {
+    const trialDuration = isLocal
+        ? AppConfig.trial.localDuration
+        : AppConfig.trial.abroadDuration;
+
     return (
         <Html>
             <Head />
@@ -60,7 +66,7 @@ export default function TrialLicenseEmail({
                                 Hello {firstName},
                             </Text>
                             <Text className="text-base text-zinc-700 mt-3">
-                                Thank you for requesting a trial of RareBooks. Your {isLocal ? `${AppConfig.trial.localDuration}`: `${AppConfig.trial.abroadDuration}` } Days trial
+                                Thank you for requesting a trial of {AppConfig.appName}. Your {trialDuration} Days trial
                                 license key is ready — use it to activate the app after
                                 downloading from the Microsoft Store.
                             </Text>

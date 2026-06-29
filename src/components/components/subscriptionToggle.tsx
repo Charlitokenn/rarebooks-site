@@ -50,7 +50,7 @@ export const Subscriptions = ({ plans, isLocal, countryCode } : Props) => {
             
             <div className="grid gap-6 lg:grid-cols-3">
                 {
-                    plans.map((plan) => {
+                    plans.map((plan: any) => {
                         const price = getPrice(plan, countryCode);
                         const symbol = getCurrencySymbol(countryCode);
                         const isCustom = price === "Custom";
@@ -62,6 +62,7 @@ export const Subscriptions = ({ plans, isLocal, countryCode } : Props) => {
                                         ? "border-2 border-brand bg-ink/85 text-white shadow-soft"
                                         : "border border-black/5 bg-white text-ink shadow-card"
                                 }`}
+                                key={plan.name}
                             >
                                 {plan.featured && (
                                     <span
@@ -84,8 +85,8 @@ export const Subscriptions = ({ plans, isLocal, countryCode } : Props) => {
                                     {plan.blurb}
                                 </p>
                                 <ul className="mt-6 flex flex-1 flex-col gap-3">
-                                    {plan.features.map((f) => (
-                                        <li className="flex items-center gap-2.5 text-sm">
+                                    {plan.features.map((f : string) => (
+                                        <li className="flex items-center gap-2.5 text-sm" key={f}>
                   <span
                       className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
                           plan.featured ? "bg-brand text-white" : "bg-brand-soft text-brand"

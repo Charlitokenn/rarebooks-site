@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState } from "react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
@@ -67,7 +65,15 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();
+      // DEBUG: Log what came back
+      const text = await response.text();
+      console.log("Status:", response.status);
+      console.log("Body:", text);
+
+      // Now parse manually
+      const result = JSON.parse(text);
+
+      // const result = await response.json();
 
       if (!response.ok) {
         throw new Error(result.message || "Failed to send license key");
@@ -190,16 +196,16 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
               First name
             </label>
             <Input
-              id={`${id}-firstName`}
-              aria-label="First name"
-              placeholder="John"
-              {...register("firstName")}
-              aria-invalid={!!errors.firstName}
-              className="mt-1"
-              disabled={isSubmitting}
+                id={`${id}-firstName`}
+                aria-label="First name"
+                placeholder="John"
+                {...register("firstName")}
+                aria-invalid={!!errors.firstName}
+                className="mt-1"
+                disabled={isSubmitting}
             />
             {errors.firstName && (
-              <p className="mt-0.5 text-xs text-accent-coral">{errors.firstName.message}</p>
+                <p className="mt-0.5 text-xs text-accent-coral">{errors.firstName.message}</p>
             )}
           </div>
           <div>
@@ -207,16 +213,16 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
               Last name
             </label>
             <Input
-              id={`${id}-lastName`}
-              placeholder="Doe"
-              aria-label="Last name"
-              {...register("lastName")}
-              aria-invalid={!!errors.lastName}
-              className="mt-1"
-              disabled={isSubmitting}
+                id={`${id}-lastName`}
+                placeholder="Doe"
+                aria-label="Last name"
+                {...register("lastName")}
+                aria-invalid={!!errors.lastName}
+                className="mt-1"
+                disabled={isSubmitting}
             />
             {errors.lastName && (
-              <p className="mt-0.5 text-xs text-accent-coral">{errors.lastName.message}</p>
+                <p className="mt-0.5 text-xs text-accent-coral">{errors.lastName.message}</p>
             )}
           </div>
         </div>
@@ -226,17 +232,17 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
             Email address
           </label>
           <Input
-            id={`${id}-email`}
-            type="email"
-            aria-label="email"
-            placeholder="john@company.com"
-            {...register("email")}
-            aria-invalid={!!errors.email}
-            className="mt-1"
-            disabled={isSubmitting}
+              id={`${id}-email`}
+              type="email"
+              aria-label="email"
+              placeholder="john@company.com"
+              {...register("email")}
+              aria-invalid={!!errors.email}
+              className="mt-1"
+              disabled={isSubmitting}
           />
           {errors.email && (
-            <p className="mt-0.5 text-xs text-accent-coral">{errors.email.message}</p>
+              <p className="mt-0.5 text-xs text-accent-coral">{errors.email.message}</p>
           )}
         </div>
 
@@ -248,42 +254,54 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
             <PhoneInput
                 countryCallingCodeEditable={false}
                 defaultCountry={country}
-              id={`${id}-mobile`}
-              placeholder={country === "TZ" ? "+255 712 000 000" : "+1 555 555 1234"}
-              value={mobileValue as any}
-              onChange={(v) => setValue("mobile", v || "", { shouldValidate: true })}
-              aria-invalid={!!errors.mobile}
-              disabled={isSubmitting}
+                id={`${id}-mobile`}
+                placeholder={country === "TZ" ? "+255 712 000 000" : "+1 555 555 1234"}
+                value={mobileValue as any}
+                onChange={(v) => setValue("mobile", v || "", {shouldValidate: true})}
+                aria-invalid={!!errors.mobile}
+                disabled={isSubmitting}
             />
           </div>
           {errors.mobile && (
-            <p className="mt-0.5 text-xs text-accent-coral">{errors.mobile.message}</p>
+              <p className="mt-0.5 text-xs text-accent-coral">{errors.mobile.message}</p>
           )}
         </div>
 
         {error && (
-            <Alert className="mt-6 max-w-md border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
-              <AlertCircle className="h-4 w-4" />
+            <Alert
+                className="mt-6 max-w-md border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
+              <AlertCircle className="h-4 w-4"/>
               <AlertTitle>Error sending license key!</AlertTitle>
               <AlertDescription className="whitespace-nowrap">{error}</AlertDescription>
             </Alert>
         )}
-
         <Button
-          type="submit"
-          className="mt-2 w-full rounded-lg bg-brand px-6 py-4 text-sm font-semibold text-white shadow-soft transition-transform cursor-pointer hover:bg-brand/90"
-          disabled={isSubmitting}
+            id="send-free-license"
+            type="submit"
+            className="mt-2 w-full rounded-lg bg-brand px-6 py-4 text-sm font-semibold text-white shadow-soft transition-transform cursor-pointer hover:bg-brand/90"
+            disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {status || "Processing..."}
-            </>
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+                {status || "Processing..."}
+              </>
           ) : (
-            "Send my Free License Key"
+              "Send my Free License Key"
           )}
         </Button>
       </form>
+      <div
+          id="turnstile-container"
+          className="cf-turnstile mt-1"
+          data-sitekey="0x4AAAAAADq5yBe8MOqSJN7v"
+          data-theme="light"
+          data-size="flexible"
+          data-callback="onTurnstileSuccess"
+          data-error-callback="onTurnstileError"
+      ></div>
     </div>
   )
 }
+
+

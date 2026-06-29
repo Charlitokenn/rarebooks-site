@@ -22,7 +22,7 @@ export const pricingPlans: PricingPlan[] = [
         period: "/Year",
         blurb: "For businesses on a budget and are confident in following the documentations",
         features: [
-            "Usage on up to 2 devices",
+            "Usage on up to 2 devices.astro",
             "Double entry accounting",
             "Inventory management",
             "Stock level mobile notifications",
@@ -42,7 +42,7 @@ export const pricingPlans: PricingPlan[] = [
         period: "/Year",
         blurb: "For businesses that need everything setup for them, so they can focus on daily operations",
         features: [
-            "Usage on up to 5 devices",
+            "Usage on up to 5 devices.astro",
             "Everything on Do It Yourself plan",
             "All business records digitized for you",
             "Over the shoulder software training",
