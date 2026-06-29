@@ -1,5 +1,4 @@
 import type { APIRoute } from "astro";
-import { z } from "zod";
 import { Resend } from "resend";
 import { render } from "@react-email/render";
 import React from "react";
@@ -37,13 +36,6 @@ function normalizeEmail(email: string): string {
 
 const jsonHeaders = { "Content-Type": "application/json" };
 
-const trialSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.email("Please enter a valid email address"),
-  mobile: z.string().optional(),
-});
-
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     // Country code must be read inside the handler, not at module level
@@ -69,23 +61,23 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     }
 
-    // 1. Zod validation (format only)
-    const parseResult = trialSchema.safeParse(data);
-    if (!parseResult.success) {
-      const firstError =
-          parseResult.error.message || "Invalid input";
-      return new Response(JSON.stringify({ message: firstError }), {
-        status: 400,
-        headers: jsonHeaders,
-      });
+    // Basic field extraction (client already validates via Zod)
+    const firstName = data?.firstName?.trim();
+    const lastName = data?.lastName?.trim();
+    const rawEmail = data?.email?.trim();
+    const mobile = data?.mobile?.trim() || undefined;
+
+    if (!firstName || !lastName || !rawEmail) {
+      return new Response(
+          JSON.stringify({ message: "First name, last name, and email are required" }),
+          { status: 400, headers: jsonHeaders },
+      );
     }
 
-    const { firstName, lastName, email: rawEmail, mobile } = parseResult.data;
-
-    // 2. Normalize email
+    // Normalize email
     const normalizedEmail = normalizeEmail(rawEmail);
 
-    // 3. Check disposable (async — after Zod)
+    // Check disposable (async)
     const checkResult = await checker.checkEmail(normalizedEmail);
     if (checkResult.isDisposable) {
       return new Response(
@@ -151,7 +143,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       body: JSON.stringify(keymintBody),
     });
 
-    // ── FIX: Read body as text first, then safely parse ──
+    // Read body as text first, then safely parse
     const responseText = await response.text();
     let result: any;
 
