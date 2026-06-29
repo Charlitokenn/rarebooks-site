@@ -35,7 +35,7 @@ const year = new Date().getFullYear()
   <div class="mx-auto max-w-6xl px-4 py-14">
     <div class="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
       <div>
-        <AppLogo link="#top"/>
+        <AppLogo link="#top" client:load/>
         <p class="mt-4 max-w-xs text-sm leading-relaxed text-muted">
           {AppConfig.description}
         </p>

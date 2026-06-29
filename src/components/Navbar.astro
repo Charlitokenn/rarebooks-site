@@ -15,7 +15,7 @@ const links = [
   <nav
     class="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-pill border border-black/5 bg-white/80 px-4 py-2.5 shadow-card backdrop-blur-md"
   >
-    <AppLogo link="#top"/>
+    <AppLogo link="#top" client:load/>
     <div class="hidden items-center gap-8 md:flex">
       {
         links.map((link) => (

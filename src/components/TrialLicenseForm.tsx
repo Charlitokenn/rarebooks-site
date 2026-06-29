@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState } from "react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
@@ -290,8 +288,9 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
           className="cf-turnstile mt-1"
           data-sitekey="0x4AAAAAADq5yBe8MOqSJN7v"
           data-theme="auto"
-          data-size="compact"
+          data-size="flexible"
           data-callback="onSuccess"
+          data-error-callback="onTurnstileError"
       ></div>
     </div>
   )
