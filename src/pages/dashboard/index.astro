@@ -1,8 +1,12 @@
 ---
 import PortalLayout from "../../layouts/PortalLayout.astro";
 import { PageHero } from "../../components/components/pageHero.tsx"
+import { GetGreetingProps} from "@components/lib/utils.ts";
+const userDetails = await Astro.locals.currentUser();
+
+const { title, subtitle } = getGreetingProps(userDetails?.firstName);
 ---
 
 <PortalLayout>
-    <PageHero type="greeting" title="Afternoon Charles" client:load/>
+    <PageHero type="greeting" title={title} subtitle={subtitle} client:load/>
 </PortalLayout>
