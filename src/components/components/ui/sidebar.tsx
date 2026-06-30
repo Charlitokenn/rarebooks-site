@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
 import { useStore } from "@nanostores/react";
 
-import { $sidebarToggleSignal } from "@stores/sidebar";
+import { $sidebarOpen, $sidebarToggleSignal } from "@stores/sidebar";
 import { useIsMobile } from "@components/hooks/use-mobile";
 import { cn } from "@components/lib/utils";
 import { Button } from "@components/components/ui/button";
@@ -20,6 +20,7 @@ import { Skeleton } from "@components/components/ui/skeleton";
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from "@components/components/ui/tooltip";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -149,29 +150,40 @@ function SidebarProvider({
     [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar],
   );
 
+  // Mirror the live open/collapsed state into the shared store so that
+  // markup OUTSIDE this React root (the per-page <main> in PortalLayout.astro,
+  // which lives in its own island and can no longer rely on Tailwind's
+  // peer-data-[...] selectors reaching across an <astro-island> boundary)
+  // can react to it too. See src/stores/sidebar.ts.
+  React.useEffect(() => {
+    $sidebarOpen.set(open);
+  }, [open]);
+
   return (
     <SidebarContext.Provider value={contextValue}>
-      {wrapperless ? (
-        children
-      ) : (
-        <div
-          data-slot="sidebar-wrapper"
-          style={
-            {
-              "--sidebar-width": SIDEBAR_WIDTH,
-              "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
-              ...style,
-            } as React.CSSProperties
-          }
-          className={cn(
-            "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar",
-            className,
-          )}
-          {...props}
-        >
-          {children}
-        </div>
-      )}
+      <TooltipProvider delayDuration={0}>
+        {wrapperless ? (
+          children
+        ) : (
+          <div
+            data-slot="sidebar-wrapper"
+            style={
+              {
+                "--sidebar-width": SIDEBAR_WIDTH,
+                "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+                ...style,
+              } as React.CSSProperties
+            }
+            className={cn(
+              "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar",
+              className,
+            )}
+            {...props}
+          >
+            {children}
+          </div>
+        )}
+      </TooltipProvider>
     </SidebarContext.Provider>
   );
 }

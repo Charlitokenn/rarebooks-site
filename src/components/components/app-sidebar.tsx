@@ -15,7 +15,6 @@ import {
 import AppLogo from "@components/AppLogo.tsx";
 import { Wallet, LayoutDashboard } from "lucide-react";
 import { AppConfig } from "../../constants";
-import { TooltipProvider } from "@components/components/ui/tooltip";
 
 const data = {
   user: {
@@ -60,19 +59,17 @@ export function AppSidebar({ path, user, ...props }: Props) {
   }, []);
 
   return (
-      <TooltipProvider>
-        <Sidebar collapsible="icon" {...props}>
-          <SidebarHeader className="font-bold">
-            <AppLogo link="/" />
-          </SidebarHeader>
-          <SidebarContent>
-            <NavMain items={data.navMain} pathname={pathname} />
-          </SidebarContent>
-          <SidebarFooter>
-            <NavUser userDetails={user} />
-          </SidebarFooter>
-          <SidebarRail />
-        </Sidebar>
-      </TooltipProvider>
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader className="font-bold">
+        <AppLogo link="/" />
+      </SidebarHeader>
+      <SidebarContent>
+        <NavMain items={data.navMain} pathname={pathname} />
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser userDetails={user} />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
   );
 }

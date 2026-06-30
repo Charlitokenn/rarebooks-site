@@ -17,6 +17,7 @@ import { Show } from '@clerk/astro/components'
 
 import { PersistedSidebarShell } from "../components/components/persisted-sidebar.tsx";
 import { DashboardHeader, type Crumb } from "../components/components/dashboard-header.tsx";
+import { SIDEBAR_COOKIE_NAME } from "../stores/sidebar";
 
 const path = Astro.url.pathname;
 const segments = path.split('/').filter(Boolean);
@@ -35,6 +36,14 @@ const { breadcrumbs = autoCrumbs } = Astro.props;
 // `currentUser()` is async — must be awaited, or this becomes an
 // unresolved Promise getting serialized into the client island below.
 const userDetails = await Astro.locals.currentUser();
+
+// Read the same cookie the sidebar itself writes to (see SidebarProvider's
+// `setOpen`), so the very first SSR paint of this wrapper already reflects
+// the user's last choice instead of always assuming "expanded". This is
+// the same cookie-read-on-the-server pattern shadcn's own docs use.
+const sidebarStateCookie = Astro.cookies.get(SIDEBAR_COOKIE_NAME)?.value;
+const sidebarOpen = sidebarStateCookie !== "false";
+const sidebarState = sidebarOpen ? "expanded" : "collapsed";
 ---
 
 <!doctype html>
@@ -64,12 +73,20 @@ const userDetails = await Astro.locals.currentUser();
           This wrapping div previously lived inside <SidebarProvider>'s own
           render output. It now lives here in plain Astro markup instead,
           so it can be a shared DOM parent for two *separate* React roots:
-          the persisted sidebar and the per-page main content. They need to
-          be literal DOM siblings under this element for the sidebar's
-          peer-data-[...] CSS (width/collapse transitions) to keep working
-          across both islands.
+          the persisted sidebar and the per-page main content.
+
+          `data-state` here is the SSR-correct value read from the cookie
+          above, and is kept live-in-sync (without a navigation) by the
+          inline script at the bottom, which listens to the same
+          `$sidebarOpen` store the sidebar itself writes to. We deliberately
+          do NOT depend on peer-data-[...] selectors for this anymore —
+          the actual sidebar `.peer` element now lives one level deeper,
+          inside its own <astro-island>, so it's no longer a true DOM
+          sibling of <main> and peer-* selectors can't reach it.
         -->
         <div
+            data-slot="sidebar-wrapper"
+            data-state={sidebarState}
             class="group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar"
             style="--sidebar-width:16rem;--sidebar-width-icon:3rem;"
         >
@@ -89,12 +106,14 @@ const userDetails = await Astro.locals.currentUser();
             <!--
               Plain Astro markup — NOT persisted, NOT React. This is the
               part that's meant to change on every navigation, so it's
-              free to do so. It mirrors shadcn's <SidebarInset /> classes
-              so layout/spacing stay identical to before.
+              free to do so. Spacing now reacts to the `data-state`
+              attribute on the ancestor wrapper div above (group-data-*,
+              which matches across any DOM depth) instead of peer-data-*
+              (which needs true siblings and breaks across islands).
             -->
             <main
                 data-slot="sidebar-inset"
-                class="relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2"
+                class="relative flex w-full flex-1 flex-col bg-background md:group-data-[variant=inset]/sidebar-wrapper:m-2 md:group-data-[variant=inset]/sidebar-wrapper:ml-0 md:group-data-[variant=inset]/sidebar-wrapper:rounded-xl md:group-data-[variant=inset]/sidebar-wrapper:shadow-sm md:group-data-[state=collapsed]/sidebar-wrapper:ml-2"
             >
                 <!--
                   Re-renders fresh on every navigation (this is what we
@@ -108,6 +127,25 @@ const userDetails = await Astro.locals.currentUser();
                 </div>
             </main>
         </div>
+
+        <script>
+            // Keeps the wrapper's `data-state` attribute in sync with the
+            // sidebar's live open/collapsed state when the user toggles it
+            // *without* a navigation (a navigation already gets the right
+            // value server-side, from the cookie read above). Per Astro's
+            // view-transitions docs, bundled module scripts only execute
+            // once and are not re-run on client-side navigations — that's
+            // fine here, since the callback below re-queries the DOM live
+            // on every store change, so it always finds whichever wrapper
+            // div is currently on the page.
+            import { $sidebarOpen } from "../stores/sidebar";
+
+            $sidebarOpen.listen((open) => {
+                document
+                    .querySelector('[data-slot="sidebar-wrapper"]')
+                    ?.setAttribute("data-state", open ? "expanded" : "collapsed");
+            });
+        </script>
     </Show>
 </body>
 </html>
