@@ -1,7 +1,9 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
+import { useStore } from "@nanostores/react";
 
+import { $sidebarToggleSignal } from "@stores/sidebar";
 import { useIsMobile } from "@components/hooks/use-mobile";
 import { cn } from "@components/lib/utils";
 import { Button } from "@components/components/ui/button";
@@ -58,11 +60,20 @@ function SidebarProvider({
   className,
   style,
   children,
+  wrapperless = false,
   ...props
 }: React.ComponentProps<"div"> & {
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /**
+   * When true, skip rendering the wrapping `group/sidebar-wrapper` div.
+   * Use this when the host page already renders that wrapper itself
+   * (e.g. when the <Sidebar> and the page's <main> content live in two
+   * separate, independently-hydrated islands, as in a persisted
+   * dashboard shell) and just needs this component for context + state.
+   */
+  wrapperless?: boolean;
 }) {
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = React.useState(false);
@@ -107,6 +118,20 @@ function SidebarProvider({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [toggleSidebar]);
 
+  // Lets components outside this React root (e.g. a SidebarTrigger button
+  // rendered in a separately-hydrated page header) toggle the sidebar
+  // without needing access to SidebarContext. See src/stores/sidebar.ts.
+  const toggleSignal = useStore($sidebarToggleSignal);
+  const isFirstToggleSignal = React.useRef(true);
+  React.useEffect(() => {
+    if (isFirstToggleSignal.current) {
+      isFirstToggleSignal.current = false;
+      return;
+    }
+    toggleSidebar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toggleSignal]);
+
   // We add a state so that we can do data-state="expanded" or "collapsed".
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed";
@@ -126,23 +151,27 @@ function SidebarProvider({
 
   return (
     <SidebarContext.Provider value={contextValue}>
-      <div
-        data-slot="sidebar-wrapper"
-        style={
-          {
-            "--sidebar-width": SIDEBAR_WIDTH,
-            "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
-            ...style,
-          } as React.CSSProperties
-        }
-        className={cn(
-          "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </div>
+      {wrapperless ? (
+        children
+      ) : (
+        <div
+          data-slot="sidebar-wrapper"
+          style={
+            {
+              "--sidebar-width": SIDEBAR_WIDTH,
+              "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+              ...style,
+            } as React.CSSProperties
+          }
+          className={cn(
+            "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </div>
+      )}
     </SidebarContext.Provider>
   );
 }

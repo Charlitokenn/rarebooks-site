@@ -1,5 +1,5 @@
 ---
-import {AppConfig} from "../constants";
+import { AppConfig } from "../constants";
 interface Props {
     title?: string
     description?: string
@@ -12,11 +12,11 @@ const {
 } = Astro.props
 
 import "../styles/global.css"
-import { Show, SignIn, SignUp } from '@clerk/astro/components'
+import { ClientRouter } from "astro:transitions";
+import { Show } from '@clerk/astro/components'
 
-import { ClientPortalShell, type Crumb } from "../components/components/clientPortalShell.tsx";
-import React from "react";
-import { ClientRouter } from 'astro:transitions';
+import { PersistedSidebarShell } from "../components/components/persisted-sidebar.tsx";
+import { DashboardHeader, type Crumb } from "../components/components/dashboard-header.tsx";
 
 const path = Astro.url.pathname;
 const segments = path.split('/').filter(Boolean);
@@ -32,7 +32,9 @@ const autoCrumbs = segments.map((seg, i) => {
 // Use autoCrumbs as the default, allow pages to override via prop
 const { breadcrumbs = autoCrumbs } = Astro.props;
 
-const userDetails = await Astro.locals.currentUser()
+// `currentUser()` is async — must be awaited, or this becomes an
+// unresolved Promise getting serialized into the client island below.
+const userDetails = await Astro.locals.currentUser();
 ---
 
 <!doctype html>
@@ -44,19 +46,68 @@ const userDetails = await Astro.locals.currentUser()
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <title>{title}</title>
+    <!--
+      Enables Astro's client-side routing. Without this, every sidebar
+      link is a full document reload — that hard reload is what was
+      causing the dashboard "flicker."
+    -->
     <ClientRouter />
 </head>
 <body class="min-h-screen overflow-x-hidden">
+    <!--
+      `clerkMiddleware` in src/middleware.ts already redirects unauthenticated
+      requests to /dashboard(.*) before this page ever renders, so this is
+      just a defense-in-depth guard — not the primary auth gate.
+    -->
     <Show when="signed-in">
-        <ClientPortalShell
-                breadcrumbs={breadcrumbs}
-                path={path}
-                userDetails={userDetails}
-                client:load
-                transition:persist
+        <!--
+          This wrapping div previously lived inside <SidebarProvider>'s own
+          render output. It now lives here in plain Astro markup instead,
+          so it can be a shared DOM parent for two *separate* React roots:
+          the persisted sidebar and the per-page main content. They need to
+          be literal DOM siblings under this element for the sidebar's
+          peer-data-[...] CSS (width/collapse transitions) to keep working
+          across both islands.
+        -->
+        <div
+            class="group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar"
+            style="--sidebar-width:16rem;--sidebar-width-icon:3rem;"
         >
-            <slot />
-        </ClientPortalShell>
+            <!--
+              The ONLY island that persists across dashboard navigations.
+              It owns the sidebar's open/collapsed/mobile state, so that
+              state (and the component itself) survives client-side route
+              changes instead of being torn down and rebuilt on every click.
+            -->
+            <PersistedSidebarShell
+                client:load
+                transition:persist="dashboard-sidebar"
+                path={path}
+                user={userDetails}
+            />
+
+            <!--
+              Plain Astro markup — NOT persisted, NOT React. This is the
+              part that's meant to change on every navigation, so it's
+              free to do so. It mirrors shadcn's <SidebarInset /> classes
+              so layout/spacing stay identical to before.
+            -->
+            <main
+                data-slot="sidebar-inset"
+                class="relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2"
+            >
+                <!--
+                  Re-renders fresh on every navigation (this is what we
+                  want — breadcrumbs need to update per route). It's cheap,
+                  and with the ClientRouter above, swapping it in is an
+                  instant client-side transition, not a hard reload.
+                -->
+                <DashboardHeader breadcrumbs={breadcrumbs} client:load />
+                <div class="flex-1 overflow-auto p-4">
+                    <slot />
+                </div>
+            </main>
+        </div>
     </Show>
 </body>
 </html>

@@ -38,23 +38,36 @@ const data = {
   ],
 };
 
-interface Props {
+interface Props extends React.ComponentProps<typeof Sidebar> {
   path: string;
-  userDetails: any;
-  props: React.ComponentProps<typeof Sidebar>;
+  user: any;
 }
 
-export function AppSidebar({ path, userDetails, ...props }: Props) {
+export function AppSidebar({ path, user, ...props }: Props) {
+  // This island is `transition:persist`ed across dashboard navigations,
+  // which means it is NOT remounted (or re-rendered with new props) when
+  // the route changes — `path` is only correct on the very first load.
+  // Track the live pathname ourselves so the active nav item still
+  // updates after client-side navigations.
+  const [pathname, setPathname] = React.useState(path);
+
+  React.useEffect(() => {
+    const updatePathname = () => setPathname(window.location.pathname);
+    document.addEventListener("astro:after-swap", updatePathname);
+    return () =>
+      document.removeEventListener("astro:after-swap", updatePathname);
+  }, []);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="font-bold">
         <AppLogo link="/" />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} pathname={path} />
+        <NavMain items={data.navMain} pathname={pathname} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser userDetails={userDetails} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
