@@ -9,12 +9,12 @@ import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
 import { AppConfig } from "../constants";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { Loader2, AlertCircle } from "lucide-react";
-import { normalizeEmail } from "@components/lib/utils.ts";
+import { NormalizeEmail } from "@components/lib/utils.ts";
 
 const formSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  email: z.email("Please enter a valid email address").transform(normalizeEmail),
+  email: z.email("Please enter a valid email address").transform(NormalizeEmail),
   mobile: z.string().refine(isValidPhoneNumber, {
     message: "Please enter a valid mobile number",
   }),
