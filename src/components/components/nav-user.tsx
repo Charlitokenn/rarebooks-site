@@ -24,9 +24,25 @@ import {
   LogoutIcon,
 } from "@hugeicons/core-free-icons";
 import {GetInitials} from "@components/lib/utils.ts";
+import {signOutUser} from "@components/lib/sign-out.ts";
+import {useState} from "react";
 
 export function NavUser({ userDetails }: { userDetails: any }) {
   const { isMobile } = useSidebar();
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    if (isSigningOut) return;
+    setIsSigningOut(true);
+    try {
+      // Clerk's redirect navigates the page away, so there's normally
+      // nothing left to reset isSigningOut for — but if sign-out fails
+      // (e.g. Clerk not loaded), let the user try again.
+      await signOutUser("/");
+    } finally {
+      setIsSigningOut(false);
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -35,7 +51,7 @@ export function NavUser({ userDetails }: { userDetails: any }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={userDetails.imageUrl} alt={userDetails.id} />
@@ -62,7 +78,10 @@ export function NavUser({ userDetails }: { userDetails: any }) {
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuItem onClick={() => console.log("signed out")}>
+            <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={handleSignOut}
+            >
                 <HugeiconsIcon icon={LogoutIcon} strokeWidth={2} />
                 Log out
             </DropdownMenuItem>

@@ -36,7 +36,6 @@ const { breadcrumbs = autoCrumbs } = Astro.props;
 // `currentUser()` is async — must be awaited, or this becomes an
 // unresolved Promise getting serialized into the client island below.
 const userDetails = await Astro.locals.currentUser();
-console.log("User Details:", JSON.stringify(userDetails, null, 2));
 // Read the same cookie the sidebar itself writes to (see SidebarProvider's
 // `setOpen`), so the very first SSR paint of this wrapper already reflects
 // the user's last choice instead of always assuming "expanded". This is
