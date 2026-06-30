@@ -21,13 +21,10 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UnfoldMoreIcon,
-  SparklesIcon,
-  CheckmarkBadgeIcon,
-  CreditCardIcon,
-  NotificationIcon,
   LogoutIcon,
 } from "@hugeicons/core-free-icons";
 import {SignOutButton} from "@clerk/astro/react";
+import {GetInitials} from "@components/lib/utils.ts";
 
 export function NavUser({ user }: { user: any }) {
   const { isMobile } = useSidebar();
@@ -43,14 +40,14 @@ export function NavUser({ user }: { user: any }) {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.imageUrl} alt={user.id} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">{GetInitials(user.firstName, user.lastName)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
                   {user.firstName} {user.lastName}
                 </span>
                 <span className="truncate text-xs">
-                  {user.emailAddresses[0]}
+                  {user.emailAddresses[0].emailAddress}
                 </span>
               </div>
               <HugeiconsIcon
@@ -70,7 +67,7 @@ export function NavUser({ user }: { user: any }) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.imageUrl} alt={user.firstName} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{GetInitials(user.firstName, user.lastName)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.firstName} {user.lastName}</span>

@@ -61,7 +61,7 @@ export function RedemptionForm({ id }: RedemptionFormProps) {
       // Artificial delay for better UX
       await new Promise((resolve) => setTimeout(resolve, 200));
 
-      const response = await fetch("/api/contact-us", {
+      const response = await fetch("/api/redemption", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -209,7 +209,7 @@ export function RedemptionForm({ id }: RedemptionFormProps) {
             id={`${id}-redeem-code`}
             type="redeem-code"
             aria-label="redeem-cde"
-            placeholder="e.g. RARE-QES12-IOPW4"
+            placeholder="e.g. RARE-QQQQ3UU1"
             {...register("redeemCode")}
             aria-invalid={!!errors.redeemCode}
             className="mt-1"
@@ -226,9 +226,7 @@ export function RedemptionForm({ id }: RedemptionFormProps) {
           <Alert className="mt-6 max-w-md border-green-200 bg-green-50 text-green-900 dark:border-green-900 dark:bg-green-950 dark:text-amber-50">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Your lifetime licence key!</AlertTitle>
-            {/*TODO:Add a copy component for the key*/}
             <AlertDescription className="whitespace-nowrap">
-              RARE-XAS323-AD0A0-ADASD-BOOKS
               {error}
               <p className="text-xs">
                 The code has also been sent to your email address
@@ -254,10 +252,10 @@ export function RedemptionForm({ id }: RedemptionFormProps) {
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {status || "Redeeming..."}
+              {status || "Creating account & redeeming..."}
             </>
           ) : (
-            "Redeem lifetime license"
+            "Create Account & Redeem"
           )}
         </Button>
       </form>
