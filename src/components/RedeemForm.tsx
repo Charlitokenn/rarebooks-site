@@ -8,14 +8,14 @@ import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert.tsx";
 import { Loader2, AlertCircle } from "lucide-react";
-import { normalizeEmail } from "@components/lib/utils.ts";
+import { NormalizeEmail } from "@components/lib/utils.ts";
 
 const formSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z
     .email("Please enter a valid email address")
-    .transform(normalizeEmail),
+    .transform(NormalizeEmail),
   password: z
     .string()
     .min(8, "8 characters password required")
