@@ -85,7 +85,7 @@ export default defineConfig({
         },
       ],
       logo: {
-        src: "/logo.png",
+        src: "./src/assets/logo.png",
         replacesTitle: false,
       },
       customCss: [
