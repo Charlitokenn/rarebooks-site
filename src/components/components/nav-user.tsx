@@ -43,10 +43,10 @@ export function NavUser({ userDetails }: { userDetails: any }) {
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {userDetails.fullName}
+                  {userDetails.firstName} {userDetails.lastName}
                 </span>
                 <span className="truncate text-xs">
-                  {userDetails.primaryEmailAddress}
+                  {userDetails.emailAddresses[0].emailAddress}
                 </span>
               </div>
               <HugeiconsIcon
