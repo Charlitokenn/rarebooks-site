@@ -333,15 +333,6 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
             )}
           </Button>
         </form>
-        <div
-            id="turnstile-container"
-            className="cf-turnstile mt-1"
-            data-sitekey="0x4AAAAAADq5yBe8MOqSJN7v"
-            data-theme="light"
-            data-size="flexible"
-            data-callback="onTurnstileSuccess"
-            data-error-callback="onTurnstileError"
-        ></div>
       </div>
   );
 }
