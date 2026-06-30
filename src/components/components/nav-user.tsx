@@ -38,15 +38,15 @@ export function NavUser({ userDetails }: { userDetails: any }) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={userDetails.image_Url} alt={userDetails.id} />
-                <AvatarFallback className="rounded-lg">{GetInitials(userDetails.first_name, userDetails.last_name)}</AvatarFallback>
+                <AvatarImage src={userDetails.imageUrl} alt={userDetails.id} />
+                <AvatarFallback className="rounded-lg">{GetInitials(userDetails.firstName, userDetails.lastName)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {userDetails.full_name}
+                  {userDetails.fullName}
                 </span>
                 <span className="truncate text-xs">
-                  {userDetails.emailAddresses[0].emailAddress}
+                  {userDetails.primaryEmailAddress}
                 </span>
               </div>
               <HugeiconsIcon
