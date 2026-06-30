@@ -88,6 +88,7 @@ export default defineConfig({
         src: "./src/assets/logo.png",
         replacesTitle: false,
       },
+      favicon: "/logo.png",
       customCss: [
         // Path to your Tailwind base styles:
         "./src/styles/global.css",
