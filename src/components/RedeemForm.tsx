@@ -22,8 +22,8 @@ const formSchema = z.object({
     .max(8, "8 characters password required"),
   redeemCode: z
     .string()
-    .min(16, "Paste redeem code from Appsumo")
-    .max(16, "Paste redeem code from Appsumo"),
+    .min(13, "Paste redeem code from Appsumo")
+    .max(13, "Paste redeem code from Appsumo"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
