@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:remote": "wrangler dev --remote",
+    "check" : "astro check",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",

@@ -23,7 +23,6 @@ import {
   UnfoldMoreIcon,
   LogoutIcon,
 } from "@hugeicons/core-free-icons";
-import {SignOutButton} from "@clerk/astro/react";
 import {GetInitials} from "@components/lib/utils.ts";
 
 export function NavUser({ userDetails }: { userDetails: any }) {
@@ -75,12 +74,9 @@ export function NavUser({ userDetails }: { userDetails: any }) {
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => console.log("Profile")}>
-              <SignOutButton>
+            <DropdownMenuItem onClick={() => console.log("signed out")}>
                 <HugeiconsIcon icon={LogoutIcon} strokeWidth={2} />
                 Log out
-              </SignOutButton>
-
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
