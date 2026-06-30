@@ -16,6 +16,7 @@ import { Show, SignIn, SignUp } from '@clerk/astro/components'
 
 import { ClientPortalShell, type Crumb } from "../components/components/clientPortalShell.tsx";
 import React from "react";
+import { ClientRouter } from 'astro:transitions';
 
 const path = Astro.url.pathname;
 const segments = path.split('/').filter(Boolean);
@@ -31,8 +32,7 @@ const autoCrumbs = segments.map((seg, i) => {
 // Use autoCrumbs as the default, allow pages to override via prop
 const { breadcrumbs = autoCrumbs } = Astro.props;
 
-const userDetails = Astro.locals.currentUser()
-console.log(userDetails)
+const userDetails = await Astro.locals.currentUser()
 ---
 
 <!doctype html>
@@ -44,15 +44,17 @@ console.log(userDetails)
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <title>{title}</title>
+    <ClientRouter />
 </head>
 <body class="min-h-screen overflow-x-hidden">
-    <Show when="signed-out">
-        <div class="flex h-screen items-center justify-center">
-            <SignIn />
-        </div>
-    </Show>
     <Show when="signed-in">
-        <ClientPortalShell breadcrumbs={breadcrumbs} path={path} user={userDetails} client:only="react">
+        <ClientPortalShell
+                breadcrumbs={breadcrumbs}
+                path={path}
+                userDetails={userDetails}
+                client:load
+                transition:persist
+        >
             <slot />
         </ClientPortalShell>
     </Show>

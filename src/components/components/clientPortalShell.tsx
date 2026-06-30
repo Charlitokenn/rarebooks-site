@@ -33,10 +33,12 @@ export const ClientPortalShell = ({
   userDetails: any;
   breadcrumbs?: Crumb[];
 }) => {
+
   return (
     <TooltipProvider>
       <SidebarProvider>
-        <AppSidebar path={path} user={userDetails} />
+        // @ts-ignore
+        <AppSidebar path={path} userDetails={userDetails} />
         <SidebarInset>
           <header className="flex h-12 shrink-0 items-center transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
             <div className="flex w-full items-center justify-between pr-5 border-b border-b-muted py-2">

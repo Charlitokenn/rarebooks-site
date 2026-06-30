@@ -5,6 +5,6 @@ import { SignUp } from '@clerk/astro/components'
 
 <Layout>
     <main class="flex flex-col items-center justify-center gap-4 h-screen">
-        <SignUp />
+        <SignUp signInUrl="/auth/sign-in" forceRedirectUrl="/dashboard" />
     </main>
 </Layout>

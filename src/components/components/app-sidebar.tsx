@@ -40,11 +40,11 @@ const data = {
 
 interface Props {
   path: string;
-  user: any;
+  userDetails: any;
   props: React.ComponentProps<typeof Sidebar>;
 }
 
-export function AppSidebar({ path, user, ...props }: Props) {
+export function AppSidebar({ path, userDetails, ...props }: Props) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="font-bold">
@@ -54,7 +54,7 @@ export function AppSidebar({ path, user, ...props }: Props) {
         <NavMain items={data.navMain} pathname={path} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser userDetails={userDetails} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

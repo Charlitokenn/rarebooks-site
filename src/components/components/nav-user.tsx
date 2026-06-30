@@ -26,7 +26,7 @@ import {
 import {SignOutButton} from "@clerk/astro/react";
 import {GetInitials} from "@components/lib/utils.ts";
 
-export function NavUser({ user }: { user: any }) {
+export function NavUser({ userDetails }: { userDetails: any }) {
   const { isMobile } = useSidebar();
 
   return (
@@ -39,15 +39,15 @@ export function NavUser({ user }: { user: any }) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.imageUrl} alt={user.id} />
-                <AvatarFallback className="rounded-lg">{GetInitials(user.firstName, user.lastName)}</AvatarFallback>
+                <AvatarImage src={userDetails.imageUrl} alt={userDetails.id} />
+                <AvatarFallback className="rounded-lg">{GetInitials(userDetails.firstName, userDetails.lastName)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {user.firstName} {user.lastName}
+                  {userDetails.firstName} {userDetails.lastName}
                 </span>
                 <span className="truncate text-xs">
-                  {user.emailAddresses[0].emailAddress}
+                  {userDetails.emailAddresses[0].emailAddress}
                 </span>
               </div>
               <HugeiconsIcon
@@ -66,12 +66,12 @@ export function NavUser({ user }: { user: any }) {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.imageUrl} alt={user.firstName} />
-                  <AvatarFallback className="rounded-lg">{GetInitials(user.firstName, user.lastName)}</AvatarFallback>
+                  <AvatarImage src={userDetails.imageUrl} alt={userDetails.firstName} />
+                  <AvatarFallback className="rounded-lg">{GetInitials(userDetails.firstName, userDetails.lastName)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.firstName} {user.lastName}</span>
-                  <span className="truncate text-xs">{user.emailAddresses[0]}</span>
+                  <span className="truncate font-medium">{userDetails.firstName} {userDetails.lastName}</span>
+                  <span className="truncate text-xs">{userDetails.emailAddresses[0]}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
