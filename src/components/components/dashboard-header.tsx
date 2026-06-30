@@ -12,7 +12,7 @@ import { Button } from "@components/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { SidebarLeftIcon } from "@hugeicons/core-free-icons";
 import { Home } from "lucide-react";
-import { requestSidebarToggle } from "@stores/sidebar";
+import { requestSidebarToggle } from "../../stores/sidebar";
 
 export interface Crumb {
   label: string;
