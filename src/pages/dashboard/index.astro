@@ -4,7 +4,7 @@ import { PageHero } from "../../components/components/pageHero.tsx"
 import { GetGreetingProps} from "@components/lib/utils.ts";
 const userDetails = await Astro.locals.currentUser();
 
-const { title, subtitle } = getGreetingProps(userDetails?.firstName);
+const { title, subtitle } = GetGreetingProps(userDetails?.firstName!);
 ---
 
 <PortalLayout>

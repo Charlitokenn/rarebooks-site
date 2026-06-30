@@ -33,7 +33,7 @@ interface GreetingProps {
   subtitle: string;
 }
 
-export function GetGreetingProps(name?: string): GreetingProps {
+export function GetGreetingProps(name?: string | null | undefined): GreetingProps {
   const hour = new Date().getHours();
   const timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
   const displayName = name?.trim() || "there";
