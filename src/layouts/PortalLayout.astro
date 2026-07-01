@@ -48,7 +48,7 @@ const sidebarStateCookie = Astro.cookies.get(SIDEBAR_COOKIE_NAME)?.value;
 const sidebarOpen = sidebarStateCookie !== "false";
 const sidebarState = sidebarOpen ? "expanded" : "collapsed";
 
-// Create a secure mode for tawk.to using hmac
+// Create hmac for tawk.to
 async function hmacSha256(email: string, secret: string): Promise<string> {
     const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
     const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(email));
@@ -57,7 +57,6 @@ async function hmacSha256(email: string, secret: string): Promise<string> {
 
 const tawkKey = env.TAWK_API_KEY;
 const hash = userId ? await hmacSha256(userId, tawkKey) : "";
-console.log("Details:",JSON.stringify({hash,firstName, email, tawkKey}))
 ---
 
 <!doctype html>
@@ -161,38 +160,38 @@ console.log("Details:",JSON.stringify({hash,firstName, email, tawkKey}))
             });
         </script>
     </Show>
-    <!--Start of Tawk.to Script-->
     <!--TODO: Fix to push client full name and email to the support dashboard-->
-    <script define:vars={{ firstName, email, hash, userId }} type="text/javascript">
-        window.Tawk_API = window.Tawk_API || {};
-
-        // Set visitor info BEFORE the widget script loads
-        window.Tawk_API.visitor = {
-            name  : firstName || "",
-            email : email || "",
-            hash  : hash || ""
-        };
-
-        // Optional: login the user to retrieve their conversation history
-        // Only call this if you have a userId and hash
-        window.Tawk_API.onLoad = function () {
-            if (userId && hash) {
-                window.Tawk_API.login({
-                    hash   : hash,
-                    userId : userId,
-                    name   : firstName || "",
-                    email  : email || ""
-                }, function (error) {
-                    if (error) {
-                        console.error("Tawk.to login error:", error);
-                    }
-                });
-            }
-        };
-
-        var Tawk_LoadStart = new Date();
-
+    <!--Start of Tawk.to Script-->
+    <script is:inline data-astro-rerun define:vars={{ firstName, email, hash, userId }} type="text/javascript">
         (function () {
+            // Prevent double-initialization on the same page load
+            if (window.__tawkInitialized) return;
+            window.__tawkInitialized = true;
+
+            window.Tawk_API = window.Tawk_API || {};
+
+            // Set visitor BEFORE the widget script loads
+            window.Tawk_API.visitor = {
+                name  : firstName || "",
+                email : email || "",
+                hash  : hash || ""
+            };
+
+            // Optional: login for conversation history retrieval
+            window.Tawk_API.onLoad = function () {
+                if (userId && hash) {
+                    window.Tawk_API.login({
+                        hash   : hash,
+                        userId : userId,
+                        name   : firstName || "",
+                        email  : email || ""
+                    }, function (error) {
+                        if (error) console.error("Tawk.to login error:", error);
+                    });
+                }
+            };
+
+            // Inject the Tawk.to embed script
             var s1 = document.createElement("script"),
                 s0 = document.getElementsByTagName("script")[0];
 
