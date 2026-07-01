@@ -12,6 +12,10 @@ database_id = "fa09e96d-eb57-4425-95b3-34edc6a32d6e"
 binding = "SESSION"
 id = "c1344d3efc2a437dbd016ecc56bfb550"
 
+[assets]
+directory = "./dist/client"
+binding = "ASSETS"
+
 [observability]
 enabled = false
 head_sampling_rate = 1
