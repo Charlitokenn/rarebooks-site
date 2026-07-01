@@ -37,7 +37,7 @@ const { breadcrumbs = autoCrumbs } = Astro.props;
 // unresolved Promise getting serialized into the client island below.
 const userDetails = await Astro.locals.currentUser();
 const firstName = userDetails?.firstName;
-const email = userDetails?.emailAddresses[0].emailAddress;
+const email = userDetails?.emailAddresses?.[0]?.emailAddress ?? "";
 // Read the same cookie the sidebar itself writes to (see SidebarProvider's
 // `setOpen`), so the very first SSR paint of this wrapper already reflects
 // the user's last choice instead of always assuming "expanded". This is
@@ -53,7 +53,7 @@ async function hmacSha256(email: string, secret: string): Promise<string> {
     return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
-const hash = await hmacSha256(email, AppConfig.tawk.siteKey);
+const hash = email ? await hmacSha256(email, AppConfig.tawk.siteKey) : "";
 ---
 
 <!doctype html>
@@ -158,7 +158,7 @@ const hash = await hmacSha256(email, AppConfig.tawk.siteKey);
         </script>
     </Show>
     <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
+    <script define:vars={{ firstName, email, hash }} type="text/javascript">
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
             Tawk_API.visitor = {
                 name : firstName,
