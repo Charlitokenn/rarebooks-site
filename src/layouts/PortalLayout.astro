@@ -159,29 +159,34 @@ const hash = email ? await hmacSha256(email, AppConfig.tawk.siteKey) : "";
         </script>
     </Show>
     <!--Start of Tawk.to Script-->
-    //TODO: Fix to push client full name and email to the support dashboard
+    <!--TODO: Fix to push client full name and email to the support dashboard-->
     <script define:vars={{ firstName, email, hash, userId }} type="text/javascript">
-            var Tawk_API=Tawk_API||{};
-                Tawk_API.visitor = {
-                    id: userId || "",
-                    name : firstName || "",
-                    email : email || "",
-                    hash : hash
-                };
+        var Tawk_API = Tawk_API || {};
 
-            var Tawk_LoadStart=new Date();
+        Tawk_API.visitor = {
+            id: userId || "",
+            name: firstName || "",
+            email: email || "",
+            hash: hash
+        };
 
-            (function () {
-                var s1 = document.createElement("script"),
-                    s0 = document.getElementsByTagName("script")[0];
+        Tawk_API.onLoad = function () {
+            Tawk_API.setAttributes(Tawk_API.visitor);
+        };
 
-                s1.async = true;
-                s1.src = "https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2";
-                s1.charset = "UTF-8";
-                s1.setAttribute("crossorigin", "*");
+        var Tawk_LoadStart = new Date();
 
-                s0.parentNode.insertBefore(s1, s0);
-            })();
+        (function () {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
+
+            s1.async = true;
+            s1.src = "https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2";
+            s1.charset = "UTF-8";
+            s1.setAttribute("crossorigin", "*");
+
+            s0.parentNode.insertBefore(s1, s0);
+        })();
     </script>
     <!--End of Tawk.to Script-->
 </body>
