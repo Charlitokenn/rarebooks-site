@@ -15,7 +15,7 @@ async function hmacSha256(email: string, secret: string): Promise<string> {
 const tawkKey = env.TAWK_API_KEY;
 const hash = userId ? await hmacSha256(userId, tawkKey) : "";
 ---
-
+<!--TODO: Ensure this thing works and picks user's details to tawk-->
 <script is:inline define:vars={{ firstName, email, hash, userId }}>
 
     console.log("[Tawk Debug] Script executing. firstName:", firstName, "userId:", userId, "hash:", hash ? "present" : "missing");

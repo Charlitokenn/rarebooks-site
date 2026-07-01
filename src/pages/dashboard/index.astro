@@ -2,11 +2,24 @@
 import PortalLayout from "../../layouts/PortalLayout.astro";
 import { PageHero } from "../../components/components/pageHero.tsx"
 import { GetGreetingProps} from "@components/lib/utils.ts";
-const userDetails = await Astro.locals.currentUser();
+import { LicenseDashboard } from "../../components/dashboard/LicenseDashboard";
 
+const userDetails = await Astro.locals.currentUser();
+const countryCode = (Astro.locals as any)?.countryCode || "US";
+
+const email = userDetails?.emailAddresses?.[0]?.emailAddress || "";
+const firstName = userDetails?.firstName;
+const lastName = userDetails?.lastName;
+const fullName = [firstName, lastName].filter(Boolean).join(" ") || email;
 const { title, subtitle } = GetGreetingProps(userDetails?.firstName!);
 ---
 
 <PortalLayout>
     <PageHero type="greeting" title={title} subtitle={subtitle} client:load/>
+    <LicenseDashboard
+            client:load
+            userEmail={email}
+            userName={fullName}
+            countryCode={countryCode}
+    />
 </PortalLayout>
