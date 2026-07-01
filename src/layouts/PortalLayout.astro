@@ -19,6 +19,7 @@ import { Show } from '@clerk/astro/components'
 import { PersistedSidebarShell } from "../components/components/persisted-sidebar.tsx";
 import { DashboardHeader, type Crumb } from "../components/components/dashboard-header.tsx";
 import { SIDEBAR_COOKIE_NAME } from "../stores/sidebar";
+import TawkWidget from "@components/TawkWidget.astro";
 
 const path = Astro.url.pathname;
 const segments = path.split('/').filter(Boolean);
@@ -47,16 +48,6 @@ const userId = userDetails?.id ?? "";
 const sidebarStateCookie = Astro.cookies.get(SIDEBAR_COOKIE_NAME)?.value;
 const sidebarOpen = sidebarStateCookie !== "false";
 const sidebarState = sidebarOpen ? "expanded" : "collapsed";
-
-// Create hmac for tawk.to
-async function hmacSha256(email: string, secret: string): Promise<string> {
-    const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-    const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(email));
-    return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, "0")).join("");
-}
-
-const tawkKey = env.TAWK_API_KEY;
-const hash = userId ? await hmacSha256(userId, tawkKey) : "";
 ---
 
 <!doctype html>
@@ -160,74 +151,6 @@ const hash = userId ? await hmacSha256(userId, tawkKey) : "";
             });
         </script>
     </Show>
-    <!--TODO: Fix to push client full name and email to the support dashboard-->
-    <!--Start of Tawk.to Script-->
-    <script is:inline define:vars={{ firstName, email, hash, userId }}>
-        (function () {
-            // ── 1. Always set visitor info (must exist before embed script loads) ──
-            window.Tawk_API = window.Tawk_API || {};
-
-            window.Tawk_API.visitor = {
-                name  : firstName || "",
-                email : email || "",
-                hash  : hash || ""
-            };
-
-            // ── 2. Check if widget DOM already exists (layout persisted) ──
-            var widgetExists = !!(
-                document.getElementById('tawkto-chat-widget') ||
-                document.querySelector('.tawk-min-container') ||
-                document.querySelector('iframe[src*="tawk.to"]')
-            );
-
-            if (widgetExists) {
-                // Widget survived the navigation — just update attributes if needed
-                if (userId && hash && window.Tawk_API.login) {
-                    window.Tawk_API.login({
-                        hash   : hash,
-                        userId : userId,
-                        name   : firstName || "",
-                        email  : email || ""
-                    }, function (error) {
-                        if (error) console.error("Tawk.to login error:", error);
-                    });
-                }
-                return;
-            }
-
-            // ── 3. Widget was destroyed (cross-layout nav) — force re-init ──
-            // Tawk's embed script checks these globals to avoid dupes.
-            // We must clear them to allow a fresh init when the layout is recreated.
-            delete window.Tawk_LoadStart;
-
-            // Set up the login callback BEFORE injecting the embed script
-            window.Tawk_API.onLoad = function () {
-                if (userId && hash) {
-                    window.Tawk_API.login({
-                        hash   : hash,
-                        userId : userId,
-                        name   : firstName || "",
-                        email  : email || ""
-                    }, function (error) {
-                        if (error) console.error("Tawk.to login error:", error);
-                    });
-                }
-            };
-
-            // ── 4. Inject the embed script only if not already in DOM ──
-            if (!document.querySelector('script[src*="embed.tawk.to"]')) {
-                var s1 = document.createElement("script"),
-                    s0 = document.getElementsByTagName("script")[0];
-
-                s1.async = true;
-                s1.src = "https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2";
-                s1.charset = "UTF-8";
-                s1.setAttribute("crossorigin", "*");
-
-                s0.parentNode.insertBefore(s1, s0);
-            }
-        })();
-    </script>
-    <!--End of Tawk.to Script-->
+    <TawkWidget />
 </body>
 </html>
