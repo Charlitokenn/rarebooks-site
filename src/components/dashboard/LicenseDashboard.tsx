@@ -69,7 +69,7 @@ export function LicenseDashboard({
                 setError(null);
 
                 const response = await fetch(
-                    `/api/license-info?email=${encodeURIComponent(userEmail)}`
+                    `/api/license-info`
                 );
 
                 if (!response.ok) {

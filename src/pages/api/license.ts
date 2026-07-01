@@ -271,11 +271,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
           firstName,
           lastName,
           emailAddress: [normalizedEmail],
-          // Generate a secure 8-character password using the Web Crypto API
-          // (globally available in the Cloudflare Worker runtime, no import needed).
           password: userPassword,
-          // Store the trial license key and expiry in public metadata so it is
-          // readable from Clerk's frontend SDK without a backend call.
+          privateMetadata: {
+            license: licenseKey
+          }
         });
 
         const html = await render(

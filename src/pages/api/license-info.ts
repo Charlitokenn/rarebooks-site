@@ -1,22 +1,13 @@
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
-import { NormalizeEmail } from "../../components/lib/utils";
+import { AppConfig } from "../../constants";
 
 export const prerender = false;
 
 const jsonHeaders = { "Content-Type": "application/json" };
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ locals }) => {
   try {
-    const email = url.searchParams.get("email");
-    if (!email) {
-      return new Response(
-          JSON.stringify({ message: "Email parameter is required" }),
-          { status: 400, headers: jsonHeaders }
-      );
-    }
-
-    const normalizedEmail = NormalizeEmail(email);
     const apiKey = env.KEYMINT_API_KEY;
     if (!apiKey) {
       return new Response(
@@ -25,14 +16,29 @@ export const GET: APIRoute = async ({ url }) => {
       );
     }
 
+    const { isAuthenticated } = locals.auth()
+    if (!isAuthenticated) {
+      return new Response("Unauthorized", { status: 401});
+    }
+
+    const user = await locals.currentUser();
+    if(!user){
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const kmLicence = user.privateMetadata.license
+    if(typeof kmLicence !== "string" || !kmLicence) {
+      return new Response(JSON.stringify({ error: "No license on file"}), { status: 400 });
+    }
+
+    const fetchUrl = `https://api.keymint.dev/key?productId=${encodeURIComponent(AppConfig.keymint.productId)}&licenseKey=${encodeURIComponent(kmLicence)}`
+
     // Fetch customer licenses from KeyMint by email
-    const kmResponse = await fetch(
-        `https://api.keymint.dev/customer/license?email=${encodeURIComponent(normalizedEmail)}`,
+    const kmResponse = await fetch( fetchUrl,
         {
           method: "GET",
           headers: {
             Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
           },
         }
     );
@@ -49,7 +55,7 @@ export const GET: APIRoute = async ({ url }) => {
       if (kmResponse.status === 404) {
         return new Response(
             JSON.stringify({
-              message: "No license found for this account",
+              message: "No license found",
               data: null,
               code: 1,
             }),
