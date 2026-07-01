@@ -1,4 +1,4 @@
-import * as React from "import * as React from "react";
+import * as React from "react";
 import { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
 import { Card, CardContent } from "@components/components/ui/card";
