@@ -36,6 +36,8 @@ const { breadcrumbs = autoCrumbs } = Astro.props;
 // `currentUser()` is async — must be awaited, or this becomes an
 // unresolved Promise getting serialized into the client island below.
 const userDetails = await Astro.locals.currentUser();
+const firstName = userDetails?.firstName;
+const email = userDetails?.emailAddresses[0].emailAddress;
 // Read the same cookie the sidebar itself writes to (see SidebarProvider's
 // `setOpen`), so the very first SSR paint of this wrapper already reflects
 // the user's last choice instead of always assuming "expanded". This is
@@ -43,6 +45,15 @@ const userDetails = await Astro.locals.currentUser();
 const sidebarStateCookie = Astro.cookies.get(SIDEBAR_COOKIE_NAME)?.value;
 const sidebarOpen = sidebarStateCookie !== "false";
 const sidebarState = sidebarOpen ? "expanded" : "collapsed";
+
+// Create a secure mode for tawk.to using hmac
+async function hmacSha256(email: string, secret: string): Promise<string> {
+    const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+    const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(email));
+    return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+const hash = await hmacSha256(email, AppConfig.tawk.siteKey);
 ---
 
 <!doctype html>
@@ -150,9 +161,10 @@ const sidebarState = sidebarOpen ? "expanded" : "collapsed";
     <script type="text/javascript">
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
             Tawk_API.visitor = {
-                name : userDetails.firstName,
-                email : userDetails.emailAddresses[0].emailAddress
-                };
+                name : firstName,
+                email : email,
+                hash: hash
+            };
         (function(){
             var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
             s1.async=true;
