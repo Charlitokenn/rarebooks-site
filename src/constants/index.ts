@@ -27,9 +27,6 @@ export const AppConfig = {
   keymint: {
     productId: "5dc2d14443ace8f4dcf212",
   },
-  tawk: {
-    siteKey: "513007cfcc913c6d009462be4f41936db92f2918"
-  },
   featuredClients: ["TAJ Home Appliances", "Powerlink Innovations"],
   pricingPlans,
 };

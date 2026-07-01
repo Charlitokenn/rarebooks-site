@@ -1,5 +1,6 @@
 ---
 import { AppConfig } from "../constants";
+import { env } from "cloudflare:workers";
 interface Props {
     title?: string
     description?: string
@@ -54,7 +55,9 @@ async function hmacSha256(email: string, secret: string): Promise<string> {
     return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
-const hash = email ? await hmacSha256(email, AppConfig.tawk.siteKey) : "";
+const tawkKey = env.TAWK_API_KEY;
+const hash = userId ? await hmacSha256(userId, tawkKey) : "";
+console.log("Details:",JSON.stringify({hash,firstName, email, tawkKey}))
 ---
 
 <!doctype html>
@@ -161,17 +164,30 @@ const hash = email ? await hmacSha256(email, AppConfig.tawk.siteKey) : "";
     <!--Start of Tawk.to Script-->
     <!--TODO: Fix to push client full name and email to the support dashboard-->
     <script define:vars={{ firstName, email, hash, userId }} type="text/javascript">
-        var Tawk_API = Tawk_API || {};
+        window.Tawk_API = window.Tawk_API || {};
 
-        Tawk_API.visitor = {
-            id: userId || "",
-            name: firstName || "",
-            email: email || "",
-            hash: hash
+        // Set visitor info BEFORE the widget script loads
+        window.Tawk_API.visitor = {
+            name  : firstName || "",
+            email : email || "",
+            hash  : hash || ""
         };
 
-        Tawk_API.onLoad = function () {
-            Tawk_API.setAttributes(Tawk_API.visitor);
+        // Optional: login the user to retrieve their conversation history
+        // Only call this if you have a userId and hash
+        window.Tawk_API.onLoad = function () {
+            if (userId && hash) {
+                window.Tawk_API.login({
+                    hash   : hash,
+                    userId : userId,
+                    name   : firstName || "",
+                    email  : email || ""
+                }, function (error) {
+                    if (error) {
+                        console.error("Tawk.to login error:", error);
+                    }
+                });
+            }
         };
 
         var Tawk_LoadStart = new Date();
