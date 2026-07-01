@@ -162,7 +162,7 @@ const hash = userId ? await hmacSha256(userId, tawkKey) : "";
     </Show>
     <!--TODO: Fix to push client full name and email to the support dashboard-->
     <!--Start of Tawk.to Script-->
-    <script is:inline data-astro-rerun define:vars={{ firstName, email, hash, userId }} type="text/javascript">
+    <script is:inline data-astro-rerun define:vars={{ firstName, email, hash, userId }} >
         (function () {
             // Prevent double-initialization on the same page load
             if (window.__tawkInitialized) return;
