@@ -5,7 +5,6 @@ const firstName = userDetails?.firstName;
 const email = userDetails?.emailAddresses?.[0]?.emailAddress ?? "";
 const userId = userDetails?.id ?? "";
 
-// Create hmac for tawk.to
 async function hmacSha256(email: string, secret: string): Promise<string> {
     const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
     const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(email));
@@ -15,88 +14,61 @@ async function hmacSha256(email: string, secret: string): Promise<string> {
 const tawkKey = env.TAWK_API_KEY;
 const hash = userId ? await hmacSha256(userId, tawkKey) : "";
 ---
-<!--TODO: Ensure this thing works and picks user's details to tawk-->
+
+<!--
+  This div is the ONLY thing Astro's ClientRouter is told to keep alive
+  across navigations. Tawk's embed script appends its own container/iframe
+  directly to <body>, which would normally get wiped on every swap —
+  we relocate those nodes into this persisted div right after they appear.
+-->
+<div id="tawk-persist-root" transition:persist="tawk-widget" style="display:contents"></div>
+
 <script is:inline define:vars={{ firstName, email, hash, userId }}>
-
-    console.log("[Tawk Debug] Script executing. firstName:", firstName, "userId:", userId, "hash:", hash ? "present" : "missing");
-
     (function () {
-        // ── 1. Always set visitor info (must exist before embed script loads) ──
+        var root = document.getElementById("tawk-persist-root");
+
+        function relocateTawkNodes() {
+            document.querySelectorAll('body > iframe[title*="chat" i], body > div[id^="tawk"]').forEach(function (node) {
+                if (root && node.parentElement !== root) root.appendChild(node);
+            });
+        }
+
         window.Tawk_API = window.Tawk_API || {};
+        window.Tawk_API.visitor = { name: firstName || "", email: email || "", hash: hash || "" };
 
-        window.Tawk_API.visitor = {
-            name  : firstName || "",
-            email : email || "",
-            hash  : hash || ""
-        };
-
-        // ── 2. Check if widget DOM already exists (layout persisted) ──
-        var widgetExists = !!(
-            document.getElementById('tawkto-chat-widget') ||
-            document.querySelector('.tawk-min-container') ||
-            document.querySelector('iframe[src*="tawk.to"]')
-        );
-
-        if (widgetExists) {
-            // Widget survived the navigation — just update attributes if needed
+        // window (and window.Tawk_API) survives Astro client-side navigation —
+        // only the DOM gets swapped. So only ever load the embed script ONCE.
+        if (window.__tawkInitialized) {
+            relocateTawkNodes();
             if (userId && hash && window.Tawk_API.login) {
-                window.Tawk_API.login({
-                    hash   : hash,
-                    userId : userId,
-                    name   : firstName || "",
-                    email  : email || ""
-                }, function (error) {
-                    if (error) console.error("Tawk.to login error:", error);
-                });
+                window.Tawk_API.login(
+                    { hash: hash, userId: userId, name: firstName || "", email: email || "" },
+                    function (error) { if (error) console.error("Tawk.to login error:", error); }
+                );
             }
             return;
         }
+        window.__tawkInitialized = true;
 
-        // ── 3. Widget was destroyed (cross-layout nav) — force re-init ──
-        // Tawk's embed script checks these globals to avoid dupes.
-        // We must clear them to allow a fresh init when the layout is recreated.
-        delete window.Tawk_LoadStart;
-
-        // Set up the login callback BEFORE injecting the embed script
         window.Tawk_API.onLoad = function () {
-            console.log("[Tawk Debug] Widget loaded");
+            relocateTawkNodes();
             if (userId && hash) {
-                window.Tawk_API.login({
-                    hash   : hash,
-                    userId : userId,
-                    name   : firstName || "",
-                    email  : email || ""
-                }, function (error) {
-                    if (error) console.error("Tawk.to login error:", error);
-                });
+                window.Tawk_API.login(
+                    { hash: hash, userId: userId, name: firstName || "", email: email || "" },
+                    function (error) { if (error) console.error("Tawk.to login error:", error); }
+                );
             }
         };
 
-        // ── 4. Inject the embed script only if not already in DOM ──
-        if (!document.querySelector('script[src*="embed.tawk.to"]')) {
-            var s1 = document.createElement("script"),
-                s0 = document.getElementsByTagName("script")[0];
+        // Required by Tawk's embed script — official snippet always sets this.
+        window.Tawk_LoadStart = new Date();
 
-            s1.async = true;
-            s1.src = "https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2";
-            s1.charset = "UTF-8";
-            s1.setAttribute("crossorigin", "*");
-
-            s0.parentNode.insertBefore(s1, s0);
-        }
+        var s1 = document.createElement("script"),
+            s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = "https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2";
+        s1.charset = "UTF-8";
+        s1.setAttribute("crossorigin", "*");
+        s0.parentNode.insertBefore(s1, s0);
     })();
 </script>
-
-<!--Start of Tawk.to Script-->
-<!--<script type="text/javascript">-->
-<!--    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();-->
-<!--    (function(){-->
-<!--        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];-->
-<!--        s1.async=true;-->
-<!--        s1.src='https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2';-->
-<!--        s1.charset='UTF-8';-->
-<!--        s1.setAttribute('crossorigin','*');-->
-<!--        s0.parentNode.insertBefore(s1,s0);-->
-<!--    })();-->
-<!--</script>-->
-<!--End of Tawk.to Script-->
