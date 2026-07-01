@@ -160,7 +160,7 @@ const hash = email ? await hmacSha256(email, AppConfig.tawk.siteKey) : "";
     <!--Start of Tawk.to Script-->
     <script define:vars={{ firstName, email, hash }} type="text/javascript">
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-            Tawk_API.visitor = {
+            Tawk_API.setAttributes = {
                 name : firstName,
                 email : email,
                 hash: hash
