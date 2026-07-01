@@ -38,6 +38,7 @@ const { breadcrumbs = autoCrumbs } = Astro.props;
 const userDetails = await Astro.locals.currentUser();
 const firstName = userDetails?.firstName;
 const email = userDetails?.emailAddresses?.[0]?.emailAddress ?? "";
+const userId = userDetails?.id ?? "";
 // Read the same cookie the sidebar itself writes to (see SidebarProvider's
 // `setOpen`), so the very first SSR paint of this wrapper already reflects
 // the user's last choice instead of always assuming "expanded". This is
@@ -159,35 +160,28 @@ const hash = email ? await hmacSha256(email, AppConfig.tawk.siteKey) : "";
     </Show>
     <!--Start of Tawk.to Script-->
     //TODO: Fix to push client full name and email to the support dashboard
-    <script define:vars={{ firstName, email, hash }} type="text/javascript">
-        var Tawk_API = Tawk_API || {};
-        var Tawk_LoadStart = new Date();
+    <script define:vars={{ firstName, email, hash, userId }} type="text/javascript">
+            var Tawk_API=Tawk_API||{};
+                Tawk_API.visitor = {
+                    id: userId || "",
+                    name : firstName || "",
+                    email : email || "",
+                    hash : hash
+                };
 
-        Tawk_API.onLoad = function () {
-            Tawk_API.setAttributes(
-                {
-                    name: firstName || "",
-                    email: email,
-                    hash: hash
-                },
-                function (error) {
-                    if (error) {
-                        console.error(error);
-                    }
-                }
-            );
-        };
+            var Tawk_LoadStart=new Date();
 
-        (function () {
-            var s1 = document.createElement("script"),
-                s0 = document.getElementsByTagName("script")[0];
+            (function () {
+                var s1 = document.createElement("script"),
+                    s0 = document.getElementsByTagName("script")[0];
 
-            s1.async = true;
-            s1.src = "https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2";
-            s1.charset = "UTF-8";
-            s1.setAttribute("crossorigin", "*");
-            s0.parentNode.insertBefore(s1, s0);
-        })();
+                s1.async = true;
+                s1.src = "https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2";
+                s1.charset = "UTF-8";
+                s1.setAttribute("crossorigin", "*");
+
+                s0.parentNode.insertBefore(s1, s0);
+            })();
     </script>
     <!--End of Tawk.to Script-->
 </body>
