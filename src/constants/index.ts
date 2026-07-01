@@ -1,4 +1,6 @@
 import { pricingPlans } from "./pricing.ts";
+import {Cog, LayoutDashboard} from "lucide-react";
+
 
 export const AppConfig = {
   appName: "RareBooks",

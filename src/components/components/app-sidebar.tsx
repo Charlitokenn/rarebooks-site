@@ -13,16 +13,10 @@ import {
   useSidebar,
 } from "@components/components/ui/sidebar";
 import AppLogo from "@components/AppLogo.tsx";
-import {Wallet, LayoutDashboard, Cog} from "lucide-react";
-import { AppConfig } from "../../constants";
+import {LayoutDashboard, Cog} from "lucide-react";
 import { TooltipProvider } from "@components/components/ui/tooltip";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
