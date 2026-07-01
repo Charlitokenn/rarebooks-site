@@ -13,7 +13,7 @@ import {
   useSidebar,
 } from "@components/components/ui/sidebar";
 import AppLogo from "@components/AppLogo.tsx";
-import { Wallet, LayoutDashboard } from "lucide-react";
+import {Wallet, LayoutDashboard, Cog} from "lucide-react";
 import { AppConfig } from "../../constants";
 import { TooltipProvider } from "@components/components/ui/tooltip";
 
@@ -31,9 +31,9 @@ const data = {
       isActive: true,
     },
     {
-      title: "Billing",
-      url: "/dashboard/billing",
-      icon: <Wallet />,
+      title: "Settings",
+      url: "/dashboard/settings",
+      icon: <Cog />,
       isActive: false,
     },
   ],

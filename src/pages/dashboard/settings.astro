@@ -1,8 +1,10 @@
 ---
 import PortalLayout from "../../layouts/PortalLayout.astro";
+import { UserProfile } from '@clerk/astro/components'
 import { PageHero } from "../../components/components/pageHero.tsx"
 ---
 
 <PortalLayout>
-    <PageHero type="hero" title="Billing" client:load/>
+    <PageHero type="hero" title="Settings" client:load/>
+    <UserProfile />
 </PortalLayout>
