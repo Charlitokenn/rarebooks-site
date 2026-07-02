@@ -48,9 +48,10 @@ export function LicenseCard({
     // Determine progress bar color based on percentage
     const getProgressColor = () => {
         if (!lifetimePercent) return "bg-gray-400";
-        if (lifetimePercent > 50) return "bg-green-500";
-        if (lifetimePercent > 25) return "bg-yellow-500";
-        return "bg-red-500";
+        if (lifetimePercent > 90) return "bg-red-500";
+        if (lifetimePercent > 75) return "bg-orange-500";
+        if (lifetimePercent > 50) return "bg-yellow-500";
+        return "bg-gray-500";
     };
 
     return (
@@ -150,7 +151,7 @@ export function LicenseCard({
                                 <span>License Lifetime</span>
                                 <span>{100-lifetimePercent}% remaining</span>
                             </div>
-                            <Progress value={lifetimePercent} className={`h-2 ${getProgressColor()}`}/>
+                            <Progress value={lifetimePercent} className="h-2"/>
                         </div>
                     )}
                 </div>

@@ -68,7 +68,7 @@ export function DeviceManagement({
                         <span>Device Slots</span>
                         <span>{remaining} remaining</span>
                     </div>
-                    <Progress value={usagePercent} className="h-2.5 bg-brand" />
+                    <Progress value={usagePercent} className="h-2.5" />
                 </div>
 
                 {/* Device List */}

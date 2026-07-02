@@ -171,7 +171,7 @@ export function LicenseDashboard({
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 mt-4">
             {error && (
                 <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
                     {error}
