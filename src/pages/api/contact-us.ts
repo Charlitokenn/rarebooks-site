@@ -99,11 +99,10 @@ export const POST: APIRoute = async ({ request }) => {
         replyTo: normalizedEmail,
         subject: `New enquiry from ${firstName} ${lastName}`,
         html: `
-          <h2>New Enquiry</h2>
-          <p><strong>Business:</strong>${business}</p>
-          <p><strong>Name:</strong>${firstName} ${lastName}</p>
-          <p><strong>Email:</strong>${normalizedEmail}</p>
-          <p><strong>Mobile:</strong>${mobile}</p>
+          <p><strong>Business: </strong>${business}</p>
+          <p><strong>Name: </strong>${firstName} ${lastName}</p>
+          <p><strong>Email: </strong>${normalizedEmail}</p>
+          <p><strong>Mobile: </strong>${mobile}</p>
           <hr>
           <p><strong>Message:</strong></p>
           <p>${message}</p>

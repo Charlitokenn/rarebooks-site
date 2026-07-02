@@ -94,6 +94,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         !rawEmail    ||
         !password    ||
         !appsumoCode ||
+        !mobile      ||
         !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail)
     ) {
       return new Response(
