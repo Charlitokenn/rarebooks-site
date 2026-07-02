@@ -27,10 +27,11 @@ export const PageHero = ({
 
 export function getTimeBasedIcon(date: Date = new Date()): JSX.Element {
   const hour = date.getHours();
+  const greeting = hour < 12 ? "Good morning, " : hour < 18 ? "Afternoon, " : "Evening, ";
 
   // 🌙 Night: 19 → 04
   if (hour >= 19 || hour < 5) {
-    return <Moon className="size-5" />;
+    return <Moon className="size-5" />
   }
 
   // 🌅 Sunrise: 05 → 08

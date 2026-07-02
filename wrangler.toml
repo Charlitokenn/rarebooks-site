@@ -2,6 +2,7 @@ name = 'rarebooks-marketing-site'
 account_id = "aa2e3d3c8224d09194e8635aca7eff6f"
 compatibility_date = "2026-06-13"
 compatibility_flags = [ "nodejs_compat" ]
+main = "./dist/_worker.js/index.js"
 
 [[d1_databases]]
 binding = "DB"
