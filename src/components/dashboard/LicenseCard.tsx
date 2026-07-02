@@ -116,7 +116,7 @@ export function LicenseCard({
                             </label>
                             <p className="mt-1 text-base font-semibold">{planName}</p>
                         </div>
-                        <div className="bg-muted rounded-lg p-4 border">
+                        <div className="rounded-lg p-4 border">
                             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                 Expiry Date
                             </label>
@@ -150,7 +150,7 @@ export function LicenseCard({
                                 <span>License Lifetime</span>
                                 <span>{100-lifetimePercent}% remaining</span>
                             </div>
-                            <Progress value={lifetimePercent} className={`duration-500 ${getProgressColor()}`}/>
+                            <Progress value={lifetimePercent} className={`h-2 ${getProgressColor()}`}/>
                         </div>
                     )}
                 </div>

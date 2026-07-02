@@ -68,7 +68,7 @@ export function DeviceManagement({
                         <span>Device Slots</span>
                         <span>{remaining} remaining</span>
                     </div>
-                    <Progress value={usagePercent} className="h-2.5" />
+                    <Progress value={usagePercent} className="h-2.5 bg-brand" />
                 </div>
 
                 {/* Device List */}
@@ -89,7 +89,7 @@ export function DeviceManagement({
                             return (
                                 <div
                                     key={device.id}
-                                    className="flex items-center justify-between p-4 bg-muted rounded-lg border transition-all hover:bg-muted/80 hover:translate-x-1"
+                                    className="flex items-center justify-between p-4 rounded-lg border transition-all hover:bg-muted/80 hover:translate-x-1"
                                 >
                                     <div className="flex items-center gap-4">
                                         <div className="w-10 h-10 bg-background rounded-lg border flex items-center justify-center shadow-sm">
