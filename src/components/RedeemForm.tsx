@@ -19,10 +19,6 @@ const formSchema = z.object({
   password: z
     .string()
     .min(8, "8 characters password required")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character")
     .max(8, "8 characters password required"),
   redeemCode: z
     .string()
