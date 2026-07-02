@@ -11,7 +11,7 @@ import RedemptionEmail from "@components/templates/redemption-email.tsx";
 
 export const prerender = false;
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────────────────
 
 function normalizeEmail(email: string): string {
   const [local, domain] = email.toLowerCase().trim().split("@");
