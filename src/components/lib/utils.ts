@@ -42,27 +42,15 @@ export function GetGreetingProps(name?: string | null | undefined): GreetingProp
   const titles: Record<string, string[]> = {
     morning: [
       "Good morning",
-      "Hello sunshine",
-      "Rise and shine",
-      "Top of the morning",
       "Bright and early",
-      "Fresh start",
-      "New day, new you",
-      "Seize the day",
     ],
     afternoon: [
       "Good afternoon",
       "Afternoon",
-      "You're halfway there",
-      "Keep shining",
-      "Stay strong",
-      "You're crushing it",
     ],
     evening: [
       "Good evening",
       "Evening",
-      "You made it",
-      "Well done today",
       "Time to unwind",
       "Rest easy",
     ],

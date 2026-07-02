@@ -15,7 +15,7 @@ const { title, subtitle } = GetGreetingProps(userDetails?.firstName!);
 ---
 
 <PortalLayout>
-    <PageHero type="greeting" title={title} subtitle={subtitle} client:load/>
+    <PageHero type="greeting" title={title} subtitle="Manage your license and device activations" client:load/>
     <LicenseDashboard
             client:load
             userEmail={email}

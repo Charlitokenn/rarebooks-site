@@ -172,14 +172,6 @@ export function LicenseDashboard({
 
     return (
         <div className="space-y-6">
-            {/* Header */}
-            <div>
-                <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-                <p className="text-muted-foreground">
-                    Manage your license and device activations
-                </p>
-            </div>
-
             {error && (
                 <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
                     {error}
