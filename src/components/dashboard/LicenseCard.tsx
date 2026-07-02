@@ -5,6 +5,7 @@ import { Card, CardContent } from "@components/components/ui/card";
 import { Button } from "@components/components/ui/button";
 import { Badge } from "@components/components/ui/badge";
 import type { LicenseData, CustomerData } from "./LicenseDashboard";
+import { Progress } from "@components/components/ui/progress";
 
 interface LicenseCardProps {
     license: LicenseData;
@@ -82,7 +83,7 @@ export function LicenseCard({
 
                 <div className="space-y-4">
                     {/* License Key */}
-                    <div className="bg-muted rounded-lg p-4 border">
+                    <div className="rounded-lg p-4 border">
                         <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                             License Key
                         </label>
@@ -93,7 +94,8 @@ export function LicenseCard({
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8"
+                                className="h-8 w-8 cursor-pointer"
+                                aria-label="copy-button"
                                 onClick={handleCopyKey}
                                 title="Copy to clipboard"
                             >
@@ -108,7 +110,7 @@ export function LicenseCard({
 
                     {/* License Info Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div className="bg-muted rounded-lg p-4 border">
+                        <div className="rounded-lg p-4 border">
                             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                 Plan
                             </label>
@@ -146,14 +148,9 @@ export function LicenseCard({
                         <div className="mt-2">
                             <div className="flex justify-between text-xs text-muted-foreground mb-1">
                                 <span>License Lifetime</span>
-                                <span>{lifetimePercent}% remaining</span>
+                                <span>{1-lifetimePercent}% remaining</span>
                             </div>
-                            <div className="w-full bg-muted rounded-full h-2">
-                                <div
-                                    className={`h-2 rounded-full transition-all duration-500 ${getProgressColor()}`}
-                                    style={{ width: `${lifetimePercent}%` }}
-                                />
-                            </div>
+                            <Progress value={lifetimePercent} className={`duration-500 ${getProgressColor()}`}/>
                         </div>
                     )}
                 </div>

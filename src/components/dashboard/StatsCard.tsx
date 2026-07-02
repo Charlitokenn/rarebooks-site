@@ -22,8 +22,8 @@ export function StatsCards({
     return (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* License Status */}
-            <Card>
-                <CardContent className="p-5">
+            <Card className="shadow">
+                <CardContent className="p-3">
                     <p className="text-sm font-medium text-muted-foreground">
                         License Status
                     </p>
@@ -43,8 +43,8 @@ export function StatsCards({
             </Card>
 
             {/* Devices Active */}
-            <Card>
-                <CardContent className="p-5">
+            <Card className="shadow">
+                <CardContent className="p-3">
                     <p className="text-sm font-medium text-muted-foreground">
                         Devices Active
                     </p>
@@ -60,8 +60,8 @@ export function StatsCards({
             </Card>
 
             {/* Plan Type */}
-            <Card>
-                <CardContent className="p-5">
+            <Card className="shadow">
+                <CardContent className="p-3">
                     <p className="text-sm font-medium text-muted-foreground">Plan Type</p>
                     <p className="text-2xl font-bold mt-1">{planType}</p>
                     {hasExpiry ? (
