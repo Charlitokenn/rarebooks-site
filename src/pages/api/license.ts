@@ -219,7 +219,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
         const resend = new Resend(env.RESEND_API_KEY);
         await resend.emails.send({
-          from: `Charles | RareBooks <${AppConfig.supportEmail}>`,
+          from: `Charles | RareBooks <${AppConfig.emails.supportEmail}>`,
           to: normalizedEmail,
           subject: "Your Trial License Key",
           html,
@@ -287,7 +287,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
         const resend = new Resend(env.RESEND_API_KEY);
         await resend.emails.send({
-          from: `Charles | RareBooks <${AppConfig.supportEmail}>`,
+          from: `Charles | RareBooks <${AppConfig.emails.supportEmail}>`,
           to: normalizedEmail,
           subject: `${firstName}, your client portal is ready!`,
           html

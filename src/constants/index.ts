@@ -7,7 +7,10 @@ export const AppConfig = {
   version: "0.3.0",
   description: "Modern desktop accounting app for small and medium businesses",
   author: "Charles Nkonoki",
-  supportEmail: "support@rarebooks.cc",
+  emails: {
+    supportEmail: "support@rarebooks.cc",
+    nonReply: "nonreply@rarebooks.cc"
+  },
   logo: "/logo.png",
   trial: {
     localDuration: "14",
