@@ -96,7 +96,7 @@ export function GetGreetingProps(name?: string | null | undefined): GreetingProp
       "Your couch missed you, go say hi",
       "Day complete, achievement unlocked",
       "Evening status: offline and unbothered",
-      "You adulted hard today, time to retire",
+      "You adulted hard today, time to retire.",
       "Evening forecast: 100% chance of cozy",
       "Your bed is sending you love letters",
       "You crushed it, now let the couch crush you",
