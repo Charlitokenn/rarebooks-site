@@ -148,7 +148,7 @@ export function LicenseCard({
                         <div className="mt-2">
                             <div className="flex justify-between text-xs text-muted-foreground mb-1">
                                 <span>License Lifetime</span>
-                                <span>{1-lifetimePercent}% remaining</span>
+                                <span>{100-lifetimePercent}% remaining</span>
                             </div>
                             <Progress value={lifetimePercent} className={`duration-500 ${getProgressColor()}`}/>
                         </div>

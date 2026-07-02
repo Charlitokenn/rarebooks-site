@@ -42,7 +42,7 @@ export function GetGreetingProps(name?: string | null | undefined): GreetingProp
   const titles: Record<string, string[]> = {
     morning: [
       "Good morning",
-      "Bright and early",
+      "Morning",
     ],
     afternoon: [
       "Good afternoon",
@@ -51,8 +51,6 @@ export function GetGreetingProps(name?: string | null | undefined): GreetingProp
     evening: [
       "Good evening",
       "Evening",
-      "Time to unwind",
-      "Rest easy",
     ],
   };
 
