@@ -276,36 +276,71 @@ export const POST: APIRoute = async ({ request, locals }) => {
       //
       // `env` is imported from "cloudflare:workers" (Astro 6 + @astrojs/cloudflare
       // pattern). No locals.runtime.env needed.
+      let signInToken: string | null = null;
+
       try {
         const clerk = createClerkClient({
           secretKey: (env as any).CLERK_SECRET_KEY,
         });
 
-        await clerk.users.createUser({
-          firstName,
-          lastName,
-          emailAddress: [normalizedEmail],
-          password: password,
-          privateMetadata: {
-            license: licenseKey
-          }
-        });
+        let clerkUserId: string | undefined;
 
-      } catch (clerkError: any) {
-        const code = clerkError?.errors?.[0]?.code;
-        if (code === "form_identifier_exists") {
-          // The user already has a Clerk account (re-submission or returning
-          // trial requester). Not a problem — log and move on.
-          console.warn(
-              `[Clerk] Account already exists for ${normalizedEmail} — skipping creation.`
-          );
-        } else {
-          console.error(
-              "[Clerk] User provisioning failed:",
-              clerkError?.errors ?? clerkError?.message
-          );
+        try {
+          const newUser = await clerk.users.createUser({
+            firstName,
+            lastName,
+            emailAddress: [normalizedEmail],
+            password: password,
+            privateMetadata: {
+              license: licenseKey
+            }
+          });
+
+          clerkUserId = newUser.id;
+        } catch (clerkError: any) {
+          const code = clerkError?.errors?.[0]?.code;
+          if (code === "form_identifier_exists") {
+            // The user already has a Clerk account (re-submission or returning
+            // trial requester). Look them up so we can still hand them a
+            // sign-in token below — not a problem, just log and continue.
+            console.warn(
+                `[Clerk] Account already exists for ${normalizedEmail} — reusing it.`
+            );
+            const existing = await clerk.users.getUserList({
+              emailAddress: [normalizedEmail],
+            });
+            clerkUserId = existing.data[0]?.id;
+          } else {
+            console.error(
+                "[Clerk] User provisioning failed:",
+                clerkError?.errors ?? clerkError?.message
+            );
+          }
         }
+
+        // ── Mint a short-lived sign-in token so the client can log the user
+        // in automatically right after redemption.
+        // https://clerk.com/docs/guides/development/custom-flows/authentication/embedded-email-links
+        if (clerkUserId) {
+          const tokenResponse = await clerk.signInTokens.createSignInToken({
+            userId: clerkUserId,
+            expiresInSeconds: 60 * 5, // 5 minutes — it's consumed immediately
+          });
+          signInToken = tokenResponse.token;
+        }
+      } catch (signInTokenError: any) {
+        // Best-effort — worst case the user lands on /auth/sign-in manually.
+        console.error("[Clerk] Sign-in token creation failed:", signInTokenError);
       }
+
+      const responsePayload = Array.isArray(result)
+          ? { keys: result, signInToken }
+          : { ...result, signInToken };
+
+      return new Response(JSON.stringify(responsePayload), {
+        status: 200,
+        headers: jsonHeaders,
+      });
     }
 
     return new Response(JSON.stringify(result), {

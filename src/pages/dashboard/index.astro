@@ -3,6 +3,7 @@ import PortalLayout from "../../layouts/PortalLayout.astro";
 import { PageHero } from "../../components/components/pageHero.tsx"
 import { GetGreetingProps} from "@components/lib/utils.ts";
 import { LicenseDashboard } from "../../components/dashboard/LicenseDashboard";
+import { WelcomeModal } from "../../components/dashboard/WelcomeModal";
 
 const userDetails = await Astro.locals.currentUser();
 const countryCode = (Astro.locals as any)?.countryCode || "US";
@@ -22,4 +23,5 @@ const { title, subtitle } = GetGreetingProps(userDetails?.firstName!);
             userName={fullName}
             countryCode={countryCode}
     />
+    <WelcomeModal client:load />
 </PortalLayout>

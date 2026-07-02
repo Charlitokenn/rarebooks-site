@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "astro dev",
-    "dev:remote": "wrangler dev --remote",
+    "flare:deploy": "npm run build && npx wrangler deploy",
     "check" : "astro check",
     "start": "astro dev",
     "build": "astro build",

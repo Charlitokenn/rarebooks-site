@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -9,21 +7,22 @@ import { Button } from "./components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert.tsx";
 import { Loader2, AlertCircle } from "lucide-react";
 import { NormalizeEmail } from "@components/lib/utils.ts";
+import { signInWithTicket } from "@components/lib/sign-in-with-ticket";
 
 const formSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z
-    .email("Please enter a valid email address")
-    .transform(NormalizeEmail),
+      .email("Please enter a valid email address")
+      .transform(NormalizeEmail),
   password: z
-    .string()
-    .min(8, "8 characters password required")
-    .max(8, "8 characters password required"),
+      .string()
+      .min(8, "8 characters password required")
+      .max(8, "8 characters password required"),
   redeemCode: z
-    .string()
-    .min(13, "Paste redeem code from Appsumo")
-    .max(13, "Paste redeem code from Appsumo"),
+      .string()
+      .min(13, "Paste redeem code from Appsumo")
+      .max(13, "Paste redeem code from Appsumo"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -80,10 +79,14 @@ export function RedemptionForm({ id }: RedemptionFormProps) {
       await new Promise((resolve) => setTimeout(resolve, 200));
 
       setIsSuccess(true);
+
+      setStatus("Signing you in...");
+      // Navigates away on success — no further UI updates needed after this.
+      await signInWithTicket(result.signInToken, "/dashboard?welcome=redeem");
     } catch (error: any) {
       console.error("Error submitting enquiry:", error);
       setError(
-        error.message || "Something went wrong. Please try again later.",
+          error.message || "Something went wrong. Please try again later.",
       );
     } finally {
       setStatus("");
@@ -91,174 +94,174 @@ export function RedemptionForm({ id }: RedemptionFormProps) {
   };
 
   return (
-    <div className="p-6 md:p-8" data-success={isSuccess}>
-      <div className="flex flex-col items-center">
-        <h4 className="font-display text-lg mt-4 font-semibold text-ink">
-          Create an Account
-        </h4>
-      </div>
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mt-8 space-y-3"
-        noValidate
-      >
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label
-              htmlFor={`${id}-firstName`}
-              className="block text-xs font-semibold text-ink"
-            >
-              First name
-            </label>
-            <Input
-              id={`${id}-firstName`}
-              aria-label="First name"
-              placeholder="John"
-              {...register("firstName")}
-              aria-invalid={!!errors.firstName}
-              className="mt-1"
-              disabled={isSubmitting}
-            />
-            {errors.firstName && (
-              <p className="mt-0.5 text-xs text-accent-coral">
-                {errors.firstName.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor={`${id}-lastName`}
-              className="block text-xs font-semibold text-ink"
-            >
-              Last name
-            </label>
-            <Input
-              id={`${id}-lastName`}
-              placeholder="Doe"
-              aria-label="Last name"
-              {...register("lastName")}
-              aria-invalid={!!errors.lastName}
-              className="mt-1"
-              disabled={isSubmitting}
-            />
-            {errors.lastName && (
-              <p className="mt-0.5 text-xs text-accent-coral">
-                {errors.lastName.message}
-              </p>
-            )}
-          </div>
+      <div className="p-6 md:p-8" data-success={isSuccess}>
+        <div className="flex flex-col items-center">
+          <h4 className="font-display text-lg mt-4 font-semibold text-ink">
+            Create an Account
+          </h4>
         </div>
 
-        <div>
-          <label
-            htmlFor={`${id}-email`}
-            className="block text-xs font-semibold text-ink"
-          >
-            Email address
-          </label>
-          <Input
-            id={`${id}-email`}
-            type="email"
-            aria-label="email"
-            placeholder="john@company.com"
-            {...register("email")}
-            aria-invalid={!!errors.email}
-            className="mt-1"
-            disabled={isSubmitting}
-          />
-          {errors.email && (
-            <p className="mt-0.5 text-xs text-accent-coral">
-              {errors.email.message}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label
-            htmlFor={`${id}-password`}
-            className="block text-xs font-semibold text-ink"
-          >
-            Password
-          </label>
-          <Input
-            id={`${id}-password`}
-            type="password"
-            aria-label="password"
-            placeholder="Enter password"
-            {...register("password")}
-            aria-invalid={!!errors.password}
-            className="mt-1"
-            disabled={isSubmitting}
-          />
-          {errors.password && (
-            <p className="mt-0.5 text-xs text-accent-coral">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label
-            htmlFor={`${id}-redeem-code`}
-            className="block text-xs font-semibold text-ink"
-          >
-            AppSumo Redeem Code
-          </label>
-          <Input
-            id={`${id}-redeem-code`}
-            type="redeem-code"
-            aria-label="redeem-cde"
-            placeholder="e.g. RARE-QQQQ3UU1"
-            {...register("redeemCode")}
-            aria-invalid={!!errors.redeemCode}
-            className="mt-1"
-            disabled={isSubmitting}
-          />
-          {errors.redeemCode && (
-            <p className="mt-0.5 text-xs text-accent-coral">
-              {errors.redeemCode.message}
-            </p>
-          )}
-        </div>
-
-        {isSuccess && (
-          <Alert className="mt-6 max-w-md border-green-200 bg-green-50 text-green-900 dark:border-green-900 dark:bg-green-950 dark:text-amber-50">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Your lifetime licence key!</AlertTitle>
-            <AlertDescription className="whitespace-nowrap">
-              {error}
-              <p className="text-xs">
-                The code has also been sent to your email address
-              </p>
-            </AlertDescription>
-          </Alert>
-        )}
-        {error && (
-          <Alert className="mt-6 max-w-md border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error redeeming your licence key!</AlertTitle>
-            <AlertDescription className="whitespace-nowrap">
-              {error}
-            </AlertDescription>
-          </Alert>
-        )}
-
-        <Button
-          type="submit"
-          className="mt-2 w-full rounded-lg bg-brand px-6 py-4 text-sm font-semibold text-white shadow-soft transition-transform cursor-pointer hover:bg-brand/90"
-          disabled={isSubmitting}
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mt-8 space-y-3"
+            noValidate
         >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {status || "Creating account & redeeming..."}
-            </>
-          ) : (
-            "Create Account & Redeem"
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label
+                  htmlFor={`${id}-firstName`}
+                  className="block text-xs font-semibold text-ink"
+              >
+                First name
+              </label>
+              <Input
+                  id={`${id}-firstName`}
+                  aria-label="First name"
+                  placeholder="John"
+                  {...register("firstName")}
+                  aria-invalid={!!errors.firstName}
+                  className="mt-1"
+                  disabled={isSubmitting}
+              />
+              {errors.firstName && (
+                  <p className="mt-0.5 text-xs text-accent-coral">
+                    {errors.firstName.message}
+                  </p>
+              )}
+            </div>
+            <div>
+              <label
+                  htmlFor={`${id}-lastName`}
+                  className="block text-xs font-semibold text-ink"
+              >
+                Last name
+              </label>
+              <Input
+                  id={`${id}-lastName`}
+                  placeholder="Doe"
+                  aria-label="Last name"
+                  {...register("lastName")}
+                  aria-invalid={!!errors.lastName}
+                  className="mt-1"
+                  disabled={isSubmitting}
+              />
+              {errors.lastName && (
+                  <p className="mt-0.5 text-xs text-accent-coral">
+                    {errors.lastName.message}
+                  </p>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label
+                htmlFor={`${id}-email`}
+                className="block text-xs font-semibold text-ink"
+            >
+              Email address
+            </label>
+            <Input
+                id={`${id}-email`}
+                type="email"
+                aria-label="email"
+                placeholder="john@company.com"
+                {...register("email")}
+                aria-invalid={!!errors.email}
+                className="mt-1"
+                disabled={isSubmitting}
+            />
+            {errors.email && (
+                <p className="mt-0.5 text-xs text-accent-coral">
+                  {errors.email.message}
+                </p>
+            )}
+          </div>
+
+          <div>
+            <label
+                htmlFor={`${id}-password`}
+                className="block text-xs font-semibold text-ink"
+            >
+              Password
+            </label>
+            <Input
+                id={`${id}-password`}
+                type="password"
+                aria-label="password"
+                placeholder="Enter password"
+                {...register("password")}
+                aria-invalid={!!errors.password}
+                className="mt-1"
+                disabled={isSubmitting}
+            />
+            {errors.password && (
+                <p className="mt-0.5 text-xs text-accent-coral">
+                  {errors.password.message}
+                </p>
+            )}
+          </div>
+
+          <div>
+            <label
+                htmlFor={`${id}-redeem-code`}
+                className="block text-xs font-semibold text-ink"
+            >
+              AppSumo Redeem Code
+            </label>
+            <Input
+                id={`${id}-redeem-code`}
+                type="redeem-code"
+                aria-label="redeem-cde"
+                placeholder="e.g. RARE-QQQQ3UU1"
+                {...register("redeemCode")}
+                aria-invalid={!!errors.redeemCode}
+                className="mt-1"
+                disabled={isSubmitting}
+            />
+            {errors.redeemCode && (
+                <p className="mt-0.5 text-xs text-accent-coral">
+                  {errors.redeemCode.message}
+                </p>
+            )}
+          </div>
+
+          {isSuccess && (
+              <Alert className="mt-6 max-w-md border-green-200 bg-green-50 text-green-900 dark:border-green-900 dark:bg-green-950 dark:text-amber-50">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Your lifetime licence key!</AlertTitle>
+                <AlertDescription className="whitespace-nowrap">
+                  {error}
+                  <p className="text-xs">
+                    The code has also been sent to your email address
+                  </p>
+                </AlertDescription>
+              </Alert>
           )}
-        </Button>
-      </form>
-    </div>
+          {error && (
+              <Alert className="mt-6 max-w-md border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error redeeming your licence key!</AlertTitle>
+                <AlertDescription className="whitespace-nowrap">
+                  {error}
+                </AlertDescription>
+              </Alert>
+          )}
+
+          <Button
+              type="submit"
+              className="mt-2 w-full rounded-lg bg-brand px-6 py-4 text-sm font-semibold text-white shadow-soft transition-transform cursor-pointer hover:bg-brand/90"
+              disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {status || "Creating account & redeeming..."}
+                </>
+            ) : (
+                "Create Account & Redeem"
+            )}
+          </Button>
+        </form>
+      </div>
   );
 }

@@ -10,6 +10,7 @@ import { AppConfig } from "../constants";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { Loader2, AlertCircle } from "lucide-react";
 import { NormalizeEmail } from "@components/lib/utils.ts";
+import { signInWithTicket } from "@components/lib/sign-in-with-ticket";
 
 const formSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -78,6 +79,10 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
       setStatus("Sending license to your email...");
       await new Promise((resolve) => setTimeout(resolve, 800));
       setIsSuccess(true);
+
+      setStatus("Signing you in...");
+      // Navigates away on success — no further UI updates needed after this.
+      await signInWithTicket(result.signInToken, "/dashboard?welcome=trial");
     } catch (error: any) {
       console.error("Error submitting form:", error);
       setError(error.message || "Something went wrong. Please try again later.");
