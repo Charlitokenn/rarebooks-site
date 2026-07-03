@@ -67,8 +67,8 @@ export function WelcomeModal() {
                 </DialogTitle>
                 <DialogDescription className="text-center">
                     {isTrial
-                        ? "Your trial license is active and you're signed in to your client portal."
-                        : "Your lifetime license is active and you're signed in to your client portal."}
+                        ? "Your trial license is created and you're signed in to your client portal."
+                        : "Your lifetime license is created and you're signed in to your client portal."}
                 </DialogDescription>
 
                 <ul className="mt-5 space-y-3">
@@ -94,7 +94,7 @@ export function WelcomeModal() {
                     </li>
                     <li className="flex items-start gap-3 text-sm text-ink">
                         <Download className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                        <span>Please download the app from <a href={AppConfig.urls.storeUrl} target="_blank" rel="noopener noreferrer">microsoft store</a> to use your license key.</span>
+                        <span>Please download the app from <a href={AppConfig.urls.storeUrl} target="_blank" rel="noopener noreferrer"><span className="font-bold cursor-pointer text-brand">microsoft store</span></a> to use your license key.</span>
                     </li>
                 </ul>
 
