@@ -87,7 +87,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const password = trimString(data?.password);
     const rawEmail = trimString(data?.email);
     const appsumoCode = trimString(data?.redeemCode);
-    const mobile = trimString(data?.mobile) || undefined;
 
     if (
         !firstName   ||
@@ -95,7 +94,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
         !rawEmail    ||
         !password    ||
         !appsumoCode ||
-        !mobile      ||
         !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail)
     ) {
       return new Response(
