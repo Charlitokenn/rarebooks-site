@@ -95,6 +95,39 @@ const canLogin = Boolean(userId && loginHash);
             window.__tawkBeforeSwapListenerAdded = true;
         }
 
+        // Astro's <ClientRouter /> works by globally watching clicks on <a>
+        // elements anywhere on the page and intercepting them to do a
+        // client-side navigation instead of a normal browser navigation
+        // (https://docs.astro.build — "Router control"). Tawk's own bubble
+        // trigger is a real element in this page's DOM (only the expanded
+        // chat window itself is an iframe), and if any part of Tawk's
+        // markup involves an anchor tag, Astro's router can catch that
+        // click and treat it as an in-app route change — remounting
+        // everything on the page that isn't transition:persist'ed
+        // (including the license dashboard, which is why its data refetch
+        // was firing at the exact moment the widget closed), and wiping
+        // Tawk's own DOM along with it since that "navigation" also
+        // triggers the astro:before-swap relocation above, mid-interaction.
+        //
+        // We stop that at the source: any click that originates from
+        // inside Tawk's widget is stopped from propagating up to Astro's
+        // listener at all, in the capture phase — so it never gets a
+        // chance to misinterpret it as in-app navigation, regardless of
+        // where in the DOM Tawk's nodes currently live.
+        if (!window.__tawkClickGuardAdded) {
+            document.addEventListener(
+                "click",
+                function (event) {
+                    var target = event.target;
+                    if (target && target.closest && target.closest('[id^="tawk"], iframe[title*="chat" i], iframe[title*="tawk" i]')) {
+                        event.stopPropagation();
+                    }
+                },
+                true // capture phase — runs before Astro's own (bubble-phase) listener, regardless of registration order
+            );
+            window.__tawkClickGuardAdded = true;
+        }
+
         window.Tawk_API = window.Tawk_API || {};
         // Anonymous visitors get no `visitor` object at all — see the note
         // in the frontmatter above for why sending one with an empty/wrong
