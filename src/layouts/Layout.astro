@@ -11,7 +11,7 @@ const {
 } = Astro.props
 
 import "../styles/global.css"
-import { ClientRouter } from 'astro:transitions';
+// import { ClientRouter } from 'astro:transitions';
 import TawkWidget from "@components/TawkWidget.astro";
 ---
 
@@ -30,7 +30,7 @@ import TawkWidget from "@components/TawkWidget.astro";
         defer
     ></script>
     <title>{title}</title>
-    <ClientRouter />
+    <!--<ClientRouter />-->
   </head>
   <body class="min-h-screen overflow-x-hidden">
     <slot />
