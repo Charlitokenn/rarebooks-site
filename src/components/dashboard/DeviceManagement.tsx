@@ -144,25 +144,21 @@ export function DeviceManagement({
                                                 <TableCell className="text-right">
                                                     <Popover>
                                                         <PopoverTrigger asChild>
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="sm"
+                                                            <a
                                                                 className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive"
                                                             >
                                                                 <Trash2 className="h-4 w-4" />
                                                                 <span className="hidden sm:inline">Deactivate</span>
-                                                            </Button>
+                                                            </a>
                                                         </PopoverTrigger>
                                                     </Popover>
                                                     <PopoverContent>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
+                                                        <a
                                                             onClick={() => deactivateDevice(device.hostId)}
                                                             className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive"
                                                         >
                                                             <span className="hidden sm:inline">Confirm Deactivation</span>
-                                                        </Button>
+                                                        </a>
                                                     </PopoverContent>
 
                                                 </TableCell>
