@@ -17,9 +17,11 @@ const hash = userId ? await hmacSha256(userId, tawkKey) : "";
 
 <!--
   This div is the ONLY thing Astro's ClientRouter is told to keep alive
-  across navigations. Tawk's embed script appends its own container/iframe
-  directly to <body>, which would normally get wiped on every swap —
-  we relocate those nodes into this persisted div right after they appear.
+  across navigations. Tawk's embed script normally appends its own
+  container/iframe to <body>, which would get wiped on every swap — the
+  inline script below redirects Tawk's insertion calls so its nodes are
+  created directly inside this div instead (see the comment in that script
+  for why we don't just relocate them afterwards).
 -->
 <div id="tawk-persist-root" transition:persist="tawk-widget" style="display:contents"></div>
 
@@ -27,10 +29,45 @@ const hash = userId ? await hmacSha256(userId, tawkKey) : "";
     (function () {
         var root = document.getElementById("tawk-persist-root");
 
-        function relocateTawkNodes() {
-            document.querySelectorAll('body > iframe[title*="chat" i], body > div[id^="tawk"]').forEach(function (node) {
-                if (root && node.parentElement !== root) root.appendChild(node);
-            });
+        function isTawkNode(node) {
+            if (!node || node.nodeType !== 1) return false;
+            var id = node.id || "";
+            var title = (node.getAttribute && node.getAttribute("title")) || "";
+            return id.indexOf("tawk") === 0 || (node.tagName === "IFRAME" && /chat/i.test(title));
+        }
+
+        // IMPORTANT: we used to let Tawk's embed script append its
+        // container/iframe to <body> as normal, then move those nodes into
+        // `root` ourselves afterwards. That was the actual cause of the
+        // widget failing to render: moving an already-inserted <iframe>
+        // anywhere in the DOM (even via appendChild to a new parent) forces
+        // the browser to fully reload its contentWindow — this is
+        // universal browser behavior, not a bug in one engine. That reload
+        // was firing the instant Tawk's own onLoad handler completed,
+        // interrupting its boot sequence at the worst possible moment: the
+        // embed script would report as loaded (visible in the Network
+        // tab), but the widget itself never finished rendering.
+        //
+        // The fix is to never move the live node at all. We redirect
+        // Tawk's own body.appendChild/insertBefore calls so its container
+        // is created directly inside `root` in the first place — the node
+        // is never reparented after insertion, so there's nothing to
+        // reload.
+        if (root && !document.body.appendChild.__tawkPatched) {
+            var originalAppendChild = document.body.appendChild.bind(document.body);
+            var originalInsertBefore = document.body.insertBefore.bind(document.body);
+
+            var patchedAppendChild = function (node) {
+                if (isTawkNode(node)) return root.appendChild(node);
+                return originalAppendChild(node);
+            };
+            patchedAppendChild.__tawkPatched = true;
+            document.body.appendChild = patchedAppendChild;
+
+            document.body.insertBefore = function (node, ref) {
+                if (isTawkNode(node)) return root.appendChild(node);
+                return originalInsertBefore(node, ref);
+            };
         }
 
         window.Tawk_API = window.Tawk_API || {};
@@ -39,7 +76,6 @@ const hash = userId ? await hmacSha256(userId, tawkKey) : "";
         // window (and window.Tawk_API) survives Astro client-side navigation —
         // only the DOM gets swapped. So only ever load the embed script ONCE.
         if (window.__tawkInitialized) {
-            relocateTawkNodes();
             if (userId && hash && window.Tawk_API.login) {
                 window.Tawk_API.login(
                     { hash: hash, userId: userId, name: firstName || "", email: email || "" },
@@ -51,7 +87,6 @@ const hash = userId ? await hmacSha256(userId, tawkKey) : "";
         window.__tawkInitialized = true;
 
         window.Tawk_API.onLoad = function () {
-            relocateTawkNodes();
             if (userId && hash) {
                 window.Tawk_API.login(
                     { hash: hash, userId: userId, name: firstName || "", email: email || "" },

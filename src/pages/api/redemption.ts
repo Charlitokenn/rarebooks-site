@@ -106,31 +106,55 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     const normalizedEmail = normalizeEmail(rawEmail);
 
-    //Validate if provided appsumo code is exists in D1
+    //Validate the appsumo code exists in D1 and hasn't been redeemed yet.
+    //
+    // This uses a single atomic UPDATE ... WHERE redeem_freq = 0 instead of
+    // a SELECT followed by an UPDATE. That matters: with a separate SELECT
+    // check first, two requests for the same code arriving at nearly the
+    // same time could both pass the check before either UPDATE lands,
+    // letting the code be redeemed twice. Binding the "already redeemed"
+    // condition into the UPDATE's WHERE clause means only one request can
+    // ever flip redeem_freq from 0 -> 1 for a given code.
     try {
       const db = env.DB;
       if (db) {
-        // Use .first() for SELECT queries — returns the row object or null
-        const codeRow = await db
-            .prepare("SELECT code, redeem_freq FROM redemptionCodes WHERE code = ?")
-            .bind(appsumoCode)
-            .first<{ code: string; redeem_freq: number }>();
-
-        if (!codeRow) {
-          return new Response(
-              JSON.stringify({ message: "Invalid redemption code" }),
-              { status: 400, headers: jsonHeaders }
-          );
-        }
-
-        // Mark as redeemed (increment redeem_freq)
-        await db
-            .prepare("UPDATE redemptionCodes SET redeem_freq = redeem_freq + 1, last_updated = datetime('now') WHERE code = ?")
+        const claim = await db
+            .prepare(
+                "UPDATE redemptionCodes SET redeem_freq = redeem_freq + 1, last_updated = datetime('now') WHERE code = ? AND redeem_freq = 0"
+            )
             .bind(appsumoCode)
             .run();
+
+        if (claim.meta.changes === 0) {
+          // Either the code doesn't exist, or it's already been redeemed.
+          // Look it up to tell the two cases apart for a clearer error.
+          const codeRow = await db
+              .prepare("SELECT code, redeem_freq FROM redemptionCodes WHERE code = ?")
+              .bind(appsumoCode)
+              .first<{ code: string; redeem_freq: number }>();
+
+          if (!codeRow) {
+            return new Response(
+                JSON.stringify({ message: "Invalid redemption code" }),
+                { status: 400, headers: jsonHeaders }
+            );
+          }
+
+          return new Response(
+              JSON.stringify({ message: "This redemption code has already been used" }),
+              { status: 409, headers: jsonHeaders }
+          );
+        }
       }
     } catch (dbError: any) {
       console.error("Appsumo code validation failed:", dbError.message);
+      // Unlike an invalid/reused code, a DB error here means we can't
+      // verify the code at all — fail closed rather than letting an
+      // unverifiable redemption through.
+      return new Response(
+          JSON.stringify({ message: "Unable to verify redemption code. Please try again." }),
+          { status: 500, headers: jsonHeaders }
+      );
     }
 
 
