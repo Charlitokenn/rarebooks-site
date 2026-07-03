@@ -6,6 +6,7 @@ import { Progress } from "@components/components/ui/progress";
 import type { Device } from "./LicenseDashboard";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@components/components/ui/table.tsx";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@components/components/ui/tabs.tsx";
+import { Popover , PopoverTrigger, PopoverContent} from "@components/components/ui/popover";
 
 interface DeviceManagementProps {
     devices: Device[];
@@ -141,15 +142,29 @@ export function DeviceManagement({
                                                     {formatDate(device.activationTime)}
                                                 </TableCell>
                                                 <TableCell className="text-right">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        onClick={() => deactivateDevice(device.hostId)}
-                                                        className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive"
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                        <span className="hidden sm:inline">Deactivate</span>
-                                                    </Button>
+                                                    <Popover>
+                                                        <PopoverTrigger asChild>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="sm"
+                                                                className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive"
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                                <span className="hidden sm:inline">Deactivate</span>
+                                                            </Button>
+                                                        </PopoverTrigger>
+                                                    </Popover>
+                                                    <PopoverContent>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => deactivateDevice(device.hostId)}
+                                                            className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive"
+                                                        >
+                                                            <span className="hidden sm:inline">Confirm Deactivation</span>
+                                                        </Button>
+                                                    </PopoverContent>
+
                                                 </TableCell>
                                             </TableRow>
                                         })}
