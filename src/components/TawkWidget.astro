@@ -1,7 +1,7 @@
 ---
 import { env } from "cloudflare:workers";
 const userDetails = await Astro.locals.currentUser();
-const firstName = userDetails?.firstName;
+const fullName = userDetails?.fullName;
 const email = userDetails?.emailAddresses?.[0]?.emailAddress ?? "";
 const userId = userDetails?.id ?? "";
 
@@ -49,57 +49,50 @@ const canLogin = Boolean(userId && loginHash);
 
 <!--
   This div is the ONLY thing Astro's ClientRouter is told to keep alive
-  across navigations. Tawk's embed script normally appends its own
-  container/iframe to <body>, which would get wiped on every swap — the
-  inline script below redirects Tawk's insertion calls so its nodes are
-  created directly inside this div instead (see the comment in that script
-  for why we don't just relocate them afterwards).
+  across navigations. Tawk's embed script manages its own nodes as normal
+  children of <body> during regular use — the inline script below only
+  moves them in here at the one moment it's needed: right before an actual
+  navigation swap (see the astro:before-swap listener in that script for
+  why we don't touch Tawk's DOM at any other time).
 -->
 <div id="tawk-persist-root" transition:persist="tawk-widget" style="display:contents"></div>
 
-<script is:inline define:vars={{ firstName, email, visitorHash, loginHash, userId, hasIdentifiedVisitor, canLogin }}>
+<script is:inline define:vars={{ fullName, email, visitorHash, loginHash, userId, hasIdentifiedVisitor, canLogin }}>
     (function () {
         var root = document.getElementById("tawk-persist-root");
 
-        function isTawkNode(node) {
-            if (!node || node.nodeType !== 1) return false;
-            var id = node.id || "";
-            var title = (node.getAttribute && node.getAttribute("title")) || "";
-            return id.indexOf("tawk") === 0 || (node.tagName === "IFRAME" && /chat/i.test(title));
+        // We previously redirected Tawk's own body.appendChild/insertBefore
+        // calls so its nodes would be created inside `root` directly. That
+        // backfired: Tawk's own script still assumes — and internally
+        // tracks — that its nodes are direct children of <body>. Once we
+        // silently moved them into `root` behind its back, any later DOM
+        // operation Tawk performs that depends on that assumption (closing
+        // the chat window, repositioning on click, periodic housekeeping)
+        // could end up targeting the wrong parent and silently fail —
+        // which is exactly what was causing the widget to vanish a few
+        // seconds in, or the moment it was clicked.
+        //
+        // So Tawk's DOM is now left completely alone during normal
+        // operation. The only time we touch it is right before an actual
+        // Astro navigation swap, via astro:before-swap — at that one
+        // moment we move any live Tawk nodes into the persisted `root` so
+        // they survive the swap instead of being wiped with the rest of
+        // the old page. That does cause a brief iframe reload (browsers
+        // always reload a live <iframe> when it's moved anywhere in the
+        // DOM — universal, spec'd behavior, not a bug), but confining it
+        // to actual page-transition moments — instead of doing it
+        // continuously during normal use — means it never interrupts
+        // someone who's actively got the chat open.
+        function relocateTawkNodes() {
+            if (!root) return;
+            document.querySelectorAll('[id^="tawk"], iframe[title*="chat" i], iframe[title*="tawk" i]').forEach(function (node) {
+                if (node.parentElement !== root) root.appendChild(node);
+            });
         }
 
-        // IMPORTANT: we used to let Tawk's embed script append its
-        // container/iframe to <body> as normal, then move those nodes into
-        // `root` ourselves afterwards. That was the actual cause of the
-        // widget failing to render: moving an already-inserted <iframe>
-        // anywhere in the DOM (even via appendChild to a new parent) forces
-        // the browser to fully reload its contentWindow — this is
-        // universal browser behavior, not a bug in one engine. That reload
-        // was firing the instant Tawk's own onLoad handler completed,
-        // interrupting its boot sequence at the worst possible moment: the
-        // embed script would report as loaded (visible in the Network
-        // tab), but the widget itself never finished rendering.
-        //
-        // The fix is to never move the live node at all. We redirect
-        // Tawk's own body.appendChild/insertBefore calls so its container
-        // is created directly inside `root` in the first place — the node
-        // is never reparented after insertion, so there's nothing to
-        // reload.
-        if (root && !document.body.appendChild.__tawkPatched) {
-            var originalAppendChild = document.body.appendChild.bind(document.body);
-            var originalInsertBefore = document.body.insertBefore.bind(document.body);
-
-            var patchedAppendChild = function (node) {
-                if (isTawkNode(node)) return root.appendChild(node);
-                return originalAppendChild(node);
-            };
-            patchedAppendChild.__tawkPatched = true;
-            document.body.appendChild = patchedAppendChild;
-
-            document.body.insertBefore = function (node, ref) {
-                if (isTawkNode(node)) return root.appendChild(node);
-                return originalInsertBefore(node, ref);
-            };
+        if (!window.__tawkBeforeSwapListenerAdded) {
+            document.addEventListener("astro:before-swap", relocateTawkNodes);
+            window.__tawkBeforeSwapListenerAdded = true;
         }
 
         window.Tawk_API = window.Tawk_API || {};
@@ -108,7 +101,7 @@ const canLogin = Boolean(userId && loginHash);
         // hash was likely blocking the widget outright on a Secure Mode
         // property.
         if (hasIdentifiedVisitor) {
-            window.Tawk_API.visitor = { name: firstName || "", email: email, hash: visitorHash };
+            window.Tawk_API.visitor = { name: fullName || "", email: email, hash: visitorHash };
         }
 
         // window (and window.Tawk_API) survives Astro client-side navigation —
@@ -116,7 +109,7 @@ const canLogin = Boolean(userId && loginHash);
         if (window.__tawkInitialized) {
             if (canLogin && window.Tawk_API.login) {
                 window.Tawk_API.login(
-                    { hash: loginHash, userId: userId, name: firstName || "", email: email || "" },
+                    { hash: loginHash, userId: userId, name: fullName || "", email: email || "" },
                     function (error) { if (error) console.error("Tawk.to login error:", error); }
                 );
             }
@@ -127,7 +120,7 @@ const canLogin = Boolean(userId && loginHash);
         window.Tawk_API.onLoad = function () {
             if (canLogin) {
                 window.Tawk_API.login(
-                    { hash: loginHash, userId: userId, name: firstName || "", email: email || "" },
+                    { hash: loginHash, userId: userId, name: fullName || "", email: email || "" },
                     function (error) { if (error) console.error("Tawk.to login error:", error); }
                 );
             }
