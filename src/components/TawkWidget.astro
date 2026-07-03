@@ -131,7 +131,7 @@ const canLogin = Boolean(userId && loginHash);
         // chance to misinterpret it as in-app navigation, regardless of
         // where in the DOM Tawk's nodes currently live.
         if (!window.__tawkClickGuardAdded) {
-            document.addEventListener(
+            document.body.addEventListener(
                 "click",
                 function (event) {
                     var target = event.target;
