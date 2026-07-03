@@ -212,7 +212,7 @@ export function LicenseDashboard({
             )}
 
             {/* Two Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
                 {/* Device Management */}
                 {licenseInfo && (
                     <DeviceManagement
@@ -223,19 +223,19 @@ export function LicenseDashboard({
                 )}
 
                 {/* Right Column */}
-                <div className="space-y-6">
-                    {/* Renewal Section - only show if license has expiry */}
-                    {licenseInfo && hasExpiry && (
-                        <RenewalSection
-                            currentPlan={getPlanName()}
-                            countryCode={countryCode}
-                            onSelectPlan={handlePaymentClick}
-                        />
-                    )}
+                {/*<div className="space-y-6">*/}
+                {/*    /!* Renewal Section - only show if license has expiry *!/*/}
+                {/*    {licenseInfo && hasExpiry && (*/}
+                {/*        <RenewalSection*/}
+                {/*            currentPlan={getPlanName()}*/}
+                {/*            countryCode={countryCode}*/}
+                {/*            onSelectPlan={handlePaymentClick}*/}
+                {/*        />*/}
+                {/*    )}*/}
 
-                    {/* Support Card */}
-                    <SupportCard />
-                </div>
+                {/*    /!* Support Card *!/*/}
+                {/*    <SupportCard />*/}
+                {/*</div>*/}
             </div>
 
             {/* Payment Modal */}
