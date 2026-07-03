@@ -106,9 +106,9 @@ const canLogin = Boolean(userId && loginHash);
         }
 
         //Restore tawk nodes to <body> after swap
-        if(!window.__tawkBeforeSwapListenerAdded){
+        if(!window.__tawkAfterSwapListenerAdded){
             document.addEventListener("astro:after-swap", restoreTawkNodes);
-            window.__tawkAfterSwapListernerAdded = true;
+            window.__tawkAfterSwapListenerAdded = true;
         }
 
         // Astro's <ClientRouter /> works by globally watching clicks on <a>
