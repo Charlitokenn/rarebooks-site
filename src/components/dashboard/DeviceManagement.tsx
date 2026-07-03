@@ -74,7 +74,7 @@ export function DeviceManagement({
 
             {/* Devices */}
             <TabsContent value="devices" className="mt-4">
-                <Card>
+                <Card className="shadow-none border-gray-300">
                     <CardHeader>
                         <div className="flex flex-wrap items-end justify-between gap-4">
                             <div>
@@ -98,7 +98,7 @@ export function DeviceManagement({
                                 No devices activated yet.
                             </div>
                         ) : (
-                            <div className="rounded-md border">
+                            <div className="rounded-md border-gray-300">
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
@@ -163,7 +163,7 @@ export function DeviceManagement({
 
             {/* Renew */}
             <TabsContent value="renew" className="mt-4">
-                <div>Coming Soon</div>
+                <div className="h-6">Coming Soon</div>
             </TabsContent>
         </Tabs>
     );

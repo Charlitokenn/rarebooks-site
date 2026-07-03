@@ -221,21 +221,6 @@ export function LicenseDashboard({
                         parseDeviceTag={parseDeviceTag}
                     />
                 )}
-
-                {/* Right Column */}
-                {/*<div className="space-y-6">*/}
-                {/*    /!* Renewal Section - only show if license has expiry *!/*/}
-                {/*    {licenseInfo && hasExpiry && (*/}
-                {/*        <RenewalSection*/}
-                {/*            currentPlan={getPlanName()}*/}
-                {/*            countryCode={countryCode}*/}
-                {/*            onSelectPlan={handlePaymentClick}*/}
-                {/*        />*/}
-                {/*    )}*/}
-
-                {/*    /!* Support Card *!/*/}
-                {/*    <SupportCard />*/}
-                {/*</div>*/}
             </div>
 
             {/* Payment Modal */}
