@@ -17,8 +17,24 @@ const formSchema = z.object({
       .transform(NormalizeEmail),
   password: z
       .string()
-      .min(8, "8 characters password required")
-      .max(8, "8 characters password required"),
+      .min(8, "Password must be at least 8 characters")
+      .max(256, "Password must not exceed 256 characters")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number")
+      .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character")
+      .refine((val) => !/(.)\1{2,}/.test(val), {
+        message: "Password must not contain repeated characters (e.g., 'aaa')",
+      })
+      .refine((val) => !/(012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)/i.test(val), {
+        message: "Password must not contain sequential characters",
+      })
+      .refine((val) => !/(password|123456|qwerty|admin|letmein|welcome|monkey|dragon|master|sunshine|princess|football|baseball|iloveyou|trustno1|abc123|password1|admin123|login|default)/i.test(val), {
+        message: "Password must not be a commonly used weak password",
+      })
+      .refine((val) => !/\s/.test(val), {
+        message: "Password must not contain whitespace characters",
+      }),
   redeemCode: z
       .string()
       .min(13, "Paste redeem code from Appsumo")
