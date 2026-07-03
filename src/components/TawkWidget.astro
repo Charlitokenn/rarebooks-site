@@ -90,9 +90,25 @@ const canLogin = Boolean(userId && loginHash);
             });
         }
 
+        function restoreTawkNodes(){
+            if(!root) return;
+            document.querySelectorAll('[id^="tawk"], iframe[title*="chat" i], iframe[title*="tawk" i]').forEach(function (node) {
+                //Only move nodes that are currently inside the persist root
+                if(node.parentElement === root){
+                    document.body.appendChild(node);
+                }
+            });
+        }
+
         if (!window.__tawkBeforeSwapListenerAdded) {
             document.addEventListener("astro:before-swap", relocateTawkNodes);
             window.__tawkBeforeSwapListenerAdded = true;
+        }
+
+        //Restore tawk nodes to <body> after swap
+        if(!window.__tawkBeforeSwapListenerAdded){
+            document.addEventListener("astro:after-swap", restoreTawkNodes);
+            window.__tawkAfterSwapListernerAdded = true;
         }
 
         // Astro's <ClientRouter /> works by globally watching clicks on <a>
