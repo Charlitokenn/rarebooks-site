@@ -2,6 +2,7 @@
 import { env } from "cloudflare:workers";
 
 const userDetails = await Astro.locals.currentUser?.();
+const fullName = userDetails?.fullName ?? ""
 const email = userDetails?.emailAddresses?.[0]?.emailAddress ?? "";
 const userId = userDetails?.id ?? "";
 
@@ -43,7 +44,7 @@ const canLogin = Boolean(userId && loginHash);
   // Only attach visitor object when we have VALID credentials
   if (hasIdentifiedVisitor) {
     Tawk_API.visitor = {
-      name: email,
+      name: fullName,
       email: email,
       hash: visitorHash
     };
@@ -53,7 +54,7 @@ const canLogin = Boolean(userId && loginHash);
   if (canLogin) {
     Tawk_API.onLoad = function() {
       Tawk_API.login({
-        name: email,
+        name: fullName,
         email: email,
         userId: userId,
         hash: loginHash
