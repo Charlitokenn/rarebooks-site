@@ -23,6 +23,7 @@ type WelcomeReason = "trial" | "redeem" | null;
  */
 export function WelcomeModal() {
     const [reason, setReason] = useState<WelcomeReason>(null);
+    const [passwordEmailed, setPasswordEmailed] = useState(false);
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -31,10 +32,16 @@ export function WelcomeModal() {
 
         if (welcome === "trial" || welcome === "redeem") {
             setReason(welcome);
+            // Trial accounts always get a generated password by email.
+            // Redemption accounts only get one if the user's own password
+            // was rejected by Clerk and we fell back to a generated one
+            // (see /api/redemption).
+            setPasswordEmailed(welcome === "trial" || params.get("pwreset") === "1");
             setOpen(true);
 
-            // Strip the query param so a refresh/share link doesn't re-trigger it.
+            // Strip the query params so a refresh/share link doesn't re-trigger it.
             params.delete("welcome");
+            params.delete("pwreset");
             const query = params.toString();
             window.history.replaceState(
                 {},
@@ -70,7 +77,7 @@ export function WelcomeModal() {
                         <span>Your license key has been sent to your email.</span>
                     </li>
 
-                    {isTrial && (
+                    {passwordEmailed && (
                         <li className="flex items-start gap-3 text-sm text-ink">
                             <KeyRound className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                             <span>Your login details have also been sent to your email.</span>
@@ -80,7 +87,7 @@ export function WelcomeModal() {
                     <li className="flex items-start gap-3 text-sm text-ink">
                         <Settings className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                         <span>
-              {isTrial
+              {passwordEmailed
                   ? "You can change your password anytime from the Settings tab in the sidebar."
                   : "You can update your password anytime from the Settings tab in the sidebar."}
             </span>

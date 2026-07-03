@@ -23,7 +23,7 @@ export const PageHero = ({
         </h1>
         <p className="text-sm text-muted-foreground">{subtitle}</p>
       </div>
-      <a href={AppConfig.urls.documentationUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-primary hover:underline cursor-pointer">
+      <a href={AppConfig.urls.documentationUrl} className="text-sm font-medium text-primary hover:underline cursor-pointer">
         Documentation
       </a>
     </div>

@@ -98,7 +98,10 @@ export function RedemptionForm({ id }: RedemptionFormProps) {
 
       setStatus("Signing you in...");
       // Navigates away on success — no further UI updates needed after this.
-      await signInWithTicket(result.signInToken, "/dashboard?welcome=redeem");
+      await signInWithTicket(
+          result.signInToken,
+          `/dashboard?welcome=redeem${result.usedFallbackPassword ? "&pwreset=1" : ""}`,
+      );
     } catch (error: any) {
       console.error("Error submitting enquiry:", error);
       setError(

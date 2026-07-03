@@ -8,6 +8,7 @@ import { AppConfig } from "../../constants";
 import { isTanzania } from "../../constants/pricing";
 import { Capitalize } from "../../components/lib/utils.ts"
 import RedemptionEmail from "@components/templates/redemption-email.tsx";
+import PortalAccessEmail from "@components/templates/portal-access-email.tsx";
 
 export const prerender = false;
 
@@ -277,6 +278,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
       // `env` is imported from "cloudflare:workers" (Astro 6 + @astrojs/cloudflare
       // pattern). No locals.runtime.env needed.
       let signInToken: string | null = null;
+      let usedFallbackPassword = false;
+
+      // Clerk error codes that mean "the password itself is the problem",
+      // as opposed to a config/network/other issue we shouldn't paper over.
+      const PASSWORD_REJECTION_CODES = new Set([
+        "form_password_not_strong_enough",
+        "form_password_pwned",
+        "form_password_size_in_bytes_exceeded",
+        "form_password_validation_failed",
+      ]);
 
       try {
         const clerk = createClerkClient({
@@ -299,6 +310,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
           clerkUserId = newUser.id;
         } catch (clerkError: any) {
           const code = clerkError?.errors?.[0]?.code;
+
           if (code === "form_identifier_exists") {
             // The user already has a Clerk account (re-submission or returning
             // trial requester). Look them up so we can still hand them a
@@ -310,6 +322,54 @@ export const POST: APIRoute = async ({ request, locals }) => {
               emailAddress: [normalizedEmail],
             });
             clerkUserId = existing.data[0]?.id;
+          } else if (code && PASSWORD_REJECTION_CODES.has(code)) {
+            // The password the user typed on the redemption form didn't pass
+            // Clerk's strength check. Their license key has already been
+            // generated and emailed by this point, so we don't want to fail
+            // the whole request over this — fall back to a strong,
+            // server-generated password (same approach the trial flow uses)
+            // and email it to them so they still get a working account.
+            console.warn(
+                `[Clerk] Password rejected for ${normalizedEmail} (${code}) — retrying with a generated password.`
+            );
+
+            const fallbackPassword = generatePassword(12);
+
+            try {
+              const fallbackUser = await clerk.users.createUser({
+                firstName,
+                lastName,
+                emailAddress: [normalizedEmail],
+                password: fallbackPassword,
+                privateMetadata: {
+                  license: licenseKey
+                }
+              });
+
+              clerkUserId = fallbackUser.id;
+              usedFallbackPassword = true;
+
+              const html = await render(
+                  React.createElement(PortalAccessEmail, {
+                    firstName,
+                    email: normalizedEmail,
+                    password: fallbackPassword,
+                  })
+              );
+
+              const resend = new Resend(env.RESEND_API_KEY);
+              await resend.emails.send({
+                from: `Charles | RareBooks <${AppConfig.emails.supportEmail}>`,
+                to: normalizedEmail,
+                subject: `${firstName}, your client portal is ready!`,
+                html
+              });
+            } catch (fallbackError: any) {
+              console.error(
+                  "[Clerk] Fallback account creation failed:",
+                  fallbackError?.errors ?? fallbackError?.message
+              );
+            }
           } else {
             console.error(
                 "[Clerk] User provisioning failed:",
@@ -334,8 +394,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
 
       const responsePayload = Array.isArray(result)
-          ? { keys: result, signInToken }
-          : { ...result, signInToken };
+          ? { keys: result, signInToken, usedFallbackPassword }
+          : { ...result, signInToken, usedFallbackPassword };
 
       return new Response(JSON.stringify(responsePayload), {
         status: 200,
