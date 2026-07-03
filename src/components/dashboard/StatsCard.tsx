@@ -22,7 +22,7 @@ export function StatsCards({
     return (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* License Status */}
-            <Card className="shadow-none border-gray-300">
+            <Card className="shadow-none border border-gray-300">
                 <CardContent className="p-3">
                     <p className="text-sm font-medium text-muted-foreground">
                         License Status
@@ -43,7 +43,7 @@ export function StatsCards({
             </Card>
 
             {/* Devices Active */}
-            <Card className="shadow-none border-gray-300">
+            <Card className="shadow-none border border-gray-300">
                 <CardContent className="p-3">
                     <p className="text-sm font-medium text-muted-foreground">
                         Devices Active
@@ -60,7 +60,7 @@ export function StatsCards({
             </Card>
 
             {/* Plan Type */}
-            <Card className="shadow-none border-gray-300">
+            <Card className="shadow-none border border-gray-300">
                 <CardContent className="p-3">
                     <p className="text-sm font-medium text-muted-foreground">Plan Type</p>
                     <p className="text-2xl font-bold mt-1">{planType}</p>

@@ -6,7 +6,6 @@ import { Progress } from "@components/components/ui/progress";
 import type { Device } from "./LicenseDashboard";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@components/components/ui/table.tsx";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@components/components/ui/tabs.tsx";
-import { Popover , PopoverTrigger, PopoverContent} from "@components/components/ui/popover";
 
 interface DeviceManagementProps {
     devices: Device[];
@@ -75,7 +74,7 @@ export function DeviceManagement({
 
             {/* Devices */}
             <TabsContent value="devices" className="mt-4">
-                <Card className="shadow-none border-gray-300">
+                <Card className="shadow-none border border-gray-300">
                     <CardHeader>
                         <div className="flex flex-wrap items-end justify-between gap-4">
                             <div>
@@ -99,10 +98,10 @@ export function DeviceManagement({
                                 No devices activated yet.
                             </div>
                         ) : (
-                            <div className="rounded-md border-gray-300">
+                            <div className="rounded-md border border-gray-300">
                                 <Table>
                                     <TableHeader>
-                                        <TableRow>
+                                        <TableRow className="cursor-default">
                                             <TableHead>Device</TableHead>
                                             <TableHead className="hidden sm:table-cell">OS</TableHead>
                                             <TableHead className="hidden md:table-cell">RAM</TableHead>
@@ -142,12 +141,15 @@ export function DeviceManagement({
                                                     {formatDate(device.activationTime)}
                                                 </TableCell>
                                                 <TableCell className="text-right">
-                                                        <Button
-                                                            onClick={() => deactivateDevice(device.hostId)}
-                                                            className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive"
-                                                        >
-                                                            <span className="hidden sm:inline">Confirm Deactivation</span>
-                                                        </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={() => deactivateDevice(device.hostId)}
+                                                        className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                        <span className="hidden sm:inline">Deactivate</span>
+                                                    </Button>
                                                 </TableCell>
                                             </TableRow>
                                         })}

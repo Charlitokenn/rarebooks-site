@@ -55,7 +55,7 @@ export function LicenseCard({
     };
 
     return (
-        <Card className="shadow-none border-gray-300">
+        <Card className="shadow-none border border-gray-300">
             <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                     <div>
