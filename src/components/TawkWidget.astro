@@ -121,7 +121,8 @@ const canLogin = Boolean(userId && loginHash);
         s1.async = true;
         s1.src = "https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2";
         s1.charset = "UTF-8";
-        s1.setAttribute("data-cfasync", "false", "crossorigin", "*");
+        s1.setAttribute("data-cfasync", "false");
+        s1.setAttribute("crossorigin", "*");
         s0.parentNode.insertBefore(s1, s0);
     })();
 </script>
