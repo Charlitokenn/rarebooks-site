@@ -1,5 +1,7 @@
 import { Moon, Sun, Sunset } from "lucide-react";
 import React, { type JSX } from "react";
+import {Button} from "react-email";
+import {AppConfig} from "../../constants";
 
 type PageHeroProps = {
   title?: string;
@@ -21,6 +23,9 @@ export const PageHero = ({
         </h1>
         <p className="text-sm text-muted-foreground">{subtitle}</p>
       </div>
+      <a href={AppConfig.urls.documentationUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-primary hover:underline cursor-pointer">
+        Documentation
+      </a>
     </div>
   );
 };

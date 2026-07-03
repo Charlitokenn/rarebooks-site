@@ -9,7 +9,8 @@ import {
     DialogDescription,
 } from "@components/components/ui/dialog";
 import { Button } from "@components/components/ui/button";
-import { Mail, KeyRound, Settings, CheckCircle2 } from "lucide-react";
+import {Mail, KeyRound, Settings, CheckCircle2, Download} from "lucide-react";
+import {AppConfig} from "../../constants";
 
 type WelcomeReason = "trial" | "redeem" | null;
 
@@ -83,6 +84,10 @@ export function WelcomeModal() {
                   ? "You can change your password anytime from the Settings tab in the sidebar."
                   : "You can update your password anytime from the Settings tab in the sidebar."}
             </span>
+                    </li>
+                    <li className="flex items-start gap-3 text-sm text-ink">
+                        <Download className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                        <span>Please download the app from <a href={AppConfig.urls.storeUrl} target="_blank" rel="noopener noreferrer">microsoft store</a> to use your license key.</span>
                     </li>
                 </ul>
 
