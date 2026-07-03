@@ -59,8 +59,8 @@ export function WelcomeModal() {
                 </DialogTitle>
                 <DialogDescription className="text-center">
                     {isTrial
-                        ? "Your trial license is active and you're signed in."
-                        : "Your lifetime license is active and you're signed in."}
+                        ? "Your trial license is active and you're signed in to your client portal."
+                        : "Your lifetime license is active and you're signed in to your client portal."}
                 </DialogDescription>
 
                 <ul className="mt-5 space-y-3">

@@ -1,15 +1,8 @@
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
 import { AppConfig } from "../../constants";
-import {isTanzania} from "../../constants/pricing.ts";
 import {Capitalize} from "@components/lib/utils.ts";
-import {render} from "@react-email/render";
-import React from "react";
-import TrialLicenseEmail from "@components/templates/trial-license-sent.tsx";
 import {Resend} from "resend";
-import {createClerkClient} from "@clerk/backend";
-import PortalAccessEmail from "@components/templates/portal-access-email.tsx";
-import {tryStatement} from "@babel/types";
 
 export const prerender = false;
 
