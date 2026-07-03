@@ -66,7 +66,7 @@ export function DeviceManagement({
     }
 
     return (
-        <Tabs defaultValue="devices" className="mt-8">
+        <Tabs defaultValue="devices" className="my-6">
             <TabsList>
                 <TabsTrigger value="devices">Devices</TabsTrigger>
                 <TabsTrigger value="renew">Renew License</TabsTrigger>

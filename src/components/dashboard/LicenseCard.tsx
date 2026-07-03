@@ -55,7 +55,7 @@ export function LicenseCard({
     };
 
     return (
-        <Card>
+        <Card className="shadow-none border-gray-300">
             <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                     <div>
@@ -84,7 +84,7 @@ export function LicenseCard({
 
                 <div className="space-y-4">
                     {/* License Key */}
-                    <div className="rounded-lg p-4 border">
+                    <div className="rounded-lg p-4 shadow-none border-gray-300">
                         <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                             License Key
                         </label>
@@ -111,13 +111,13 @@ export function LicenseCard({
 
                     {/* License Info Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div className="rounded-lg p-4 border">
+                        <div className="rounded-lg p-4 shadow-none border-gray-300">
                             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                 Plan
                             </label>
                             <p className="mt-1 text-base font-semibold">{planName}</p>
                         </div>
-                        <div className="rounded-lg p-4 border">
+                        <div className="rounded-lg p-4 shadow-none border-gray-300">
                             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                 Expiry Date
                             </label>
