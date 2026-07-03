@@ -13,7 +13,7 @@ const {
 } = Astro.props
 
 import "../styles/global.css"
-// import { ClientRouter } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import { Show } from '@clerk/astro/components'
 
 import { PersistedSidebarShell } from "../components/components/persisted-sidebar.tsx";
@@ -64,7 +64,7 @@ const sidebarState = sidebarOpen ? "expanded" : "collapsed";
       link is a full document reload — that hard reload is what was
       causing the dashboard "flicker."
     -->
-    <!--<ClientRouter />-->
+    <ClientRouter />
 </head>
 <body class="min-h-screen overflow-x-hidden">
     <!--
