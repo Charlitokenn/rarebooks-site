@@ -1,7 +1,6 @@
 ---
 import PortalLayout from "../../layouts/PortalLayout.astro";
 import { PageHero } from "../../components/components/pageHero.tsx"
-import { GetGreetingProps} from "@components/lib/utils.ts";
 import { LicenseDashboard } from "../../components/dashboard/LicenseDashboard";
 import { WelcomeModal } from "../../components/dashboard/WelcomeModal";
 
@@ -12,11 +11,10 @@ const email = userDetails?.emailAddresses?.[0]?.emailAddress || "";
 const firstName = userDetails?.firstName;
 const lastName = userDetails?.lastName;
 const fullName = [firstName, lastName].filter(Boolean).join(" ") || email;
-const { title, subtitle, timeOfDay } = GetGreetingProps(userDetails?.firstName!);
 ---
 
 <PortalLayout>
-    <PageHero type="greeting" title={title} subtitle="Manage your license and device activations" timeOfDay={timeOfDay} client:load/>
+    <PageHero type="greeting" name={firstName} subtitle="Manage your license and device activations" client:load/>
     <LicenseDashboard
             client:load
             userEmail={email}
