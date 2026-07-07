@@ -47,7 +47,7 @@ export const PageHero = ({
             </div>
             <a
                 href="/getting-started/getting-started-with-rarebooks/"
-                className="text-sm font-medium text-primary hover:underline cursor-pointer"
+                className="flex gap-2 text-sm font-medium text-primary hover:underline cursor-pointer"
                 >
                 <BookOpenText/> Documentation
             </a>
