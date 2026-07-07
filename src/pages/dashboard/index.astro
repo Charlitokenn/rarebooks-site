@@ -12,11 +12,11 @@ const email = userDetails?.emailAddresses?.[0]?.emailAddress || "";
 const firstName = userDetails?.firstName;
 const lastName = userDetails?.lastName;
 const fullName = [firstName, lastName].filter(Boolean).join(" ") || email;
-const { title, subtitle } = GetGreetingProps(userDetails?.firstName!);
+const { title, subtitle, timeOfDay } = GetGreetingProps(userDetails?.firstName!);
 ---
 
 <PortalLayout>
-    <PageHero type="greeting" title={title} subtitle="Manage your license and device activations" client:load/>
+    <PageHero type="greeting" title={title} subtitle="Manage your license and device activations" timeOfDay={timeOfDay} client:load/>
     <LicenseDashboard
             client:load
             userEmail={email}

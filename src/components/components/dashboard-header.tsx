@@ -13,6 +13,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { SidebarLeftIcon } from "@hugeicons/core-free-icons";
 import { Home } from "lucide-react";
 import { requestSidebarToggle } from "../../stores/sidebar";
+import { ClerkUserButton } from "./clerk-user-button";
 
 export interface Crumb {
   label: string;
@@ -73,7 +74,9 @@ export function DashboardHeader({
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-        <div className="flex items-center justify-center"></div>
+        <div className="flex items-center justify-center">
+          <ClerkUserButton />
+        </div>
       </div>
     </header>
   );

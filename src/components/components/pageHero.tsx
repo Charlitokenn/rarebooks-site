@@ -1,54 +1,46 @@
-import { Moon, Sun, Sunset } from "lucide-react";
+import { Moon, Sun, Sunrise } from "lucide-react";
 import React, { type JSX } from "react";
-import {Button} from "react-email";
 import {AppConfig} from "../../constants";
+
+type TimeOfDay = "morning" | "afternoon" | "evening";
 
 type PageHeroProps = {
   title?: string;
   subtitle?: string;
   type: "greeting" | "hero";
+  timeOfDay?: TimeOfDay;
 };
 
 export const PageHero = ({
-  title,
-  subtitle,
-  type,
-}: PageHeroProps): JSX.Element => {
+                           title,
+                           subtitle,
+                           type,
+                           timeOfDay,
+                         }: PageHeroProps): JSX.Element => {
   return (
-    <div className="flex items-center text-primary justify-between gap-4 ">
-      <div className="space-y-1">
-        <h1 className="flex items-center gap-2 text-2xl font-semibold">
-          {type !== "hero" && getTimeBasedIcon()}
-          {title}
-        </h1>
-        <p className="text-sm text-muted-foreground">{subtitle}</p>
+      <div className="flex items-center text-primary justify-between gap-4 ">
+        <div className="space-y-1">
+          <h1 className="flex items-center gap-2 text-2xl font-semibold">
+            {type !== "hero" && getTimeBasedIcon(timeOfDay)}
+            {title}
+          </h1>
+          <p className="text-sm text-muted-foreground">{subtitle}</p>
+        </div>
+        <a href={AppConfig.urls.documentationUrl} className="text-sm font-medium text-primary hover:underline cursor-pointer">
+          Documentation
+        </a>
       </div>
-      <a href={AppConfig.urls.documentationUrl} className="text-sm font-medium text-primary hover:underline cursor-pointer">
-        Documentation
-      </a>
-    </div>
   );
 };
 
-export function getTimeBasedIcon(date: Date = new Date()): JSX.Element {
-  const hour = date.getHours();
-  const greeting = hour < 12 ? "Good morning, " : hour < 18 ? "Afternoon, " : "Evening, ";
-
-  // 🌙 Night: 19 → 04
-  if (hour >= 19 || hour < 5) {
-    return <Moon className="size-5" />
+export function getTimeBasedIcon(timeOfDay: TimeOfDay = "morning"): JSX.Element {
+  switch (timeOfDay) {
+    case "morning":
+      return <Sunrise className="size-5" />;
+    case "afternoon":
+      return <Sun className="size-5" />;
+    case "evening":
+    default:
+      return <Moon className="size-5" />;
   }
-
-  // 🌅 Sunrise: 05 → 08
-  // if (hour >= 5 && hour < 9) {
-  //   return <DayCloudyIcon className="size-7" />
-  // }
-
-  // ☀️ Day: 05 → 16
-  if (hour >= 5 && hour < 17) {
-    return <Sun className="size-5" />;
-  }
-
-  // 🌇 Sunset: 17 → 18
-  return <Sunset className="size-5" />;
 }

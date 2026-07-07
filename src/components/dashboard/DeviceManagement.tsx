@@ -7,6 +7,7 @@ import { Progress } from "@components/components/ui/progress";
 import type { Device } from "./LicenseDashboard";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@components/components/ui/table.tsx";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@components/components/ui/tabs.tsx";
+import {AppConfig} from "../../constants";
 
 interface DeviceManagementProps {
     devices: Device[];
@@ -190,7 +191,21 @@ export function DeviceManagement({
 
             {/* Renew */}
             <TabsContent value="renew" className="my-4">
-                <div className="h-12 border-gray-300">Coming Soon</div>
+                <Card className="shadow-none border border-gray-300">
+                    <CardHeader>
+                        <div className="flex flex-wrap items-end justify-between gap-4">
+                            <div>
+                                <CardTitle>License Renewals</CardTitle>
+                                <CardDescription className="mt-1">
+                                    Purchase new license key to keep using {AppConfig.appName}.
+                                </CardDescription>
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="h-12 border-gray-300">Coming Soon</div>
+                    </CardContent>
+                </Card>
             </TabsContent>
         </Tabs>
     );

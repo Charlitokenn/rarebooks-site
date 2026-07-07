@@ -31,6 +31,7 @@ export function GetInitials(firstName?: string | null, lastName?: string | null)
 interface GreetingProps {
   title: string;
   subtitle: string;
+  timeOfDay: "morning" | "afternoon" | "evening";
 }
 
 export function GetGreetingProps(name?: string | null | undefined): GreetingProps {
@@ -115,5 +116,5 @@ export function GetGreetingProps(name?: string | null | undefined): GreetingProp
   const title = `${titlePool[Math.floor(Math.random() * titlePool.length)]}, ${displayName}`;
   const subtitle = subtitlePool[Math.floor(Math.random() * subtitlePool.length)];
 
-  return { title, subtitle };
+  return { title, subtitle, timeOfDay };
 }

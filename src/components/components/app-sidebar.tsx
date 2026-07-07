@@ -3,7 +3,6 @@
 import * as React from "react";
 
 import { NavMain } from "@components/components/nav-main";
-import { NavUser } from "@components/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -23,12 +22,6 @@ const data = {
       url: "/dashboard",
       icon: <LayoutDashboard />,
       isActive: true,
-    },
-    {
-      title: "Settings",
-      url: "/dashboard/settings",
-      icon: <Cog />,
-      isActive: false,
     },
   ],
 };
@@ -63,7 +56,6 @@ export function AppSidebar({ path, user, ...props }: Props) {
         <NavMain items={data.navMain} pathname={pathname} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser userDetails={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
