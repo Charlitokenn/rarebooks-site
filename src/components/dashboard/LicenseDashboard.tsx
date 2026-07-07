@@ -219,6 +219,7 @@ export function LicenseDashboard({
                         devices={licenseInfo.data.license.devices}
                         maxActivations={licenseInfo.data.license.maxActivations}
                         parseDeviceTag={parseDeviceTag}
+                        onDeviceDeactivated={handleRefresh}
                     />
                 )}
             </div>

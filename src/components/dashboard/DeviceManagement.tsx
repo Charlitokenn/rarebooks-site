@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import {Monitor, Smartphone, Laptop, Trash2} from "lucide-react";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@components/components/ui/card";
 import { Button } from "@components/components/ui/button";
@@ -16,6 +17,7 @@ interface DeviceManagementProps {
         ram: string;
         manufacturer: string;
     };
+    onDeviceDeactivated: () => void;
 }
 
 function getDeviceIcon(os: string) {
@@ -33,7 +35,11 @@ export function DeviceManagement({
                                      devices,
                                      maxActivations,
                                      parseDeviceTag,
+                                     onDeviceDeactivated,
                                  }: DeviceManagementProps) {
+    const [pendingHostId, setPendingHostId] = useState<string | null>(null);
+    const [deactivateError, setDeactivateError] = useState<string | null>(null);
+
     const activations = devices.length;
     const remaining = maxActivations - activations;
     const usagePercent = maxActivations > 0 ? (activations / maxActivations) * 100 : 0;
@@ -49,21 +55,33 @@ export function DeviceManagement({
     };
 
     const deactivateDevice = async (hostId: string) => {
-
         const response = await fetch("/api/deactivate-key", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(hostId),
+            body: JSON.stringify({ hostId }),
         });
 
         const result = await response.json();
 
         if (!response.ok) {
-            throw new Error(result.message || "Failed to send enquiry");
+            throw new Error(result.error || result.message || "Failed to deactivate device");
         }
-    }
+    };
+
+    const handleDeactivateClick = async (hostId: string) => {
+        setDeactivateError(null);
+        setPendingHostId(hostId);
+        try {
+            await deactivateDevice(hostId);
+            onDeviceDeactivated();
+        } catch (err: any) {
+            setDeactivateError(err.message || "Failed to deactivate device");
+        } finally {
+            setPendingHostId(null);
+        }
+    };
 
     return (
         <Tabs defaultValue="devices" className="my-6">
@@ -73,7 +91,7 @@ export function DeviceManagement({
             </TabsList>
 
             {/* Devices */}
-            <TabsContent value="devices" className="mt-4">
+            <TabsContent value="devices" className="my-4">
                 <Card className="shadow-none border border-gray-300">
                     <CardHeader>
                         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -93,6 +111,11 @@ export function DeviceManagement({
                         </div>
                     </CardHeader>
                     <CardContent>
+                        {deactivateError && (
+                            <div className="mb-4 rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+                                {deactivateError}
+                            </div>
+                        )}
                         {devices.length === 0 ? (
                             <div className="rounded-md border border-dashed py-10 text-center text-sm text-muted-foreground">
                                 No devices activated yet.
@@ -116,6 +139,7 @@ export function DeviceManagement({
                                             const { name, os, ram, manufacturer } = parseDeviceTag(
                                                 device.deviceTag
                                             );
+                                            const isPending = pendingHostId === device.hostId;
                                             return <TableRow key={device.id}>
                                                 <TableCell>
                                                     <div className="flex items-center gap-3">
@@ -144,11 +168,14 @@ export function DeviceManagement({
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => deactivateDevice(device.hostId)}
-                                                        className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive"
+                                                        disabled={isPending}
+                                                        onClick={() => handleDeactivateClick(device.hostId)}
+                                                        className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive disabled:opacity-50"
                                                     >
                                                         <Trash2 className="h-4 w-4" />
-                                                        <span className="hidden sm:inline">Deactivate</span>
+                                                        <span className="hidden sm:inline">
+                                                            {isPending ? "Removing…" : "Deactivate"}
+                                                        </span>
                                                     </Button>
                                                 </TableCell>
                                             </TableRow>
@@ -162,8 +189,8 @@ export function DeviceManagement({
             </TabsContent>
 
             {/* Renew */}
-            <TabsContent value="renew" className="mt-4">
-                <div className="h-6">Coming Soon</div>
+            <TabsContent value="renew" className="my-4">
+                <div className="h-12 border-gray-300">Coming Soon</div>
             </TabsContent>
         </Tabs>
     );
