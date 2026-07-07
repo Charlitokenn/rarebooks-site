@@ -86,7 +86,7 @@ export function DeviceManagement({
 
     return (
         <Tabs defaultValue="devices" className="my-6">
-            <TabsList className="text-secondary">
+            <TabsList className="text-secondary hover:text-secondary cursor-pointer">
                 <TabsTrigger value="devices">Devices</TabsTrigger>
                 <TabsTrigger value="renew">Renew License</TabsTrigger>
             </TabsList>

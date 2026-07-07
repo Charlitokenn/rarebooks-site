@@ -1,4 +1,4 @@
-import { Moon, Sun, Sunrise } from "lucide-react";
+import { Moon, Sun, Sunrise, BookOpenText } from "lucide-react";
 import React, { type JSX, useEffect, useState } from "react";
 import { AppConfig } from "../../constants";
 import { GetGreetingProps } from "@components/lib/utils";
@@ -46,10 +46,10 @@ export const PageHero = ({
                 <p className="text-sm text-muted-foreground">{subtitle}</p>
             </div>
             <a
-                href={AppConfig.urls.documentationUrl}
+                href="/getting-started/getting-started-with-rarebooks/"
                 className="text-sm font-medium text-primary hover:underline cursor-pointer"
                 >
-                Documentation
+                <BookOpenText/> Documentation
             </a>
         </div>
     );
