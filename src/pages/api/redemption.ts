@@ -415,6 +415,29 @@ export const POST: APIRoute = async ({ request, locals }) => {
         console.error("[Clerk] Sign-in token creation failed:", signInTokenError);
       }
 
+      try {
+        const notification = await fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
+          method: 'POST',
+          headers: {
+            'Title': 'New AppSumo Redemption',
+            'Tags': 'tada, AppSumo_Client',
+            'Click': 'https://app.keymint.dev/dashboard/org-calm-mountain-80007672/licenses',
+            'Markdown': 'yes',
+          },
+          body: `
+            ![ChaChing](https://t4.ftcdn.net/jpg/15/68/48/25/360_F_1568482583_TUDgw6WAo5f8nW8bbDfsdMSqwIhCDcdH.jpg)
+            
+            Client Name: ${firstName} ${lastName}
+            Email Address: ${normalizedEmail}
+          `,
+        })
+
+        return notification
+
+      } catch (error) {
+        console.error("Failed to send notification",error)
+      }
+
       const responsePayload = Array.isArray(result)
           ? { keys: result, signInToken, usedFallbackPassword }
           : { ...result, signInToken, usedFallbackPassword };

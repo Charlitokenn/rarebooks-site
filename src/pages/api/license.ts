@@ -334,6 +334,29 @@ export const POST: APIRoute = async ({ request, locals }) => {
         console.error("[Clerk] Sign-in token creation failed:", signInTokenError);
       }
 
+      try {
+        const notification = await fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
+          method: 'POST',
+          headers: {
+            'Title': 'New Trial Client',
+            'Tags': 'tada, Trial_Client',
+            'Click': 'https://app.keymint.dev/dashboard/org-calm-mountain-80007672/licenses',
+            'Markdown': 'yes',
+          },
+          body: `
+            ![New Lead Captured](https://img.magnific.com/premium-vector/generating-new-leads-abstract-concept-vector-illustration-generate-leads-digital-marketing-software-sales-strategy-new-customer-interest-sales-funnel-internet-cms-abstract-metaphor_107173-58930.jpg)
+            
+            Client Name: ${firstName} ${lastName}
+            Email Address: ${normalizedEmail}
+          `,
+        })
+
+        return notification
+
+      } catch (error) {
+        console.error("Failed to send notification",error)
+      }
+
       const responsePayload = Array.isArray(result)
           ? { keys: result, signInToken }
           : { ...result, signInToken };
