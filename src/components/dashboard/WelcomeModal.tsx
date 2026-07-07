@@ -88,8 +88,8 @@ export function WelcomeModal() {
                         <Settings className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                         <span>
               {passwordEmailed
-                  ? "You can change your password anytime from the Settings tab in the sidebar."
-                  : "You can update your password anytime from the Settings tab in the sidebar."}
+                  ? "You can change your password anytime via the User Button top right on nav bar."
+                  : "You can update your password anytime via the User Button top right on nav bar."}
             </span>
                     </li>
                     <li className="flex items-start gap-3 text-sm text-ink">
