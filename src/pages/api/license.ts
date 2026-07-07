@@ -334,7 +334,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         console.error("[Clerk] Sign-in token creation failed:", signInTokenError);
       }
 
-      try {
+      //Send ntfy notification
          fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
           method: 'POST',
           headers: {
@@ -349,10 +349,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
             Client Name: ${firstName} ${lastName}
             Email Address: ${normalizedEmail}
           `,
-        })
-      } catch (error) {
-        console.error("Failed to send notification",error)
-      }
+        }).catch(err => console.error('ntfy failed:', err));
 
       const responsePayload = Array.isArray(result)
           ? { keys: result, signInToken }
