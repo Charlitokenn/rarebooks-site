@@ -3,6 +3,7 @@
 // Runtime types generated with workerd@1.20260611.1 2026-06-13 nodejs_compat
 interface __BaseEnv_Env {
   DB: D1Database;
+  KEYMINT_CLIENT_API_KEY: string;
   KEYMINT_API_KEY: string;
   RESEND_API_KEY: string;
   CLICKPESA_CLIENT_ID: string;
