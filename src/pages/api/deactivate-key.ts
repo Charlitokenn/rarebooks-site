@@ -6,7 +6,7 @@ const jsonHeaders = { "Content-Type": "application/json" };
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const keymintApiKey = env.KEYMINT_API_KEY;
+    const keymintApiKey = env.KEYMINT_CLIENT_API_KEY;
     if (!keymintApiKey) {
       return new Response(
           JSON.stringify({ message: "Server configuration error" }),

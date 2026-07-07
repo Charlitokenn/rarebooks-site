@@ -17,6 +17,7 @@ declare namespace App {
 interface CloudflareEnv {
   DB: import("@cloudflare/workers-types").D1Database;
   KEYMINT_API_KEY: string;
+  KEYMINT_CLIENT_API_KEY: string;
   RESEND_API_KEY: string;
   CLERK_SECRET_KEY: string;
   TURNSTILE_KEY: string;
