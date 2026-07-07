@@ -86,7 +86,7 @@ export function DeviceManagement({
 
     return (
         <Tabs defaultValue="devices" className="my-6">
-            <TabsList className="text-primary">
+            <TabsList className="text-secondary">
                 <TabsTrigger value="devices">Devices</TabsTrigger>
                 <TabsTrigger value="renew">Renew License</TabsTrigger>
             </TabsList>
