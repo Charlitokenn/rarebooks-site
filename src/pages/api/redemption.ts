@@ -416,7 +416,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
 
       try {
-        const notification = await fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
+        fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
           method: 'POST',
           headers: {
             'Title': 'New AppSumo Redemption',
@@ -431,9 +431,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
             Email Address: ${normalizedEmail}
           `,
         })
-
-        return notification
-
       } catch (error) {
         console.error("Failed to send notification",error)
       }
