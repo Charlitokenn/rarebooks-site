@@ -9,6 +9,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 // import node from '@astrojs/node'
 import clerk from "@clerk/astro";
+import starlightBlog from 'starlight-blog'
 
 // https://astro.build/config
 export default defineConfig({
@@ -98,6 +99,7 @@ export default defineConfig({
         Pagination: "./src/components/Pagination.astro",
       },
       disable404Route: true,
+      plugins: [starlightBlog()],
     }),
     webcore(),
     react(),
