@@ -109,6 +109,14 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     define: {},
+    build: {
+      rollupOptions: {
+        external: ['@bruits/satteri-wasm32-wasi']
+      }
+    },
+    optimizeDeps: {
+      exclude: ['satteri'],
+    },
     css: {
       preprocessorOptions: {
         scss: {
