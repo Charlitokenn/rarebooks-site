@@ -22,14 +22,8 @@ export default defineConfig({
     // Disable image processing if not needed
     imageService: "passthrough",
   }),
-  // adapter: node({ mode: 'standalone' }),
-  server: {
-    port: 4321,
-    host: "127.0.0.1",
-  },
   integrations: [
     starlight({
-      prerender: false,
       title: "RareBooks",
       social: [
         {
