@@ -1,27 +1,3 @@
-// import { clerkMiddleware, createRouteMatcher } from "@clerk/astro/server";
-//
-// const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
-//
-// export const onRequest = clerkMiddleware((auth, context) => {
-//   // Geo logic (always runs)
-//   const headers = context.request.headers;
-//   let countryCode =
-//     headers.get("cf-ipcountry") ||
-//     headers.get("x-vercel-ip-country") ||
-//     headers.get("x-country") ||
-//     headers.get("cloudfront-viewer-country") ||
-//     "US";
-//
-//   context.locals.countryCode = countryCode;
-//
-//   // Auth logic (only blocks protected routes)
-//   const { isAuthenticated, redirectToSignIn } = auth();
-//
-//   if (!isAuthenticated && isProtectedRoute(context.request)) {
-//     return redirectToSignIn();
-//   }
-// });
-
 import { clerkMiddleware, createRouteMatcher } from "@clerk/astro/server";
 import { defineMiddleware, sequence } from "astro:middleware";
 

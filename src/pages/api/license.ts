@@ -335,7 +335,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
 
       //Send ntfy notification
-         fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
+      fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
           method: 'POST',
           headers: {
             'Title': 'New Trial Client',
