@@ -1,3 +1,8 @@
+---
+title: RareBooks vs Manager.io Desktop Edition
+description: Offline Accounting for African SMEs, Compared
+---
+
 # RareBooks vs Manager.io Desktop Edition: Offline Accounting for African SMEs, Compared
 
 Manager.io is popular across Africa and Asia thanks to its free desktop edition and simple interface. It's a legitimate competitor in the "offline, SME-focused" space RareBooks targets directly. Here's an honest, feature-by-feature look.

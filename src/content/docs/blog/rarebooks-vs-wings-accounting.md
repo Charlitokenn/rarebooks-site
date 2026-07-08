@@ -1,3 +1,8 @@
+---
+title: RareBooks vs Wings Accounting Software
+description: Offline Bookkeeping Compared
+---
+
 # RareBooks vs Wings Accounting Software: Offline Bookkeeping Compared
 
 Wings Accounting Software is a well-known offline desktop accounting tool, particularly popular in India, offering a local-database, no-internet-required approach. It shares RareBooks' offline-first philosophy but differs significantly in design, platform reach, and licensing. Here's the breakdown.

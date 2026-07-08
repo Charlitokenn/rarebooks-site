@@ -1,3 +1,9 @@
+---
+title: RareBooks vs TurboCASH
+description: Modern Offline Accounting vs an African Open-Source Classic
+---
+
+
 # RareBooks vs TurboCASH: Modern Offline Accounting vs an African Open-Source Classic
 
 TurboCASH has a loyal following, especially in South Africa, as a free, open-source offline accounting package. It's earned its place — but its interface and feature set haven't kept pace with modern small-business needs. Here's the comparison.

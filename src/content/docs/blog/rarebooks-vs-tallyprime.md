@@ -1,3 +1,8 @@
+---
+title: RareBooks vs TallyPrime (Tally.ERP 9)
+description: Offline Accounting Software Compared for African & Global SMEs
+---
+
 # RareBooks vs TallyPrime (Tally.ERP 9): Offline Accounting Software Compared for African & Global SMEs
 
 TallyPrime is the dominant offline accounting software across India and has strong adoption in parts of Africa and the Middle East. It's powerful, but it's also built around India-centric tax workflows and a licensing model that doesn't map cleanly onto every region. Here's how RareBooks compares.

@@ -1,3 +1,8 @@
+---
+title: RareBooks vs BUSY Accounting Software
+description: A Practical Offline Accounting Comparison
+---
+
 # RareBooks vs BUSY Accounting Software: A Practical Offline Accounting Comparison
 
 BUSY is a well-established offline desktop accounting package with a strong foothold among Indian SMEs, offering inventory, billing, and GST-focused features. It's a capable tool — but like several India-first products, its design assumptions don't always translate to other markets. Here's how it compares to RareBooks.

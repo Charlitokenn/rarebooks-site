@@ -1,3 +1,8 @@
+---
+title: RareBooks vs Sage 50
+description: A Straightforward Offline Accounting Comparison
+---
+
 # RareBooks vs Sage 50: A Straightforward Offline Accounting Comparison
 
 Sage 50 (formerly Peachtree) has long been a staple for small businesses that want serious double-entry accounting without going full ERP. It's solid — but it's also aging, expensive to license per-seat, and light on modern conveniences like mobile-money integrations. Here's how RareBooks stacks up.

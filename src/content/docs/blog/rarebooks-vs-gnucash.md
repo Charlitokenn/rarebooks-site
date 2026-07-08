@@ -1,3 +1,8 @@
+---
+title: RareBooks vs GnuCash
+description: Which Free-Feeling Offline Accounting Tool Actually Fits Your Business?
+---
+
 # RareBooks vs GnuCash: Which Free-Feeling Offline Accounting Tool Actually Fits Your Business?
 
 GnuCash is a beloved free, open-source accounting tool — but it was designed with personal finance and basic small-business bookkeeping in mind, not modern retail or invoicing-heavy operations. If you're running an actual business with customers, invoices, and inventory, here's how RareBooks compares.

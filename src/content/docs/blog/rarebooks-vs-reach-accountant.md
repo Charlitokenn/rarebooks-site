@@ -1,3 +1,8 @@
+---
+title: RareBooks vs Reach Accountant Desktop
+description: Offline Accounting Software Head-to-Head
+---
+
 # RareBooks vs Reach Accountant Desktop: Offline Accounting Software Head-to-Head
 
 Reach Accountant offers a desktop edition alongside its more well-known cloud product, aimed at SMEs that want local, offline bookkeeping with occasional cloud sync. It overlaps meaningfully with RareBooks' offline-first approach, but the two products differ in platform reach, retail features, and regional focus. Here's the comparison.
