@@ -294,10 +294,29 @@ export const POST: APIRoute = async ({ request, locals }) => {
           const resend = new Resend(env.RESEND_API_KEY);
           await resend.emails.send({
             from: `Charles | RareBooks <${AppConfig.emails.supportEmail}>`,
+            bcc: "nkonoki.charles@rarebooks.cc",
             to: normalizedEmail,
             subject: `${firstName}, your client portal is ready!`,
             html
           });
+
+          //Send ntfy notification
+          await fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
+            method: 'POST',
+            headers: {
+              'Title': 'New Trial Client',
+              'Tags': 'tada, Trial_Client',
+              'Click': 'https://app.keymint.dev/dashboard/org-calm-mountain-80007672/licenses',
+              'Markdown': 'yes',
+            },
+            body: `
+            ![New Lead Captured](https://img.magnific.com/premium-vector/generating-new-leads-abstract-concept-vector-illustration-generate-leads-digital-marketing-software-sales-strategy-new-customer-interest-sales-funnel-internet-cms-abstract-metaphor_107173-58930.jpg)
+            
+            Client Name: ${firstName} ${lastName}
+            Email Address: ${normalizedEmail}
+          `,
+          }).catch(err => console.error('ntfy failed:', err));
+
         } catch (clerkError: any) {
           const code = clerkError?.errors?.[0]?.code;
           if (code === "form_identifier_exists") {
@@ -333,23 +352,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
         // Best-effort — worst case the user lands on /auth/sign-in manually.
         console.error("[Clerk] Sign-in token creation failed:", signInTokenError);
       }
-
-      //Send ntfy notification
-      fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
-          method: 'POST',
-          headers: {
-            'Title': 'New Trial Client',
-            'Tags': 'tada, Trial_Client',
-            'Click': 'https://app.keymint.dev/dashboard/org-calm-mountain-80007672/licenses',
-            'Markdown': 'yes',
-          },
-          body: `
-            ![New Lead Captured](https://img.magnific.com/premium-vector/generating-new-leads-abstract-concept-vector-illustration-generate-leads-digital-marketing-software-sales-strategy-new-customer-interest-sales-funnel-internet-cms-abstract-metaphor_107173-58930.jpg)
-            
-            Client Name: ${firstName} ${lastName}
-            Email Address: ${normalizedEmail}
-          `,
-        }).catch(err => console.error('ntfy failed:', err));
 
       const responsePayload = Array.isArray(result)
           ? { keys: result, signInToken }

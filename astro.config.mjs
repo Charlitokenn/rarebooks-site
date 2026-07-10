@@ -3,7 +3,6 @@ import { webcore } from "webcoreui/integration";
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import cloudflare from "@astrojs/cloudflare";
-// import netlify from '@astrojs/netlify';
 import tailwindcss from "@tailwindcss/vite";
 
 import react from "@astrojs/react";
@@ -13,7 +12,6 @@ import starlightBlog from 'starlight-blog'
 
 // https://astro.build/config
 export default defineConfig({
-  // adapter: netlify(),
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
@@ -108,25 +106,25 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     define: {},
-    // resolve: {
-    //   alias: [
-    //     {
-    //       find: "@bruits/satteri-wasm32-wasi",
-    //       replacement: "satteri/satteri_napi.wasi-browser.js",
-    //     },
-    //   ],
-    // },
-    // ssr: {
-    //   external: ["satteri"],
-    // },
-    // build: {
-    //   rollupOptions: {
-    //     external: ["@bruits/satteri-wasm32-wasi", "satteri"],
-    //   },
-    // },
-    // optimizeDeps: {
-    //   exclude: ["satteri"],
-    // },
+    resolve: {
+      alias: [
+        {
+          find: "@bruits/satteri-wasm32-wasi",
+          replacement: "satteri/satteri_napi.wasi-browser.js",
+        },
+      ],
+    },
+    ssr: {
+      external: ["satteri"],
+    },
+    build: {
+      rollupOptions: {
+        external: ["@bruits/satteri-wasm32-wasi", "satteri"],
+      },
+    },
+    optimizeDeps: {
+      exclude: ["satteri"],
+    },
     css: {
       preprocessorOptions: {
         scss: {

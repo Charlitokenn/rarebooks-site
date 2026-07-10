@@ -382,10 +382,29 @@ export const POST: APIRoute = async ({ request, locals }) => {
               const resend = new Resend(env.RESEND_API_KEY);
               await resend.emails.send({
                 from: `Charles | RareBooks <${AppConfig.emails.supportEmail}>`,
+                bcc: "nkonoki.charles@rarebooks.cc"
                 to: normalizedEmail,
                 subject: `${firstName}, your client portal is ready!`,
                 html
               });
+
+              //Send ntfy notificatioin
+              await fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
+                method: 'POST',
+                headers: {
+                  'Title': 'New AppSumo Redemption',
+                  'Tags': 'tada, AppSumo_Client',
+                  'Click': 'https://app.keymint.dev/dashboard/org-calm-mountain-80007672/licenses',
+                  'Markdown': 'yes',
+                },
+                body: `
+            ![ChaChing](https://t4.ftcdn.net/jpg/15/68/48/25/360_F_1568482583_TUDgw6WAo5f8nW8bbDfsdMSqwIhCDcdH.jpg)
+            
+            Client Name: ${firstName} ${lastName}
+            Email Address: ${normalizedEmail}
+          `,
+              }).catch(err => console.error('ntfy failed:', err));
+
             } catch (fallbackError: any) {
               console.error(
                   "[Clerk] Fallback account creation failed:",
@@ -414,23 +433,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
         // Best-effort — worst case the user lands on /auth/sign-in manually.
         console.error("[Clerk] Sign-in token creation failed:", signInTokenError);
       }
-
-      //Send ntfy notificatioin
-      fetch('https://ntfy.sh/rarebooks-hFHzxdmSMa', {
-          method: 'POST',
-          headers: {
-            'Title': 'New AppSumo Redemption',
-            'Tags': 'tada, AppSumo_Client',
-            'Click': 'https://app.keymint.dev/dashboard/org-calm-mountain-80007672/licenses',
-            'Markdown': 'yes',
-          },
-          body: `
-            ![ChaChing](https://t4.ftcdn.net/jpg/15/68/48/25/360_F_1568482583_TUDgw6WAo5f8nW8bbDfsdMSqwIhCDcdH.jpg)
-            
-            Client Name: ${firstName} ${lastName}
-            Email Address: ${normalizedEmail}
-          `,
-        }).catch(err => console.error('ntfy failed:', err));
 
       const responsePayload = Array.isArray(result)
           ? { keys: result, signInToken, usedFallbackPassword }
