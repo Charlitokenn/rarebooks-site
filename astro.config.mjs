@@ -126,25 +126,25 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     define: {},
-    resolve: {
-      alias: [
-        {
-          find: "@bruits/satteri-wasm32-wasi",
-          replacement: "satteri/satteri_napi.wasi-browser.js",
-        },
-      ],
-    },
-    ssr: {
-      external: ["satteri"],
-    },
-    build: {
-      rollupOptions: {
-        external: ["@bruits/satteri-wasm32-wasi", "satteri"],
-      },
-    },
-    optimizeDeps: {
-      exclude: ["satteri"],
-    },
+    // resolve: {
+    //   alias: [
+    //     {
+    //       find: "@bruits/satteri-wasm32-wasi",
+    //       replacement: "satteri/satteri_napi.wasi-browser.js",
+    //     },
+    //   ],
+    // },
+    // ssr: {
+    //   external: ["satteri"],
+    // },
+    // build: {
+    //   rollupOptions: {
+    //     external: ["@bruits/satteri-wasm32-wasi", "satteri"],
+    //   },
+    // },
+    // optimizeDeps: {
+    //   exclude: ["satteri"],
+    // },
     css: {
       preprocessorOptions: {
         scss: {
