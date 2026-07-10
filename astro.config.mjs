@@ -111,7 +111,7 @@ export default defineConfig({
                 name: "Charles Nkonoki",
                 title: "Founder",
                 picture: "./src/assets/developer.jpg",
-                url: ""
+                url: "https://tz.linkedin.com/in/charles-nkonoki"
               }
             },
             rss: false,
