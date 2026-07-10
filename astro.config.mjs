@@ -12,6 +12,7 @@ import starlightBlog from 'starlight-blog'
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://rarebooks.cc",
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
@@ -96,7 +97,26 @@ export default defineConfig({
         Pagination: "./src/components/Pagination.astro",
       },
       disable404Route: true,
-      plugins: [starlightBlog()],
+      plugins: [
+          starlightBlog({
+            title: "Blog | RareBooks",
+            postCount: 10,
+            recentPostCount: 5,
+            metrics: {
+              readingTime: true,
+              words: 'rounded'
+            },
+            authors: {
+              owner: {
+                name: "Charles Nkonoki",
+                title: "Founder",
+                picture: "./src/assets/developer.jpg",
+                url: ""
+              }
+            },
+            rss: false,
+          })
+      ],
     }),
     webcore(),
     react(),

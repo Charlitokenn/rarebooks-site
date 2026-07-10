@@ -1,6 +1,17 @@
 ---
 title: RareBooks vs TurboCASH
-description: Modern Offline Accounting vs an African Open-Source Classic
+excerpt: Modern Offline Accounting vs an African Open-Source Classic
+date: 2026-07-03
+lastUpdated: 2026-07-09
+featured: false
+draft: false #Draft posts wont show in production
+cover:
+  alt: ""
+  image: ""
+tags:
+  - Software comparisons
+authors:
+  - owner
 ---
 
 

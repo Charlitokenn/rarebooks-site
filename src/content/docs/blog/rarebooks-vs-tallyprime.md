@@ -1,6 +1,17 @@
 ---
 title: RareBooks vs TallyPrime (Tally.ERP 9)
-description: Offline Accounting Software Compared for African & Global SMEs
+excerpt: Offline Accounting Software Compared for African & Global SMEs
+date: 2026-06-30
+lastUpdated: 2026-07-09
+featured: false
+draft: false #Draft posts wont show in production
+cover:
+  alt: ""
+  image: ""
+tags:
+  - Software comparisons
+authors:
+  - owner
 ---
 
 # RareBooks vs TallyPrime (Tally.ERP 9): Offline Accounting Software Compared for African & Global SMEs

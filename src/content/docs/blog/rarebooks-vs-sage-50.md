@@ -1,6 +1,17 @@
 ---
 title: RareBooks vs Sage 50
-description: A Straightforward Offline Accounting Comparison
+excerpt: A Straightforward Offline Accounting Comparison
+date: 2026-06-12
+lastUpdated: 2026-07-09
+featured: false
+draft: false #Draft posts wont show in production
+cover:
+  alt: ""
+  image: ""
+tags:
+  - Software comparisons
+authors:
+  - owner
 ---
 
 # RareBooks vs Sage 50: A Straightforward Offline Accounting Comparison

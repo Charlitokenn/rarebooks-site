@@ -1,6 +1,17 @@
 ---
 title: RareBooks vs BUSY Accounting Software
-description: A Practical Offline Accounting Comparison
+excerpt: A Practical Offline Accounting Comparison
+date: 2026-03-05
+lastUpdated: 2026-07-07
+featured: false
+draft: false #Draft posts wont show in production
+cover: 
+  alt: ""
+  image: ""
+tags:
+  - Software comparisons
+authors:
+  - owner
 ---
 
 # RareBooks vs BUSY Accounting Software: A Practical Offline Accounting Comparison

@@ -1,6 +1,17 @@
 ---
 title: RareBooks vs Manager.io Desktop Edition
-description: Offline Accounting for African SMEs, Compared
+excerpt: Offline Accounting for African SMEs, Compared
+date: 2026-04-29
+lastUpdated: 2026-07-09
+featured: false
+draft: false #Draft posts wont show in production
+cover:
+  alt: ""
+  image: ""
+tags:
+  - Software comparisons
+authors:
+  - owner
 ---
 
 # RareBooks vs Manager.io Desktop Edition: Offline Accounting for African SMEs, Compared

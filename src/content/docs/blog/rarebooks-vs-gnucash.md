@@ -1,6 +1,17 @@
 ---
 title: RareBooks vs GnuCash
-description: Which Free-Feeling Offline Accounting Tool Actually Fits Your Business?
+excerpt: Which Free-Feeling Offline Accounting Tool Actually Fits Your Business?
+date: 2026-04-15
+lastUpdated: 2026-07-09
+featured: false
+draft: false #Draft posts wont show in production
+cover:
+  alt: ""
+  image: ""
+tags:
+  - Software comparisons
+authors:
+  - owner
 ---
 
 # RareBooks vs GnuCash: Which Free-Feeling Offline Accounting Tool Actually Fits Your Business?

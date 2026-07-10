@@ -1,6 +1,17 @@
 ---
 title: RareBooks vs Reach Accountant Desktop
-description: Offline Accounting Software Head-to-Head
+excerpt: Offline Accounting Software Head-to-Head
+date: 2026-05-21
+lastUpdated: 2026-07-09
+featured: false
+draft: false #Draft posts wont show in production
+cover:
+  alt: ""
+  image: ""
+tags:
+  - Software comparisons
+authors:
+  - owner
 ---
 
 # RareBooks vs Reach Accountant Desktop: Offline Accounting Software Head-to-Head

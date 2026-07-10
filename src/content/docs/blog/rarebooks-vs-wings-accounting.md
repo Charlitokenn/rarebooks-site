@@ -1,7 +1,18 @@
 ---
 title: RareBooks vs Wings Accounting Software
-description: Offline Bookkeeping Compared
----run 
+excerpt: Offline Bookkeeping Compared
+date: 2026-07-07
+lastUpdated: 2026-07-09
+featured: false
+draft: false #Draft posts wont show in production
+cover:
+  alt: ""
+  image: ""
+tags:
+  - Software comparisons
+authors:
+  - owner
+---
 
 # RareBooks vs Wings Accounting Software: Offline Bookkeeping Compared
 
