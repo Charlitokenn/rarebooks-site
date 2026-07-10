@@ -15,7 +15,7 @@ export default defineConfig({
   site: "https://rarebooks.cc",
   adapter: cloudflare({
     platformProxy: {
-      enabled: true,
+      enabled: process.env.CI !== "true" && process.env.CF_PAGES !== "1",
       persist: false,
     },
     // Disable image processing if not needed

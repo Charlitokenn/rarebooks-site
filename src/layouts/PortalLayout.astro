@@ -1,6 +1,5 @@
 ---
 import { AppConfig } from "../constants";
-import { env } from "cloudflare:workers";
 interface Props {
     title?: string
     description?: string
@@ -13,7 +12,6 @@ const {
 } = Astro.props
 
 import "../styles/global.css"
-// import { ClientRouter } from "astro:transitions";
 import { Show } from '@clerk/astro/components'
 
 import { PersistedSidebarShell } from "../components/components/persisted-sidebar.tsx";
