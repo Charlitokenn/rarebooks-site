@@ -12,7 +12,7 @@ import starlightBlog from 'starlight-blog'
 
 // https://astro.build/config
 export default defineConfig({
-  site: "rarebooks-marketing-site.nkonoki-charles.workers.dev",
+  site: "https://rarebooks.cc",
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
