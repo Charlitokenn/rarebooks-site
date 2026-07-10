@@ -110,7 +110,7 @@ export default defineConfig({
               owner: {
                 name: "Charles Nkonoki",
                 title: "Founder",
-                picture: "./src/assets/developer.jpg",
+                picture: "/developer.jpg",
                 url: "https://tz.linkedin.com/in/charles-nkonoki"
               }
             },
