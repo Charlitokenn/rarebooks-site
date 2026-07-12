@@ -1,37 +1,22 @@
+import { clerkMiddleware, createRouteMatcher } from "@clerk/astro/server";
 import { defineMiddleware, sequence } from "astro:middleware";
 
-const needsAuthPrefixes = ["/dashboard", "/auth", "/redemption"];
+const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 
-function needsClerk(pathname: string) {
-  return needsAuthPrefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
-}
+const clerk = clerkMiddleware((auth, context) => {
+  const headers = context.request.headers;
+  let countryCode =
+      headers.get("cf-ipcountry") ||
+      headers.get("x-vercel-ip-country") ||
+      headers.get("x-country") ||
+      headers.get("cloudfront-viewer-country") ||
+      "US";
+  context.locals.countryCode = countryCode;
 
-const conditionalClerk = defineMiddleware(async (context, next) => {
-  if (!needsClerk(context.url.pathname)) {
-    return next();
+  const { isAuthenticated, redirectToSignIn } = auth();
+  if (!isAuthenticated && isProtectedRoute(context.request)) {
+    return redirectToSignIn();
   }
-
-  const { clerkMiddleware, createRouteMatcher } = await import("@clerk/astro/server");
-  const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
-
-  const clerk = clerkMiddleware((auth, ctx) => {
-    const headers = ctx.request.headers;
-    const countryCode =
-        headers.get("cf-ipcountry") ||
-        headers.get("x-vercel-ip-country") ||
-        headers.get("x-country") ||
-        headers.get("cloudfront-viewer-country") ||
-        "US";
-
-    ctx.locals.countryCode = countryCode;
-
-    const { isAuthenticated, redirectToSignIn } = auth();
-    if (!isAuthenticated && isProtectedRoute(ctx.request)) {
-      return redirectToSignIn();
-    }
-  });
-
-  return clerk(context, next);
 });
 
 const noTransform = defineMiddleware(async (context, next) => {
@@ -43,4 +28,4 @@ const noTransform = defineMiddleware(async (context, next) => {
   return response;
 });
 
-export const onRequest = sequence(conditionalClerk, noTransform);
+export const onRequest = sequence(clerk, noTransform);
