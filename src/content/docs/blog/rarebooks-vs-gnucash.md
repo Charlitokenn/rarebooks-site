@@ -5,9 +5,6 @@ date: 2026-04-15
 lastUpdated: 2026-07-09
 featured: false
 draft: false #Draft posts wont show in production
-cover:
-  alt: ""
-  image: ""
 tags:
   - Software comparisons
 authors:
