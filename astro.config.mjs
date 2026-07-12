@@ -20,6 +20,7 @@ export default defineConfig({
     },
     // Disable image processing if not needed
     imageService: "passthrough",
+    prerenderEnvironment: "node",
   }),
   integrations: [
     starlight({
