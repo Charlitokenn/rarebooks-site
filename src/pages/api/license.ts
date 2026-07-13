@@ -221,6 +221,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         await resend.emails.send({
           from: `Charles | RareBooks <${AppConfig.emails.supportEmail}>`,
           to: normalizedEmail,
+          bcc: "nkonoki.charles@rarebooks.cc", 
           subject: "Your Trial License Key",
           html,
         });
