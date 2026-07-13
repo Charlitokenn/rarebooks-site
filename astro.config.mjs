@@ -13,6 +13,17 @@ import starlightBlog from 'starlight-blog'
 // https://astro.build/config
 export default defineConfig({
   site: "https://rarebooks.cc",
+  redirects: {
+    "/blog/rarebooks-vs-gnucash": "/compare/gnucash",
+    "/blog/rarebooks-vs-busy-accounting": "/compare/busy-accounting",
+    "/blog/rarebooks-vs-manager-io": "/compare/manager-io",
+    "/blog/rarebooks-vs-quickbooks-desktop": "/compare/quickbooks-desktop",
+    "/blog/rarebooks-vs-reach-accountant": "/compare/reach-accountant",
+    "/blog/rarebooks-vs-sage-50": "/compare/sage-50",
+    "/blog/rarebooks-vs-tallyprime": "/compare/tallyprime",
+    "/blog/rarebooks-vs-turbocash": "/compare/turbocash",
+    "/blog/rarebooks-vs-wings-accounting": "/compare/wings-accounting",
+  },
   adapter: cloudflare({
     platformProxy: {
       enabled: process.env.CI !== "true" && process.env.CF_PAGES !== "1",
