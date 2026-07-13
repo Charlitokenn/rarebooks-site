@@ -12,20 +12,18 @@ const columns = [
       { label: "Demo", href: "/#demo" },
     ],
   },
-  // {
-  //   title: "Company",
-  //   links: [
-  //     { label: "About", href: "#" },
-  //     { label: "Careers", href: "#" },
-  //     { label: "Blog", href: "#" },
-  //     { label: "Contact", href: "#" },
-  //   ],
-  // },
+  {
+    title: "Compare",
+    links: [
+      { label: "All Comparisons", href: "/compare" },
+      { label: "Alternatives Guides", href: "/alternatives" },
+    ],
+  },
   {
     title: "Resources",
     links: [
       { label: "Documentation", href: "/getting-started/getting-started-with-rarebooks/" },
-{label: "Blog", href: "/blog"}, 
+      { label: "Blog", href: "/blog" },
     ],
   },
 ]
@@ -36,7 +34,7 @@ const year = new Date().getFullYear()
   <div class="mx-auto max-w-6xl px-4 py-14">
     <div class="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
       <div>
-        <AppLogo link="#top" client:load/>
+        <AppLogo link="/#top" client:load/>
         <p class="mt-4 max-w-xs text-sm leading-relaxed text-muted">
           {AppConfig.description}
         </p>
