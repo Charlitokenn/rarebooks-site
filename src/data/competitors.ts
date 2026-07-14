@@ -67,7 +67,6 @@ export const competitors: CompetitorEntry[] = [
       { capability: "Professional invoicing", rarebooks: "Templates, quotes, price lists", competitor: "Basic, limited templating" },
       { capability: "Inventory & batch tracking", rarebooks: "Yes", competitor: "Very limited" },
       { capability: "Interface", rarebooks: "Modern, reactive Vue.js UI", competitor: "Dated, accountant-oriented" },
-      { capability: "Mobile money support", rarebooks: "Yes (ClickPesa)", competitor: "No" },
       { capability: "Support", rarebooks: "Commercial, included with license", competitor: "Community forums only" },
     ],
     deepDives: [
@@ -100,7 +99,7 @@ export const competitors: CompetitorEntry[] = [
     recommendationCompetitor:
       "GnuCash is completely free forever, has strong personal-finance features — budgeting, scheduled transactions, investment tracking — that go beyond what RareBooks targets, and is fully open-source and auditable. That's a genuine advantage if you want zero cost and full transparency for personal or very small-scale bookkeeping.",
     recommendationRareBooks:
-      "RareBooks delivers the same solid double-entry core GnuCash offers, plus the operational layer — POS, invoicing, inventory, and a guided setup wizard — that a running business actually needs, backed by commercial support and mobile money billing through the Client Portal.",
+      "RareBooks delivers the same solid double-entry core GnuCash offers, plus the operational layer — POS, invoicing, inventory, and a guided setup wizard — that a running business actually needs and backed by commercial support.",
     whenToChooseCompetitor:
       "GnuCash is a strong choice if you're tracking personal or household finances, or running a very small operation where you don't need invoicing, POS, or inventory — and you're comfortable with a steeper, accountant-oriented interface in exchange for paying nothing.",
     whySwitchToRareBooks:
@@ -144,7 +143,6 @@ export const competitors: CompetitorEntry[] = [
       { capability: "Interface", rarebooks: "Modern, reactive Vue.js UI", competitor: "Traditional grid/forms-based UI" },
       { capability: "POS", rarebooks: "Built-in, dedicated profile system", competitor: "Available in higher editions" },
       { capability: "Licensing tiers", rarebooks: "Single flexible model", competitor: "Multiple paid editions with feature gating" },
-      { capability: "Mobile money support", rarebooks: "Yes (ClickPesa)", competitor: "No" },
       { capability: "Tax compliance", rarebooks: "Configurable per region", competitor: "GST-first, India-centric" },
       { capability: "Regional focus", rarebooks: "Tanzania / East Africa", competitor: "India" },
     ],
@@ -166,7 +164,7 @@ export const competitors: CompetitorEntry[] = [
         intro: "Tax and compliance tooling reflects who the software was designed for first.",
         rarebooks: {
           heading: "RareBooks",
-          body: "Designed around Tanzanian SME needs from the start, with mobile money billing via ClickPesa built into the Client Portal.",
+          body: "Designed around SMEs needs from the very start.",
         },
         competitor: {
           heading: "BUSY",
@@ -177,11 +175,11 @@ export const competitors: CompetitorEntry[] = [
     recommendationCompetitor:
       "BUSY has deep, mature inventory and GST compliance tooling refined over three decades specifically for Indian SMEs, a large reseller and support network in India, and enterprise-tier features for larger operations that need them.",
     recommendationRareBooks:
-      "RareBooks offers full core functionality without paying to unlock basics across editions, genuine cross-platform support, and a product actually designed around East African tax and mobile money realities rather than an India-first tool adapted after the fact.",
+      "RareBooks offers full core functionality without paying to unlock basics across editions, genuine cross-platform support, and a product actually designed around African tax and mobile money realities rather than an India-first tool adapted after the fact.",
     whenToChooseCompetitor:
       "BUSY is the stronger pick if you're operating in India and need its mature GST filing and reconciliation tooling, or you rely on the large network of local BUSY resellers and trained consultants.",
     whySwitchToRareBooks:
-      "If you're outside India and tired of paying to unlock basic functionality across editions — or you need Windows, macOS, and Linux support plus mobile money billing — RareBooks is built for exactly that gap.",
+      "If you're outside India and tired of paying to unlock basic functionality across editions — or you need Windows support — RareBooks is built for exactly that gap.",
     migrationSteps: [
       "Export your ledgers, customer/vendor lists, and stock data from BUSY (Excel/CSV export is available from most BUSY reports).",
       "Set up your company profile and chart of accounts in RareBooks using the guided onboarding wizard.",
@@ -206,7 +204,7 @@ export const competitors: CompetitorEntry[] = [
     name: "Manager.io Desktop Edition",
     shortName: "Manager.io",
     metaDescription:
-      "Compare RareBooks vs Manager.io Desktop: pricing, POS, loyalty tools, mobile money billing, and support for East African SMEs.",
+      "Compare RareBooks vs Manager.io Desktop: pricing, POS, loyalty tools",
     pricingRareBooks:
       "One structured license with commercial support included, sold as a one-time AppSumo deal or standard subscription with device management.",
     pricingCompetitor:
@@ -214,7 +212,7 @@ export const competitors: CompetitorEntry[] = [
     bestForCompetitor:
       "Solo users and small businesses that want a genuinely free, full-featured desktop ledger and are comfortable relying on community forums for support.",
     bestForRareBooks:
-      "Retail-facing SMEs that need real point-of-sale, loyalty and promotions tooling, and mobile money billing, backed by a support relationship rather than a forum.",
+      "Retail-facing SMEs that need real point-of-sale, loyalty and promotions tooling, backed by a support relationship rather than a forum.",
     featureMatrix: [
       { capability: "Offline-first", rarebooks: "Yes", competitor: "Yes" },
       { capability: "Cost model", rarebooks: "Commercial (one-time via AppSumo)", competitor: "Free desktop edition; Cloud from $59/mo" },
@@ -243,7 +241,7 @@ export const competitors: CompetitorEntry[] = [
         intro: "What happens when something goes wrong, or a customer wants to pay by mobile money.",
         rarebooks: {
           heading: "RareBooks",
-          body: "Commercial support is part of the license, and the Client Portal integrates ClickPesa for mobile money billing on renewals.",
+          body: "Commercial support is part of the license, and the Client Portal integrates ClickPesa for mobile money billing on license renewals.",
         },
         competitor: {
           heading: "Manager.io",
@@ -258,7 +256,7 @@ export const competitors: CompetitorEntry[] = [
     whenToChooseCompetitor:
       "If you need zero-cost, single-user desktop bookkeeping with no retail POS requirement, and you're fine self-serving support questions through community forums, Manager.io's free tier is hard to beat on price.",
     whySwitchToRareBooks:
-      "The moment you need real point-of-sale, customer loyalty tooling, or mobile money billing, Manager.io's free tier stops covering you — that's exactly where RareBooks starts.",
+      "The moment you need real point-of-sale or customer loyalty tooling, Manager.io's free tier stops covering you — that's exactly where RareBooks starts.",
     migrationSteps: [
       "Export your chart of accounts, customers, and inventory items from Manager.io using its built-in Excel/CSV export.",
       "Set up your company in RareBooks via the guided wizard, which auto-creates a default super admin account.",
@@ -272,7 +270,7 @@ export const competitors: CompetitorEntry[] = [
       },
       {
         q: "Why switch from a free tool at all?",
-        a: "If your business is purely back-office bookkeeping with no retail counter, you may not need to. RareBooks makes the most sense once POS, loyalty programs, or mobile money billing become part of daily operations.",
+        a: "If your business is purely back-office bookkeeping with no retail counter, you may not need to. RareBooks makes the most sense once POS or loyalty programs become part of daily operations.",
       },
     ],
   },
@@ -283,7 +281,7 @@ export const competitors: CompetitorEntry[] = [
     name: "QuickBooks Desktop",
     shortName: "QuickBooks Desktop",
     metaDescription:
-      "Compare RareBooks vs QuickBooks Desktop in 2026: Intuit's phase-out of new sales, rising subscription prices, and an offline-first alternative with mobile money.",
+      "Compare RareBooks vs QuickBooks Desktop in 2026: Intuit's phase-out of new sales, rising subscription prices, and an offline-first alternative",
     pricingRareBooks:
       "One-time AppSumo deal or standard subscription, device-bound with a 7-day offline grace period — available to purchase today, at a predictable price.",
     pricingCompetitor:
@@ -291,13 +289,12 @@ export const competitors: CompetitorEntry[] = [
     bestForCompetitor:
       "US-based businesses with an accountant already on QuickBooks, deep payroll needs, or that are willing to buy into Enterprise, the only tier Intuit still sells new.",
     bestForRareBooks:
-      "Businesses anywhere — especially outside the US — that want full offline accounting they can actually purchase today, without a rising subscription and with mobile money support built in.",
+      "Businesses anywhere — especially outside the US — that want full offline accounting they can actually purchase today, without a rising subscription.",
     featureMatrix: [
       { capability: "Available to new customers", rarebooks: "Yes, all tiers", competitor: "Only Enterprise — Pro/Premier/Mac Plus discontinued for new sales (Sept 2024)" },
       { capability: "Works fully offline", rarebooks: "Yes, 7-day grace period", competitor: "Degrades once a version's support window ends" },
       { capability: "Point of Sale", rarebooks: "Built-in", competitor: "Separate add-on product" },
       { capability: "Pricing trend", rarebooks: "Predictable, one-time-friendly", competitor: "Rising — Pro Plus +15% in Feb 2026 alone" },
-      { capability: "Mobile money support", rarebooks: "Yes (ClickPesa)", competitor: "None" },
       { capability: "Local database", rarebooks: "SQLite (lightweight, portable)", competitor: "Proprietary local file" },
       { capability: "Built for African SME tax context", rarebooks: "Yes", competitor: "No" },
     ],
@@ -359,7 +356,7 @@ export const competitors: CompetitorEntry[] = [
     name: "Reach Accountant",
     shortName: "Reach Accountant",
     metaDescription:
-      "Compare RareBooks vs Reach Accountant: cloud vs. true offline accounting, vertical editions, POS, and mobile money for East African SMEs.",
+      "Compare RareBooks vs Reach Accountant: cloud vs. true offline accounting, vertical editions and POS",
     pricingRareBooks:
       "One flexible license covering general SME accounting, POS, and inventory — one-time AppSumo deal or standard subscription.",
     pricingCompetitor:
@@ -375,7 +372,6 @@ export const competitors: CompetitorEntry[] = [
       { capability: "POS", rarebooks: "Built-in, dedicated system", competitor: "Available, industry-specific editions" },
       { capability: "Product structure", rarebooks: "One flexible system for general SME use", competitor: "Vertical-specific editions (retail, restaurant, distribution)" },
       { capability: "Loyalty & pricing tools", rarebooks: "Built-in", competitor: "Varies by edition" },
-      { capability: "Mobile money support", rarebooks: "Yes (ClickPesa)", competitor: "No" },
       { capability: "Regional focus", rarebooks: "Tanzania / East Africa", competitor: "India" },
     ],
     deepDives: [
@@ -396,7 +392,7 @@ export const competitors: CompetitorEntry[] = [
         intro: "What happens when the internet connection isn't reliable.",
         rarebooks: {
           heading: "RareBooks",
-          body: "Built offline-first from the ground up, with a 7-day encrypted offline grace period and ClickPesa mobile money billing through the Client Portal.",
+          body: "Built offline-first from the ground up, with a 7-day encrypted offline grace period and mobile money and credit card billing through the Client Portal.",
         },
         competitor: {
           heading: "Reach Accountant",
@@ -407,11 +403,11 @@ export const competitors: CompetitorEntry[] = [
     recommendationCompetitor:
       "Reach Accountant's industry-specific editions can offer deeper, purpose-built workflows for businesses in narrow verticals like restaurants or distribution, and its broader product family includes cloud and mobile apps for businesses that want that model.",
     recommendationRareBooks:
-      "For one general-purpose, genuinely offline-capable accounting and POS system — rather than choosing among cloud-dependent vertical editions — with mobile money billing suited to East African markets, RareBooks is the more flexible and regionally relevant option.",
+      "For one general-purpose, genuinely offline-capable accounting and POS system — rather than choosing among cloud-dependent vertical editions — with mobile money billing suited to African markets, RareBooks is the more flexible and regionally relevant option.",
     whenToChooseCompetitor:
       "Reach Accountant is worth a look if you're in India, fit neatly into one of its supported verticals, and want a cloud platform with mobile access from day one.",
     whySwitchToRareBooks:
-      "If your business doesn't fit neatly into a single vertical, needs to keep working when the internet doesn't, or operates in East Africa where mobile money matters, Reach's cloud-first, vertical-edition model is a harder fit.",
+      "If your business doesn't fit neatly into a single vertical, needs to keep working when the internet doesn't, or operates in regions where mobile money matters, Reach's cloud-first, vertical-edition model is a harder fit.",
     migrationSteps: [
       "Export your ledgers, customers, and inventory from Reach Accountant's reporting tools (CSV/Excel export is available from most modules).",
       "Set up your company profile and chart of accounts in RareBooks via the guided wizard.",
@@ -444,14 +440,13 @@ export const competitors: CompetitorEntry[] = [
     bestForCompetitor:
       "Established businesses that need Sage's deep inventory and job-costing reports, have decades of accountant familiarity with the product, and are comfortable with mandatory subscription billing.",
     bestForRareBooks:
-      "Businesses that want genuine offline resilience without a mandatory subscription, plus built-in POS and mobile money support Sage doesn't offer.",
+      "Businesses that want genuine offline resilience without a mandatory subscription, plus built-in POS support Sage doesn't offer.",
     featureMatrix: [
       { capability: "Offline-first", rarebooks: "Yes, works fully offline", competitor: "Requires active subscription; full functionality assumes periodic connectivity" },
       { capability: "Interface", rarebooks: "Modern, clean Vue.js UI", competitor: "Dated Windows-style UI" },
       { capability: "Platform support", rarebooks: "Windows, macOS, Linux", competitor: "Primarily Windows, with cloud access add-on" },
       { capability: "POS included", rarebooks: "Yes", competitor: "No — separate product" },
       { capability: "Licensing", rarebooks: "Device-bound, 7-day offline grace period", competitor: "Mandatory annual subscription, per-seat" },
-      { capability: "Mobile money support", rarebooks: "Yes (ClickPesa)", competitor: "No" },
       { capability: "Setup", rarebooks: "Auto-provisioned super admin, guided wizard", competitor: "Manual, often accountant-assisted" },
     ],
     deepDives: [
@@ -483,7 +478,7 @@ export const competitors: CompetitorEntry[] = [
     recommendationCompetitor:
       "Sage 50 has decades of accountant familiarity, an extensive reports library that rivals dedicated inventory tools, and a large partner network — a real advantage if your market has strong local Sage support and you value that ecosystem over subscription cost.",
     recommendationRareBooks:
-      "RareBooks delivers the same double-entry, invoicing, POS, and reporting fundamentals Sage 50 offers, without a mandatory subscription lock, with genuine offline resilience, and with mobile money billing built in.",
+      "RareBooks delivers the same double-entry, invoicing, POS, and reporting fundamentals Sage 50 offers, without a mandatory subscription lock, with genuine offline resilience",
     whenToChooseCompetitor:
       "Sage 50 remains a solid pick if you need its specific advanced inventory and job-costing report depth and you're fine paying a rising annual per-seat subscription to keep full functionality active.",
     whySwitchToRareBooks:
@@ -528,7 +523,6 @@ export const competitors: CompetitorEntry[] = [
       { capability: "Learning curve", rarebooks: "Guided wizard, intuitive for non-accountants", competitor: "Steep — power-user oriented, often needs training" },
       { capability: "POS", rarebooks: "Built-in", competitor: "Available but retrofitted, not POS-first" },
       { capability: "Tax reporting", rarebooks: "Configurable per region", competitor: "Deeply India-centric (GST-first design)" },
-      { capability: "Mobile money support", rarebooks: "Yes (ClickPesa)", competitor: "No" },
       { capability: "Licensing", rarebooks: "Device-bound, encrypted cache, 7-day grace period", competitor: "Perpetual license + annual TSS renewal, or subscription" },
     ],
     deepDives: [
@@ -549,7 +543,7 @@ export const competitors: CompetitorEntry[] = [
         intro: "Where each product's tax and compliance design actually starts.",
         rarebooks: {
           heading: "RareBooks",
-          body: "Designed with Tanzanian SME pain points — TRA compliance, bookkeeping simplicity, mobile money — as core drivers.",
+          body: "Designed with SME pain points — Tax compliance and bookkeeping simplicity — as core drivers.",
         },
         competitor: {
           heading: "TallyPrime",
@@ -564,7 +558,7 @@ export const competitors: CompetitorEntry[] = [
     whenToChooseCompetitor:
       "TallyPrime is the stronger choice if you're operating primarily within India's GST and compliance framework, or you value its very large trained-reseller ecosystem over a gentler learning curve.",
     whySwitchToRareBooks:
-      "Outside India, Tally's GST-first design and steep keyboard-driven workflow are solving problems you don't have while missing ones you do — East African tax context and mobile money chief among them.",
+      "Outside India, Tally's GST-first design and steep keyboard-driven workflow are solving problems you don't have while missing ones you do — African tax context and mobile money chief among them.",
     migrationSteps: [
       "Export your ledgers, stock items, and party (customer/vendor) lists from TallyPrime using its built-in Excel/XML export.",
       "Create your company and chart of accounts in RareBooks through the guided wizard, mapping Tally's ledger groups to RareBooks accounts.",
@@ -604,7 +598,6 @@ export const competitors: CompetitorEntry[] = [
       { capability: "Platform support", rarebooks: "Windows, macOS, Linux", competitor: "Primarily Windows" },
       { capability: "POS", rarebooks: "Built-in", competitor: "Not native" },
       { capability: "Licensing model", rarebooks: "Device-bound, one-time or subscription", competitor: "TurboCASH 5 requires annual subscription; TurboCASH 4 is free but unmaintained since 2018" },
-      { capability: "Mobile money support", rarebooks: "Yes", competitor: "No" },
       { capability: "Active development pace", rarebooks: "Actively maintained commercial product", competitor: "TurboCASH 5 active; TurboCASH 4 dormant" },
     ],
     deepDives: [
@@ -680,7 +673,6 @@ export const competitors: CompetitorEntry[] = [
       { capability: "Interface", rarebooks: "Modern Vue.js, reactive UI", competitor: "Traditional Windows forms UI" },
       { capability: "POS", rarebooks: "Built-in, dedicated system", competitor: "Add-on module in some editions" },
       { capability: "Loyalty & pricing rules", rarebooks: "Built-in", competitor: "Not standard" },
-      { capability: "Mobile money support", rarebooks: "Yes (ClickPesa)", competitor: "No" },
       { capability: "Setup experience", rarebooks: "Guided wizard, auto super admin", competitor: "Typically reseller-assisted" },
       { capability: "Regional focus", rarebooks: "Tanzania / East Africa", competitor: "India" },
     ],
