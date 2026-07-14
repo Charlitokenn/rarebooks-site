@@ -1,0 +1,8 @@
+---
+import AlternativesLayout from "../../layouts/AlternativesLayout.astro";
+import { getCompetitor } from "../../data/competitors";
+
+const entry = getCompetitor("sage-50")!;
+---
+
+<AlternativesLayout entry={entry} />

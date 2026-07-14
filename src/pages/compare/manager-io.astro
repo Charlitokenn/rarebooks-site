@@ -1,0 +1,8 @@
+---
+import CompareLayout from "../../layouts/CompareLayout.astro";
+import { getCompetitor } from "../../data/competitors";
+
+const entry = getCompetitor("manager-io")!;
+---
+
+<CompareLayout entry={entry} />

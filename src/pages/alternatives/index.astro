@@ -1,0 +1,53 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "@components/Navbar.astro";
+import Footer from "@components/Footer.astro";
+import { AppConfig } from "../../constants";
+import { competitors } from "../../data/competitors";
+---
+
+<Layout
+  title={`${AppConfig.appName} Alternatives Guides`}
+  description={`Looking for an alternative to your current accounting software? See why businesses switch to ${AppConfig.appName} from QuickBooks Desktop, Sage 50, TallyPrime, GnuCash, and more.`}
+  canonicalPath="/alternatives"
+>
+  <Navbar />
+  <main>
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 dotted-bg opacity-70"></div>
+      <div class="relative mx-auto max-w-3xl px-4 pb-14 pt-36 text-center sm:pt-40">
+        <div class="mx-auto mb-6 inline-flex items-center gap-2 rounded-pill border border-black/5 bg-white/70 px-4 py-1.5 text-sm font-medium text-muted backdrop-blur">
+          <span class="h-2 w-2 rounded-full bg-brand"></span>
+          Alternative Guides
+        </div>
+        <h1 class="text-balance font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
+          Switching accounting software?
+        </h1>
+        <p class="mx-auto mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted">
+          See why businesses move to {AppConfig.appName}, what to expect during migration, and answers to common switching questions.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-4 pb-24">
+      <div class="grid gap-5 sm:grid-cols-2">
+        {competitors.map((c) => (
+          <a
+            href={`/alternatives/${c.slug}`}
+            class="group flex flex-col rounded-3xl border border-black/5 bg-white p-7 transition-colors hover:border-brand/30 hover:bg-brand-soft/30"
+          >
+            <span class="font-display text-lg font-bold text-ink">
+              {c.shortName} Alternative
+            </span>
+            <span class="mt-2 text-sm leading-relaxed text-muted">Looking for a {c.shortName} alternative? See why businesses switch to {AppConfig.appName}.</span>
+            <span class="mt-4 inline-flex items-center text-sm font-semibold text-brand">
+              Read the guide
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 transition-transform group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
