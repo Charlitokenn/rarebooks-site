@@ -32,12 +32,12 @@ const links = [
 
     <div class="flex items-center gap-2">
       <a
-        href={`/auth/sign-in`}
+        href={`/dashboard`}
         class="inline-flex items-center rounded-pill bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
       >
         <Show when="signed-out">
           <UserKey class="size-5 mr-1.5"/>
-          Client Portal
+          <span class="md:text-sm">Client Portal</span>
         </Show>
         <Show when="signed-in">
           Dashboard
