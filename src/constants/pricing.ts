@@ -23,7 +23,7 @@ export const pricingPlans: PricingPlan[] = [
     blurb:
       "For businesses on a budget and are confident in following the documentations",
     features: [
-      "Usage on up to 2 devices.astro",
+      "Usage on up to 2 devices.",
       "Double entry accounting",
       "Inventory management",
       "Stock level mobile notifications",
