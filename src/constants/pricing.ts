@@ -44,7 +44,7 @@ export const pricingPlans: PricingPlan[] = [
     blurb:
       "For businesses that need everything setup for them, so they can focus on daily operations",
     features: [
-      "Usage on up to 5 devices.astro",
+      "Usage on up to 5 devices.",
       "Everything on Do It Yourself plan",
       "All business records digitized for you",
       "Over the shoulder software training",
