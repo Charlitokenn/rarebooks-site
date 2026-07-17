@@ -76,6 +76,13 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
         throw new Error(result.message || "Failed to send license key");
       }
 
+// 🔔 Trigger GA conversion event
+window.gtag?.("event", "sign_up", {
+    method: "email",
+    plan: "trial",
+    product: "Rarebooks"
+});
+
       setStatus("Sending license to your email...");
       await new Promise((resolve) => setTimeout(resolve, 800));
       setIsSuccess(true);
