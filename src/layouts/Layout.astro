@@ -141,3 +141,37 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
     });
   })();
 </script>
+
+<!--
+  Centralized "software download" click tracker for every
+  [data-gtm-download] link on the site (the /trial/download page, the
+  dashboard's post-signup WelcomeModal, and anywhere else a Microsoft
+  Store link is added later). Fires a `software_download` event to the
+  GTM dataLayer - the final step in the trial_interest -> trial_signup
+  -> software_download conversion funnel.
+
+  Elements opt in with `data-gtm-download`, and can optionally carry:
+    data-download-source  e.g. "trial_download_page", "dashboard_welcome_modal"
+    data-license-type     e.g. "trial", "lifetime"
+    data-country
+  This is a separate listener (not folded into the modal-open handler
+  above) since download links aren't modal triggers - same pattern used
+  for the backdrop-close vs modal-close listeners in TrialLicenseModal.astro.
+-->
+<script is:inline>
+  (function () {
+    window.dataLayer = window.dataLayer || [];
+
+    document.addEventListener("click", function (e) {
+      const link = e.target.closest("[data-gtm-download]");
+      if (!link) return;
+
+      window.dataLayer.push({
+        event: "software_download",
+        download_source: link.getAttribute("data-download-source") || "unknown",
+        license_type: link.getAttribute("data-license-type") || null,
+        country: link.getAttribute("data-country") || null,
+      });
+    });
+  })();
+</script>

@@ -58,14 +58,17 @@ const emailNote = email ? ` to ${email}` : "";
                         Install the app from the Microsoft Store, then activate it with the license key
                         from your email.
                     </p>
-
                     <a
-                    href={AppConfig.urls.storeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-pill bg-brand px-6 py-4 text-sm font-semibold text-white shadow-soft transition-transform hover:scale-[1.02] hover:bg-brand/90"
+                        href={AppConfig.urls.storeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-gtm-download
+                        data-download-source="trial_download_page"
+                        data-license-type="trial"
+                        data-country={countryCode}
+                        class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-pill bg-brand px-6 py-4 text-sm font-semibold text-white shadow-soft transition-transform hover:scale-[1.02] hover:bg-brand/90"
                     >
-                    <DownloadIcon class="size-4" />
+                    <Download class="size-4" />
                     Get it from the Microsoft Store
                     </a>
                 </div>
