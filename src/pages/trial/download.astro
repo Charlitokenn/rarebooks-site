@@ -1,0 +1,85 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AppLogo from "@components/AppLogo.tsx";
+import { CheckCircle2Icon, Mail, DownloadIcon, ArrowRight } from "@lucide/astro";
+import { AppConfig } from "../../constants";
+import { isTanzania } from "../../constants/pricing";
+
+// Populated by TrialLicenseForm.tsx after a successful /api/license call —
+// see the redirect at the end of its onSubmit handler.
+const name = Astro.url.searchParams.get("name")?.trim() || "";
+const email = Astro.url.searchParams.get("email")?.trim() || "";
+
+const countryCode = (Astro.locals as any)?.countryCode || "US";
+const trialDays = isTanzania(countryCode)
+    ? AppConfig.trial.localDuration
+    : AppConfig.trial.abroadDuration;
+
+const greeting = name ? `You're all set, ${name}!` : "You're all set!";
+const emailNote = email ? ` to ${email}` : "";
+---
+
+<Layout
+        title={`Download ${AppConfig.appName} — Registration Successful`}
+        description={`Your ${AppConfig.appName} trial is ready. Download the app to get started.`}
+>
+    <section class="dotted-bg">
+        <div class="flex min-h-screen items-center justify-center px-4 py-16">
+            <div class="w-full max-w-lg rounded-lg border border-black/5 bg-white p-8 text-center drop-shadow-lg md:p-10">
+                <div class="flex items-center justify-center gap-1">
+                    <AppLogo link={AppConfig.urls.rootUrl} />
+                </div>
+
+                <div class="mx-auto mt-8 flex h-14 w-14 items-center justify-center rounded-full bg-brand-soft text-brand">
+                    <CheckCircle2Icon class="size-7" />
+                </div>
+
+                <h1 class="mt-4 font-display text-2xl font-bold text-ink">{greeting}</h1>
+                <p class="mt-2 text-sm leading-relaxed text-muted">
+                    Your registration was successful and your {trialDays}-day trial license key is on its way.
+                </p>
+
+                <div class="mt-6 rounded-xl border border-black/5 bg-brand-soft/40 p-4 text-left">
+                    <div class="flex items-start gap-3">
+                        <Mail class="mt-0.5 size-4 shrink-0 text-brand" />
+                        <p class="text-sm text-ink">
+                            We've sent your trial license key{emailNote}. It should arrive within a few
+                            minutes — please check your spam folder if you don't see it.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <p class="text-xs font-semibold uppercase tracking-wide text-muted">Next step</p>
+                    <h2 class="mt-1 font-display text-lg font-semibold text-ink">
+                        Download {AppConfig.appName}
+                    </h2>
+                    <p class="mt-1 text-sm text-muted">
+                        Install the app from the Microsoft Store, then activate it with the license key
+                        from your email.
+                    </p>
+
+                    <a
+                    href={AppConfig.urls.storeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-pill bg-brand px-6 py-4 text-sm font-semibold text-white shadow-soft transition-transform hover:scale-[1.02] hover:bg-brand/90"
+                    >
+                    <DownloadIcon class="size-4" />
+                    Get it from the Microsoft Store
+                    </a>
+                </div>
+
+                <div class="mt-6 border-t border-black/5 pt-5">
+                    <a
+                    href="/auth/sign-in"
+                    class="inline-flex items-center gap-1 text-xs font-medium text-muted underline transition-colors hover:text-ink"
+                    >
+                    Already downloaded? Sign in to your client portal
+                    <ArrowRight class="size-3" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
