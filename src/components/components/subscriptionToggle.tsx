@@ -59,6 +59,26 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
           const symbol = getCurrencySymbol(countryCode);
           const isCustom = price === "Custom";
 
+          // Same value that's rendered on screen - reused below so the
+          // GTM tracking attributes always match what the user saw.
+          const displayPrice = isCustom
+            ? "Custom"
+            : isLocal
+              ? price
+              : monthly
+                ? (price as string[])[1]
+                : (price as string[])[0];
+
+          const billingPeriod = isCustom
+            ? "custom"
+            : isLocal
+              ? monthly
+                ? "monthly"
+                : "yearly"
+              : monthly
+                ? "yearly"
+                : "monthly";
+
           return (
             <div
               className={`flex flex-col rounded-3xl p-8 ${
@@ -133,6 +153,11 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
               <button
                 type="button"
                 data-open-modal={isCustom ? "contact-us-modal" : "trial-modal"}
+                data-cta-location="pricing_page"
+                data-plan-name={!isCustom ? plan.name : undefined}
+                data-plan-price={!isCustom ? displayPrice : undefined}
+                data-billing-period={!isCustom ? billingPeriod : undefined}
+                data-currency={!isCustom ? (isLocal ? "TZS" : "USD") : undefined}
                 className={`mt-8 inline-flex cursor-pointer items-center justify-center rounded-pill px-6 py-3 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
                   plan.featured ? "bg-white text-ink" : "bg-brand text-white"
                 }`}

@@ -24,15 +24,18 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
 <!doctype html>
 <html lang="en" class="bg-background">
   <head>
-      <!-- Google tag (gtag.js) -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-P256SSXRW7"></script>
+      <!-- Google Tag Manager -->
       <script>
           window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-P256SSXRW7');
       </script>
+      <script is:inline>
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-XXXXXXX');
+      </script>
+      <!-- End Google Tag Manager -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#fbfafc" />
@@ -57,6 +60,16 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
     <!--<ClientRouter />-->
   </head>
   <body class="min-h-screen overflow-x-hidden">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <slot />
     <TawkWidget />
   </body>
@@ -71,4 +84,71 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
   (function onTurnstileSuccess() {
     document.getElementById("turnstile-container").hidden = true;
   })()
+</script>
+
+<!--
+  Centralized "open modal" handler for every [data-open-modal] trigger on the
+  site (Hero, Guarantee, CallToAction, Pricing plans, Compare/Alternatives
+  pages). This replaces the near-identical copies that used to live in
+  index.astro, CompareLayout.astro, and AlternativesLayout.astro.
+
+  It also doubles as the trial conversion-intent tracker: whenever the
+  trial-modal is opened, it pushes a `trial_interest` event to the GTM
+  dataLayer, and - if the trigger button carries plan info (only the
+  pricing-plan buttons do) - remembers that plan in sessionStorage so
+  TrialLicenseForm.tsx can attach it to the `trial_signup` event once the
+  form is actually submitted successfully.
+-->
+<script is:inline>
+  (function () {
+    window.dataLayer = window.dataLayer || [];
+
+    document.addEventListener("click", function (e) {
+      const btn = e.target.closest("[data-open-modal]");
+      if (!btn) return;
+
+      const modalId = btn.getAttribute("data-open-modal");
+      const dialog = document.getElementById(modalId);
+
+      if (modalId === "trial-modal") {
+        const planName = btn.getAttribute("data-plan-name");
+        const planPrice = btn.getAttribute("data-plan-price");
+        const billingPeriod = btn.getAttribute("data-billing-period");
+        const currency = btn.getAttribute("data-currency");
+        const ctaLocation = btn.getAttribute("data-cta-location") || "unknown";
+
+        if (planName) {
+          // Clicked a pricing-plan CTA - remember the choice for the
+          // eventual trial_signup event.
+          sessionStorage.setItem(
+            "rb_trial_plan",
+            JSON.stringify({
+              plan_name: planName,
+              plan_price: planPrice || null,
+              billing_period: billingPeriod || null,
+              currency: currency || null,
+            })
+          );
+        } else {
+          // Opened from a generic CTA (Hero/Guarantee/etc.) - clear any
+          // stale plan choice from an earlier click so it isn't
+          // misattributed to this signup.
+          sessionStorage.removeItem("rb_trial_plan");
+        }
+
+        window.dataLayer.push({
+          event: "trial_interest",
+          cta_location: ctaLocation,
+          plan_name: planName || null,
+          plan_price: planPrice || null,
+          billing_period: billingPeriod || null,
+          currency: currency || null,
+        });
+      }
+
+      if (dialog && typeof dialog.showModal === "function") {
+        dialog.showModal();
+      }
+    });
+  })();
 </script>

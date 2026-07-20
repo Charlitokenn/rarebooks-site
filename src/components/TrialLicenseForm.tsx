@@ -80,6 +80,26 @@ export function TrialLicenseForm({ id, country }: TrialLicenseFormProps) {
       await new Promise((resolve) => setTimeout(resolve, 800));
       setIsSuccess(true);
 
+      // GTM: fire the trial signup conversion event, carrying whichever
+      // plan (if any) was selected on the pricing page - see the click
+      // handler in Layout.astro that writes this to sessionStorage.
+      try {
+        const storedPlan = sessionStorage.getItem("rb_trial_plan");
+        const planData = storedPlan ? JSON.parse(storedPlan) : {};
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({
+          event: "trial_signup",
+          plan_name: planData.plan_name || "Not specified",
+          plan_price: planData.plan_price || null,
+          billing_period: planData.billing_period || null,
+          currency: planData.currency || null,
+          country,
+        });
+        sessionStorage.removeItem("rb_trial_plan");
+      } catch (gtmError) {
+        console.error("GTM tracking error:", gtmError);
+      }
+
       setStatus("Signing you in...");
       // Navigates away on success — no further UI updates needed after this.
       await signInWithTicket(result.signInToken, "/dashboard?welcome=trial");

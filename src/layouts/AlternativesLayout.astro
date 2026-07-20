@@ -50,6 +50,7 @@ const pageTitle = `Best ${entry.shortName} Alternative for SMEs | ${AppConfig.ap
           <button
             type="button"
             data-open-modal="trial-modal"
+            data-cta-location="alternatives_page_header"
             class="inline-flex cursor-pointer items-center rounded-pill bg-brand px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform"
           >
             Get Started Free
@@ -160,6 +161,7 @@ const pageTitle = `Best ${entry.shortName} Alternative for SMEs | ${AppConfig.ap
             <button
               type="button"
               data-open-modal="trial-modal"
+              data-cta-location="alternatives_page_footer"
               class="inline-flex cursor-pointer items-center rounded-pill bg-brand px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform"
             >
               Create Free Account
@@ -174,17 +176,3 @@ const pageTitle = `Best ${entry.shortName} Alternative for SMEs | ${AppConfig.ap
 
 <TrialLicenseModal id="trial-modal" title="Start your free trial" />
 <ContactUsModal id="contact-us-modal" title="Contact Us" />
-
-<script is:inline>
-  (function () {
-    document.addEventListener('click', function (e) {
-      const btn = e.target.closest('[data-open-modal]');
-      if (!btn) return;
-      const modalId = btn.getAttribute('data-open-modal');
-      const dialog = document.getElementById(modalId);
-      if (dialog && typeof dialog.showModal === 'function') {
-        dialog.showModal();
-      }
-    });
-  })();
-</script>

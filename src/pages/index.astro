@@ -35,17 +35,3 @@ import TrialLicenseModal from "@components/TrialLicenseModal.astro";
 <!-- Modal instance -->
 <ContactUsModal id="contact-us-modal" title="Contact Us" />
 
-
-<script is:inline>
-    (function () {
-        document.addEventListener('click', function (e) {
-            const btn = e.target.closest('[data-open-modal]');
-            if (!btn) return;
-            const modalId = btn.getAttribute('data-open-modal');
-            const dialog = document.getElementById(modalId);
-            if (dialog && typeof dialog.showModal === 'function') {
-                dialog.showModal();
-            }
-        });
-    })();
-</script>

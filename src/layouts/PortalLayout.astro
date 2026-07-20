@@ -57,12 +57,6 @@ const sidebarState = sidebarOpen ? "expanded" : "collapsed";
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <title>{title}</title>
-    <!--
-      Enables Astro's client-side routing. Without this, every sidebar
-      link is a full document reload — that hard reload is what was
-      causing the dashboard "flicker."
-    -->
-    <!--<ClientRouter />-->
 </head>
 <body class="min-h-screen overflow-x-hidden">
     <!--
