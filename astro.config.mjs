@@ -109,26 +109,7 @@ export default defineConfig({
         Pagination: "./src/components/Pagination.astro",
       },
       disable404Route: true,
-      plugins: [
-          starlightBlog({
-            title: "Blog | RareBooks",
-            postCount: 10,
-            recentPostCount: 5,
-            metrics: {
-              readingTime: true,
-              words: 'rounded'
-            },
-            authors: {
-              owner: {
-                name: "Charles Nkonoki",
-                title: "Founder",
-                picture: "/developer.jpg",
-                url: "https://tz.linkedin.com/in/charles-nkonoki"
-              }
-            },
-            rss: false,
-          })
-      ],
+      plugins: [],
     }),
     webcore(),
     react(),
