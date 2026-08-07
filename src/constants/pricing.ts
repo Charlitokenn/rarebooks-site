@@ -57,8 +57,8 @@ export const pricingPlans: PricingPlan[] = [
   {
     name: "RareBooks Desktop" ,
     priceUSD: {
-      monthly: "Custom",
-      yearly: "Custom",
+      monthly: "1,490",
+      yearly: "1,490",
     },
     priceTZS: "1,697,000",
     period: "Forever",
