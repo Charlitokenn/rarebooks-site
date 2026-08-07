@@ -181,7 +181,7 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
                   plan.featured ? "bg-white text-ink" : "bg-brand text-white"
                 }`}
               >
-                {isCustom ? "Contact sales" : oneTime ? "Buy Now" : "Start free trial"}
+                {isCustom ? "Contact sales" : oneTime ? "Get Lifetime License" : "Start free trial"}
               </button>
             </div>
           );
