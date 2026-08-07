@@ -46,8 +46,8 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       "Usage on up to 5 devices.",
       "Everything on Do It Yourself plan",
-      "All business records digitized for you", 
-"One-time data import", 
+      "All business records digitized for you",
+      "One-time data import",
       "Over the shoulder software training",
       "Daily backups & latest 21 days recovery",
       "Priority support",
@@ -55,7 +55,7 @@ export const pricingPlans: PricingPlan[] = [
     featured: true,
   },
   {
-    name: "RareBooks Desktop" ,
+    name: "RareBooks Desktop",
     priceUSD: {
       monthly: "1,490",
       yearly: "1,490",
@@ -64,11 +64,12 @@ export const pricingPlans: PricingPlan[] = [
     period: "Forever",
     blurb: "One-time purchase, yours forever",
     features: [
-      "For Windows only", 
-"100% offline operation – Works without internet", 
-"All features unlocked forever – no limits", " CSV import/export with Web Version", 
-"3 years of updates included", 
-"Only applies to Desktop App, Web Version not included"
+      "For Windows only",
+      "100% offline operation – Works without internet",
+      "All features unlocked forever – no limits",
+      " CSV import/export with Web Version",
+      "3 years of updates included",
+      "Only applies to Desktop App, Web Version not included",
     ],
     featured: false,
   },
@@ -88,4 +89,13 @@ export function getPrice(plan: PricingPlan, countryCode: string): string {
 
 export function isTanzania(countryCode: string): boolean {
   return countryCode === "TZ";
+}
+
+// A plan whose monthly and yearly USD prices are identical is a one-time /
+// fixed-price plan (e.g. RareBooks Desktop). These plans should never show
+// a "/Month", "/Year", or any other period suffix next to the price, and
+// should not change when the monthly/yearly toggle is flipped.
+
+export function isOneTime(plan: PricingPlan): boolean {
+  return plan.priceUSD.monthly === plan.priceUSD.yearly;
 }
