@@ -18,7 +18,7 @@ export const pricingPlans: PricingPlan[] = [
       monthly: "20",
       yearly: "216",
     },
-    priceTZS: "198,000",
+    priceTZS: "199,000",
     period: "/Year",
     blurb:
       "For businesses on a budget and are confident in following the documentations",
@@ -46,7 +46,8 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       "Usage on up to 5 devices.",
       "Everything on Do It Yourself plan",
-      "All business records digitized for you",
+      "All business records digitized for you", 
+"One-time data import", 
       "Over the shoulder software training",
       "Daily backups & latest 21 days recovery",
       "Priority support",
@@ -54,19 +55,20 @@ export const pricingPlans: PricingPlan[] = [
     featured: true,
   },
   {
-    name: "Scale",
+    name: "RareBooks Desktop" ,
     priceUSD: {
       monthly: "Custom",
       yearly: "Custom",
     },
-    priceTZS: "Custom",
-    period: "",
-    blurb: "For larger businesses with multiple locations.",
+    priceTZS: "1,697,000",
+    period: "Forever",
+    blurb: "",
     features: [
-      "Everything in Done for You plan",
-      "Multi-locations consolidation",
-      "Custom features & integrations",
-      "Dedicated success manager",
+      "For Windows only", 
+"100% offline operation – Works without internet", 
+"All features unlocked forever – no limits", " CSV import/export with Web Version", 
+"3 years of updates included"
+"Only applies to Desktop App, Web Version not included"
     ],
     featured: false,
   },
