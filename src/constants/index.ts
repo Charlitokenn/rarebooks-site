@@ -30,6 +30,15 @@ export const AppConfig = {
   keymint: {
     productId: "5dc2d14443ace8f4dcf212",
   },
+  paypal: {
+    // "Rarebooks Desktop" hosted button (NCP single-button embed), created
+    // in the PayPal business dashboard. The price is fixed to whatever that
+    // button was configured with (currently a "One set price" button) - it
+    // is NOT read dynamically from pricingPlans, so if the USD price for
+    // RareBooks Desktop ever changes, update the button in the PayPal
+    // dashboard too. See: paypal.com/businessmanage/buttons
+    hostedButtonId: "D4TCL8TVG7MYN",
+  },
   featuredClients: ["TAJ Home Appliances", "Powerlink Innovations"],
   pricingPlans,
 };
