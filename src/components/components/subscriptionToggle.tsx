@@ -62,7 +62,7 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
           // Same value that's rendered on screen - reused below so the
           // GTM tracking attributes always match what the user saw.
           const displayPrice = isCustom
-            ? "Custom"
+            ? price
             : isLocal
               ? price
               : monthly
