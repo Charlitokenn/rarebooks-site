@@ -135,8 +135,93 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
         });
       }
 
+      if (modalId === "desktop-payment-modal") {
+        const planName = btn.getAttribute("data-plan-name");
+        const planPrice = btn.getAttribute("data-plan-price");
+        const currency = btn.getAttribute("data-currency");
+        const ctaLocation = btn.getAttribute("data-cta-location") || "unknown";
+
+        // Mirrors rb_trial_plan below - lets a future purchase-completed
+        // step (once payments are automated) attribute back to this click
+        // without re-deriving it.
+        sessionStorage.setItem(
+          "rb_purchase_plan",
+          JSON.stringify({
+            plan_name: planName,
+            plan_price: planPrice || null,
+            currency: currency || null,
+          })
+        );
+
+        window.dataLayer.push({
+          event: "purchase_interest",
+          cta_location: ctaLocation,
+          plan_name: planName || null,
+          plan_price: planPrice || null,
+          billing_period: "one_time",
+          currency: currency || null,
+        });
+      }
+
       if (dialog && typeof dialog.showModal === "function") {
         dialog.showModal();
+      }
+    });
+  })();
+</script>
+
+<!--
+  "Send payment confirmation via chat" handler for the desktop payment
+  modal (DesktopPaymentModal.astro). Mirrors the [data-gtm-download]
+  pattern below: opts in via [data-gtm-payment-confirm], fires a
+  `payment_confirmation_started` event - the step after `purchase_interest`
+  in the manual Lipa Namba funnel - copies a pre-filled confirmation
+  message to the clipboard, opens the Tawk chat widget, and closes the
+  modal so the visitor can paste the message straight into the chat.
+-->
+<script is:inline>
+  (function () {
+    window.dataLayer = window.dataLayer || [];
+
+    document.addEventListener("click", function (e) {
+      const btn = e.target.closest("[data-gtm-payment-confirm]");
+      if (!btn) return;
+
+      const planName = btn.getAttribute("data-plan-name");
+      const planPrice = btn.getAttribute("data-plan-price");
+      const currency = btn.getAttribute("data-currency");
+      const paymentMethod = btn.getAttribute("data-payment-method") || "unknown";
+      const ctaLocation = btn.getAttribute("data-cta-location") || "unknown";
+      const message = btn.getAttribute("data-confirmation-message") || "";
+
+      window.dataLayer.push({
+        event: "payment_confirmation_started",
+        cta_location: ctaLocation,
+        plan_name: planName || null,
+        plan_price: planPrice || null,
+        currency: currency || null,
+        payment_method: paymentMethod,
+      });
+
+      if (message && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(message).catch(function () {});
+      }
+
+      const note = document.getElementById("payment-confirm-note");
+      if (note) {
+        note.classList.remove("hidden");
+        setTimeout(function () {
+          note.classList.add("hidden");
+        }, 6000);
+      }
+
+      const dialog = btn.closest("dialog.modal-dialog");
+      if (dialog && typeof dialog.close === "function") {
+        dialog.close();
+      }
+
+      if (window.Tawk_API && typeof window.Tawk_API.maximize === "function") {
+        window.Tawk_API.maximize();
       }
     });
   })();
