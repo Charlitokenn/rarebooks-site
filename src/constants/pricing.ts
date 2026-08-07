@@ -18,7 +18,7 @@ export const pricingPlans: PricingPlan[] = [
       monthly: "20",
       yearly: "216",
     },
-    priceTZS: "199,000",
+    priceTZS: "217,000",
     period: "/Year",
     blurb:
       "For businesses on a budget and are confident in following the documentations",
