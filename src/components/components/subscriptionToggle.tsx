@@ -8,6 +8,7 @@ import {
   getPrice,
   getCurrencySymbol,
   isTanzania,
+  isOneTime,
 } from "../../constants/pricing";
 
 interface Props {
@@ -58,26 +59,33 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
           const price = getPrice(plan, countryCode);
           const symbol = getCurrencySymbol(countryCode);
           const isCustom = price === "Custom";
+          const oneTime = !isCustom && isOneTime(plan);
 
           // Same value that's rendered on screen - reused below so the
           // GTM tracking attributes always match what the user saw.
           const displayPrice = isCustom
             ? price
-            : isLocal
-              ? price
-              : monthly
-                ? (price as string[])[1]
-                : (price as string[])[0];
+            : oneTime
+              ? isLocal
+                ? price
+                : (price as string[])[0]
+              : isLocal
+                ? price
+                : monthly
+                  ? (price as string[])[1]
+                  : (price as string[])[0];
 
           const billingPeriod = isCustom
             ? "custom"
-            : isLocal
-              ? monthly
-                ? "monthly"
-                : "yearly"
-              : monthly
-                ? "yearly"
-                : "monthly";
+            : oneTime
+              ? "one_time"
+              : isLocal
+                ? monthly
+                  ? "monthly"
+                  : "yearly"
+                : monthly
+                  ? "yearly"
+                  : "monthly";
 
           return (
             <div
@@ -103,11 +111,16 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
                 >
                   {isCustom
                     ? price
-                    : monthly
-                      ? symbol + (isLocal ? price : price[1])
-                      : symbol + (isLocal ? price : price[0])}
+                    : oneTime
+                      ? symbol + (isLocal ? price : (price as string[])[0])
+                      : monthly
+                        ? symbol + (isLocal ? price : price[1])
+                        : symbol + (isLocal ? price : price[0])}
                 </span>
-                {!isCustom && (
+                {/* No period suffix at all for "Custom" (contact sales) or
+                    one-time/fixed-price plans like RareBooks Desktop —
+                    just the bare price. */}
+                {!isCustom && !oneTime && (
                   <span
                     className={
                       plan.featured
