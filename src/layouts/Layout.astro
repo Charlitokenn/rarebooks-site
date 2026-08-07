@@ -228,6 +228,34 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
 </script>
 
 <!--
+  "Buy Lifetime License" PayPal button click, from the international-buyer
+  branch of DesktopPaymentModal.astro. Since the PayPal button is a real
+  <form> that submits to PayPal in a new tab (target="_blank"), this just
+  records the click before the browser follows through - it does not
+  intercept or delay the submission. Fires `payment_checkout_started`, one
+  step before `payment_confirmation_started` above in the PayPal funnel.
+-->
+<script is:inline>
+  (function () {
+    window.dataLayer = window.dataLayer || [];
+
+    document.addEventListener("click", function (e) {
+      const btn = e.target.closest("[data-gtm-payment-interest]");
+      if (!btn) return;
+
+      window.dataLayer.push({
+        event: "payment_checkout_started",
+        cta_location: btn.getAttribute("data-cta-location") || "unknown",
+        plan_name: btn.getAttribute("data-plan-name") || null,
+        plan_price: btn.getAttribute("data-plan-price") || null,
+        currency: btn.getAttribute("data-currency") || null,
+        payment_method: "paypal",
+      });
+    });
+  })();
+</script>
+
+<!--
   Centralized "software download" click tracker for every
   [data-gtm-download] link on the site (the /trial/download page, the
   dashboard's post-signup WelcomeModal, and anywhere else a Microsoft
