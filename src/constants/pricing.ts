@@ -67,7 +67,7 @@ export const pricingPlans: PricingPlan[] = [
       "For Windows only", 
 "100% offline operation – Works without internet", 
 "All features unlocked forever – no limits", " CSV import/export with Web Version", 
-"3 years of updates included"
+"3 years of updates included", 
 "Only applies to Desktop App, Web Version not included"
     ],
     featured: false,
