@@ -165,7 +165,13 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
               </ul>
               <button
                 type="button"
-                data-open-modal={isCustom ? "contact-us-modal" : "trial-modal"}
+                data-open-modal={
+                  isCustom
+                    ? "contact-us-modal"
+                    : oneTime
+                      ? "desktop-payment-modal"
+                      : "trial-modal"
+                }
                 data-cta-location="pricing_page"
                 data-plan-name={!isCustom ? plan.name : undefined}
                 data-plan-price={!isCustom ? displayPrice : undefined}
@@ -175,7 +181,7 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
                   plan.featured ? "bg-white text-ink" : "bg-brand text-white"
                 }`}
               >
-                {isCustom ? "Contact sales" : "Start free trial"}
+                {isCustom ? "Contact sales" : oneTime ? "Buy Now" : "Start free trial"}
               </button>
             </div>
           );
