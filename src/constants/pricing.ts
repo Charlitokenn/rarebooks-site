@@ -62,7 +62,7 @@ export const pricingPlans: PricingPlan[] = [
     },
     priceTZS: "1,697,000",
     period: "Forever",
-    blurb: "",
+    blurb: "One-time purchase, yours forever",
     features: [
       "For Windows only", 
 "100% offline operation – Works without internet", 
