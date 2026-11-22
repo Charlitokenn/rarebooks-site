@@ -12,11 +12,11 @@ database_id = "fa09e96d-eb57-4425-95b3-34edc6a32d6e"
 binding = "SESSION"
 id = "c1344d3efc2a437dbd016ecc56bfb550"
 
-# Spec 0014: the sign up IP and check counters and the 30 second check cache. Create the namespace at
-# rollout (`npx wrangler kv namespace create ONBOARDING_KV`) and put its id here.
+# Spec 0014: the sign up IP and check counters and the 30 second check cache
+# (namespace "rarebooks-marketing-site-onboarding").
 [[kv_namespaces]]
 binding = "ONBOARDING_KV"
-id = "SET_AT_ROLLOUT"
+id = "02036753f5744df1b554f612ef075b2a"
 
 # Spec 0014. Secrets set with `wrangler secret put`: CONTROL_SIGNING_SECRET (the control site's
 # marketing_secret) and TURNSTILE_SECRET_KEY.
