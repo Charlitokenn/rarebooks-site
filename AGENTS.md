@@ -22,8 +22,11 @@ npm install
 # Dev server (Astro with the Workers platform proxy, so D1 and KV bindings work locally)
 npm run dev
 
-# Typecheck (astro check; there is no lint or test runner yet)
+# Typecheck (astro check; there is no lint yet)
 npm run check
+
+# Unit tests (node --test over tests/**/*.test.ts)
+npm test
 
 # Build, then build and deploy to Cloudflare
 npm run build
@@ -48,6 +51,7 @@ Specs are not stored here. They live in the sibling `rarebooks-web` repo (`docs/
 - Email bodies are React Email components in `src/components/templates/`, rendered with `@react-email/render` and sent through Resend from `nonreply@rarebooks.cc`.
 - User docs are `.mdx` files in `src/content/docs/<section>/`; each section folder needs its own `autogenerate` entry in the Starlight `sidebar` in `astro.config.mjs`, or its pages don't show in the sidebar.
 - TypeScript: double quotes, semicolons, 2 space indent.
+- `tests/onboarding/signing_vectors.json` must stay byte for byte identical to the copies in `rarebooks-web` (`frappe_books/tests/`) and `rarebooks_control` (`rarebooks_control/tests/`), and `tests/onboarding/email_key_cases.json` to the one in `rarebooks_control`. Change them together (spec 0014 AC-8, AC-9).
 
 ## Agent skills
 
@@ -66,6 +70,6 @@ MCP servers: Cloudflare API MCP `https://mcp.cloudflare.com/mcp` (recommended), 
 
 ## Context files
 
-- [src/pages/api/AGENTS.md](src/pages/api/AGENTS.md): the server API routes, their outside services (Clerk, Keymint, Resend, ClickPesa, D1) and gotchas
+- [src/pages/api/AGENTS.md](src/pages/api/AGENTS.md): the server API routes, their outside services (Clerk, Keymint, Resend, ClickPesa, D1, the control site) and gotchas
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
