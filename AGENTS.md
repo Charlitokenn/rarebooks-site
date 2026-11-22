@@ -51,7 +51,18 @@ Specs are not stored here. They live in the sibling `rarebooks-web` repo (`docs/
 
 ## Agent skills
 
-<!-- filled in after the skills search -->
+- [clerk-astro-patterns](.agents/skills/clerk-astro-patterns/): `clerk/skills`, Clerk in Astro (middleware, SSR, islands)
+- [clerk-backend-api](.agents/skills/clerk-backend-api/): `clerk/skills`, server side user reads and writes with `@clerk/backend`
+- [clerk-setup](.agents/skills/clerk-setup/), [clerk](.agents/skills/clerk/): `clerk/skills`, Clerk setup and the index of Clerk skills
+- [clerk-custom-ui](.agents/skills/clerk-custom-ui/): `clerk/skills`, sign in and sign up appearance and custom flows
+- [clerk-webhooks](.agents/skills/clerk-webhooks/), [clerk-testing](.agents/skills/clerk-testing/): `clerk/skills`, Clerk webhooks and auth in tests
+- [workers-best-practices](.agents/skills/workers-best-practices/): `cloudflare/skills`, production Worker code and config
+- [wrangler](.agents/skills/wrangler/), [workers-development](.agents/skills/workers-development/): `cloudflare/skills`, wrangler commands (D1, KV, secrets, deploy) and local debugging
+- [frameworks-on-cloudflare](.agents/skills/frameworks-on-cloudflare/), [cloudflare](.agents/skills/cloudflare/): `cloudflare/skills`, Astro on Workers and picking Cloudflare products
+- [turnstile-spin](.agents/skills/turnstile-spin/): `cloudflare/skills`, Turnstile with server side Siteverify (spec 0014)
+
+Declined: resend/resend-skills
+MCP servers: Cloudflare API MCP `https://mcp.cloudflare.com/mcp` (recommended), Clerk MCP `https://mcp.clerk.com/mcp` (recommended), Astro Docs MCP `https://mcp.docs.astro.build/mcp` (recommended), shadcn MCP `npx shadcn@latest mcp` (recommended)
 
 ## Context files
 

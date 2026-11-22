@@ -1,0 +1,96 @@
+{
+  "version": 2,
+  "skills": {
+    "clerk": {
+      "source": "clerk/skills",
+      "commit": "78092a74297dac3fb2c64efab3dbe86b581eaea8",
+      "sourceType": "github",
+      "skillPath": "skills/clerk/SKILL.md",
+      "computedHash": "c0323176ad5c969b0f0e2f94e28d1e01bb50e0527be6443f5ee3f7ed12ab3593"
+    },
+    "clerk-astro-patterns": {
+      "source": "clerk/skills",
+      "commit": "78092a74297dac3fb2c64efab3dbe86b581eaea8",
+      "sourceType": "github",
+      "skillPath": "skills/clerk-astro-patterns/SKILL.md",
+      "computedHash": "c4e21f7139e71afa02de3200e928321c3ac1d62cfe7dda6ac48f1845ef42a14f"
+    },
+    "clerk-backend-api": {
+      "source": "clerk/skills",
+      "commit": "78092a74297dac3fb2c64efab3dbe86b581eaea8",
+      "sourceType": "github",
+      "skillPath": "skills/clerk-backend-api/SKILL.md",
+      "computedHash": "9ee9a2c33cc481b01e89b1b91b4b6d210b207927353d87d6858dc96f39a23527"
+    },
+    "clerk-custom-ui": {
+      "source": "clerk/skills",
+      "commit": "78092a74297dac3fb2c64efab3dbe86b581eaea8",
+      "sourceType": "github",
+      "skillPath": "skills/clerk-custom-ui/SKILL.md",
+      "computedHash": "03296c405eb47cea2896d34f2160d18e9abd4694090b01c6428e97d9e4dd6165"
+    },
+    "clerk-setup": {
+      "source": "clerk/skills",
+      "commit": "78092a74297dac3fb2c64efab3dbe86b581eaea8",
+      "sourceType": "github",
+      "skillPath": "skills/clerk-setup/SKILL.md",
+      "computedHash": "cd3941863d327bd9e7b577eb077606d66add94ea17737abcb08d55739f7027fe"
+    },
+    "clerk-testing": {
+      "source": "clerk/skills",
+      "commit": "78092a74297dac3fb2c64efab3dbe86b581eaea8",
+      "sourceType": "github",
+      "skillPath": "skills/clerk-testing/SKILL.md",
+      "computedHash": "f1eb34182c114b18d16f66117f8ad0eba9a1ed3c226b984c6a82ff09c8c02fef"
+    },
+    "clerk-webhooks": {
+      "source": "clerk/skills",
+      "commit": "78092a74297dac3fb2c64efab3dbe86b581eaea8",
+      "sourceType": "github",
+      "skillPath": "skills/clerk-webhooks/SKILL.md",
+      "computedHash": "b50cef6155462607f633da76c99f761a80eeae52819c6ba0b4ce0293561f165f"
+    },
+    "cloudflare": {
+      "source": "cloudflare/skills",
+      "commit": "5108325ecceabc899c761e07aa617b09c02445ee",
+      "sourceType": "github",
+      "skillPath": "skills/cloudflare/SKILL.md",
+      "computedHash": "a40c5c77e4b96b0f6603a54e67bf2ff401a872366af48ff8f6ae0e872d4ad324"
+    },
+    "frameworks-on-cloudflare": {
+      "source": "cloudflare/skills",
+      "commit": "5108325ecceabc899c761e07aa617b09c02445ee",
+      "sourceType": "github",
+      "skillPath": "skills/frameworks-on-cloudflare/SKILL.md",
+      "computedHash": "2e327d257090fa5e9202c9cb3ac20eae51fa6f069d3a4b1c56a7e3a5d4dfc5bb"
+    },
+    "turnstile-spin": {
+      "source": "cloudflare/skills",
+      "commit": "5108325ecceabc899c761e07aa617b09c02445ee",
+      "sourceType": "github",
+      "skillPath": "skills/turnstile-spin/SKILL.md",
+      "computedHash": "2ec8b83caaba227444d0247df7b119a1beebff034472e1aebb511b28659d5adb"
+    },
+    "workers-best-practices": {
+      "source": "cloudflare/skills",
+      "commit": "5108325ecceabc899c761e07aa617b09c02445ee",
+      "sourceType": "github",
+      "skillPath": "skills/workers-best-practices/SKILL.md",
+      "computedHash": "7f941bbc549454872a4c7c261bf75a1ef7aaa69666bc85cec91e97cf40c11cc6"
+    },
+    "workers-development": {
+      "source": "cloudflare/skills",
+      "commit": "5108325ecceabc899c761e07aa617b09c02445ee",
+      "sourceType": "github",
+      "skillPath": "skills/workers-development/SKILL.md",
+      "computedHash": "a5b7dd748116d8b83db7d198867badcdde53c9eb13bf884c7557d40d0c965e38"
+    },
+    "wrangler": {
+      "source": "cloudflare/skills",
+      "commit": "5108325ecceabc899c761e07aa617b09c02445ee",
+      "sourceType": "github",
+      "skillPath": "skills/wrangler/SKILL.md",
+      "computedHash": "182e370d8c26e6bcb896a57a63e6cab006b253b9278cc3515f7b9db2c4d07661"
+    }
+  }
+}
