@@ -1,0 +1,60 @@
+# RareBooks marketing site (rarebooks-site)
+
+The public site at `rarebooks.cc`: marketing pages, compare and alternatives pages, the Starlight user docs and blog, Clerk sign in, and the customer dashboard at `/dashboard`. It is one Astro app served by one Cloudflare Worker.
+
+## Stack
+
+- **Language / Runtime**: TypeScript 5.9 (strict, `astro/tsconfigs/strict`), Cloudflare Workers runtime (`nodejs_compat`)
+- **Framework**: Astro 6 with `output: "server"` and `@astrojs/cloudflare`, React 19 islands, Starlight plus `starlight-blog` for `/docs` content
+- **Key dependencies**: `@clerk/astro` and `@clerk/backend` (auth), Cloudflare D1 (`DB`) and KV (`SESSION`), Resend plus React Email (mail), Tailwind 4 with shadcn (`radix-mira` style, Hugeicons) and webcoreui, ClickPesa (TZS payments), Keymint (desktop license keys)
+- **Package manager**: npm (no lockfile is committed)
+
+## Build approach
+
+Tracer Bullet: each feature is built end to end and works before the next starts. Source: the scope file in the sibling `rarebooks-web` repo (`docs/scope/scope.md`).
+
+## Commands
+
+```bash
+# Install
+npm install
+
+# Dev server (Astro with the Workers platform proxy, so D1 and KV bindings work locally)
+npm run dev
+
+# Typecheck (astro check; there is no lint or test runner yet)
+npm run check
+
+# Build, then build and deploy to Cloudflare
+npm run build
+npm run flare:deploy
+
+# D1 migrations
+npx wrangler d1 migrations apply rarebooks --remote
+```
+
+## Specs
+
+Specs are not stored here. They live in the sibling `rarebooks-web` repo (`docs/specs/`); spec 0014 (self serve onboarding) covers this repo.
+
+## Rules
+
+- Server code reads bindings and secrets with `import { env } from "cloudflare:workers"`, never `process.env`. Add a new binding or secret to `wrangler.toml` (or `wrangler secret put`) and to `worker-configuration.d.ts`.
+- Every API route and server rendered page sets `export const prerender = false`; routes answer JSON with `{ message }` on errors.
+- Identity comes from Clerk on the server (`Astro.locals.currentUser()`, `locals.auth()`, or `@clerk/backend`), never from a form field. `/dashboard(.*)` is protected in `src/middleware.ts`.
+- Visitor country comes from `locals.countryCode` (set in the middleware from `cf-ipcountry`); `isTanzania()` in `src/constants/pricing.ts` picks local (TZS) or international (USD) pricing.
+- Import with the path aliases `@components/*`, `@assets/*`, `@blocks/*` and `@stores/*`. shadcn components go in `src/components/components/ui` (see `components.json`).
+- App wide constants (names, emails, URLs, product ids, prices) live in `src/constants/`, not in components.
+- Email bodies are React Email components in `src/components/templates/`, rendered with `@react-email/render` and sent through Resend from `nonreply@rarebooks.cc`.
+- User docs are `.mdx` files in `src/content/docs/<section>/`; each section folder needs its own `autogenerate` entry in the Starlight `sidebar` in `astro.config.mjs`, or its pages don't show in the sidebar.
+- TypeScript: double quotes, semicolons, 2 space indent.
+
+## Agent skills
+
+<!-- filled in after the skills search -->
+
+## Context files
+
+- [src/pages/api/AGENTS.md](src/pages/api/AGENTS.md): the server API routes, their outside services (Clerk, Keymint, Resend, ClickPesa, D1) and gotchas
+
+_Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
