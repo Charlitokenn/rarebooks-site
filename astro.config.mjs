@@ -10,6 +10,34 @@ import react from "@astrojs/react";
 import clerk from "@clerk/astro";
 import starlightBlog from 'starlight-blog'
 
+const CLOUDFLARE_WORKERS_STUB = "\0rarebooks:cloudflare-workers-in-node";
+
+// Dev only. Starlight's prerendered catch all route (the docs live at the site root) matches every path, so
+// Astro's dev server first loads the matching server route in the Node "prerender" environment just to pick
+// the route. A route that imports `cloudflare:workers` at the top (every API route, the dashboard) can't load
+// there and the request fails. Give that environment a stand in: the route loads, Astro sees it isn't
+// prerendered, and the request runs in workerd with the real module. Reading `env` in Node still throws.
+// Builds are untouched (`apply: "serve"`).
+const cloudflareWorkersInNodeDev = {
+  name: "rarebooks:cloudflare-workers-in-node-dev",
+  apply: "serve",
+  enforce: "pre",
+  resolveId(id) {
+    if (id === "cloudflare:workers" && this.environment?.name === "prerender") {
+      return CLOUDFLARE_WORKERS_STUB;
+    }
+  },
+  load(id) {
+    if (id === CLOUDFLARE_WORKERS_STUB) {
+      return `export const env = new Proxy({}, {
+  get(_target, key) {
+    throw new Error("cloudflare:workers env." + String(key) + " was read in Node during dev; it only exists in workerd.");
+  },
+});`;
+    }
+  },
+};
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://rarebooks.cc",
@@ -117,7 +145,7 @@ export default defineConfig({
   ],
   output: "server",
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [cloudflareWorkersInNodeDev, tailwindcss()],
     define: {},
     css: {
       preprocessorOptions: {
