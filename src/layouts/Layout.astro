@@ -81,59 +81,29 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
   pages). This replaces the near-identical copies that used to live in
   index.astro, CompareLayout.astro, and AlternativesLayout.astro.
 
-  It also doubles as the trial conversion-intent tracker: whenever the
-  trial-modal is opened, it pushes a `trial_interest` event to the GTM
-  dataLayer, and - if the trigger button carries plan info (only the
-  pricing-plan buttons do) - remembers that plan in sessionStorage so
-  TrialLicenseForm.tsx can attach it to the `trial_signup` event once the
-  form is actually submitted successfully.
+  It also tracks trial intent: a click on a "Start free trial" link (each
+  goes to Clerk sign up, spec 0014 AC-7) pushes a `trial_interest` event to
+  the GTM dataLayer, with the plan when the link is a pricing plan's.
 -->
 <script is:inline>
   (function () {
     window.dataLayer = window.dataLayer || [];
 
     document.addEventListener("click", function (e) {
+      const trial = e.target.closest('a[href="/auth/sign-up"][data-cta-location]');
+      if (trial) {
+        window.dataLayer.push({
+          event: "trial_interest",
+          cta_location: trial.getAttribute("data-cta-location") || "unknown",
+          plan_name: trial.getAttribute("data-plan-name") || null,
+        });
+        return;
+      }
       const btn = e.target.closest("[data-open-modal]");
       if (!btn) return;
 
       const modalId = btn.getAttribute("data-open-modal");
       const dialog = document.getElementById(modalId);
-
-      if (modalId === "trial-modal") {
-        const planName = btn.getAttribute("data-plan-name");
-        const planPrice = btn.getAttribute("data-plan-price");
-        const billingPeriod = btn.getAttribute("data-billing-period");
-        const currency = btn.getAttribute("data-currency");
-        const ctaLocation = btn.getAttribute("data-cta-location") || "unknown";
-
-        if (planName) {
-          // Clicked a pricing-plan CTA - remember the choice for the
-          // eventual trial_signup event.
-          sessionStorage.setItem(
-            "rb_trial_plan",
-            JSON.stringify({
-              plan_name: planName,
-              plan_price: planPrice || null,
-              billing_period: billingPeriod || null,
-              currency: currency || null,
-            })
-          );
-        } else {
-          // Opened from a generic CTA (Hero/Guarantee/etc.) - clear any
-          // stale plan choice from an earlier click so it isn't
-          // misattributed to this signup.
-          sessionStorage.removeItem("rb_trial_plan");
-        }
-
-        window.dataLayer.push({
-          event: "trial_interest",
-          cta_location: ctaLocation,
-          plan_name: planName || null,
-          plan_price: planPrice || null,
-          billing_period: billingPeriod || null,
-          currency: currency || null,
-        });
-      }
 
       if (modalId === "desktop-payment-modal") {
         const planName = btn.getAttribute("data-plan-name");
@@ -141,8 +111,7 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
         const currency = btn.getAttribute("data-currency");
         const ctaLocation = btn.getAttribute("data-cta-location") || "unknown";
 
-        // Mirrors rb_trial_plan below - lets a future purchase-completed
-        // step (once payments are automated) attribute back to this click
+        // Lets a future purchase-completed step (once payments are automated) attribute back to this click
         // without re-deriving it.
         sessionStorage.setItem(
           "rb_purchase_plan",
@@ -257,19 +226,17 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
 
 <!--
   Centralized "software download" click tracker for every
-  [data-gtm-download] link on the site (the /trial/download page, the
-  dashboard's post-signup WelcomeModal, and anywhere else a Microsoft
-  Store link is added later). Fires a `software_download` event to the
-  GTM dataLayer - the final step in the trial_interest -> trial_signup
-  -> software_download conversion funnel.
+  [data-gtm-download] link on the site (none since the desktop trial was
+  retired in spec 0014; kept for a Microsoft Store link added later). Fires
+  a `software_download` event to the GTM dataLayer.
 
   Elements opt in with `data-gtm-download`, and can optionally carry:
-    data-download-source  e.g. "trial_download_page", "dashboard_welcome_modal"
-    data-license-type     e.g. "trial", "lifetime"
+    data-download-source  e.g. "pricing_page"
+    data-license-type     e.g. "lifetime"
     data-country
   This is a separate listener (not folded into the modal-open handler
   above) since download links aren't modal triggers - same pattern used
-  for the backdrop-close vs modal-close listeners in TrialLicenseModal.astro.
+  for the backdrop-close vs modal-close listeners in the modals.
 -->
 <script is:inline>
   (function () {

@@ -140,14 +140,13 @@ const steps = [
     </div>
 
     <div class="mx-auto mt-16 max-w-2xl text-center">
-      <button
-          type="button"
-          data-open-modal="trial-modal"
+      <a
+          href={AppConfig.urls.signUpUrl}
           data-cta-location="guarantee_section"
           class="inline-flex cursor-pointer items-center rounded-pill bg-brand px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform "
       >
         Start free trial
-      </button>
+      </a>
       <p class="mt-4 text-sm font-medium text-muted">
         {isLocal ? `${AppConfig.trial.localDuration}`: `${AppConfig.trial.abroadDuration}` } Days free · No payment required · Your data, your choice
       </p>

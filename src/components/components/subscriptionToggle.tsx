@@ -4,6 +4,7 @@ import { MoonIcon, SunIcon, Check } from "lucide-react";
 import { Switch } from "../components/ui/switch";
 import React, { useState } from "react";
 import { cn } from "../lib/utils";
+import { AppConfig } from "../../constants";
 import {
   getPrice,
   getCurrencySymbol,
@@ -163,26 +164,30 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
                   </li>
                 ))}
               </ul>
-              <button
-                type="button"
-                data-open-modal={
-                  isCustom
-                    ? "contact-us-modal"
-                    : oneTime
-                      ? "desktop-payment-modal"
-                      : "trial-modal"
-                }
-                data-cta-location="pricing_page"
-                data-plan-name={!isCustom ? plan.name : undefined}
-                data-plan-price={!isCustom ? displayPrice : undefined}
-                data-billing-period={!isCustom ? billingPeriod : undefined}
-                data-currency={!isCustom ? (isLocal ? "TZS" : "USD") : undefined}
-                className={`mt-8 inline-flex cursor-pointer items-center justify-center rounded-pill px-6 py-3 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
-                  plan.featured ? "bg-white text-ink" : "bg-brand text-white"
-                }`}
-              >
-                {isCustom ? "Contact sales" : oneTime ? "Get Lifetime License" : "Start free trial"}
-              </button>
+              {isCustom || oneTime ? (
+                <button
+                  type="button"
+                  data-open-modal={isCustom ? "contact-us-modal" : "desktop-payment-modal"}
+                  data-cta-location="pricing_page"
+                  data-plan-name={!isCustom ? plan.name : undefined}
+                  data-plan-price={!isCustom ? displayPrice : undefined}
+                  data-billing-period={!isCustom ? billingPeriod : undefined}
+                  data-currency={!isCustom ? (isLocal ? "TZS" : "USD") : undefined}
+                  className={ctaClass(plan.featured)}
+                >
+                  {isCustom ? "Contact sales" : "Get Lifetime License"}
+                </button>
+              ) : (
+                // Spec 0014 AC-7: the free trial is a hosted site, started from Clerk sign up.
+                <a
+                  href={AppConfig.urls.signUpUrl}
+                  data-cta-location="pricing_page"
+                  data-plan-name={plan.name}
+                  className={ctaClass(plan.featured)}
+                >
+                  Start free trial
+                </a>
+              )}
             </div>
           );
         })}
@@ -190,3 +195,9 @@ export const Subscriptions = ({ plans, isLocal, countryCode }: Props) => {
     </>
   );
 };
+
+function ctaClass(featured: boolean): string {
+  return `mt-8 inline-flex cursor-pointer items-center justify-center rounded-pill px-6 py-3 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
+    featured ? "bg-white text-ink" : "bg-brand text-white"
+  }`;
+}

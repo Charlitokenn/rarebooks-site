@@ -12,23 +12,23 @@ export const AppConfig = {
     nonReply: "nonreply@rarebooks.cc"
   },
   logo: "/logo.png",
+  // Spec 0014: every free trial is the 30 day trial of a hosted Books site.
   trial: {
-    localDuration: "14",
-    abroadDuration: "21",
+    localDuration: "30",
+    abroadDuration: "30",
   },
   urls: {
     rootUrl: "https://rarebooks.cc",
     documentationUrl: "rarebooks.cc/getting-started/getting-started-with-rarebooks/",
     storeUrl: "https://apps.microsoft.com/detail/9NTLP4V32WGS",
     portalUrl: "https://rarebooks.cc/dashboard",
+    // Spec 0014 AC-7: every "Start free trial" link goes to Clerk sign up, which lands on the start form.
+    signUpUrl: "/auth/sign-up",
   },
   socials: {
     facebook: "https://www.facebook.com/rarebooks",
     instagram: "https://www.instagram.com/rarebooks",
     tiktok: "https://tiktok.com/@rarebooks_",
-  },
-  keymint: {
-    productId: "5dc2d14443ace8f4dcf212",
   },
   paypal: {
     // "Rarebooks Desktop" hosted button (NCP single-button embed), created

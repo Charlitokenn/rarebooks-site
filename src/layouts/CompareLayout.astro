@@ -2,7 +2,6 @@
 import Layout from "./Layout.astro";
 import Navbar from "@components/Navbar.astro";
 import Footer from "@components/Footer.astro";
-import TrialLicenseModal from "@components/TrialLicenseModal.astro";
 import ContactUsModal from "@components/ContactUsModal.astro";
 import { AppConfig } from "../constants";
 import type { CompetitorEntry } from "../data/competitors";
@@ -47,14 +46,13 @@ const pageTitle = `${AppConfig.appName} vs ${entry.shortName} | Platform Compari
         </p>
 
         <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <button
-            type="button"
-            data-open-modal="trial-modal"
+          <a
+            href={AppConfig.urls.signUpUrl}
             data-cta-location="compare_page_header"
             class="inline-flex cursor-pointer items-center rounded-pill bg-brand px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform"
           >
             Start free trial
-          </button>
+          </a>
           <a
             href="/#pricing"
             class="inline-flex cursor-pointer items-center rounded-pill border border-black/10 bg-white px-8 py-4 text-base font-semibold text-ink transition-colors hover:bg-black/5"
@@ -184,14 +182,13 @@ const pageTitle = `${AppConfig.appName} vs ${entry.shortName} | Platform Compari
             Start a free trial and see how {AppConfig.appName} handles your books, stock, and POS — no commitment required.
           </p>
           <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <button
-              type="button"
-              data-open-modal="trial-modal"
+            <a
+              href={AppConfig.urls.signUpUrl}
               data-cta-location="compare_page_footer"
               class="inline-flex cursor-pointer items-center rounded-pill bg-brand px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform"
             >
               Start free trial
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -200,5 +197,4 @@ const pageTitle = `${AppConfig.appName} vs ${entry.shortName} | Platform Compari
   <Footer />
 </Layout>
 
-<TrialLicenseModal id="trial-modal" title="Start your free trial" />
 <ContactUsModal id="contact-us-modal" title="Contact Us" />

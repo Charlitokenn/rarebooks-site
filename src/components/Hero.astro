@@ -40,14 +40,13 @@ const isLocal =  isTanzania(countryCode);
 
     <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
 
-        <button
-            type="button"
-            data-open-modal="trial-modal"
+        <a
+            href={AppConfig.urls.signUpUrl}
             data-cta-location="hero"
             class="inline-flex cursor-pointer items-center rounded-pill bg-brand px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform "
         >
           Start free trial
-        </button>
+        </a>
 
         <a
             href="#demo"
