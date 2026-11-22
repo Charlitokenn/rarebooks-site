@@ -19,3 +19,6 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# Local Wrangler dev state (D1, KV, R2, caches): machine specific, never committed.
+.wrangler/
