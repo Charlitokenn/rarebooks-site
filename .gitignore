@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # Local Wrangler dev state (D1, KV, R2, caches): machine specific, never committed.
 .wrangler/
+
+# Local Worker secrets for `npm run dev`: never committed.
+.dev.vars
+.dev.vars.*
