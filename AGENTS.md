@@ -7,7 +7,7 @@ The public site at `rarebooks.cc`: marketing pages, compare and alternatives pag
 - **Language / Runtime**: TypeScript 5.9 (strict, `astro/tsconfigs/strict`), Cloudflare Workers runtime (`nodejs_compat`)
 - **Framework**: Astro 6 with `output: "server"` and `@astrojs/cloudflare`, React 19 islands, Starlight plus `starlight-blog` for `/docs` content
 - **Key dependencies**: `@clerk/astro` and `@clerk/backend` (auth), Cloudflare D1 (`DB`) and KV (`SESSION`), Resend plus React Email (mail), Tailwind 4 with shadcn (`radix-mira` style, Hugeicons) and webcoreui, ClickPesa (TZS payments), Keymint (desktop license keys)
-- **Package manager**: npm (`package-lock.json` is committed; install with `npm install --force`, since `@bruits/satteri-wasm32-wasi` only lists the wasm32 CPU)
+- **Package manager**: npm (`package-lock.json` is committed; Cloudflare installs with `npm clean-install`, so keep the lockfile in sync with `package.json`)
 
 ## Build approach
 
