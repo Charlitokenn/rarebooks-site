@@ -3,6 +3,10 @@ import PortalLayout from "../../layouts/PortalLayout.astro";
 import { PageHero } from "../../components/components/pageHero.tsx"
 import { LicenseDashboard } from "../../components/dashboard/LicenseDashboard";
 import { WelcomeModal } from "../../components/dashboard/WelcomeModal";
+import { SiteStatus } from "../../components/onboarding/SiteStatus";
+import { env } from "cloudflare:workers";
+
+export const prerender = false;
 
 const userDetails = await Astro.locals.currentUser();
 const countryCode = (Astro.locals as any)?.countryCode || "US";
@@ -10,11 +14,17 @@ const countryCode = (Astro.locals as any)?.countryCode || "US";
 const email = userDetails?.emailAddresses?.[0]?.emailAddress || "";
 const firstName = userDetails?.firstName;
 const lastName = userDetails?.lastName;
+// Spec 0014 AC-4: the user's hosted site, or the start form when they have none.
+const turnstileSiteKey = env.PUBLIC_TURNSTILE_SITE_KEY || "";
 const fullName = [firstName, lastName].filter(Boolean).join(" ") || email;
 ---
 
 <PortalLayout>
     <PageHero type="greeting" name={firstName} subtitle="Manage your license and device activations" client:load/>
+    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+    <div class="py-6 px-4">
+        <SiteStatus client:load turnstileSiteKey={turnstileSiteKey} />
+    </div>
     <LicenseDashboard
             client:load
             userEmail={email}

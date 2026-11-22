@@ -39,6 +39,10 @@ export const AppConfig = {
     // dashboard too. See: paypal.com/businessmanage/buttons
     hostedButtonId: "D4TCL8TVG7MYN",
   },
+  // Hosted sign up (spec 0014): each site's address is `<subdomain>.<siteDomain>`.
+  onboarding: {
+    siteDomain: "rarebooks.cc",
+  },
   featuredClients: ["TAJ Home Appliances", "Powerlink Innovations"],
   pricingPlans,
 };

@@ -1,0 +1,30 @@
+---
+// The start form (spec 0014 AC-1). Signed in users only (the middleware protects `/dashboard(.*)`), and only
+// once their primary email is verified; a user who already asked for a site goes to `/dashboard`.
+import { env } from "cloudflare:workers";
+import PortalLayout from "../../layouts/PortalLayout.astro";
+import { StartForm } from "../../components/onboarding/StartForm";
+import { verifiedOwner } from "../../lib/onboarding/owner.ts";
+import { signupByUser } from "../../lib/onboarding/signups.ts";
+
+export const prerender = false;
+
+const owner = await verifiedOwner(Astro.locals);
+if (owner && (await signupByUser(owner.clerkUserId))) {
+  return Astro.redirect("/dashboard");
+}
+const siteKey = env.PUBLIC_TURNSTILE_SITE_KEY || "";
+---
+
+<PortalLayout>
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+  <div class="py-10 px-4">
+    {owner ? (
+      <StartForm client:load turnstileSiteKey={siteKey} />
+    ) : (
+      <div class="mx-auto max-w-lg rounded-xl border bg-card p-6 text-sm">
+        Verify your email address first. Open the email we sent you, then come back to this page.
+      </div>
+    )}
+  </div>
+</PortalLayout>

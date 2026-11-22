@@ -22,6 +22,13 @@ interface CloudflareEnv {
   CLERK_SECRET_KEY: string;
   TURNSTILE_KEY: string;
   STORE_URL: string;
+  // Spec 0014 (self serve onboarding).
+  ONBOARDING_KV: import("@cloudflare/workers-types").KVNamespace;
+  CONTROL_SITE_URL: string;
+  CONTROL_SIGNING_SECRET: string;
+  TURNSTILE_SECRET_KEY: string;
+  PUBLIC_TURNSTILE_SITE_KEY: string;
+  PUBLIC_SITE_URL: string;
 }
 
 declare module "cloudflare:workers" {

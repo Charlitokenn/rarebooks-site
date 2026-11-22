@@ -8,6 +8,13 @@ interface __BaseEnv_Env {
   RESEND_API_KEY: string;
   CLICKPESA_CLIENT_ID: string;
   CLICKPESA_API_KEY: string;
+  // Spec 0014 (self serve onboarding).
+  ONBOARDING_KV: KVNamespace;
+  CONTROL_SITE_URL: string;
+  CONTROL_SIGNING_SECRET: string;
+  TURNSTILE_SECRET_KEY: string;
+  PUBLIC_TURNSTILE_SITE_KEY: string;
+  PUBLIC_SITE_URL: string;
 }
 declare namespace Cloudflare {
   interface Env extends __BaseEnv_Env {}

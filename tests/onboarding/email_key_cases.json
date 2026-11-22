@@ -1,0 +1,11 @@
+[
+ ["owner@example.com", "owner@example.com"],
+ ["  Owner@Example.COM ", "owner@example.com"],
+ ["first.last@example.com", "first.last@example.com"],
+ ["first.last+shop@example.com", "first.last+shop@example.com"],
+ ["Asha.Mrema@Gmail.com", "ashamrema@gmail.com"],
+ ["a.s.h.a+books+more@gmail.com", "asha@gmail.com"],
+ ["asha.mrema@googlemail.com", "ashamrema@gmail.com"],
+ ["asha+@gmail.com", "asha@gmail.com"],
+ ["Asha@GoogleMail.Com", "asha@gmail.com"]
+]
