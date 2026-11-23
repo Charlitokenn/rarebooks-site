@@ -22,7 +22,7 @@ id = "02036753f5744df1b554f612ef075b2a"
 # marketing_secret) and TURNSTILE_SECRET_KEY.
 [vars]
 PUBLIC_SITE_URL = "https://rarebooks.cc"
-CONTROL_SITE_URL = ""
+CONTROL_SITE_URL = "https://rarebooks-control.frappe.cloud"
 PUBLIC_TURNSTILE_SITE_KEY = ""
 
 [assets]
