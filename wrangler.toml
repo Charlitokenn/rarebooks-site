@@ -23,7 +23,7 @@ id = "02036753f5744df1b554f612ef075b2a"
 [vars]
 PUBLIC_SITE_URL = "https://rarebooks.cc"
 CONTROL_SITE_URL = "https://rarebooks-control.frappe.cloud"
-PUBLIC_TURNSTILE_SITE_KEY = ""
+PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAADq5yBe8MOqSJN7v"
 
 [assets]
 directory = "./dist/client"

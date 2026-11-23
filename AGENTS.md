@@ -6,7 +6,7 @@ The public site at `rarebooks.cc`: marketing pages, compare and alternatives pag
 
 - **Language / Runtime**: TypeScript 5.9 (strict, `astro/tsconfigs/strict`), Cloudflare Workers runtime (`nodejs_compat`)
 - **Framework**: Astro 6 with `output: "server"` and `@astrojs/cloudflare`, React 19 islands, Starlight plus `starlight-blog` for `/docs` content
-- **Key dependencies**: `@clerk/astro` and `@clerk/backend` (auth), Cloudflare D1 (`DB`) and KV (`SESSION`), Resend plus React Email (mail), Tailwind 4 with shadcn (`radix-mira` style, Hugeicons) and webcoreui, ClickPesa (TZS payments), Keymint (desktop license keys)
+- **Key dependencies**: `@clerk/astro` and `@clerk/backend` (auth), Cloudflare D1 (`DB`) and KV (`SESSION`), Resend plus React Email (mail), Tailwind 4 with shadcn (`radix-mira` style, Hugeicons) and webcoreui, ClickPesa (TZS payments)
 - **Package manager**: npm (`package-lock.json` is committed; Cloudflare installs with `npm clean-install`, so keep the lockfile in sync with `package.json`)
 
 ## Build approach
@@ -70,6 +70,6 @@ MCP servers: Cloudflare API MCP `https://mcp.cloudflare.com/mcp` (recommended), 
 
 ## Context files
 
-- [src/pages/api/AGENTS.md](src/pages/api/AGENTS.md): the server API routes, their outside services (Clerk, Keymint, Resend, ClickPesa, D1, the control site) and gotchas
+- [src/pages/api/AGENTS.md](src/pages/api/AGENTS.md): the server API routes, their outside services (Clerk, Resend, ClickPesa, D1, the control site) and gotchas
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
