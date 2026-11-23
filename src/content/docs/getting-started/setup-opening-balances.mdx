@@ -1,47 +1,39 @@
 ---
-title: Setup Opening Balances
-sidebar_position: 3
-sidebar_label: Setup Opening Balances
+title: "Setup Opening Balances"
+description: "If you move from a different accounting system, enter the account balances from that system in RareBooks."
 sidebar:
-  order: 3
+  order: 5
 ---
 
-If you are moving from an existing accounting system over to RareBooks, you will need to enter the account balances from your previous system.
+If you move from a different accounting system, enter the account balances from that system in RareBooks. You do this with one journal entry of the type **Opening Entry**.
 
-To set the Opening Balances you can follow the steps below.
+## Get the Starting Balances
 
-## Get The Starting Balances
+Get a Trial Balance report from your previous accounting system. Use the balances on the day before you start to use RareBooks.
 
-Get the starting balances from your previous accounting system in the form of Trial Balances report.
+## Add the Missing Accounts
 
-## Add Additional Accounts
+Some accounts from your previous system can be missing in RareBooks. Add them in the Chart of Accounts. For the steps, see [Create a New Account](/getting-started/chart-of-accounts/#create-a-new-account).
 
-Add any accounts from your previous system that do not exist in RareBooks by navigating to the Chart of Accounts.
+Make sure that you add each account below the correct group.
 
-You can follow the steps shown [here](https://github.com/frappe/books_docs/blob/master/setting-up/initial-entries#add-additional-bank-accounts). Make sure you create the Accounts under the correct Account groups.
+## Make an Opening Entry
 
-## Create a Journal Entry
+1. Click **Common** > **Journal Entry** in the sidebar.
+2. Click **New**.
+3. Set **Entry Type** to **Opening Entry**.
+4. Set **Date** to the date of the balances.
+5. In **Account Entries**, add one row for each account in your Trial Balance report.
+6. In each row, select the **Account** and enter the **Debit** or the **Credit** amount.
+7. Click **Save**.
+8. Check the entry. Then click **Submit** and click **Yes**.
 
-First navigate to the **Journal Entry** page.
+![Submitted opening entry with debits to HDFC Bank, Cash, and Stock Adjustment, credits to Secured Loans and Capital Stock, and a reference number.](/images/docs/books-docs-setup-opening-balances-1-opening-entry-v4.png)
 
-`Common > Journal Entry`
+The total of the debits must be equal to the total of the credits. If the totals are not equal, add a row with the **Opening Balance Equity** account. RareBooks fills the new row with the amount that balances the entry. In the Standard Chart of Accounts, this account is in **Equity**.
 
-Then click on the blue `+` button to open the **Journal Entry** form.
+:::tip[References]
+You can enter a **Reference Number** and a **Reference Date** in the **References** section. Use them to find the entry later.
+:::
 
-![Journal Entry Form](https://github.com/frappe/books_docs/raw/master/docs/setting-up/images/journal-entry.png)
-
-1. Set the Entry Type as Opening Entry.
-2. Add a row for each line from your Trial Balances report, select the appropriate Account and the Debit or Credit amount.
-3. Click on Save. Review it once before clicking on Submit.
-
-You can set a Reference Number and Reference Date to mark the entry.
-
-This will create a Journal Transaction in the system with all your previous statements.
-
----
-
-Congratulations! You have now set your Opening Balances. 🎉
-
-This brings your books to the same position that was present in your previous accounting system.
-
-You are now ready to record your business activities by making transactions.
+After you submit the entry, your accounts show the same balances as your previous system. You can now record your transactions.

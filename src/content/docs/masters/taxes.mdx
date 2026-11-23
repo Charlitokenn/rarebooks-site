@@ -1,24 +1,66 @@
 ---
-sidebar_position: 4
-sidebar_label: Taxes
-title: Taxes
+title: "Taxes"
+description: "A tax template has one or more tax rates and the accounts that get the tax."
 sidebar:
   order: 4
 ---
 
-To calculate the amount of tax on an Item's purchase or sale, a Tax entry has to be selected on the invoice row.
+A tax template has one or more tax rates and the accounts that get the tax. You set a tax template on each item. RareBooks then calculates the tax of each invoice row from the template of the row.
 
-[![Invoice Row](https://github.com/frappe/books_docs/raw/master/docs/entries/images/invoice-row.png)](https://github.com/frappe/books_docs/blob/master/docs/entries/images/invoice-row.png)
+Only a **Books Manager** or a **System Manager** can change tax templates.
 
-::: tip Auto Set Tax If the Tax has been set on the Item then it will be auto set in the invoice row. :::
+## Create a Tax Template
 
-Tax entries can be made from the Tax page: `Setup > Taxes`
+Before you start, make sure that your chart of accounts has a ledger account for each tax, such as below **Duties and Taxes**. See [Create a New Account](/getting-started/chart-of-accounts/#create-a-new-account).
 
-## Tax Fields
+1. Click **Setup** > **Tax Templates** in the sidebar.
+2. Click **New**.
+3. Enter a **Name** that shows the tax and its rate, such as `VAT 20%`. You cannot change it after you save.
+4. In **Details**, click **Add row** for each tax account. On a phone, fill in the row in the sheet that opens, and tap **Done**.
+5. In each row, select the **Tax Invoice Account** and enter the **Rate** in percent. The **Tax Invoice Account** gets the tax when you submit an invoice.
+6. Optional: Select a [Tax Payment Account](#tax-payment-account).
+7. Click **Save**.
 
-A Tax entry has just two fields
+Use more than one row for taxes that you always charge together, such as **CGST** at 9 and **SGST** at 9. Each rate applies to the same amount, not to a different tax.
 
-1. Tax Name: a unique name to identify the tax by.
-2. Tax Detail: a table where the Tax account along with the Tax rate is set.
+## Taxes on Invoices
 
-::: info Tax Detail Tax Detail is a table as a single tax can have multiple components each with a separate account and rate. :::
+Select a template in the **Tax** field of each [item](/masters/items/). When you add the item to an invoice, the row gets this tax. If the item has no tax, the row gets the tax of the item group. To change the tax of one invoice row, select a different template in **Tax**, or clear it.
+
+If the row has a discount, the tax is on the amount after the discount, unless you select **Apply Discount After Tax**. See [Discount Accounting](/transactions/discount-accounting/).
+
+The **Taxes** table in the **Tax and Totals** section shows the total tax for each tax account. Sales quotes calculate the taxes in the same way.
+
+When you submit a sales invoice, RareBooks credits each **Tax Invoice Account** with the tax. A purchase invoice debits it. A return reverses these entries.
+
+## Tax Payment Account
+
+Use the **Tax Payment Account** when you owe a tax only after the customer pays. The **Tax Invoice Account** keeps the unpaid tax. Each payment moves the paid part of the tax to the **Tax Payment Account**.
+
+For example, a template has the **Tax Invoice Account** `VAT Pending`, the **Tax Payment Account** `VAT Payable`, and the **Rate** 10. A sales invoice of 1,000 has a tax of 100.
+
+1. When you submit the invoice, RareBooks credits `VAT Pending` with 100.
+2. The customer pays 550, half the grand total. The payment moves 50 from `VAT Pending` to `VAT Payable`.
+3. The customer pays the other 550. The payment moves the other 50.
+
+For a purchase invoice, the entries go in the other direction. The **Taxes** table of the [payment](/transactions/payments/) shows the moved amounts.
+
+If two templates on one invoice have the same **Tax Invoice Account**, they must have the same **Tax Payment Account**. If not, RareBooks does not save the payment.
+
+## Change or Delete a Template
+
+A changed template applies to draft invoices when you save them again. Submitted invoices keep their taxes. To delete a template, click **…** > **Delete** in the page header. You cannot delete a template that an item or an invoice uses.
+
+## GST Tax Templates in India
+
+When you set up a company in India, RareBooks adds the accounts **CGST**, **SGST**, **IGST**, and **Exempt** below **Duties and Taxes**, and these templates:
+
+![Tax template GST-18 with two rows: CGST at 9 and SGST at 9.](/images/docs/books-docs-taxes-1-gst-template-v4.png)
+
+| Tax Templates | Rows | Use |
+| --- | --- | --- |
+| **GST-28** to **GST-0** | **CGST** and **SGST**, each at half the rate | A supply in your own state |
+| **IGST-28** to **IGST-0** | **IGST** at the full rate | A supply to a different state |
+| **Exempt-GST-0**, **Exempt-IGST-0** | **Exempt** at 0% | An exempted supply |
+
+The rates are 28, 18, 12, 6, 5, 3, 0.25, and 0. The GST reports get the tax amounts from the **GST Head** of each tax account. If you make your own GST accounts, set their **GST Head** in the [chart of accounts](/getting-started/chart-of-accounts/). See [GST Reports](/financial-reports/gst-reports/).

@@ -1,41 +1,86 @@
 ---
-sidebar_position: 5
-sidebar_label: Reports
-title: Reports
+title: "Reports"
+description: "Reports show the data of your submitted documents in tables."
 sidebar:
   order: 1
 ---
 
-RareBooks has 4 financial reports. Each report is calculated using the General Ledger Entries that are created when any [Transactional Entry](https://github.com/frappe/books_docs/blob/master/transactions/transactional-entries) is made.
+Reports show the data of your submitted documents in tables. A report does not change your data.
 
-## Sections
+## Available Reports
 
-All reports have two sections:
+Click **Reports** in the sidebar, and then click a report. The GST reports are in the **GST** group. On a phone, tap **Reports** in the bottom tabs.
 
-1. Filter Section
-2. Report Section
+| Report | Shows |
+| --- | --- |
+| [General Ledger](/financial-reports/general-ledger/) | Each accounting entry, with a running balance. |
+| [Profit And Loss](/financial-reports/profit-and-loss-statement/) | The income, the expenses, and the profit for each period. |
+| [Balance Sheet](/financial-reports/balance-sheet/) | Your assets, liabilities, and equity at the end of each period. |
+| [Trial Balance](/financial-reports/trial-balance/) | The opening and closing balances, and the debits and credits, of each account. |
+| [Stock Ledger](/inventory/stock-ledger/) | Each stock entry of your items. |
+| [Stock Balance](/inventory/stock-balance/) | The quantity and the value of each item in each location. |
+| [GSTR1 and GSTR2](/financial-reports/gst-reports/) | Your sales and your purchases for the GST returns. |
 
-[![Report Sections](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/report-sections.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/report-sections.png)
+The stock reports show only when **Enable Inventory** is on in the **General** settings. The **GST** group shows only when your company has a **GSTIN**. All roles can open and export every report.
 
-The **Filter Section** allows for setting filters such as the Date Range between which a report is to be generated.
+## Use a Report on a Computer
 
-::: tip Setting Filters To generate a report after setting a filter, just click outside the filter box. :::
+### Filters
 
-The **Report Section** shows the generated report.
+The filters are below the page header. When you change a filter, RareBooks runs the report again. For the filters of each report, see the page of that report.
 
-::: info Pagination The **General Ledger** report also shows a paginator at the bottom which allows for viewing only sections of the report. :::
+![General Ledger with the date range "Oct 03 2025 to Oct 03 2026" and its picker open, which shows two months and presets such as This fiscal year and Last month.](/images/docs/books-docs-reports-1-date-range-filter-v4.png)
 
-## Exporting a Report
+A **From Date** and a **To Date** show as one date range field. Click it, and then click the first date and the last date. You can also click a preset, such as **This fiscal year** or **Last month**.
 
-All reports can be exported as a `CSV` or a `JSON` file. To do so just click on the blue Export button and select the file path.
+The filters stay set until you reload the page.
 
-After exporting the report you may open it in any software of your choice such as Libreoffice Calc, Google Sheets or Microsoft Excel.
+### Columns and Rows
 
-## Report Links
+- To change the width of a column, drag the line at the right side of its header. To fit the column to its contents, double-click that line.
+- In **Profit and Loss**, **Balance Sheet**, and **Trial Balance**, click a group account to hide or show the accounts below it.
+- **General Ledger**, **Stock Ledger**, **GSTR1**, and **GSTR2** show 50 rows on each page. To show more rows, click **100**, **500**, or **All** at the bottom.
 
-Check the following links to understand these reports:
+### Export a Report
 
-1. [General Ledger](https://github.com/frappe/books_docs/blob/master/analytics/general-ledger)
-2. [Profit and Loss](https://github.com/frappe/books_docs/blob/master/analytics/profit-and-loss)
-3. [Balance Sheet](https://github.com/frappe/books_docs/blob/master/analytics/balance-sheet)
-4. [Trial Balance](https://github.com/frappe/books_docs/blob/master/analytics/trial-balance)
+1. Set the filters.
+2. Click **Export** in the page header.
+3. Click **CSV** or **JSON**.
+
+The file has all the rows of the report, not only the rows of the current page. The JSON file also has the filter values.
+
+### Print a Report
+
+1. Set the filters.
+2. Click the printer icon in the page header, or press `Ctrl + P` (`Cmd + P` on macOS).
+3. Change the print options, such as **Number of rows**, **Print Size**, **Landscape**, and **Pick columns**.
+4. Click **Print**.
+
+**Print** opens the print dialog of your browser. To make a PDF file, select the PDF option in that dialog. If the message **Pop-up blocked** shows, allow pop-ups for your site and try again.
+
+## Use a Report on a Phone
+
+The **Reports** tab opens the **General Ledger**, or the first report that you can open. To open a different report, tap the report title in the header, and then tap a report.
+
+### Change the Filters
+
+1. Tap the filter button at the left, below the header. You can also tap a filter that is not changed.
+2. Change the filters in the **Filters** sheet.
+3. Tap **Apply**.
+
+![Phone Filters sheet of the General Ledger with Ref Type, Ref Name, Account, Party, the dates, and Group By, and Clear and Apply in a footer that stays on screen.](/images/docs/books-docs-reports-2-phone-filters-v4.png)
+
+To set all the filters back to their default values, tap **Clear**, and then tap **Apply**. A changed filter shows an **x**. Tap it to set that filter back to its default value.
+
+### See the Rows
+
+- **General Ledger** and **Stock Ledger** show the entries below their dates. Tap **Load more** to show the next 50 entries.
+- In the other reports, tap a group to hide or show the rows below it.
+- Tap a row to see all its columns. When the row comes from a document, the sheet also has a button that opens the document.
+- **Profit and Loss** and **Balance Sheet** show one period at a time. To show a different period, tap **Column**, and then tap a period.
+
+To print a report, tap the printer icon in the header, and then tap **Print** at the bottom of the page.
+
+:::note
+You cannot export a report on a phone. **GSTR1** and **GSTR2** are not available on a phone.
+:::

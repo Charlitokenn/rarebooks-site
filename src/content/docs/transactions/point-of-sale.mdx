@@ -1,150 +1,159 @@
 ---
-sidebar_position: 3
-sidebar_label: Point Of Sale
-title: Point Of Sale
+title: "Point of Sale (POS)"
+description: "Use the POS to sell over the counter."
 sidebar:
-  order: 1
+  order: 7
 ---
 
-**POS** (Point of Sale) refers to the time and place where retail transactions occur. This system enables efficient sales processing, payment reconciliation, and shift management for retail environments.
+Use the POS to sell over the counter. RareBooks records each sale as a sales invoice and records each payment. Each cashier sells in their own POS shift, which starts and ends with a count of the cash in their drawer.
 
-### 1. Open POS Shift
+## Turn On POS
 
-[//]: # "![](/private/files/Screenshot%20from%202025-08-11%2009-48-11.png)"
+1. Click **Setup** > **Settings** in the sidebar.
+2. In the **General** tab, turn on **Enable Inventory**.
+3. Click **Save** and click **Yes** to reload RareBooks.
+4. Open **Settings** again. In the **Inventory** tab, turn on **Enable Point of Sale**.
+5. Click **Save** and click **Yes** to reload RareBooks.
 
-Before initiating sales, a POS shift must be opened to record opening balances and enable accurate tracking of cash and other payment methods throughout the session.
+**POS** now shows in the sidebar, and **Settings** has a **POS Settings** tab. Only a Books Manager or a System Manager can change the POS settings. You cannot turn off POS while a cashier has a shift open.
 
-**Steps to Create an Open POS Shift**
+:::caution[POS Without Inventory]
+**Enable POS Without Inventory** in the **General** tab turns on POS without **Enable Inventory**. It also turns on barcodes, batches, serial numbers, and UOM conversion. You cannot turn off these settings later.
+:::
 
-1. Cash in Denominations
+## Set Up POS
 
-Enter the quantity of each currency denomination (e.g., ₹1000, ₹500, ₹100). The system will automatically calculate the total opening cash amount based on these inputs.
+### POS Settings
 
-2. Opening Amounts by Payment Method
+The setup wizard fills the inventory and the accounts in the **POS Settings** tab. Check them before your first sale.
 
-- The calculated cash amount is automatically populated under the “Cash” payment method.
+![POS Settings tab with inventory, counter cash account, write off account, POS UI, default account, item visibility, and the switches.](/images/docs/books-docs-transactional-entries-1-pos-settings-v4.png)
 
-- Opening balances for other payment methods (e.g., Card, UPI, Wallet) can be entered if applicable.
+| Field | Description |
+| --- | --- |
+| Inventory | The location that POS sales take stock from. |
+| Counter Cash Account | The cash account of the drawer. Cash payments for POS sales go to this account while the cashier has an open shift. Without an open shift, they go to the account of the payment method. |
+| Write Off Account | The expense account for the cash difference when you close a shift. |
+| Default Account | The receivable account of POS invoices. |
+| POS UI | **Classic** edits the values in the cart row. **Modern** opens a keypad for each value. |
+| Item Visibility | **Inventory Items** (the default), **Non-Inventory Items**, or **All Items**. |
+| Ignore Pricing Rule | POS sales do not use pricing rules or coupons. |
 
-3. Once all amounts are verified, click Submit. The POS shift will be marked as open, recording the shift’s opening date and time.
+For scale barcodes that hold the item code and the weight in grams, turn on **Weight Enabled Barcode**. Then fill the **Barcode** section. This section shows only when **Enable Barcodes** is on.
 
-### 2. Creating a POS Invoice
+### POS Profile
 
-[//]: # "![](/private/files/Screenshot%20from%202025-08-11%2010-16-20.png)"
+A POS profile keeps the settings of one counter or location, such as its **Inventory**, **POS Customer**, and receipt template. Each cashier selects a profile when they open a shift. Its values replace the same values in POS Settings and in the **Defaults** tab for the sales of that shift. The **POS Profile** field in POS Settings sets the profile that a new shift starts with.
 
-After opening a POS shift, sales billing can begin through the POS interface.
+For example, a shop with two locations makes one profile for each location, each with its own **Inventory**. The cashiers at each location select the profile of their location. A POS sale always prints with the receipt template of the profile that it was sold with.
 
-**How to create a POS Invoice ?**
+### POS Defaults
 
-1. Go to the POS interface and choose a customer for the sale.
-2. From the item list displayed on the left, click on the items to add them to the cart.
-3. Adjust the quantity for each item as needed.
-4. To change item rates or apply discounts, ensure these options are enabled in the POS Settings.
-5. Verify the grand total and the total quantity in the summary section at the bottom.
-6. Click the Pay button and select the desired payment method.
-7. Submit the sales invoice when prompted to complete the transaction.
-8. Once the invoice is submitted, you can print the POS invoice directly by selecting the Pay and Print option.
+The **Defaults** tab of **Settings** has the **POS Customer**, the button colors, and the **POS Print Template** for receipts. It also has **Cash Denominations**, the notes and coins that the shift dialogs count. A POS profile replaces these values, except **Cash Denominations**.
 
-### 3. Adding an Item
+## Open a Shift
 
-[//]: # "![](/private/files/Screenshot%20from%202025-08-11%2011-24-53.png)"
+1. Click **POS** in the sidebar. If you do not have an open shift, the **Open POS shift** dialog opens.
+2. If the site has POS profiles, select the **POS Profile** of your counter.
+3. In **Cash in drawer**, enter the **Count** of each note and coin.
+4. In **Opening amounts**, enter the amount of each other payment method, if any.
+5. Click **Open shift**.
 
-Items can be selected in two ways: by clicking on the item name or by scanning the barcode.
+Each user has their own shift, so several cashiers can sell at the same time. A user can have only one open shift. Give each cashier their own drawer, because each shift counts only the payments of its cashier. RareBooks submits a journal entry that moves the opening cash from the **Cash** account to the **Counter Cash Account**. When these accounts are the same, there is no journal entry.
 
-- Enter Barcode / Weight-enabled barcode in the box as shown in the image, the item will be automatically added to the cart.
+## Make a Sale
 
-- If the product list in the dropdown is very long, use the search field by typing the product name in the search box.
+1. To add an item, click it, or scan or type its code and press `Enter`.
+2. To sell to a different customer, select the **Customer** at the top of the cart.
+3. To change a quantity, click the plus or minus button in the row. To edit other values, click the item name.
+4. Click **Pay**.
+5. In **Payment method**, click a method, such as **Cash**.
+6. Check **Amount paid**. For a method that is not cash, enter **Ref. / Cheque No.**
+7. Click **Pay**, or click **Pay and print** to also print the receipt.
 
-**Filter by Group:** A field that allows filtering and displaying items based on their assigned item group. When an item group is selected from the dropdown list, only items belonging to that group are shown.
+![POS with the item list and a cart for Riya Kapoor: three items, a free notebook from a pricing rule, and the Coupon, Loyalty, and Price list buttons.](/images/docs/books-docs-transactional-entries-2-cart-v4.png)
 
-[//]: # "![](/private/files/Screenshot%20from%202025-08-11%2011-10-06.png)"
+![Payment dialog with Cash selected, 2,500 tendered, and Change to return 424.40.](/images/docs/books-docs-transactional-entries-3-payment-dialog-v4.png)
 
-- To change the quantity of an item, click the expand arrow and either enter the desired quantity in the **Transfer Quantity** field or use the up/down arrows to adjust it.
+RareBooks submits the invoice and a payment, and clears the cart. Inventory items ship from the POS inventory.
 
-- To remove an item from the cart, click the delete button next to the corresponding item.
+- You cannot add an inventory item that has no stock.
+- You can submit a POS invoice, or take a payment for a POS invoice, only while you have an open shift.
+- If the customer gives more cash, the dialog shows **Change to return**. The payment records only the amount due.
+- To take less than the full amount, turn on **Enable Partial Payment** in the **General** tab of **Settings**. **Submit unpaid** submits the invoice without a payment.
 
-### 4. Additional POS Features
+To keep a sale for later, click **Hold**. To open it again, click **Held** in the page header. All POS invoices also show in [Sales Invoices](/transactions/sales-invoice/).
 
-[//]: # "![](/private/files/Screenshot%20from%202025-08-12%2011-30-14.png)"
+## Return a Sale
 
-**1.Grid View:** Displays items in a grid format with images when the grid view icon is clicked.
+Returns need **Enable Invoice Returns** in the **General** tab of **Settings**.
 
-**2.[Sales Invoice](https://docs.frappe.io/books/sales-invoices) List:** Redirects to the Sales Invoice List.
+1. Click **Return** in the page header.
+2. Click the invoice, and then click **Create return**. The cart shows its items with negative quantities.
+3. If the customer returns only some items, change the quantities or remove rows.
+4. Click **Refund**.
+5. Select the payment method, and click **Refund**.
 
-**3.[Loyalty Program](https://docs.frappe.io/books/loyalty-program):** Shows the loyalty points earned by the selected customer. Points can be redeemed from this view. The button is disabled if the customer has no loyalty points.
+To submit the return without a refund, click **Submit without refund**.
 
-**4.[Coupon Code](https://docs.frappe.io/books/coupon-code):** Allows redemption and application of available coupon codes for the selected items. The button is disabled if no coupon codes are available.
+A return does not need an open shift. Without an open shift, the refund comes from the account of the payment method, not from the **Counter Cash Account**.
 
-**5.[Price List](https://docs.frappe.io/books/price-list):** Displays applicable price lists for the selected items, allowing you to apply them. The button is disabled if no price list is available.
+## Coupons, Loyalty Points, and Price Lists
 
-**6.[Item Enquiry](https://docs.frappe.io/books/item-enquiry):** Allows the user to record and track specific item-related queries.This feature helps maintain detailed records of customer enquiries for better follow-up and service.
+The **Coupon**, **Loyalty**, and **Price list** buttons above the totals show only when their feature is on. Coupons and loyalty points also need a customer and at least one item. If a change to the cart makes a coupon not apply, RareBooks removes the coupon and shows a warning. For more information, see [Coupon Code](/masters/coupon-code/), [Loyalty Program](/transactions/loyalty-program/), and [Price List](/masters/price-list/).
 
-### 5. Cart Actions
+## Item Enquiry
 
-[//]: # "![](/private/files/Screenshot%20from%202025-08-11%2012-06-19.png)"
+Use an item enquiry to record an item that a customer asks for. The **Item enquiry** button shows in the page header when **Enable Item Enquiry** is on.
 
-- Total Quantity: The Total Quantity refers to the combined number of all items included in a transaction or order.
+1. Click **Item enquiry**.
+2. Select the **Item**, and enter a **Description**.
+3. Click **Submit**.
 
-- Item Discounts: The Item Discounts refer to price reductions applied to specific products or services in the order.
+To see all enquiries, search for `Item Enquiry` in [Quick Search](/getting-started/quick-search/).
 
-- Grand Total: The Grand Total is the final amount payable after applying all discounts, charges, and taxes to the subtotal.
+## Close the Shift
 
-- Save Button: The system immediately stores the current transaction as a Draft Invoice, retaining all entered details for future review, modification, or completion.
+1. Click **Close shift** in the page header.
+2. In **Count the drawer**, enter the **Count** of each note and coin.
+3. In **Closing amounts**, enter the **Closing** amount of each payment method that is not cash.
+4. Check the **Difference** of each method.
+5. Click **Close shift**.
 
-- Cancel Button: The system discards the current transaction and resets the POS interface to its default state, ready for a new entry.
+![Close POS shift dialog with the drawer count and the closing amounts of each method, with a cash difference of -2.00.](/images/docs/books-docs-transactional-entries-4-close-shift-v4.png)
 
-- Held Button: The system displays two sections:
+**Expected** is the opening amount, plus the POS payments that you took during the shift, minus the refunds that you gave. The device must be online to close a shift. RareBooks submits a journal entry that moves the counted cash from the **Counter Cash Account** to the **Cash** account. A cash difference goes to the **Write Off Account**.
 
-- Saved - Shows all transactions that have been saved but not yet submitted.
+### Close a Cashier's Shift
 
-- Submitted – Displays all submitted invoices, including those that are partially paid.
+A Books User or a Books Manager can close the open shift of a different cashier, for example when the cashier forgets to close it.
 
-[//]: # "![](/private/files/Screenshot%20from%202025-08-11%2014-22-42.png)"
+1. Search for `POS Closing Shift` in [Quick Search](/getting-started/quick-search/) and open the **List** result.
+2. Click **New**.
+3. In **Opening Shift**, select the shift. The list shows the open shifts, grouped by cashier.
+4. Enter the counted cash and the closing amounts.
+5. Click **Save**.
+6. Click **Submit** and click **Yes**.
 
-A search function is available within the Held section to quickly locate invoices by their invoice name.
+To see all shifts, search for `POS Opening Shift`. The list shows the **Cashier**, the **POS Profile**, and the **Status** of each shift, such as **Open** or **Closed**. A Books Cashier sees only their own shifts.
 
-- Return Button: It displays a list of all return invoices, and selecting an invoice will redirect the user and add its items to the POS cart.
+## Use POS on a Phone
 
-[//]: # "![](/private/files/Screenshot%20from%202025-08-11%2014-28-48.png)"
+- The cart bar at the bottom shows the number of items and the grand total. Tap it to open the cart.
+- In the cart, tap a row to change its **Rate** and **Discount %**. To change the batch, the serial numbers, or the unit, use a computer.
+- The **…** button in the header has the other actions, such as **Return Sales Invoice** and **Close POS shift**.
+- Tap the back arrow in the header to leave the POS.
 
-A search function is available to quickly locate invoices by their invoice name.
+![Phone POS cart sheet with two items, the totals, Hold, and Pay.](/images/docs/books-docs-transactional-entries-5-phone-cart-v4.png)
 
-- PAY Button: After adding items and selecting the customer, click the **Pay** button to view available payment methods, including **Cash**, **Bank**, and **Transfer**; upon selection, the payable amount will be displayed for confirmation.
+## Keyboard Shortcuts
 
-### 6. Payment Workflow
+Use `Cmd` instead of `Ctrl` on macOS.
 
-[//]: # "![](/private/files/Screenshot%20from%202025-08-11%2014-30-54.png)"
-
-1. Click Pay after adding items and selecting the customer.
-
-2. Choose a payment method (e.g., Cash, Bank, Transfer). The payable amount is displayed for confirmation.
-
-Available payment actions:
-
-- Submit: Marks the invoice as submitted and saves it under Held > Submitted.
-
-- Cancel: Cancels the payment process and closes the payment interface.
-
-- Pay: Completes the payment and generates the invoice.
-
-- Pay & Print: Completes the payment, generates the invoice, and prints it immediately.
-
-### 7. Close POS Shift
-
-[//]: # "![](/private/files/Screenshot%20from%202025-08-11%2014-53-23.png)"
-
-The Close POS Shift feature is used to end a POS shift by recording final cash counts, calculating payment totals, and reconciling amounts.
-
-1. Closing Cash
-
-- The cashier can manually enter the quantity of each cash note or coin, with values initially pre-filled from the Opening Cash.
-
-- When the counts are updated, the system automatically recalculates the total Closing Cash and displays the difference between the Closing Amount and the Expected Amount.
-
-2. Closing Amounts
-
-- It displays a read-only table showing the Payment Method, Opening Amount, Expected Amount, Closing Amount, and Difference Amount for each payment type.
-
-- This section is used for reconciliation, helping identify any cash shortages or surpluses by comparing the Closing Amount (entered for Cash; zero for non-cash) against the Expected Amount.
-
-The **Submit** button validates all closing amounts, sets the Closing Date, and links the record to the Opening Shift.
+| Key | Action |
+| --- | --- |
+| Hold `Q` and type digits | Set the quantity of the selected row, or of the last row |
+| `Ctrl + Shift + H` | Open the **Invoices** dialog |
+| `Ctrl + Shift + S` | Hold the sale |
+| `Ctrl + Shift + P` | Open the payment dialog |
+| `Ctrl + Shift + Backspace` | Close the open dialog. If no dialog is open, clear the cart. |

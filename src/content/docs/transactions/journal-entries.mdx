@@ -1,60 +1,78 @@
 ---
-sidebar_position: 3
-sidebar_label: Journal Entries
-title: Journal Entries
+title: "Journal Entries"
+description: "A journal entry records a transaction directly in your accounts."
 sidebar:
-  order: 5
+  order: 6
 ---
 
-Journal Entries are transactional entries used to record transactions that don’t strictly identify as a Sale or Purchase. Such as the transfer of funds from a Bank Account to a Cash Account.
+A journal entry records a transaction directly in your accounts. Use it for transactions that are not a sale or a purchase, such as a transfer from a bank account to the cash account.
 
-## Creating Journal Entries
+Only a **Books Manager** or a **System Manager** can open journal entries. For more information, see [Roles and Permissions](/getting-started/roles-and-permissions/).
 
-To create a Journal Entry first navigate to the Journal Entry page
+## Create a Journal Entry
 
-`Common > Journal Entry`
+1. Click **Common** > **Journal Entry** in the sidebar.
+2. Click **New**.
+3. Select the **Entry Type**.
+4. Make sure that the **Date** is correct.
+5. In **Account Entries**, add one row for each account.
+6. In each row, select the **Account** and enter the **Debit** or the **Credit** amount.
+7. Click **Save**.
+8. Click **Submit** and click **Yes**.
 
-Then click on the blue `+` button to open a new Journal Entry form.
+The **Account** list shows only ledger accounts. To add an account, see [Create a New Account](/getting-started/chart-of-accounts/#create-a-new-account). The optional **Reference Number** and **Reference Date** in the **References** section are for an outside document, such as a check.
 
-[![Journal Entry Form](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/journal-entry.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/journal-entry.png)
+:::tip[Balancing Amount]
+When you add a row, RareBooks fills it with the amount that balances the entry. For example, enter a debit of `5,000` in the first row. Then add a row. The new row gets a credit of `5,000`.
+:::
 
-1. Set the type of Journal Entry.
-2. Add rows for each Account and set the amounts being credited and debited.
-3. Click on Save and then Submit.
+### Rules for a Journal Entry
 
-::: info Double Entry Bookkeeping When making a Journal Entry, you must ensure that the total amount in the Debit column should equal the total amount in the Credit column. :::
+- Each row has a debit or a credit, but not both.
+- The amounts are not negative.
+- The total of the debits is equal to the total of the credits.
 
-After clicking Submit, RareBooks will the make ledger entries and update the account balances.
+If the entry does not obey a rule, RareBooks shows an error and does not save the entry.
 
-You can check the entries by clicking Ledger Entries under the `...` menu.
+## Entry Types
+
+The entry type tells what kind of transaction the entry records. It does not change the ledger entries. Some common types:
+
+| Entry Type | Use |
+| --- | --- |
+| **Opening Entry** | The opening balances of your accounts when you move from a different system. See [Setup Opening Balances](/getting-started/setup-opening-balances/). |
+| **Contra Entry** | A transfer between your cash account and your bank accounts. |
+| **Bank Entry** | A transaction that you pay or receive through a bank account. |
+| **Cash Entry** | A transaction that you pay or receive in cash. A POS shift also makes this type. See [Close the Shift](/transactions/point-of-sale/#close-the-shift). |
+| **Write Off Entry** | An amount that you will not collect. |
+| **Depreciation Entry** | The decrease in the value of a fixed asset. |
+
+The other types are **Journal Entry**, **Credit Card Entry**, **Debit Note**, **Credit Note**, and **Excise Entry**.
+
+## Cancel or Delete a Journal Entry
+
+You cannot edit a submitted entry. When you cancel an entry, RareBooks reverses its ledger entries. To make a corrected entry, open the cancelled entry and click **Create** > **Duplicate**. A copy opens as a new draft.
+
+You can delete a draft entry or a cancelled entry. When you delete a cancelled entry, RareBooks also deletes its ledger entries and their reversals. You cannot undo a delete.
 
 ## Examples
 
-These are two examples of how you can make direct Journal Entries to account for transactions that are different from Sales or Purchases.
+### Transfer Money from a Bank Account to Cash
 
-### Recording Expenses
+You take ₹10,000 from your bank account as cash. Use the entry type **Contra Entry**:
 
-When you have expenses that you pay at the time of purchase, you can record an Expense directly using Journal Entry.
+![Submitted contra entry that debits Cash and credits HDFC Bank with 25,000, with a reference number and a remark.](/images/docs/books-docs-journal-entries-1-contra-entry-v4.png)
 
-To do so add two rows to a new Journal Entry form, one for Debit and one for Credit.
+| Account | Debit | Credit |
+| --- | --- | --- |
+| Cash | ₹10,000 | |
+| Bank Account | | ₹10,000 |
 
-Let’s say you incur an expense of ₹5,000 for traveling to a client site, and you paid it directly from your Bank Account, then you must add the following rows:
+### Record a Prepayment
 
-| Account         | Debit  | Credit |
-| --------------- | ------ | ------ |
-| Bank Account    |        | ₹5,000 |
-| Travel Expenses | ₹5,000 |        |
+A customer pays ₹5,000 for a product that you did not deliver yet. This amount is a liability until you deliver. First, add a liability account, such as `Prepayments`, below **Current Liabilities**. Then add these rows:
 
-### Recording Prepayments
-
-When a customer pays for a product or service that you haven’t delivered yet, it cannot be booked as Income yet. This is a Liability for your business to fulfill later.
-
-To make an entry that reflects this, add two rows to a new Journal Entry form.
-
-1. One which Debits the amount into the Bank Account because you have received the payment.
-2. Another which Credits the amount into a Liability account you may create known as Prepayments.
-
-| Account      | Debit  | Credit |
-| ------------ | ------ | ------ |
-| Bank Account | ₹5,000 |        |
-| Prepayment   |        | ₹5,000 |
+| Account | Debit | Credit |
+| --- | --- | --- |
+| Bank Account | ₹5,000 | |
+| Prepayments | | ₹5,000 |

@@ -1,89 +1,116 @@
 ---
-sidebar_position: 6
-sidebar_label: Shipment
-title: Shipment
+title: "Shipment"
+description: "A shipment records the stock that you deliver to a customer."
 sidebar:
   order: 5
 ---
 
-Shipment is an inventory transaction that records the delivery of stock to a customer after a sale has been made.
+A shipment records the stock that you deliver to a customer. It moves the items out of a location. A shipment contains only items with **Track Inventory**. For the setup, see [Introduction to Inventory](/inventory/introduction-to-inventory/). For stock from a supplier, see [Purchase Receipt](/inventory/purchase-receipt/).
 
-Shipments record outward movement of stock. Hence a shipment can take place only if there is sufficient quantity of an Item at the selected Location.
+## Open Shipments
 
-## Creating a Shipment
+Click **Inventory** > **Shipment** in the sidebar. On a phone, tap the menu button in the header, and then tap **Inventory** > **Shipment**.
 
-There are two ways to create a Shipment.
+## Create a Shipment
+
+### Automatically From a Sales Invoice
+
+To ship automatically, select a **Shipment Location** in **Setup** > **Settings** > **Defaults**, in **Auto Stock Transfer**. New sales invoices then have **Make Shipment On Submit** selected in their **Settings** tab. To submit one invoice without a shipment, clear this option.
+
+![Submitted shipment of two items from Stores, with the sales invoice that made it in Back Reference.](/images/docs/books-docs-shipment-1-shipment-form-v4.png)
+
+When you submit the invoice, RareBooks makes and submits a shipment for the items with **Track Inventory**. The shipment has the date of the invoice. A POS sale ships from the inventory location of the POS. The **Back Reference** field of the invoice shows the shipment.
+
+If an item does not have enough stock at the location, the **Insufficient quantity** dialog opens. Click **Yes** to submit the invoice without a shipment. Click **No** to stop and add the stock first. For more information, see [Automatic Shipments](/transactions/sales-invoice/#automatic-shipments).
 
 ### From a Sales Invoice
 
-Since a shipment of stock follows a sale, you can create a Shipment after submitting a Sales Invoice.
+1. Open the submitted sales invoice.
+2. Click **Create** > **Shipment**. On a phone, tap the **…** button, and then tap **Shipment**.
+3. Check the **From Loc.** and the **Quantity** of each row.
+4. Click **Save**.
+5. Click **Submit** and click **Yes**.
 
-To do this select Shipment from under the Create menu button.
+The shipment gets the customer and the items that are not shipped yet. **Create** > **Shipment** shows only when the invoice has stock that is not shipped. The rows get the **Shipment Location**, or the **Default Location** of the inventory settings when it is empty.
 
-[![Create Shipment From a Sales Invoice](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/from-sales-invoice.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/from-sales-invoice.png)
+To ship only a part, change the quantities or remove rows before you submit. The **Stock Not Shipped** field of the invoice shows the quantity that is left. A shipment cannot ship more than that. To ship the rest later, click **Create** > **Shipment** in the invoice again.
 
-::: tip Back Reference
+### From the List
 
-This will create a Shipment with a reference to the Sales Invoice and allows you to view all created Shipments from the Sales Invoice. :::
+1. Click **Inventory** > **Shipment** in the sidebar.
+2. Click **New**.
+3. Select the **Party**. The list shows customers and parties with the role **Both**.
+4. In **Items**, click **Add row**.
+5. Select the **Item**. RareBooks fills the **Rate** and the **From Loc.**
+6. Enter the **Quantity**.
+7. Add a row for each of the other items.
+8. Click **Save**.
+9. Click **Submit** and click **Yes**.
 
-### From the List View
+On a phone, fill in each row in the sheet that opens, and tap **Done**.
 
-To do this first navigate to the Shipment page: `Inventory > Shipment` then click on the blue `+` button.
+You can also select a sales invoice in **Back Reference**. RareBooks then fills the customer and the rows from the invoice.
 
-The creation method is shared with with other transactional entries, for more information check [this link](https://github.com/frappe/books_docs/blob/master/transactions/transactional-entries.html#creating-an-entry).
+After you submit, you cannot edit the shipment. See [Save and Submit Documents](/getting-started/getting-started-with-rarebooks/#save-and-submit-documents).
 
-::: warning No Back Reference
+## Item Rows
 
-This method doesn't create links to any Sales Invoices and is an isolated entry. :::
+The **Item** list shows items with **Track Inventory** and the purpose **Sales** or **Both**. To see all the fields of a row, click the **Edit row** button at the end of the row.
 
-### Shipment Form
+- **Batch**: Each row of an item with **Has Batch** needs a batch. A shipment from an invoice takes the batch of each invoice row.
+- **Serial Number**: Enter one serial number for each unit, one on each line. If you leave it empty, RareBooks fills the serial numbers that came into the **From Loc.** first.
+- **Barcode**: Type or scan a barcode above the rows to add the item.
 
-After selecting one of the above two methods of creating a Shipment, you will see the Shipment form.
+These fields show only when their feature is on in the [inventory settings](/inventory/inventory-settings/). See [Batches](/inventory/batches/) and [Serial Number](/inventory/serial-number/).
 
-[![Shipment Form](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/shipment-form.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/shipment-form.png)
+## Stock Check on Submit
 
-If you created the Shipment from a Sales Invoice, all the rows will be filled out for you. Else you will have to enter the Shipment details.
+The **From Loc.** of each row must have enough stock of the item, the batch, and each serial number on the date of the shipment. A shipment with an earlier date also cannot take stock that later entries need. If the stock is not enough, RareBooks shows the available and the required quantity. Select a different **From Loc.**, or record the incoming stock first with an earlier date. See [Stock Quantity](/inventory/introduction-to-inventory/#stock-quantity).
 
-Once the Shipment details have been entered, click on Save and then Submit to make the Shipment entry.
+## Ledger Entries
 
-A Shipment can have one of the four following statuses:
+When you submit a shipment, RareBooks takes the items out of the stock ledger. It debits the **Cost Of Goods Sold Acc.** and credits the **Stock In Hand Acc.** with the cost of the stock. The cost comes from the FIFO valuation, not from the rate of the shipment. The accounts come from the [inventory settings](/inventory/inventory-settings/#accounts). The sales invoice records the income.
 
-| Status        | Description                           |
-| ------------- | ------------------------------------- |
-| Submitted     | Shipment entry submitted              |
-| Return        | Shipment Return submitted             |
-| Return Issued | Return entry created against Shipment |
-| Cancelled     | Shipment entry cancelled              |
+To see the entries, click **View** > **Accounting entries** or **View** > **Stock entries**. On a phone, these are in the **…** menu in the header.
+
+## Bill a Shipment
+
+If you shipped the items before the invoice, make the invoice from the shipment:
+
+1. Open the submitted shipment.
+2. Click **Create** > **Sales Invoice**. On a phone, tap the **…** button, and then tap **Sales Invoice**.
+3. Check the invoice, and then save and submit it.
+
+The invoice gets the items that are not billed yet, and does not ship the stock again. **Create** > **Sales Invoice** does not show for a shipment with a **Back Reference**, for a return, or for a fully billed shipment.
 
 ## Shipment Return
 
-The customer can return an already shipped Item due to quality issues, delay in delivery, or some other issue.
+A return is a shipment with negative quantities. It moves the items that a customer gives back into the location. Before you can make returns, turn on **Enable Invoice Returns** in the **General** settings. You cannot turn off this setting later.
 
-To reflect this you can create a Shipment Return from the original Shipment entry or manually create one from a new Shipment Entry.
+1. Open the submitted shipment.
+2. Click **Create** > **Return**. On a phone, tap the **…** button, and then tap **Return**.
+3. Change the quantities to the quantities that the customer returned.
+4. Remove the rows of the items that the customer did not return.
+5. Click **Save**.
+6. Click **Submit** and click **Yes**.
 
-### Enable Stock Returns
+A return cannot take back more than the shipment shipped, or a serial number that is returned already. Its date cannot be before the date of the shipment. The return brings the items back at the cost that the shipment took out, and reverses the accounting entries for them. The return has the status **Return**, and the original shipment gets the status **Return Issued**.
 
-To create Shipment Returns the Stock Returns feature needs to be enabled. To do this, check the **Enable Stock Returns** option in [Inventory Settings](https://github.com/frappe/books_docs/blob/master/inventory/settings.html#inventory-settings) under the Features section.
+When you submit a return sales invoice with **Make Shipment On Submit**, RareBooks makes the return shipment for you.
 
-### Creating a Shipment Return
+## Print a Shipment
 
-1. Open the Shipment entry to be returned.
-2. Click on `Create > Return`. [![Create Shipment Return](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/create-shipment-return.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/create-shipment-return.png)
-3. The Party and Item details will be fetched from the original Shipment entry. You can set the quantity of Items returned. [![Shipment Return Form](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/shipment-return-form.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/shipment-return-form.png)
-4. Save and Submit.
+1. Click the printer icon in the page header. On a phone, tap **Print** at the bottom of the form.
+2. Click **Save as PDF** or **Print**.
 
-::: info Item quantity and Payment amount will be in negative to indicate that it is a return. :::
+You cannot print a shipment that has unsaved changes or that is cancelled. To set the template that opens first, select the **Shipment Print Template** in the **Defaults** settings. See [Print Templates](/settings/print-templates/).
 
-## Shipment Return impact on General Ledger
+## Cancel a Shipment
 
-The Shipment Return entry will create General Ledger entries to reverse the impact of the original Shipment.
+Only a **Books Manager** or a **System Manager** can delete a shipment. To cancel, click the **…** button in the page header, and then click **Cancel**. RareBooks removes the stock entries and reverses the accounting entries.
 
-[![Shipment Return in General Ledger](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/shipment-return-in-general-ledger.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/shipment-return-in-general-ledger.png)
+- A shipment that a sales invoice made on submit: cancel the invoice. RareBooks then cancels the shipment too.
+- A shipment with a submitted invoice or return made from it: cancel the invoice or the return first.
+- A sales invoice cannot be cancelled while a shipment that you made from it is submitted. Cancel the shipment first.
 
-## View Ledger Entries
-
-After a Shipment is submitted, both Stock Ledger and General Ledger entries are created.
-
-To view these you can click on the View button and select the one you would like to see.
-
-[![View Ledger Entries](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/view-shipment-ledger-entries.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/view-shipment-ledger-entries.png)
+To correct a cancelled shipment, click **Create** > **Duplicate**. The copy does not keep the **Back Reference**.

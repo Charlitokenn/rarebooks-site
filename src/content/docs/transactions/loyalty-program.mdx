@@ -1,91 +1,74 @@
 ---
-sidebar_position: 3
-sidebar_label: Loyalty Program
-title: Loyalty Program
+title: "Loyalty Program"
+description: "A loyalty program gives points to customers when they buy from you."
 sidebar:
-  order: 9
+  order: 10
 ---
 
-Loyalty Program is used to reward customers with points for their purchases,
-which can then be redeemed on future purchases.
+A loyalty program gives points to customers when they buy from you. Customers can then use the points to pay for part of a later purchase.
 
-## Enabling Loyalty Program
+## Turn On Loyalty Programs
 
-To enable Loyalty Program you will have to first check the Enable Loyalty
-Program. To
+1. Click **Setup** > **Settings** in the sidebar.
+2. In the **General** tab, turn on **Enable Loyalty Program**.
+3. Click **Save**, and then click **Yes** to reload RareBooks.
 
-> **Setup > Settings > General Tab.**
+**Loyalty Program** now shows in the **Sales** group of the sidebar. You cannot turn off loyalty programs after you save the setting. Only a Books Manager or a System Manager can make loyalty programs.
 
-![Enable Inventory](https://raw.githubusercontent.com/frappe/books_docs/00c35515b24bd93d6d4c3ab24602f549e6b23c66/docs/transactions/images/enable-loyalty-program.png)
+## Create a Loyalty Program
 
-Once that is done you will have to restart RareBooks to see the Loyalty
-Program in the sidebar.
+1. Click **Sales** > **Loyalty Program** in the sidebar.
+2. Click **New**.
+3. Enter a unique **Name**.
+4. Set **From Date** and **To Date**. Customers earn and redeem points only between these dates.
+5. In **Collection Rules**, add one row for each tier, such as `Silver` and `Gold`.
+6. Enter the **Conversion Factor** and select the **Expense Account**.
+7. Optional: Enter an **Expiry Duration** and a **Maximum Use**.
+8. Click **Save**.
 
-> Note: Loyalty Program cannot be disabled once it has been enabled.
+![Loyalty program Lotus Rewards with Silver and Gold tiers, conversion factor 1, expiry duration 365 days, and an expense account.](/images/docs/books-docs-loyalty-program-1-program-form-v4.png)
 
-## Creating Loyalty Program
+| Field | Description |
+| --- | --- |
+| Collection Factor | In a tier. The points for each unit of the invoice total. |
+| Minimum Total Spent | In a tier. The smallest invoice total for this tier. Each tier must have a different minimum. |
+| Conversion Factor | The value of one point. With factor `0.5`, 100 points take 50 off the invoice. |
+| Expiry Duration | The number of days that earned points stay available after the invoice date. `0` means that the points do not expire. |
+| Expense Account | The account that records the value of the redeemed points. |
+| Maximum Use | The number of invoices that can redeem points. `0` means no limit. |
 
-To create a Loyalty Program first navigate to the Loyalty Program page
+To give a program to a customer, select it in the **Loyalty Program** field of the [customer](/masters/party/). **Loyalty Points** in the customer shows the points that the customer can use now.
 
-> **Sales > Loyalty Program**
+## Earn Points
 
-Then click on the blue `+` button to open the Loyalty Program form.
+When you submit a sales invoice, the customer earns points if the program is enabled and the invoice date is in its dates. An invoice that redeems points does not earn points.
 
-![Sales Invoice Form](https://raw.githubusercontent.com/frappe/books_docs/00c35515b24bd93d6d4c3ab24602f549e6b23c66/docs/transactions/images/loyalty-program.png)
+RareBooks uses the tier with the highest **Minimum Total Spent** that the grand total reaches. The points are the grand total multiplied by the **Collection Factor** of that tier, rounded to a whole number. For example, with a **Silver** tier (factor `0.01`, minimum `0`) and a **Gold** tier (factor `0.02`, minimum `2,000`), an invoice of 3,000 earns 3,000 × 0.02 = 60 points. For an invoice in a different currency, RareBooks uses the grand total in the company currency.
 
-1. Enter a unique name for the Loyalty Program.
-2. Add the From and To Date for program's validity period.
-3. Ensure the **IsEnabled** checkbox is checked. This will mark the program
-   active.
-4. Collection Rules:
+## Redeem Points
 
-- **Tier name:** To differentiate between different levels of rewards.
-- **Collection Factor:** How much amount needs to be spent to gain 1 Loyalty
-  Point.
-- **Minimum Amount:** Minimum amount to be spent to qualify into a tier.
+1. Make a sales invoice for the customer.
+2. In the **Loyalty Points Redemption** section, select **Redeem Loyalty Points**. This field shows only when the customer has points.
+3. In **Loyalty Points**, enter the number of points to use.
+4. Save and submit the invoice.
 
-5. Set an **Expense Account** from where you'll offer the benefits. This is
-   useful to track the benefits offered separately.
-6. Set the number of days in the Expiry Duration field after which the loyalty
-   points will expire.
+The grand total goes down by the points multiplied by the **Conversion Factor**. This value is in the company currency, and RareBooks converts it to the invoice currency. RareBooks debits this value to the **Expense Account** of the program. The value of the points cannot be more than the invoice total.
 
-## Loyalty Program in Customer
+## Cancel or Return an Invoice
 
-Set a Loyalty Program in the Customer to assign a Loyalty Program.
+When you cancel an invoice, the customer gets back the points that it redeemed, and loses the points that it earned. If the customer already used the points that the invoice earned, you cannot cancel the invoice. A return takes back or gives back points in proportion to the returned amount.
 
-![Sales Invoice Form](https://raw.githubusercontent.com/frappe/books_docs/00c35515b24bd93d6d4c3ab24602f549e6b23c66/docs/transactions/images/choose-loyalty-program.png)
+## Loyalty Point Entries
 
-Loyalty points earned can be viewed in the Customer.
+Each time a customer earns or redeems points, RareBooks makes a read-only loyalty point entry. To see the entries of an invoice or a customer, click the **…** menu in its page header, and then click **Linked entries**. On a phone, tap the **…** button, and then tap **Linked entries**. To see all entries, search for `Loyalty Point Entry` in [Quick Search](/getting-started/quick-search/).
 
-![Sales Invoice Form](https://raw.githubusercontent.com/frappe/books_docs/00c35515b24bd93d6d4c3ab24602f549e6b23c66/docs/transactions/images/loyalty-points.png)
+## Loyalty Points in POS
 
-## Loyalty Program Functionality
+A POS sale earns points in the same way as a sales invoice. To redeem points:
 
-### Earning Points
+1. Select a customer that has a loyalty program, and add the items.
+2. Click **Loyalty** above the totals of the cart.
+3. In **Loyalty Points**, enter the points to use.
+4. Click **Redeem**.
 
-1. Assign this Loyalty Program to a Customer.
-2. Create a new Sales Invoice for the Customer to whom you have assigned
-   Loyalty Program.
-3. For this example, an invoice is created with a grand total of 3,000 INR.
-   According to the Loyalty Program, if a customer spends a minimum of
-   2,000 INR, they are eligible to earn loyalty points. For every 300 INR
-   spent, the customer will receive 1 loyalty point. Therefore, with a total
-   spend of 3,000 INR, the customer earns 10 loyalty points.
-4. Upon submission of the invoice, a Loyalty Point Entry will be created for
-   this invoice. This acts as a log to give an overview of which Customer
-   earned how many points against which Sales Invoice.
-
-![Sales Invoice Form](https://raw.githubusercontent.com/frappe/books_docs/00c35515b24bd93d6d4c3ab24602f549e6b23c66/docs/transactions/images/loyalty-point-entry.png)
-
-### Redeeming Points
-
-1. When creating an invoice for a Customer who has loyalty points, go to the
-   Loyalty Point Redemption section and enable the checkbox
-   **Redeem Loyalty Points**.
-2. The fields for **Loyalty Points** will become visible under this section.
-   You can fill in the points to redeem.
-3. The total amount of the invoice will be adjusted based on the redeemed
-   points, and you will only need to pay the remaining balance after the points
-   have been applied.
-
-![Sales Invoice Form](https://raw.githubusercontent.com/frappe/books_docs/00c35515b24bd93d6d4c3ab24602f549e6b23c66/docs/transactions/images/redeem-loyalty-points.png)
+On a phone, turn on **Redeem loyalty points** on the payment screen, enter the points, and tap **Redeem**. See [Point of Sale (POS)](/transactions/point-of-sale/).

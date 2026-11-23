@@ -1,60 +1,72 @@
 ---
-sidebar_position: 6
-sidebar_label: Stock Movement
-title: Stock Movement
+title: "Stock Movement"
+description: "A stock movement records stock that moves into a location, out of a location, or between locations."
 sidebar:
   order: 3
 ---
 
-Stock Movement is an inventory transaction that records the movement of stock to and from a location.
+A stock movement records stock that moves into a location, out of a location, or between locations. It is not linked to a customer or a supplier. For sales, use a [Shipment](/inventory/shipment/). For purchases, use a [Purchase Receipt](/inventory/purchase-receipt/).
 
-Unlike the other inventory transactions, stock movement is not linked to a Customer or a Supplier through a Sale or a Purchase.
+Only items with **Track Inventory** can move stock. For the setup, see [Introduction to Inventory](/inventory/introduction-to-inventory/).
 
 ## Movement Types
 
-Before creating a Stock Movement you need to know about its Movement Types. There are three types of Stock Movements that you can create:
+The movement type tells RareBooks which locations a row uses.
 
-1. Material Issue: stock is moved out of a location.
-2. Material Receipt: stock is moved into a location.
-3. Material Transfer: stock is moved from one location to another.
-4. Manufacture: stock of items are moved out of a location and stock of different items are moved into a location.
+| Movement Type | From | To | Description |
+| --- | --- | --- | --- |
+| Material Issue | Required | Not used | Stock goes out of a location. |
+| Material Receipt | Not used | Required | Stock comes into a location. |
+| Material Transfer | Required | Required | Stock goes from one location to a different location. |
+| Manufacture | Raw material rows | Finished goods rows | Raw materials go out of a location, and finished goods come in. |
 
-Depending on the Movement Type you have to set the From and To movement locations
+For a **Material Issue** or a **Material Receipt**, RareBooks fills the location with the [Default Location](/inventory/inventory-settings/#default-location). In a **Manufacture**, give each raw material row only a **From** location and each finished goods row only a **To** location. The movement must have at least one row of each kind.
 
-| Movement Type     | From      | To        |
-| ----------------- | --------- | --------- |
-| Material Issue    | `set`     | `not set` |
-| Material Receipt  | `not set` | `set`     |
-| Material Transfer | `set`     | `set`     |
-| Manufacture       | `set`     | `set`     |
+## Create a Stock Movement
 
-::: tip Manufacture For the Manufacture type, both From and To are set but for **different items**.
+1. Click **Inventory** > **Stock Movement** in the sidebar.
+2. Click **New**.
+3. Select the **Movement Type**.
+4. In **Items**, click **Add row**.
+5. Select the **Item**. RareBooks fills the **Rate** from the item.
+6. Set the **From** location, the **To** location, or both, as the movement type needs.
+7. Enter the **Quantity**.
+8. Add a row for each of the other items.
+9. Click **Save**.
+10. Click **Submit** and click **Yes**.
 
-This reflects the stock movements of a manufacturing process where a set of raw materials are converted into finished goods.
+![Submitted material transfer of three items from Stores to Showroom.](/images/docs/books-docs-stock-movement-1-material-transfer-v4.png)
 
-The inventory quantities of the raw material will go down and that of the finished goods will go up. :::
+On a phone, tap the menu button in the header, and then tap **Inventory** > **Stock Movement**. Fill in each row in the sheet that opens, and tap **Done**.
 
-## Creating Stock Movements
+After you submit, you cannot edit the movement. See [Save and Submit Documents](/getting-started/getting-started-with-rarebooks/#save-and-submit-documents).
 
-To create a Stock Movement, first navigate to the stock movement List View: `Inventory > Stock Movement` then click on the blue `+` button in the title bar.
+### Item Rows
 
-[![Stock Movement](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/stock-movement.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/stock-movement.png)
+The **Item** list shows only items with **Track Inventory**. Each quantity must be more than zero, and no rate can be negative. To see all the fields of a row, click the **Edit row** button at the end of the row.
 
-After clicking the blue `+` button:
+In a **Material Transfer**, the **Rate** does not change the stock value. The stock comes into the **To** location at the FIFO value that it had at the **From** location. See [Stock Valuation](/inventory/introduction-to-inventory/#stock-valuation).
 
-1. Select the Movement Type
-2. Add a row by clicking on Add Row
-3. Select an Item
-4. Select the movement locations
-5. Set the quantity and rate
-6. Click on Save and then on Submit
+When their feature is on in the inventory settings, rows also have these fields:
 
-After clicking on submit the Stock Movement entry will be recorded.
+- **Batch**: Each row of an item with **Has Batch** needs a batch. In a **Material Receipt**, if the item has a **Batch Series**, a row without a batch gets a new batch when you save.
+- **Serial Number**: Enter one serial number for each unit, one on each line. In a **Material Receipt**, if the item has a **Serial Number Series**, RareBooks adds the missing serial numbers when you save.
+- **Transfer Unit** and **Qty. in Transfer Unit**: RareBooks calculates the **Quantity** in the **Stock Unit** of the item.
 
-## View Stock Entries
+When barcodes are on, type or scan a barcode in the **Barcode** field above the rows. RareBooks adds a row for the item, or increases the quantity of its row. For more information, see [Batches](/inventory/batches/) and [Serial Number](/inventory/serial-number/).
 
-New entries will be created in the Stock Ledger and the Stock Balance will be updated.
+When you submit, each **From** location must have enough stock on the date of the movement. See [Stock Quantity](/inventory/introduction-to-inventory/#stock-quantity).
 
-To View the Stock Ledger entries click on Stock Entries under the `...` menu
+## Ledger Entries
 
-[![View Stock Entries](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/view-stock-entries.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/view-stock-entries.png)
+When you submit a stock movement, RareBooks makes stock ledger entries. Each **From** location gets a negative entry, and each **To** location gets a positive entry. RareBooks also posts the net change in the stock value between the **Stock In Hand Acc.** and the **Stock Adjustment Acc.** of the [inventory settings](/inventory/inventory-settings/#accounts). In a **Manufacture** of one finished item, the finished goods get the value of the raw materials, so there is no accounting entry. When the finished goods are more than one item, each row keeps its **Rate**, and RareBooks posts the difference between the value of the finished goods and the value of the raw materials. A **Material Transfer** makes no accounting entries, because the total stock value does not change.
+
+To see the entries, click **View** > **Accounting entries** or **View** > **Stock entries**. On a phone, these are in the **…** menu in the header.
+
+## Cancel a Stock Movement
+
+Only a **Books Manager** or a **System Manager** can delete a stock movement. To cancel, click the **…** button in the page header, and then click **Cancel**. RareBooks removes the stock entries and reverses the accounting entries.
+
+You cannot cancel a movement when its stock cannot go back. For example, you cannot cancel a **Material Receipt** after its stock left the location. Cancel the later entries first.
+
+To correct a cancelled movement, click **Create** > **Duplicate**.

@@ -1,43 +1,45 @@
 ---
-sidebar_position: 5
-sidebar_label: Trial Balance
-title: Trial Balance
+title: "Trial Balance"
+description: "A Trial Balance lists the balances of all your accounts for a period."
 sidebar:
   order: 2
 ---
 
-A Trial Balance is an accounting report which lists account balances for all your Accounts (both Ledger and Group) for any given reporting period.
+A Trial Balance lists the balances of all your accounts for a period. It shows both ledger accounts and group accounts.
 
-A company prepares a trial balance periodically, usually at the end of every reporting period. The general purpose of producing a trial balance is to ensure the entries in a company's bookkeeping system are mathematically correct.
+A company makes a trial balance at the end of each reporting period. It helps to make sure that the entries in your books are mathematically correct. The total of the debits must be equal to the total of the credits.
 
-The totals of Debit and Credit columns must be the same for any given period, to ensure the entries are correct.
-
-Navigate to this report from the sidebar: `Reports > Trial Balance`
-
-[![Trial Balance](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/trial-balance.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/trial-balance.png)
+Click **Reports** > **Trial Balance** in the sidebar. On a phone, tap **Reports** in the bottom tabs, tap the report title, and then tap **Trial Balance**. For the controls that all reports share, such as export and print, see [Reports](/financial-reports/reports/).
 
 ## Filters
 
-The Trial Balance report has filters which can help you narrow the date range between which to display the report.
+| Filter | Description |
+| --- | --- |
+| **From Date** and **To Date** | The period of the report. Both dates are necessary. The default period is the current fiscal year. |
+| **Hide Group Amounts** | Shows only the amounts of the ledger accounts. The group accounts stay in the report without amounts. The **Total** row keeps its amounts. |
 
-### From Date
+## Columns
 
-The initial date after which the Trial Balance has to be calculated. The default value is the first day of the current fiscal year.
+| Column | Description |
+| --- | --- |
+| **Opening (Dr)** and **Opening (Cr)** | The balance of the account before **From Date**. |
+| **Debit** and **Credit** | The totals of the debits and the credits from **From Date** to **To Date**. |
+| **Closing (Dr)** and **Closing (Cr)** | The balance of the account at the end of **To Date**. |
 
-### To Date
+![Trial Balance for the current fiscal year with the opening, debit, credit, and closing columns. The sidebar is hidden so that all columns show.](/images/docs/books-docs-trial-balance-1-accounts-v4.png)
 
-The final date before which all the Trial Balance has to be calculated. The default value is the last day of the current fiscal year.
+A ledger account shows each balance on one side only. If its debits are more than its credits, the balance is in the **(Dr)** column. If not, the balance is in the **(Cr)** column. A group account shows the totals of the accounts below it. So it can have amounts in both columns.
 
-### Hide Group Amounts
+## Read the Report
 
-The Trial Balance report format displays the group accounts such as Current Liabilities along with the non group accounts such as Secured Loans and Creditors.
+The report shows the accounts in five sections: assets, liabilities, income, expenses, and equity. It shows only the accounts that have ledger entries on or before **To Date**, and the group accounts above them. The entries of cancelled documents are not included.
 
-Group account balances depend on the non group account balances under them, group account balances are not directly updated.
+The **Total** row at the end shows the total of each column. In each pair of columns, the total of the debit column is equal to the total of the credit column.
 
-So clicking on **Hide Group Amounts** will display only the non group account amounts making the report a bit easier to read.
+To hide the accounts below a group account, click the row of the group. Click it again to show them. On a phone, tap the group.
 
-## Folding Rows
+## On a Phone
 
-[![Trial Balance Folded Rows](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/trial-balance-folded.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/trial-balance-folded.png)
+The report shows the **Account**, **Closing (Dr)**, and **Closing (Cr)** columns. To see all the columns of a ledger account, tap its row.
 
-Rows in the Trial Balance report which display group accounts can be clicked to fold all the rows underneath them.
+The buttons below the header show **From Date** and **To Date**. To change the filters, see [Change the Filters](/financial-reports/reports/#change-the-filters).

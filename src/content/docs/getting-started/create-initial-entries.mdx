@@ -1,77 +1,69 @@
 ---
-sidebar_position: 4
-sidebar_label: Create Initial Entries
-title: Create Initial Entries
+title: "Create Initial Entries"
+description: "Add some initial entries before you record transactions."
 sidebar:
-  order: 4
+  order: 6
 ---
 
-Let’s create some initial entries before you can start recording your transactions.
+Add some initial entries before you record transactions.
 
-## Add Additional Bank Accounts
+## Add Bank Accounts
 
-Add any bank accounts your business has apart from the one already added in the Setup.
+The setup wizard makes one bank account. Add your other bank accounts in the Chart of Accounts.
 
-Navigate to the **Chart of Accounts** page from the sidebar.
+1. Click **Setup** > **Chart of Accounts** in the sidebar.
+2. Open **Application of Funds (Assets)** > **Current Assets**.
+3. Move the pointer over **Bank Accounts** and click the **…** button.
+4. Click **Add account**.
+5. Enter the name of the bank account and click **Save**.
 
-`Setup > Chart of Accounts`
+You can now use this account for payments.
 
-[![Chart of Accounts](https://github.com/frappe/books_docs/raw/master/docs/setting-up/images/coa.png)](https://github.com/frappe/books_docs/blob/master/docs/setting-up/images/coa.png)
-
-Then open the **Bank Accounts** group and click on **Add Account**.
-
-`Application of Funds (Assets) > Current Assets > Bank Accounts > Add Account`
-
-Enter the bank account name and press enter to create it. You can now transfer funds in and out of this bank account.
+:::note
+The Chart of Accounts page is not available on a phone. Use a computer for these steps.
+:::
 
 ## Add Taxes
 
-If your company charges or will recover Sales Taxes, add any taxes that you will use. First navigate to the **Taxes** page.
+If your company charges sales tax or pays purchase tax, add a tax template for each tax rate.
 
-`Setup > Taxes`
+1. Click **Setup** > **Tax Templates** in the sidebar.
+2. Click **New**.
+3. Enter a **Name** that shows the tax and its rate, such as `GST 18%`.
+4. In **Details**, add a row for each tax account:
+   - **Tax Invoice Account**: The account that gets the tax when you submit an invoice.
+   - **Tax Payment Account**: Optional. When a payment is made for the invoice, the tax moves to this account.
+   - **Rate**: The tax rate in percent.
+5. Click **Save**.
 
-[![Tax](https://github.com/frappe/books_docs/raw/master/docs/setting-up/images/tax.png)](https://github.com/frappe/books_docs/blob/master/docs/setting-up/images/tax.png)
-
-1. **Create a New Tax Entry**: Click on the blue `+` button. Enter a name which will make it easier to identify. You can also mention the rate in the name. for e.g. Service Tax - 5%.
-2. **Select the Tax Account and Rate**: You can add multiple rows with different Tax Accounts. This will make it easier to apply a set of Taxes which are frequently applied together on an Item. You can even create different taxes for different Items or a class of Items.
-3. **Click on Save**
-
-For more information on Taxes in RareBooks click [here](`${AppConfig.rootUrl}/master/entries/taxes`)./>
+A template can have more than one row. Use this for taxes that you always charge together. For more information, see [Taxes](/masters/taxes/).
 
 ## Add Sales Items
 
-One of the most important things you will add in Books are your products or services that you provide to your customers. Navigate to **Sales Items**
+Add the products and services that you sell.
 
-`Sales > Sales Items`
+![New sales item that is not saved, with item name, item code, item group, rate 199, and tax GST-12.](/images/docs/books-docs-create-initial-entries-1-new-sales-item-v4.png)
 
-[![Sales Item](https://github.com/frappe/books_docs/raw/master/docs/setting-up/images/sales-item.png)](https://github.com/frappe/books_docs/blob/master/docs/setting-up/images/sales-item.png)
+1. Click **Sales** > **Sales Items** in the sidebar.
+2. Click **New**.
+3. Enter the **Item Name** and the **Rate**.
+4. Set **Type** to **Product** or **Service**.
+5. In **Tax**, select a tax template. RareBooks adds this tax when you add the item to an invoice.
+6. Click **Save**.
 
-1. **Create a New Item Entry**: Click on the blue `+` button. Enter the Name and the Rate
-2. **Select Type**: Select if your Item is a Product or Service.
-3. **Set Default Tax**: Setting the default Tax for your Item will fetch it automatically when you create an Invoice.
-4. **Click on Save**
-
-You can set or change the other details for the item. Such as the Income or Expense accounts.
-
-You can even set an image for the item.
-
-For more information on Sales Items in RareBooks click [here](https://github.com/frappe/books_docs/blob/master/entries/items).
+You can also set an image, the unit, and the accounts of the item. **Sales Acc.** is the income account, and **Purchase Acc.** is the expense account. For more information, see [Items](/masters/items/).
 
 ## Add Customers
 
-Add your Customers to record their details and select them in Sales Invoices. First navigate to Customers
+Add your customers so that you can select them in sales invoices.
 
-`Sales > Customers`
+1. Click **Sales** > **Customers** in the sidebar.
+2. Click **New**.
+3. Enter the **Name** of the customer.
+4. Click **Save**.
 
-[![Customer](https://github.com/frappe/books_docs/raw/master/docs/setting-up/images/customer.png)](https://github.com/frappe/books_docs/blob/master/docs/setting-up/images/customer.png)
+You can also add the **Email**, the **Phone**, and the **Address** of the customer. The address shows on printed sales invoices. For more information, see [Party](/masters/party/).
 
-1. **Create a New Customer Entry**: Click on the blue `+` button. Enter the name of of the customer
-2. **Click on Save**
+## Next Steps
 
-You can enter additional details such as Email and Phone in the Customer entry. This will be shown when creating a Sales Invoice PDF.
-
-For more information on Customers in RareBooks click [here](https://github.com/frappe/books_docs/blob/master/entries/party).
-
----
-
-You can now move onto the next step to set your Opening Balances.
+If you move from a different accounting system, [set up your opening balances](/getting-started/setup-opening-balances/).

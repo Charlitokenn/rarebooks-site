@@ -1,118 +1,73 @@
 ---
-sidebar_position: 7
-sidebar_label: Customize Form
-title: Customize Form
+title: "Customize Form"
+description: "Customize Form adds your own fields to the forms of RareBooks."
 sidebar:
   order: 3
 ---
 
-RareBooks allows you to customize all forms whether it's Invoice, or Party, or Item you can use the Customize Form feature to add additional fields to it.
+Customize Form adds your own fields to the forms of RareBooks. For example, add a **Delivery Date** to sales invoices or a **Color** to items.
 
-## Enable Form Customization
+Only a **System Manager** can customize forms. All users see the custom fields, and can fill them in on the documents that they can edit. See [Roles and Permissions](/getting-started/roles-and-permissions/).
 
-To be able to customize a form you need to enable it from the General Settings.
+:::note
+The Customize Form page is not available on a phone. The custom fields also show on the forms on a phone.
+:::
 
-`Setup > Settings > General`
+## Turn On Form Customization
 
-After you have navigated to the General Settings tab, click on the Enable Form Customization checkbox.
+Form customization is off in a new company.
 
-[![Enable Form Customization](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/enable-form-customization.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/enable-form-customization.png)
+1. Click **Setup** > **Settings** in the sidebar.
+2. In **General** > **Features**, turn on **Enable Form Customization**.
+3. Click **Save**, and then click **Yes** to reload RareBooks.
 
-You will have to reload RareBooks to see the option, you can press `Ctrl + R` if you are on Windows or linux, or `command + R` on macOS.
+**Customize Form** then shows in the **Setup** group of the sidebar. If you turn it off later, the custom fields stay on the forms, but you cannot change them.
 
-::: warning Disabling Form Customization
+## Add Custom Fields
 
-Disabling Form Customization will just hide the form customization option from the sidebar and search, it will not disable the customizations. :::
+1. Click **Setup** > **Customize Form** in the sidebar.
+2. Click **New**.
+3. In **Form Type**, select the form that gets the fields, such as **Item** or **Sales Invoice**.
+4. In **Custom Fields**, click **Add row**.
+5. Enter the **Label** and select the **Fieldtype**. RareBooks fills the **Fieldname**.
+6. To set more values, such as **Options**, click the **Edit row** button at the end of the row.
+7. Add a row for each field, and then click **Save**.
 
-## Customizing Forms
+![New custom form for Sales Invoice with two custom fields: Delivery Date of type Date and Sales Person of type Data.](/images/docs/books-docs-customize-form-1-custom-fields-v4.png)
 
-After enabling form customization and reloading RareBooks navigate to the Customize Form list view using the sidebar.
+The fields show after you save. Each form type has one custom form. To add more fields later, open it from the list. **Form Type** also lists table rows, such as **Sales Invoice Item** for the item rows of a sales invoice. You cannot customize the settings or the ledger entries.
 
-`Setup > Customize Form`
+## Custom Field Values
 
-After that click on the blue `+` button to customize a form type. This will open a new Custom Form entry.
+| Value | Description |
+| --- | --- |
+| Fieldname | The internal name, such as `deliveryDate` for `Delivery Date`. RareBooks makes it from the label only once. It must be unique in the form. |
+| Fieldtype | **Data**, **Text**, **Int**, **Float**, **Currency**, **Check**, **Date**, **Date Time**, **Select**, **Autocomplete**, **Color**, **Link**, **Dynamic Link**, **Attach Image**, **Attachment**, or **Table**. |
+| Is Required | Users must fill in the field before they save. A required field needs a **Default**. |
+| Options | Enter each option on a new line. A **Select** or **Autocomplete** field needs at least two. A **Color** field can have its own palette, such as `#f98080`. |
+| Target | For **Link** and **Table** fields. The form type that the field links to. A **Table** needs a table row type. |
+| References | For **Dynamic Link** fields. A **Select** field of the same form. Its options must be internal form type names, such as `Books Party`. |
+| Form Tab | The default `Custom` adds a **Custom** tab. Enter `Main` for the first tab, or a new name for a new tab. |
+| Form Section | The title of a section in the tab, or a new title for a new section at the end. The default `Default` is the first section. |
 
-[![Custom Form](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/custom-form.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/custom-form.png)
+Custom fields show after the other fields of their tab and section, in the order of the rows.
 
-Select a Form Type to customize.
+## Where Custom Fields Show
 
-::: info Form Type
+- **Table rows**: In the row panel. Click the **Edit row** button at the end of the row. On a phone, tap the row.
+- **Side panel**: When you create a record from a link field, the panel shows only the required custom fields.
+- **Export and import**: List exports and the [Import Wizard](/getting-started/import-wizard/) include the custom fields.
+- **Print templates**: The standard templates do not show custom fields. In your own [template](/settings/print-templates/), the key is `doc.custom_books_` and the fieldname in lowercase, such as `doc.custom_books_deliverydate`.
 
-Form Type refers to the form that you want to add fields to such as Item, Party, Sales Invoice, etc.
+## Change or Remove Custom Fields
 
-Each Form Type can have only one Custom Form entry associated with it. :::
+1. Click **Setup** > **Customize Form** in the sidebar.
+2. Click the form type.
+3. Change the rows. To remove a field, move the pointer over the row number and click the **x** button.
+4. Click **Save**.
 
-Once you select the Form Type you can add Custom Fields
+To remove all the custom fields of a form type, click **…** > **Delete** in its custom form.
 
-## Custom Fields
-
-Each Form Type can have multiple custom fields. Click on the Add Row button to add a new Custom Field.
-
-Enter its Label, for example if we want to add a color field to Item, we will set the Label as "Color".
-
-:::tip Fieldname
-
-Setting the Label will auto set the Fieldname value. The Fieldname is a name used to refer to the field internally. :::
-
-After setting the Label and the Fieldname, you can select the fieldtype, for more information on fieldtype and the other fields that you can set for each Custom Field row check the sections below.
-
-[![Custom Fields](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/custom-fields.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/custom-fields.png)
-
-Once you are done click on the blue Save button.
-
-:::warning Reload App
-
-After customizing a form you must reload RareBooks to view the added fields in the forms. :::
-
-[![Customized Form](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/customized-form.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/customized-form.png)
-
-After reloading the app, you will see the new fields in the form.
-
-## Custom Field Fieldtypes
-
-Custom Forms support 16 different Fieldtypes, each field type defines the behavior and UI of the field.
-
-For some fields you will have to enter additional details, here's a table the describes the different Fieldtypes.
-
-| Fieldtype    | Description                                                                               | Example                         | Additional |
-| ------------ | ----------------------------------------------------------------------------------------- | ------------------------------- | ---------- |
-| Data         | Field used for regular text input.                                                        | Full Name in Customer           | -          |
-| Text         | Field with larger area of input for longer text.                                          | Notes in Sales Invoice          | -          |
-| Date         | Field used to input only date.                                                            | Date in Sales Invoice           | -          |
-| Date Time    | Field used to input date and time.                                                        | Date in Stock Movement          | -          |
-| Int          | Field used to input integer such as -1, 0, 3, etc.                                        | HSN/SAC Code in Item            | -          |
-| Float        | Field used to input fractional numbers such as 0.12, -9.33, 100.1, etc.                   | Quantity in Sales Invoice Item  | -          |
-| Currency     | Field used to input monetary amounts.                                                     | Amount in Sales Invoice Item    | -          |
-| Check        | Field used to display a checkbox.                                                         | Track Item in Item              | -          |
-| Select       | Field used to select an item from multiple choices. Requires Options value to be set      | Entry Type in Journal Entry     | Options    |
-| Autocomplete | Same as Select but with autocomplete. Used for larger number of options.                  | Country in Address              | Options    |
-| Color        | Field used to select a color. Can set options to select color from.                       | Color in Print Settings         | Options    |
-| Link         | Field used to mention links to other entries. Requires Target to be set.                  | Customer in Sales Invoice       | Target     |
-| Dynamic Link | Field used to mention links depending on a dynamic target. Requires References to be set. | Name in Payment Reference       | References |
-| Attach Image | Field used to select an image.                                                            | Image in Item                   | -          |
-| Attachment   | Field used to select any type of file.                                                    | Add Attachment in Sales Invoice | -          |
-| Table        | Field used to display a Table. This is currently not supported.                           | Items in Sales Invoice          | Target     |
-
-## Other Custom Form Fields
-
-Fields that describe behaviour:
-
-- **Is Required**: Whether this field is required for a form to be saved.
-- **Options**: New line separated list of options required by Select and Autocomplete and used by Color.
-- **Target**: Form type from which Link field value is selected. If Table then the name of the Table form type.
-- **References**: Fieldname of the reference field which sets the Dynamic Link target type. Eg Type in Payment Reference.
-
-Fields that describe UI:
-
-- **Form Tab**: Tab on the form under which the field is displayed.
-- **Form Section**: Section under the entered tab where the field is displayed.
-
-## Deleting Customizations
-
-You can delete a forms customizations by deleting its Custom Form entry:
-
-[![Delete Customizations](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/delete-customizations.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/delete-customizations.png)
-
-:::danger Data Loss
-
-Deleting customizations will also delete data that had been stored in the custom fields. :::
+:::caution
+After you remove a custom field or change its **Fieldname**, RareBooks does not show its old values again.
+:::

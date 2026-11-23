@@ -1,86 +1,129 @@
 ---
-sidebar_position: 4
-sidebar_label: Pricing Rule
-title: Pricing Rule
+title: "Pricing Rule"
+description: "A pricing rule changes the price of an item on a sales invoice when the invoice meets the conditions of the rule."
 sidebar:
   order: 6
 ---
 
-Pricing rules allow you to offer flexible discounts and prices based on various
-criteria, making your sales promotions more targeted and impactful.
+A pricing rule changes the price of an item on a sales invoice when the invoice meets the conditions of the rule. Use them for quantity discounts, free items, special rates, and offers between two dates. Pricing rules apply to sales invoices and to POS sales. They do not apply to sales quotes, purchase invoices, or returns.
 
-**Common Use Cases:**
+## Turn On Pricing Rules
 
-- **Quantity Discounts:** Offer a discount (percentage or amount) on items when
-  a certain quantity is purchased (e.g., 10% off for buying 5 or more items).
-- **Buy-One-Get-One (BOGO) Offers:** Give away a free item or offer a significant
-  discount on a second item when a specific item is purchased.
-- **Tiered Pricing:** Set different price levels for items based on the total
-  order value (e.g., offer a lower price per unit when customers spend above a certain amount).
-- **Early Bird Discounts:** Provide a discount for orders placed before a specific date.
+Pricing rules need discount accounting.
 
-## Enable Pricing Rules
+1. Click **Setup** > **Settings** in the sidebar.
+2. In the **General** tab, turn on **Enable Discount Accounting**. **Enable Pricing Rule** then shows.
+3. Turn on **Enable Pricing Rule**.
+4. Click **Save**, and then click **Yes** to reload RareBooks.
 
-1. Go to `Setup > Settings`.
-2. Navigate to the **Features** section.
-3. Check the boxes for the **Enable Discount Accounting** and **Enable Pricing Rule**.
+**Pricing Rule** now shows in the **Sales** group of the sidebar.
 
-![Enable Pricing Rule](https://raw.githubusercontent.com/frappe/books_docs/3e7792601503e619e94309eb8a7cab9a50bffd2b/docs/entries/images/enable-pricing-rule.png)
+:::caution
+You cannot turn off discount accounting after you save it. See [Discount Accounting](/transactions/discount-accounting/).
+:::
 
-## Creating a Pricing Rule
+You can turn off pricing rules later. RareBooks then stops applying them. Submitted invoices keep their prices.
 
-1. Go to `Common > Pricing Rule`.
-2. Click the `+` button to create a new rule.
+## Create a Pricing Rule
 
-![Create Pricing Rule](https://raw.githubusercontent.com/frappe/books_docs/3e7792601503e619e94309eb8a7cab9a50bffd2b/docs/entries/images/create-pricing-rule.png)
+Only a **Books Manager** or a **System Manager** can make and change pricing rules.
+
+![Pricing rule Buy 3 Notebooks, Get 1 Free with the discount type Product Discount, priority 1, and the applied item Spiral Notebook.](/images/docs/books-docs-pricing-rule-1-rule-form-v4.png)
+
+1. Click **Sales** > **Pricing Rule** in the sidebar.
+2. Click **New**.
+3. Enter a **Title**, such as `Buy 5, get 10% off`.
+4. In **Applied Items**, click **Add row** and select the **Item**. Add a row for each item of the offer.
+5. Select the **Discount Type**, and then fill in the fields of the discount.
+6. Select the **Priority**.
+7. Optional: Set the quantity, amount, and date conditions.
+8. Click **Save**.
+
+On a phone, **Add row** opens a sheet. Fill in the row and tap **Done**.
 
 ## Pricing Rule Fields
 
-- **Is Pricing Rule Enabled:** Check this box to activate the rule.
-- **Items:** Select the specific items or item groups to which the rule applies.
-  Leave blank to apply to all items.
-- **Price Discount Type:** Choose the type of discount you want to offer:
-- **Rate:** Set a fixed discount amount (e.g., $5 off).
-- **Discount Percentage:** Apply a percentage discount (e.g., 10% off).
-- **Discount Amount:** Offer a specific discount per unit (e.g., $1 discount per item).
-- **Free Item:** Select the item you want to offer for free or at a discount.
-- **Quantity:** Enter the number of free items to be given with the purchase.
-- **UOM:** Specify the unit of measurement for the free item.
-- **Rate:** If offering a discount on the free item, enter the discounted price.
-- **Round Free Item Quantity:**
-- **Rounding Method:** Choose how to handle fractional quantities of free items:
-- **Floor:** Round down to the nearest whole number (e.g., 10.1 free items becomes 10).
-- **Round:** Round to the nearest whole number (e.g., 10.1 free items becomes 10, 10.9 becomes 11).
-- **Ceil:** Round up to the nearest whole number (e.g., 10.1 free items becomes 11).
-- **Is Recursive:** Enable this option for BOGO offers where buying multiple
-  qualifying items triggers the offer multiple times.
-- **Recurse Every:** (Applicable only if "Is Recursive" is enabled) Set the number
-  of items for which the BOGO offers repeats (e.g., buy 2, get 1 free repeat every 2 purchases).
-- **Min Qty:** Minimum quantity of the specified item required to trigger the rule.
-- **Max Qty:** Maximum quantity of the specified item to which the rule applies.
-- **Min Amount:** Minimum order value for the rule to be applied.
-- **Max Amount:** Maximum order value for the rule to be applied.
-- **Valid From:** The start date for the pricing rule to be active.
-- **Valid Till:** End date for the pricing rule to be inactive.
-- **Priority:** Assign a number to determine the order of applying multiple pricing
-  rules to the same item. The rule with the highest priority takes precedence.
+| Field | Description |
+| --- | --- |
+| Is Pricing Rule Enabled | Only enabled rules apply. A new rule is enabled. |
+| Discount Type | **Price Discount** changes the rate or gives a discount. **Product Discount** gives a free item. |
+| Is Coupon Code Based | The rule applies only when the invoice has a coupon code for the rule. Shows only when coupon codes are on. See [Coupon Code](/masters/coupon-code/). |
+| Priority | A number from 1 to 20. See [Priority](#priority). |
 
-## Examples
+### Applied Items
 
-1. BOGO Offer: Buy 3 Get 1
+Each row has an **Item** and a **Unit Type**. The **Unit Type** starts as the stock unit of the item. You can change it to a unit in the **UOM Conversions** of the item.
 
-| Field         | Value            |
-| ------------- | ---------------- |
+The rule applies only to invoice rows whose **Transfer Unit** is the **Unit Type**. A row without a **Transfer Unit** is in the stock unit. To apply the rule to two units, add two rows with the same item, such as one for `Unit` and one for `Box`.
+
+### Price Discount
+
+Select the **Price Discount Type**, and then enter its value.
+
+| Price Discount Type | What the Rule Does to Each Row of the Item |
+| --- | --- |
+| Rate | Sets the rate to the **Rate**, for one unit of the **Unit Type**. If you entered a rate in the row, RareBooks keeps your rate. |
+| Discount Percentage | Sets the discount percent of the row, from 0 to 100. |
+| Discount Amount | Sets the discount amount of the full row, not of one unit. If it is more than the row amount, the discount is the row amount. |
+
+A discount from a rule replaces a discount that you entered in the row. RareBooks posts it to the discount account.
+
+### Product Discount
+
+| Field | Description |
+| --- | --- |
+| Free Item | The item that the customer gets free. It can be the same item as in **Applied Items**. |
+| Quantity | The quantity of the free item, in the **UOM**. |
+| UOM | The unit of the free row. If it is empty, RareBooks uses the unit of the free item. |
+| Round Free Item Quantity | Rounds the free quantity to a whole number with the **Rounding Method**: **Floor** (down), **Round** (nearest), or **Ceil** (up). |
+| Is Recursive | Gives the free item again for each set of items that the customer buys. |
+| Recurse Every (As Per Stock Unit) | The number of items in each set, in the stock unit. |
+
+RareBooks adds one free row with a rate of zero, also when the item is on more than one row.
+
+With **Is Recursive**, the free quantity is the **Quantity** multiplied by the item quantity, divided by **Recurse Every**. For example, with **Quantity** `1` and **Recurse Every** `3`, 7 notebooks give 2.33 free notebooks. With the rounding method **Floor**, they give 2. For units that allow only whole quantities, such as `Unit`, select **Round Free Item Quantity**. If the free quantity is zero after rounding, the rule does not apply.
+
+### Conditions
+
+| Field | The Rule Applies When |
+| --- | --- |
+| Min Qty, Max Qty (As Per Stock Unit) | The total quantity of the item is in this range. |
+| Min Amount, Max Amount | The total amount of the item is in this range. |
+| Valid From, Valid To | The date of the invoice is in this range. |
+
+The totals count only the rows in a **Unit Type** of the rule. A zero or empty value means no limit on that side. **Min Amount** must be less than **Max Amount**.
+
+Enter the **Rate**, the **Discount Amount**, and the amount limits in your company currency. For an invoice in a different currency, RareBooks converts them with the exchange rate.
+
+## Priority
+
+More than one rule can apply to the same item. RareBooks then uses the rule with the highest **Priority**. The highest priority is 20.
+
+If two rules have the same highest priority for an item, RareBooks shows an error, and you cannot save the invoice. Give each rule for the same item a different priority.
+
+## How RareBooks Applies Pricing Rules
+
+RareBooks applies pricing rules while you edit a sales invoice, and again when you save and submit it. For each row, it applies the matching rule with the highest priority. Each row gets one pricing rule at most. If a condition stops matching, RareBooks removes the free item or the price change. The **Pricing Rule Detail** table of the invoice shows each rule that applied.
+
+### Pricing Rules in the POS
+
+In the POS cart, a free item shows the name of its pricing rule. You cannot edit a free item.
+
+To stop pricing rules in the POS, turn on **Ignore Pricing Rule** in the POS settings or in the POS profile. A pricing rule can change the rate or the discount also when **Can Change Rate** or **Can Change Discount** is off. See [Point of Sale (POS)](/transactions/point-of-sale/).
+
+## Example: Buy 3, Get 1 Free
+
+| Field | Value |
+| --- | --- |
+| Applied Items | `Notebook` |
 | Discount Type | Product Discount |
-| Quantity      | 1                |
-| Rate          | 0                |
-| Recurse Every | 3                |
+| Free Item | `Notebook` |
+| Quantity | 1 |
+| Round Free Item Quantity | Selected, with **Floor** |
+| Is Recursive | Selected |
+| Recurse Every (As Per Stock Unit) | 3 |
+| Min Qty (As Per Stock Unit) | 3 |
 
-2. Buy 2 Get 10% Discount
+![Product discount fields: free item Spiral Notebook, quantity 1, rounding Floor, Is Recursive, Recurse Every 3, and Min Qty 3.](/images/docs/books-docs-pricing-rule-2-free-item-settings-v4.png)
 
-| Field                       | Value            |
-| --------------------------- | ---------------- |
-| Discount Type               | Price Discount   |
-| Price Discount Type         | Discount Percent |
-| Discount Percentage         | 10               |
-| Min Qty (As Per Stock Unit) | 2                |
+A row with 7 notebooks gets a row with 2 free notebooks.

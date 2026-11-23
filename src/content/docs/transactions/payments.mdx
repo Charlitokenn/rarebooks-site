@@ -1,58 +1,76 @@
 ---
-sidebar_position: 3
-sidebar_label: Payments
-title: Payments
+title: "Payments"
+description: "A payment records money that moves between you and a party."
 sidebar:
-  order: 6
+  order: 5
 ---
 
-Payments are a type of transactional entry that indicates the transfer of funds.
+A payment records money that moves between you and a party. When you submit a payment, RareBooks makes the ledger entries and decreases the outstanding amount of the invoices that the payment settles.
 
-Payments usually follow a sale or a purchase, depending on this a Payment entry can be made to either Receive or Pay funds.
+## Payment Types
 
-| #   | Transaction | Payment Type | To Account          | From Account        |
-| --- | ----------- | ------------ | ------------------- | ------------------- |
-| 1   | Sale        | Receive      | Bank, Cash Accounts | Accounts Receivable |
-| 2   | Purchase    | Pay          | Accounts Payable    | Bank, Cash Accounts |
+| Payment Type | Use |
+| --- | --- |
+| Receive | A customer pays you, or a supplier refunds a purchase return. |
+| Pay | You pay a supplier, or you refund a sales return to a customer. |
 
-## Making Payments
-
-To make a Payment first navigate to the Payment page
-
-- For Sales: `Sales > Sales Payments`
-- For Purchases: `Purchases > Purchase Payments`
-
-Then click on the blue `+` button. This will open the Payment quick edit form.
-
-[![Payment Quick Edit Form](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/payment-quick-edit.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/payment-quick-edit.png)
-
-You can select the Party and enter other the details of the Payment.
-
-Once the details have been set you can click on Save and then Submit to record the Payment.
-
-### Payment Reference
-
-If the Payment is being made for an invoice, you can add a reference to the invoice in the table at the bottom.
-
-This will update the Outstanding Amount on the invoice.
-
-::: tip Invoice Payment A more convenient way of settling an Invoice Payment is to do so using the Make Payment option from the Invoice Form. :::
-
-### Write Off Amount
-
-The write off amount is a deduction on the payment.
-
-[![Payment Write Off](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/payment-writeoff.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/payment-writeoff.png)
-
-This amount is booked under the Write Off Account that can set under General settings: `Setup > Settings > General`
-
-::: info Transfered Amount The final amount to be paid or received = Amount - Write Off :::
+The labels of the account fields change with the **Payment Type**. **From Account** always shows the account that the money comes from.
 
 ## Making Payments from Invoices
 
-To make an Invoice Payment to settle the Outstanding Amount of a Sales Invoice or a Purchase Invoice, you can navigate to the Invoice form and click on the Make Payment button under the `...` menu.
+1. Open a submitted sales invoice or purchase invoice that has an outstanding amount.
+2. Click **Create** > **Payment**.
+3. Check the **Payment Method** and the cash or bank account.
+4. If the payment method is not **Cash**, enter the **Ref. / Cheque No.**
+5. Click **Save**.
+6. Click **Submit** and click **Yes**.
 
-For more information check these links:
+![Purchase invoice with a new payment in the side panel: payment method Bank, From Account HDFC Bank, a reference number, and the amount.](/images/docs/books-docs-payments-1-payment-from-invoice-v4.png)
 
-- [Making Sales Payments](https://github.com/frappe/books_docs/blob/master/transactions/sales-invoices#making-sales-payments)
-- [Making Purchase Payments](https://github.com/frappe/books_docs/blob/master/transactions/purchase-invoices#making-purchase-payments)
+RareBooks fills the party, the payment type, the **Amount**, and a reference to the invoice. The amount is the outstanding amount of the invoice. The cash or bank account is the **Sales Payment Account** or the **Purchase Payment Account** in the **Defaults** settings. If that account is not set, it is the account of the **Cash** payment method.
+
+## Making Payments from the Payments List
+
+Use this way for a payment that settles more than one invoice, or a payment without an invoice.
+
+1. Click **Sales** > **Sales Payments** or **Purchases** > **Purchase Payments** in the sidebar.
+2. Click **New**.
+3. Select the **Party**. RareBooks fills the **Payment Type** and the party account.
+4. Select the **Payment Method**, and check the cash or bank account.
+5. In **Payment Reference**, add one row for each invoice that the payment settles. In each row, select the **Type** and the invoice in **Name**.
+6. Check the **Amount** of the payment.
+7. Click **Save**.
+8. Click **Submit** and click **Yes**.
+
+A payment for a sales invoice shows in **Sales Payments**, and a payment for a purchase invoice shows in **Purchase Payments**. A payment without an invoice shows in **Sales Payments** for the type **Receive**, and in **Purchase Payments** for the type **Pay**.
+
+### Payment Reference Rules
+
+- The invoice must be submitted and must belong to the party of the payment.
+- The amount of a row cannot be more than the outstanding amount of the invoice.
+- The total of the rows cannot be more than the **Amount** of the payment.
+
+To pay less than the outstanding amount, turn on **Enable Partial Payment** in the **General** settings. The invoice then shows the **Partly Paid** status. A payment without references, such as an advance, does not change the outstanding amount of an invoice.
+
+## Payment Methods
+
+RareBooks adds two payment methods: **Cash** and **Bank**. Each method has a **Type** (**Cash**, **Bank**, or **Transfer**) and an **Account**. When you change the **Payment Method** of a payment, RareBooks changes the cash or bank account too.
+
+- For the **Bank** and **Transfer** types, you must enter the **Ref. / Cheque No.**
+- If the method has **Requires Clearance Date** selected, you must enter the **Clearance Date**.
+
+To add a payment method, search for `Payment Method` in [Quick Search](/getting-started/quick-search/). Only a **Books Manager** or a **System Manager** can add or edit payment methods.
+
+## Write Off
+
+**Write Off** is a part of the amount that you do not receive or pay, such as a bank charge. The write-off goes to the **Write Off Account** in the **General** settings.
+
+For example, an invoice has an outstanding amount of 1,000, and the customer pays 990. Enter `1000` in **Amount** and `10` in **Write Off**. **Amount Paid** shows 990, and the invoice becomes **Paid**.
+
+## Taxes and Currency
+
+If a tax template row has a **Tax Payment Account**, a payment moves the paid part of that tax to this account. See [Taxes](/masters/taxes/). Payments are always in the company currency. See [Multi Currency Invoicing](/transactions/multicurrency-accounting/).
+
+## Cancelling a Payment
+
+When you cancel a payment, RareBooks reverses the ledger entries of the payment and adds its amounts back to the outstanding amounts of its invoices. When you cancel an invoice, RareBooks also cancels the payments that settle it.

@@ -1,117 +1,125 @@
 ---
-sidebar_position: 3
-sidebar_label: Sales Invoice
-title: Sales Invoice
+title: "Sales Invoices"
+description: "A sales invoice is the bill that you send to a customer for a sale."
 sidebar:
-  order: 2
+  order: 3
 ---
 
-Sales Invoices are bills that are sent to your customers when an income is booked.
+A sales invoice is the bill that you send to a customer for a sale. When you submit it, RareBooks records the income and the amount that the customer owes you.
 
-It is a transactional entry that denotes a sale.
+## Create a Sales Invoice
 
-## Creating Sales Invoices
+Before you start, add your customers and your sales items. For the steps, see [Create Initial Entries](/getting-started/create-initial-entries/).
 
-If you have set up your RareBooks with Accounts, Taxes, Sales Items, and Customers, creating a Sales Invoice is as simple as it gets. If not you can the follow the steps [here](https://github.com/frappe/books_docs/blob/master/setting-up/getting-started).
+1. Click **Sales** > **Sales Invoices** in the sidebar.
+2. Click **New**.
+3. Select the **Customer**. RareBooks fills the **Account** from the customer.
+4. In **Items**, click **Add row**.
+5. Select the **Item**. RareBooks fills the rate and the tax of the item.
+6. Enter the **Qty**.
+7. Add a row for each item that you sell.
+8. Click **Save**.
+9. Click **Submit** and click **Yes**.
 
-First navigate to the Sales Invoices page
+After you submit the invoice, you cannot edit it. For more information, see [Save and Submit Documents](/getting-started/getting-started-with-rarebooks/#save-and-submit-documents). You can also make an invoice from a submitted [sales quote](/transactions/sales-quotes/). Invoices from the [Point of Sale](/transactions/point-of-sale/) also show in the list.
 
-`Sales > Sales Invoices`
+When you submit the invoice, RareBooks debits the **Account** of the invoice with the grand total. It credits the income account of each item and each tax account. A discount goes to the discount account. See [Discount Accounting](/transactions/discount-accounting/).
 
-Then click on the blue `+` button to open the Sales Invoice form.
+## Invoice Fields
 
-[![Sales Invoice Form](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/sales-invoice.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/sales-invoice.png)
+| Field | Description |
+| --- | --- |
+| Account | The receivable account of the customer, such as Debtors. |
+| Price List | Shows when price lists are on. RareBooks takes the item rates from this list. See [Price List](/masters/price-list/). |
+| Taxes | The tax amount for each tax account. RareBooks calculates it from the **Tax** of each item row. |
+| Base Grand Total | The grand total in your company currency. Shows only when the customer uses a different currency. See [Multi-Currency Invoicing](/transactions/multicurrency-accounting/). |
+| Outstanding Amount | The amount that the customer still owes. |
+| Notes | Text that shows on the printed invoice. New invoices get the **Sales Invoice Terms** from the settings. |
 
-1. Select the Customer to whom you will be making a sale.
-2. Click on Add Row and select the Item being sold. Default Tax will be fetched you can change it if required.
-3. Enter the Quantity.
-4. You can add more items or if you are done, click on Save.
-5. Once finalized, click on Submit. RareBooks will do the required ledger entries against the appropriate accounts.
+![Sales invoice list with the statuses Paid, Unpaid, Partly Paid, and Saved, and the outstanding amounts.](/images/docs/books-docs-sales-invoices-2-list-v4.png)
 
-This invoice is now in _“Submitted”_ state, it cannot be edited. The sales transaction has been recorded.
+In an item row, RareBooks fills the rate from the item or from the price list. If you enter a rate, RareBooks keeps your rate. To charge no tax on a row, clear its **Tax**. To see the other fields of a row, such as the income **Account**, click the **Edit row** button at the end of the row.
 
-## Editing an Invoice Item
+The **Loyalty Points Redemption**, **Coupons**, and **Pricing Rule Detail** sections show only when their feature is on. See [Loyalty Program](/transactions/loyalty-program/), [Coupon Code](/masters/coupon-code/), and [Pricing Rule](/masters/pricing-rule/).
 
-To edit the values of an Invoice Item click on the edit button on the item row [![Edit Invoice Item](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/invoice-item.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/invoice-item.png)
+The **Settings** tab shows only when one of its fields applies:
 
-From here you can change the item description, HSN code check the Taxed Amount, etc.
+| Field | Shows When |
+| --- | --- |
+| Apply Discount After Tax | Discount accounting is on. See [Discount Accounting](/transactions/discount-accounting/). |
+| Make Payment On Submit | A **Sales Payment Account** is set. See [Automatic Payments](#automatic-payments). |
+| Make Shipment On Submit | Inventory is on and a **Shipment Location** is set. See [Automatic Shipments](#automatic-shipments). |
 
-::: tip Setting the Taxed Amount You can directly set the Taxed Amount, RareBooks will calculate the Rate of the Item automatically. :::
+After you submit an invoice, its status is **Unpaid**, **Partly Paid**, or **Paid**. A return has the status **Return**. Its original invoice gets the status **Return Issued** when it is fully returned, or when it has no outstanding amount. Otherwise, the original keeps its payment status, such as **Unpaid**.
 
-## Making Sales Payments
+## Receive a Payment
 
-Once a sales invoice has been submitted, you’ll need to record payment against it to denote that you’ve received the money.
+1. Open the submitted sales invoice.
+2. Click **Create** > **Payment**. RareBooks fills the **Amount** with the outstanding amount.
+3. Check the **Payment Method** and the **To Account**.
+4. Click **Save**.
+5. Click **Submit** and click **Yes**.
 
-To make a Payment first navigate to the Sales Invoice, then click on the `...` menu button. Then click the Make Payment option.
+![Unpaid sales invoice with the Create menu open: Payment, Return, Duplicate, and New entry.](/images/docs/books-docs-sales-invoices-1-create-menu-v4.png)
 
-[![Sales Invoice Status](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/sales-payment.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/sales-payment.png)
+RareBooks decreases the **Outstanding Amount** of the invoice and changes its status. To pay less than the outstanding amount, turn on **Enable Partial Payment** in the **General** settings. For more information, see [Payments](/transactions/payments/).
 
-This will open the Payment quick edit form with the outstanding amount auto-filled.
+### Automatic Payments
 
-[![Sales Invoice Payment](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/sales-payment-quickedit.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/sales-payment-quickedit.png)
+To make the payment when you submit the invoice, select a **Sales Payment Account** in the **Auto Payments** section of the **Defaults** settings. The list shows only cash and bank accounts.
 
-You can change the values and click on Save. This will Save and Submit the Payment.
+Each new sales invoice then has **Make Payment On Submit** selected in its **Settings** tab. When you submit the invoice, RareBooks submits a payment of the outstanding amount to this account. To skip the payment for one invoice, clear **Make Payment On Submit** before you submit.
 
-On making the Payment, RareBooks will make the necessary ledger entries to reduce the payment amount from Accounts Receivable and increase the amount in your Bank or Cash Account.
+## Print a Sales Invoice
 
-It will also update the Outstanding Amount on the invoice form.
+For the steps, see [Print a Document](/settings/print-templates/#print-a-document). RareBooks has two templates for sales invoices: **Business - Sales Invoice** and **Business-POS - Sales Invoice**. To set the template that opens first, select the **Sales Invoice Print Template** in the **Defaults** settings.
 
-::: info Sales Invoice Status Until Payments are made to settle the Outstanding Amount, the Sales Invoice will be in the **Unpaid** state.
+## Shipments
 
-Once the Outstanding Amount reaches 0, the status will change to **Paid**. :::
+When inventory is on, a shipment takes the sold items out of your stock. RareBooks ships only items that have **Track Inventory** selected. For more information, see [Shipment](/inventory/shipment/).
 
-### Auto Payments
+### Automatic Shipments
 
-You can simplify the _Sales Invoice → Payment_ workflow by using Auto Payments. For this you just need to set the default accounts for Sales Payment.
+To ship the items when you submit the invoice, select a **Shipment Location** in the **Auto Stock Transfer** section of the **Defaults** settings.
 
-This can be done in `Setup > Settings > Defaults > Auto Payments`: [![Payment Accounts](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/payment-accounts.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/payment-accounts.png)
+Each new invoice then has **Make Shipment On Submit** selected in its **Settings** tab. When you submit the invoice, RareBooks submits a shipment from the **Shipment Location**. If an item does not have enough stock, the **Insufficient quantity** dialog opens. Click **Yes** to submit the invoice without the shipment, or click **No** to stop.
 
-Once this is set, whenever you Submit a Sales Invoice a Payment entry will automatically be created.
+To ship the items later, open the invoice and click **Create** > **Shipment**. **Stock Not Shipped** shows the quantity that is not shipped yet.
 
-::: tip Disable Auto Payment for a Sales Invoice
+## Returns
 
-You can disable Auto Payment for a single Sales Invoice by unchecking the Make Payment On Submit check box in the Settings tab before Submitting a Sales Invoice entry.
+A return is a sales invoice with negative quantities for items that a customer gives back. It reverses the ledger entries of the original invoice.
 
-[![Disable Auto Payment](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/auto-payment.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/auto-payment.png) :::
+To make returns, turn on **Enable Invoice Returns** in the **General** settings. You cannot turn it off later.
 
-## Sales Invoice Return
+1. Open the submitted sales invoice.
+2. Click **Create** > **Return**. A new invoice opens with the items that earlier returns did not take back.
+3. Change the quantities to the quantities that the customer returned. You can enter positive numbers.
+4. Remove the rows of the items that the customer did not return.
+5. Click **Save**.
+6. Click **Submit** and click **Yes**.
 
-The customer could return an already sold Item due to quality issues or any other reasons.
+To make a return manually, make a new invoice and select the original invoice in **Return Against** in **References**. The customer must be the same as on the original invoice, and each item must be on it. The returned quantities cannot be more than the invoiced quantities. A return cannot credit an item at more than it was sold for.
 
-To reflect this you can create a Sales Invoice Return from the original Sales Invoice entry or manually create one from a new Sales Invoice Entry.
+The outstanding amount of a return is negative. To pay the money back to the customer, open the return and click **Create** > **Payment**.
 
-### Creating a Sales Invoice Return
+## Cancel a Sales Invoice
 
-1. Open the original Sales Invoice document, against which customer returned the Items.
-2. Click on **Create > Return**. [![Create Sales Invoice Return](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/sinv-create-return.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/sinv-create-return.png)
-3. The Party and Item details will be fetched as set in the original Sales Invoice document. You can set the quantity of Items returned in negative numbers. [![Sales Invoice Return Form](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/sinv-return-form.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/sinv-return-form.png)
-4. Save and Submit.
+Only a **Books Manager** or a **System Manager** can delete a sales invoice. See [Roles and Permissions](/getting-started/roles-and-permissions/).
 
-::: info The Item quantity and Payment amount will be in negative figures to indicate that it's a return. :::
+When you cancel an invoice, RareBooks reverses its ledger entries. It also cancels the payments and the automatic shipment of the invoice. A submitted return, or a shipment that you made with **Create** > **Shipment**, stops the cancellation. Cancel these entries first.
 
-### Creating Manually
+To make a corrected invoice, open the cancelled invoice and click **Create** > **Duplicate**.
 
-1. Navigate to the Sales Invoice page `Sales > Sales Invoice`
-2. Click on **Return Against** then select the target Sales Invoice against which customer returned the Items. [![Select return invoice](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/sinv-select-return-against.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/sinv-select-return-against.png)
-3. Fill Item details.
-4. Save and Submit.
+## More Actions
 
-## Sales Invoice Return impact on General Ledger
+| Action | Where |
+| --- | --- |
+| Linked entries | **…** > **Linked entries** in the page header, or `Ctrl + L`. Shows the payments, shipments, returns, and other entries of the invoice. |
+| Accounting entries | **View** > **Accounting entries**. Opens the [General Ledger](/financial-reports/general-ledger/) for the invoice. |
+| Print | The printer icon in the page header, or `Ctrl + P`. |
+| Save or Submit | The main button in the page header, or `Ctrl + S`. |
 
-The Sales Invoice Return entry will create General Ledger entries to reverse the impact of the original Sales Invoice.
+![Phone view of an unpaid sales invoice with Print and Receive payment at the bottom of the form.](/images/docs/books-docs-sales-invoices-3-phone-form-v4.png)
 
-[![Sales Invoice Return in General Ledger](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/sinv-return-in-gl.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/sinv-return-in-gl.png)
-
-## Printing the Sales Invoice
-
-To export the Sales Invoice as a PDF, click on the Print button next to the `...` menu above the Sales Invoice Form.
-
-This will open the Print View, you can click on the Customize button to customize it.
-
-[![Print View](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/print-view.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/print-view.png)
-
-You can now add your company logo and select a brand color that matches your business’ primary color. You can also change the style by selecting one of the given Templates. Choose any that fits your style.
-
-Once you have completed customizing, click on Save as PDF to save the Sales Invoice.
-
-After saving the PDF you can take a print out of it using your printer's software.
+On macOS, use `Cmd` instead of `Ctrl`. On a phone, **Linked entries** and **Accounting entries** are in the **…** menu in the header.

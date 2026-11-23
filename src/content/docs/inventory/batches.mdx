@@ -1,41 +1,75 @@
 ---
-sidebar_position: 6
-sidebar_label: Batches
-title: Batches
+title: "Batches"
+description: "A batch is a group of units of an item that you make or buy together, such as one production lot."
 sidebar:
   order: 7
 ---
 
-Inventory in RareBooks can be maintained on the basis of Batches. Here a Batch of some Item is a uniquely grouped collection of those Items.
+A batch is a group of units of an item that you make or buy together, such as one production lot. When an item has batches, RareBooks keeps the stock and the value of each batch separately. Each document row of the item names its batch.
 
-## Enable Batches
+## Turn On Batches
 
-The Batch feature needs to be enabled first by checking the Enable Batches option under [Inventory Settings](https://github.com/frappe/books_docs/blob/master/inventory/settings).
+Batches need [inventory](/inventory/introduction-to-inventory/#turn-on-inventory). Turn on **Enable Batches** in the **Features** section of the [inventory settings](/inventory/inventory-settings/#features). Then save the settings and reload RareBooks.
 
-To navigate to the list of Batches, open [Quick Search](https://github.com/frappe/books_docs/blob/master/miscellaneous/search) and then type "batch list" and select the first option.
+:::caution
+You cannot turn off batches after you turn them on.
+:::
 
-## Batched Items
+## Set Up an Item
 
-Once Batch has been enabled, you can mark an Item as a Batched Item by first checking Track Item and then Has Batch.
+1. Open the item, for example from **Sales** > **Sales Items** in the sidebar.
+2. Make sure that **Track Inventory** is selected.
+3. Select **Has Batch**.
+4. Optional: Enter a **Batch Series**, such as `LOT`.
+5. Click **Save**.
 
-[![Enable Has Batch](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/item-has-batch.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/item-has-batch.png)
+**Has Batch** shows only when **Track Inventory** is selected. You can select **Track Inventory** only on a new [item](/masters/items/).
 
-::: info Track Item
+### Batch Series
 
-Has Batch can be enabled only if Track Item is set. :::
+RareBooks makes a new batch for each row of the item that has no batch. It does this when you save a purchase invoice, a purchase receipt, or a **Material Receipt**. This does not apply to returns. If an item has no batch series, select or make a batch in each row.
 
-## Mentioning Item Batch
+RareBooks adds a dash and a number to the series, starting at 1001. For example, the series `LOT` gives `LOT-1001`, `LOT-1002`, and so on. It skips the numbers that are already used. A series cannot contain `/`, `?`, `&`, `=`, or `%`.
 
-Once Batch has been enabled for an Item, transactions involving the item that update inventory such as Stock Movements, Shipments and Purchase Receipts will require mentioning the Item's Batch.
+## Make a Batch
 
-This can be done by clicking the edit button on the table row and selecting the batch.
+There is no sidebar item for batches. Search for `Batch` in [Quick Search](/getting-started/quick-search/) and open the **List** result.
 
-[![Mentioning Batches](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/mentioning-batches.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/mentioning-batches.png)
+1. In the list of batches, click **New**.
+2. Enter the name of the batch in **Batch**.
+3. Select the **Item**.
+4. Optional: Enter the **Expiry Date** and the **Manufacture Date**. The expiry date cannot be before the manufacture date.
+5. Click **Save**.
 
-## Batch-wise Reports
+You can also make a batch from the row of a stock movement, an invoice, or a quote. Type the name of the new batch in **Batch** and click **Create**. The new batch gets the item of the row.
 
-After batches have been enabled, the inventory reports i.e. Stock Ledger and Stock Balance will both have an additional column that mentions the Item's Batch.
+You cannot change the item of a batch after you save it.
 
-You can also set Batch specific filters to show information that relates only to the selected Batch.
+RareBooks does not check the expiry date. For example, you can sell a batch after its expiry date.
 
-[![Batch-wise Report](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/batchwise-report.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/batchwise-report.png)
+## Select a Batch in a Document
+
+1. Add the item to the document.
+2. Click the **Edit row** button at the end of the row. On a phone, tap the row.
+3. In **Batch**, select the batch.
+
+![Row panel of a draft sales invoice with HSN/SAC 0902 and the Batch list open, which shows three batches of Darjeeling Tea.](/images/docs/books-docs-batches-1-select-batch-v4.png)
+
+In a sales invoice or a sales quote, the list shows only the batches that have stock at the location that the sale ships from. Other documents and returns show all the batches of the item. In the [Point of Sale](/transactions/point-of-sale/), the **Select Batch** dialog opens when you add an item with batches.
+
+A sale ships from the **Shipment Location** in the **Defaults** settings, or from the POS inventory for a POS sale. If the **Shipment Location** is empty, RareBooks uses the stock of all locations.
+
+On a sales invoice or a sales quote, RareBooks checks the stock of the batch. It checks when you select the batch, when you change **Qty**, and when you save. If the batch does not have enough stock, the field shows an error. It does not check the batch stock on a return.
+
+## Rules for Batches
+
+RareBooks shows an error and does not save or submit the document in these cases:
+
+- A row of an item with batches has no batch.
+- A row of an item without batches has a batch.
+- The batch belongs to a different item.
+- When you submit a document that takes stock out, the batch does not have enough stock at the source location.
+
+## Batches in Reports
+
+When batches are on, the [Stock Ledger](/inventory/stock-ledger/) and the [Stock Balance](/inventory/stock-balance/) have a **Batch** column and a **Batch** filter. The Stock Balance shows one row for each batch of an item at a location.

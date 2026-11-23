@@ -1,59 +1,55 @@
 ---
-sidebar_position: 3
-sidebar_label: Lead
-title: Lead
+title: "Lead"
+description: "A lead is a person or a company that is interested in your products or services."
 sidebar:
-  order: 4
+  order: 1
 ---
 
-_Lead_ is a term used in RareBooks for any potential customer or client who
-has shown interest in the products or services offered.
+A lead is a person or a company that is interested in your products or services. Record leads before they buy. When a lead becomes a customer, make a customer from the lead.
+
+## Turn On Leads
+
+1. Click **Setup** > **Settings** in the sidebar.
+2. In the **General** tab, turn on **Enable Lead**.
+3. Click **Save** and click **Yes** to reload RareBooks.
+
+**Lead** now shows in the **Sales** group of the sidebar. You cannot turn off leads after you save the setting.
+
+## Create a Lead
+
+1. Click **Sales** > **Lead** in the sidebar.
+2. Click **New**.
+3. Enter the **Name** of the lead. Each lead must have a different name.
+4. Optional: Enter the **Email**, the **Mobile**, and the **Address**.
+5. Click **Save**.
+
+A Books User can create, edit, and delete leads. For more information, see [Roles and Permissions](/getting-started/roles-and-permissions/).
 
 ## Lead Status
 
-A Lead can have various statuses based on the stage of engagement:
+A new lead starts as **Open**. Change the **Status** as you work with the lead: **Replied**, **Interested**, **Opportunity**, **Quotation**, **Converted**, or **Do not Contact**. RareBooks also changes the status for some actions:
 
-| Status         | Description                               |
-| :------------- | :---------------------------------------- |
-| Open           | Newly created and yet to be engaged.      |
-| Replied        | Replied to initial engagement.            |
-| Interested     | Shown interest in the product or service. |
-| Opportunity    | Opportunity for business.                 |
-| Converted      | Converted to a Customer or client.        |
-| Quotation      | To sent a Quotation.                      |
-| Do not Contact | Marked as not to be contacted.            |
+- When you submit a sales quote to the lead, the status changes to **Quotation**.
+- When you save a customer that you made from the lead, the status changes to **Converted**.
+- When you delete that customer, the status changes back to **Interested**.
 
-> Note: Ensure to update the status of the Lead appropriately as it progresses through
-> different stages.
+## Create a Customer From a Lead
 
-## Lead Fields
+1. Open the lead.
+2. Click **Create** > **Customer** in the page header.
+3. Check the details of the new customer. If a party with the same name exists, change the **Name**.
+4. Click **Save**.
 
-1. **Name**: The full name of the Lead. This is a required field to uniquely
-   identify each Lead.
-2. **Status**: The current status of the Lead. It indicates the stage of
-   engagement with the Lead and it will be updated automatically based on your
-   actions against the lead.
-3. **Email**: The email address of the Lead. This is used for communication and
-   may be displayed when printing invoices or other documents.
-4. **Mobile**: The mobile phone number of the Lead. This is used for quick
-   contact and may also be displayed when printing invoices or other documents.
-5. **Address**: The physical address associated with the Lead. This can include
-   street, city, state, and postal code, and is useful for sending physical
-   correspondence or deliveries.
+![Lead Zenith Academy with the status Interested and the Create menu open, which shows Customer and Sales Quote.](/images/docs/books-docs-introduction-1-lead-create-menu-v4.png)
 
-## Actions
+The new customer gets the name, the email, the address, and the mobile number of the lead. The mobile number goes to the **Phone** field. The **From Lead** field shows the lead. For more information, see [Party](/masters/party/).
 
-The Lead Quick Edit Form includes actions to create associated documents like
-Customer or Sales Quote.
+## Create a Sales Quote for a Lead
 
-![Recent Actions Widget](https://raw.githubusercontent.com/frappe/books_docs/e0ff943f703b37f902f61a0424d1bc2b4cd81183/docs/entries/images/lead.png)
+1. Open the lead.
+2. Click **Create** > **Sales Quote** in the page header.
+3. Add the items.
+4. Click **Save**.
+5. Click **Submit** and click **Yes**.
 
-### Create Customer
-
-- Converts the Lead into a Customer, retaining all relevant information.
-- Sets the status of the Lead to **Converted**.
-
-### Create Sales Quote
-
-- Creates a Sales Quote against the Lead.
-- Links the Sales Quote to the Lead as a reference.
+You cannot make a sales invoice from a quote to a lead. First create a customer from the lead. Then make the sales invoice for the customer. For more information, see [Sales Quotes](/transactions/sales-quotes/).

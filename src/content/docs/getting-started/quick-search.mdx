@@ -1,79 +1,78 @@
 ---
-title: Quick Search
-description: Quick Search
+title: "Quick Search"
+description: "Quick Search finds documents, lists, reports, and pages in RareBooks."
 sidebar:
-  order: 6
+  order: 8
 ---
 
-The Quick Search interface is a quick way to navigate around in RareBooks. To activate it you can click on the search button in the header:
+Quick Search finds documents, lists, reports, and pages in RareBooks. It also opens new forms.
 
-[![Quick Search Bar](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/search-bar.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/search-bar.png)
+## Open Quick Search
 
-Or you can press `Ctrl + K` or `Cmd + K` depending on your operating system.
+- On a computer, click the search icon in the page header. You can also press `Ctrl + K`, or `Cmd + K` on macOS.
+- On a phone, tap **Search** in the bottom tabs.
 
-## Dialog
+![Phone Search tab with the results for "kaveri": the party, its shipments, and its payments.](/images/docs/books-docs-quick-search-2-phone-search-v4.png)
 
-[![Quick Search Dialog](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/search-dialog.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/search-dialog.png)
+## Search
 
-To search for anything type what you are looking for in the input bar at the top.
+Type in the search box. Uppercase and lowercase letters are the same.
 
-:::tip[Fuzzy Search]
-Because of the fuzzy search method used, you don't have to type the exact name of the thing you are searching.
+For a list, a form, a report, or a page, type some letters of its name in the same order. For example, `sinv` finds **Sales Invoice**.
 
-So if you make spelling mistakes it is fine, you will still find what you are looking for.
-:::
+Quick Search finds a document by its name, its document type, its main fields, and the main fields of its table rows. For example, it finds an invoice by its number, its customer, or an item in it. It finds documents by words:
 
-Each row in the search results is classified as one of the following Types:
+- Each word that you type must match. The words can be in any order. For example, `karen invoice` finds the invoices of the customer Karen.
+- A word of four or more characters also finds the words that start with it. For example, `kare` finds `Karen`. A shorter word must match a full word.
+- A hyphen separates words. For example, `1001` finds **SINV-1001**.
 
-| #   | Type   | Color  | Purpose                                            | Example          |
-| --- | ------ | ------ | -------------------------------------------------- | ---------------- |
-| 1   | Docs\* | blue   | Opens the selected entry                           | PAY-1001         |
-| 2   | List   | teal   | Opens the List View                                | Sales Items      |
-| 3   | Create | green  | Opens a Form or Quick Edit Form to create an entry | Purchase Invoice |
-| 4   | Report | yellow | Opens the selected report                          | General Ledger   |
-| 5   | Page   | red    | Opens the page                                     | Dashboard        |
+A new or changed document can take some minutes to show in the results.
 
-:::tip[Info]
-Docs* Rows of the *Docs\* type will show they type of entry it is. For example, Item or Purchase Invoice.
-:::
+Quick Search shows only the documents, lists, and reports that you can read. It shows a **Create** result only for documents that you can create. It does not show the lists of features that are off.
 
-In the bottom section you will find the filters which will help you narrow your search results.
+### Results
+
+Each result has a gray label at the right that shows its type.
+
+| Label | Opens |
+| --- | --- |
+| The document type, such as **Sales Invoice** | The document |
+| **List** | The list view |
+| **Create** | A new form |
+| **Report** | The report |
+| **Page** | The page |
+| **Recent** | An item that you opened recently |
+
+Lists, forms, reports, and pages show before documents. A document ranks higher when your words are in its document type or its name, and when it changed recently. Cancelled documents show last.
+
+Quick Search shows the first 50 results. To show more, select **100**, **500**, or **All** at the bottom. On a phone, tap **Show all**.
+
+When the search box is empty, Quick Search shows the last 10 items that you opened. To search them, start with `#`, such as `#cust`.
 
 ## Filters
 
-Clicking on More Filters will display all the filters.
+To hide a result type, click its button at the bottom of the dialog: **Docs**, **List**, **Create**, **Report**, **Page**, or **Recent**. Click it again to show the type.
 
-[![Quick Search Filters](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/search-filters.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/search-filters.png)
+![Quick Search for "sales invoice" with List, Create, and document results, and the extra filters open with Skip transactions and the document type buttons.](/images/docs/books-docs-quick-search-1-results-and-filters-v4.png)
 
-There are two kinds of filters here.
+To hide document types, click **More filters**. **Skip transactions** hides all transactions, such as invoices and payments. Click a document type to hide it, and click it again to show it. A filled button shows that its type is in the results.
 
-1. Regular Filters: coloured buttons in the first row.
-2. Doc Filters: blue coloured buttons after the first row.
+On a phone:
 
-:::tip[Skip Filters]
-Skip Child Tables and Skip Transactions are used to toggle multiple Doc Filters at once.
-:::
+1. To hide a result type, tap its button below the search box.
+2. Tap **Filters**.
+3. In the **Search filters** sheet, tap **Skip transactions** or each document type that you want to hide.
+4. Tap **Done**.
 
-### Regular Filters
+The filters stay set until you reload the page.
 
-Clicking on one of the regular filters will exclude that type from the search.
+## Keyboard Shortcuts
 
-For example, if you unselect Doc then only List, Create, Report and Page type rows will show in the suggestions.
+| Key | Action |
+| --- | --- |
+| `Up` and `Down` | Select the previous or next result |
+| `Enter` | Open the selected result |
+| `Esc` | Close Quick Search |
+| `Ctrl + 1` to `Ctrl + 6` | Hide or show a result type: **Docs**, **List**, **Create**, **Report**, **Page**, or **Recent** |
 
-### Doc Filters
-
-Clicking on a Doc filter will exclude that kind of entry from the search.
-
-For example, if you unselect Payment, all Payments will be excluded from the search.
-
-## Examples
-
-The Quick Search functionality is very powerful, you can run various kind of queries just by entering a few letters.
-
-Here are a few examples.
-
-1.  Finding all the Sales Invoices created for Karen 2. Finding all the Purchases Invoices with the item Jacket 3. Finding the Payment for Purchase Invoice PINV-1099 4. Finding all Payments received from Jack
-
-:::tip[Keyword Order]
-The order of the keyword doesn't matter. You can enter the search keywords in any order.
-:::
+On macOS, press `Cmd` instead of `Ctrl`. Click **Help** at the bottom of the dialog to open this page.
