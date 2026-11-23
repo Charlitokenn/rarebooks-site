@@ -41,6 +41,10 @@ const cloudflareWorkersInNodeDev = {
 // https://astro.build/config
 export default defineConfig({
   site: "https://rarebooks.cc",
+  // Astro 6.4 leaves `markdown.gfm` undefined by default, and @astrojs/mdx 5.0.6 reads undefined as off, so
+  // MDX pages lose GFM (tables render as plain `| a | b |` text). Set it explicitly until we move to Astro 7
+  // with @astrojs/mdx 8; the deprecation warning it prints is expected.
+  markdown: { gfm: true },
   redirects: {
     "/blog/rarebooks-vs-gnucash": "/compare/gnucash",
     "/blog/rarebooks-vs-busy-accounting": "/compare/busy-accounting",
