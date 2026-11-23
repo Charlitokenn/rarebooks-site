@@ -70,6 +70,6 @@ MCP servers: Cloudflare API MCP `https://mcp.cloudflare.com/mcp` (recommended), 
 
 ## Context files
 
-- [src/pages/api/AGENTS.md](src/pages/api/AGENTS.md): the server API routes, their outside services (Clerk, Keymint, Resend, ClickPesa, D1, the control site) and gotchas
+- [src/pages/api/AGENTS.md](src/pages/api/AGENTS.md): the server API routes, their outside services (Clerk, Resend, ClickPesa, D1, the control site) and gotchas
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
