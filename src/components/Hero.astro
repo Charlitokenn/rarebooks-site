@@ -56,6 +56,12 @@ const isLocal =  isTanzania(countryCode);
         </a>
     </div>
 
+    <p class="mt-4 text-sm font-medium text-muted">
+      {isLocal
+        ? `Free trial, then TZS ${AppConfig.hostedPlan.priceTZS.yearly} a year · We can set up your shop for you`
+        : `Free trial, then $${AppConfig.hostedPlan.priceUSD.yearly} a year or $${AppConfig.hostedPlan.priceUSD.monthly} a month`}
+    </p>
+
     <p class="mt-12 text-sm font-medium text-muted">Trusted by growing businesses</p>
     <div class="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
       {

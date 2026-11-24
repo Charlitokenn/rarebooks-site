@@ -1,77 +1,67 @@
-export interface PricingPlan {
+// The hosted plan is the one plan the control site sells: one price per
+// provider and period (Books Plan, rarebooks_control). Keep these figures in
+// step with the live Books Plan rows, or the Subscription page and this site
+// show different prices.
+export const hostedPlan = {
+  name: "RareBooks",
+  priceTZS: { yearly: "300,000" },
+  priceUSD: { monthly: "39", yearly: "399", yearlySaving: "69" },
+  features: [
+    "Double entry accounting",
+    "Invoicing and payments",
+    "Inventory and stock levels",
+    "Point of sale",
+    "Barcode scanner support",
+    "Use it on all your devices",
+    "Daily backups",
+    "WhatsApp support and documentation",
+  ],
+};
+
+// Setup services, sold by hand on top of the plan (not through checkout).
+export interface ServiceOffer {
   name: string;
-  priceUSD: {
-    monthly: string;
-    yearly: string;
-  };
-  priceTZS: string;
-  period: string;
+  price: string;
+  priceNote: string;
   blurb: string;
   features: string[];
-  featured: boolean;
+  cta: string;
 }
 
-export const pricingPlans: PricingPlan[] = [
+// Tanzania. The digitization package is shown first as the anchor; the
+// quick start fee comes back as 3 extra months on the yearly plan.
+export const localServices: ServiceOffer[] = [
   {
-    name: "Do It Yourself",
-    priceUSD: {
-      monthly: "20",
-      yearly: "216",
-    },
-    priceTZS: "217,000",
-    period: "/Year",
+    name: "Digitize your notebooks",
+    price: "Ask us",
+    priceNote: "Priced by how many records you have, with the yearly plan",
     blurb:
-      "For businesses on a budget and are confident in following the documentations",
+      "We type your past notebooks into RareBooks, so your books start complete and correct.",
     features: [
-      "Usage on up to 2 devices.",
-      "Double entry accounting",
-      "Inventory management",
-      "Stock level mobile notifications",
-      "Barcode scanner integration",
-      "Daily backups & latest 7 days recovery",
-      "Whatsapp support & documentations",
+      "Past sales, purchases and expenses",
+      "Who owes you and who you owe",
+      "Stock matched to a stock count",
+      "Your first month end report reviewed with you",
+      "Any balance that doesn't match your notebook fixed free for 30 days",
+      "Your quick start fee counts toward it",
     ],
-    featured: false,
+    cta: "Ask about digitization",
   },
   {
-    name: "Done For You",
-    priceUSD: {
-      monthly: "49",
-      yearly: "540",
-    },
-    priceTZS: "397,000",
-    period: "/Year",
+    name: "Quick start",
+    price: "TZS 75,000",
+    priceNote: "Comes back as 3 free months",
     blurb:
-      "For businesses that need everything setup for them, so they can focus on daily operations",
+      "We set up your shop for you, so you're selling on RareBooks by day 3.",
     features: [
-      "Usage on up to 5 devices.",
-      "Everything on Do It Yourself plan",
-      "All business records digitized for you",
-      "One-time data import",
-      "Over the shoulder software training",
-      "Daily backups & latest 21 days recovery",
-      "Priority support",
+      "Your items and prices entered",
+      "Your opening stock entered",
+      "Customers who owe you, with their balances",
+      "Your cashier set up",
+      "A call on day 3 for your first sales, and one on day 14",
+      "Record sales on 15 of your first 21 days and share a WhatsApp status: we add 3 months to your yearly plan",
     ],
-    featured: true,
-  },
-  {
-    name: "RareBooks Desktop",
-    priceUSD: {
-      monthly: "1,490",
-      yearly: "1,490",
-    },
-    priceTZS: "1,697,000",
-    period: "Forever",
-    blurb: "One-time purchase, yours forever",
-    features: [
-      "For Windows only",
-      "100% offline operation – Works without internet",
-      "All features unlocked forever – no limits",
-      " CSV import/export with Web Version",
-      "3 years of updates included",
-      "Only applies to Desktop App, Web Version not included",
-    ],
-    featured: false,
+    cta: "Get a quick start",
   },
 ];
 
@@ -79,23 +69,6 @@ export function getCurrencySymbol(countryCode: string): string {
   return countryCode === "TZ" ? "TZS " : "$";
 }
 
-export function getPrice(plan: PricingPlan, countryCode: string): string {
-  if (plan.priceUSD.monthly && plan.priceUSD.yearly === "Custom")
-    return "Custom";
-  return countryCode === "TZ"
-    ? plan.priceTZS
-    : [plan.priceUSD.monthly, plan.priceUSD.yearly];
-}
-
 export function isTanzania(countryCode: string): boolean {
   return countryCode === "TZ";
-}
-
-// A plan whose monthly and yearly USD prices are identical is a one-time /
-// fixed-price plan (e.g. RareBooks Desktop). These plans should never show
-// a "/Month", "/Year", or any other period suffix next to the price, and
-// should not change when the monthly/yearly toggle is flipped.
-
-export function isOneTime(plan: PricingPlan): boolean {
-  return plan.priceUSD.monthly === plan.priceUSD.yearly;
 }

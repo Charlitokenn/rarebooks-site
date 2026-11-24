@@ -1,53 +1,65 @@
 ---
-import { Notebook, Store, GraduationCap, CalendarClock, FileSpreadsheet, ShieldCheck } from "@lucide/astro"
+import { Notebook, Store, CalendarClock, FileSpreadsheet } from "@lucide/astro"
 import { AppConfig } from "../constants"
 import {isTanzania} from "../constants/pricing.ts";
 
 const countryCode = Astro.locals.countryCode || "US";
 const isLocal =  isTanzania(countryCode);
+const trialDays = isLocal ? AppConfig.trial.localDuration : AppConfig.trial.abroadDuration
+const plan = AppConfig.hostedPlan
 
-const steps = [
+const trialStep = {
+  label: "Try free",
+  icon: CalendarClock,
+  title: `Start your ${trialDays} Days FREE trial.`,
+  body: `Sign up and your own ${AppConfig.appName} site is ready in minutes. Run your real sales, stock and expenses on it, with nothing to pay up front.`,
+  bullet: "Every feature, on your real business. No commitment.",
+}
+
+const localSteps = [
+  trialStep,
   {
-    num: "1",
+    label: "Quick start",
+    icon: Store,
+    title: "We set up your shop for you.",
+    body: "For TZS 75,000 we enter your items, opening stock and the customers who owe you, set up your cashier, and sit with you on day 3 for your first sales and again on day 14.",
+    bullet: "Record sales on 15 of your first 21 days and the 75,000 comes back as 3 free months.",
+  },
+  {
     label: "Digitize",
     icon: Notebook,
     title: "We digitize your notebooks.",
-    body: `Hand us your handwritten ledgers and Excel sheets. We turn years of stock, sales, and expense records into clean, structured data inside ${AppConfig.appName}.`,
-    bullet: "Your notebooks & spreadsheets, transcribed for you — nothing left behind.",
+    body: `Want your history in too? We type your past sales, purchases, stock and debts into ${AppConfig.appName}, priced by how many records you have. Ask us for a price.`,
+    bullet: "Your quick start fee counts toward it.",
   },
   {
-    num: "2",
-    label: "Set up",
-    icon: Store,
-    title: `We set up your business on ${AppConfig.appName}.`,
-    body: "Your business, products, suppliers, and pricing are configured to match how you actually operate — so the system fits your business from day one.",
-    bullet: "A fully structured digital system, tailored to your real workflow.",
-  },
-  {
-    num: "3",
-    label: "Train",
-    icon: GraduationCap,
-    title: `We train you how to use ${AppConfig.appName}.`,
-    body: "A specialist walks you and your team through tracking sales, managing stock, and recording expenses until everyone is confident and self-sufficient.",
-    bullet: "Hands-on guidance — no technical experience required.",
-  },
-  {
-    num: "4",
-    label: "Try free",
-    icon: CalendarClock,
-    title: `You get a full ${isLocal ? AppConfig.trial.localDuration : AppConfig.trial.abroadDuration} Days FREE trial.`,
-    body: `Run your real business operations in ${AppConfig.appName} — track live sales, stock, and expenses — with zero commitment and nothing to pay upfront.`,
-    bullet: "Try out every feature on your actual data. No commitment.",
-  },
-  {
-    num: "5",
     label: "Your choice",
     icon: FileSpreadsheet,
-    title: `Continue with ${AppConfig.appName} — or take your data elsewhere.`,
-    body: "If it works for you, purchase the annual license key and keep going without interruption. If not, we export all your records into a clean, structured Excel file — ready to use anywhere.",
-    bullet: "Not satisfied? We hand over your digitized data. No questions asked.",
+    title: `Continue with ${AppConfig.appName}, or take your data elsewhere.`,
+    body: `If it works for you, pay TZS ${plan.priceTZS.yearly} for the year by mobile money and keep going. If not, we send you a download of all your records as CSV files.`,
+    bullet: "Your records stay yours, whatever you decide.",
   },
 ]
+
+const abroadSteps = [
+  trialStep,
+  {
+    label: "Switch",
+    icon: Store,
+    title: "Bring your data with you.",
+    body: "Take the yearly plan during your trial and we import your data from QuickBooks, Sage, Tally or your spreadsheets for you.",
+    bullet: "Free with the yearly plan.",
+  },
+  {
+    label: "Your choice",
+    icon: FileSpreadsheet,
+    title: `Continue with ${AppConfig.appName}, or take your data elsewhere.`,
+    body: `If it works for you, keep going for $${plan.priceUSD.yearly} a year or $${plan.priceUSD.monthly} a month. If not, we send you a download of all your records as CSV files.`,
+    bullet: "Your records stay yours, whatever you decide.",
+  },
+]
+
+const steps = (isLocal ? localSteps : abroadSteps).map((step, i) => ({ ...step, num: String(i + 1) }))
 ---
 
 <section id="guarantee" class="relative overflow-hidden bg-background py-24 scroll-mt-24">
@@ -56,11 +68,12 @@ const steps = [
   <div class="relative mx-auto max-w-6xl px-4">
     <div class="mx-auto mb-6 max-w-3xl text-center">
       <h2 class="text-balance font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-        Get started with our <br/>{isLocal ? `${AppConfig.trial.localDuration}`: `${AppConfig.trial.abroadDuration}` } Days - Risk Free Trial
+        Get started with our <br/>{trialDays} Days - Risk Free Trial
       </h2>
       <p class="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted">
-        Try out all features — no commitment. We get your entire business records digitized,
-        for you. Here's exactly how it works, start to finish.
+        Try out all features, with no commitment. {isLocal
+          ? "Set it up yourself, or have us set up your shop and digitize your notebooks."
+          : "Set it up yourself, or have us bring your data across."} Here's exactly how it works, start to finish.
       </p>
     </div>
 
@@ -148,7 +161,7 @@ const steps = [
         Start free trial
       </a>
       <p class="mt-4 text-sm font-medium text-muted">
-        {isLocal ? `${AppConfig.trial.localDuration}`: `${AppConfig.trial.abroadDuration}` } Days free · No payment required · Your data, your choice
+        {trialDays} Days free · No payment required · Your data, your choice
       </p>
     </div>
   </div>

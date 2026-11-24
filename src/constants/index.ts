@@ -1,4 +1,4 @@
-import { pricingPlans } from "./pricing.ts";
+import { hostedPlan, localServices } from "./pricing.ts";
 import {Cog, LayoutDashboard} from "lucide-react";
 
 
@@ -44,5 +44,6 @@ export const AppConfig = {
     siteDomain: "rarebooks.cc",
   },
   featuredClients: ["TAJ Home Appliances", "Powerlink Innovations"],
-  pricingPlans,
+  hostedPlan,
+  localServices,
 };
