@@ -1,55 +1,79 @@
 ---
-sidebar_position: 7
-sidebar_label: Number Series
-title: Number Series
+title: "Number Series"
+description: "A number series names documents with a prefix and a number, such as SINV-1001."
 sidebar:
   order: 4
 ---
 
-Number Series is used as the naming scheme for [transactional entries](https://github.com/frappe/books_docs/blob/master/transactions/transactional-entries). Multiple transactions of a single type for example Journal Entry can be grouped under a single Number Series.
-
-[![Number Series](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/number-series.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/number-series.png)
+A number series names documents with a prefix and a number, such as `SINV-1001`. Each series belongs to one document type.
 
 ## Default Number Series
 
-By default RareBooks comes with a single Number Series for each of the transactional entry types
+RareBooks makes one series for each document type. Each series starts at `1001` and uses four digits.
 
-| Type             | Number Series |
-| ---------------- | ------------- |
-| Sales Invoice    | SINV-         |
-| Purchase Invoice | PINV-         |
-| Payment          | PAY-          |
-| Journal Entry    | JE-           |
+| Document Type | Prefix |
+| --- | --- |
+| Sales Quote | `SQUOT-` |
+| Sales Invoice | `SINV-` |
+| Purchase Invoice | `PINV-` |
+| Payment | `PAY-` |
+| Journal Entry | `JV-` |
+| Stock Movement | `SMOV-` |
+| Shipment | `SHPM-` |
+| Purchase Receipt | `PREC-` |
+| Pricing Rule | `PRLE-` |
 
-These are selected by default when making a transactional entry. You can create new a Number Series to suit your needs.
-
-::: warning The Number Series of a transactional entry cannot be changed once Save is clicked. :::
-
-## Creating a New Number Series
-
-To create a new Number Series for a specific transactional entry
-
-1. Find the Number Series field on the entry form or the Quick Edit Form.
-2. Enter the new Number Series you would like to use in the field.
-3. Click on Create
-
-[![Number Series Field](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/number-series-field.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/number-series-field.png)
-
-This will take you to the Number Series Quick Edit Form where you can change the number series configuration.
-
-[![Number Series Form](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/new-number-series.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/new-number-series.png)
-
-Once you are done editing, click on Save, now you can use the new Number Series for the entry.
+To see the list, click **Setup** > **Number Series** in the sidebar. Only a **Books Manager** or a **System Manager** can create or delete a series. See [Roles and Permissions](/getting-started/roles-and-permissions/).
 
 ## Number Series Fields
 
-The fields decide how the Number Series is set
+| Field | Description |
+| --- | --- |
+| Prefix | The text before the number, such as `SINV-`. Each series must have a different prefix. |
+| Reference Type | The document type that uses the series. |
+| Start | The number of the first document. The default is `1001`. |
+| Digits | The minimum number of digits. RareBooks adds zeros at the start to fill them. The default is `4`. |
+| Current | Read only. The last number that the series gave. |
 
-1. Prefix: The base prefix applied to the number series for example: _SINV-_
-2. Reference Type: The transactional entry type to which this Number Series belongs.
-3. Start: The number given to the first entry in the Number Series.
-4. Pad Zeros: The number of given as padding to the number part of the Number Series.
+![Number series SINV- with Start 1001, Digits 4, Reference Type Sales Invoice, and Current 1047.](/images/docs/books-docs-number-series-1-series-form-v4.png)
 
-For example, if Name is _SALES-PAY-_, Start is 0, and Pad Zeros is 3, then the Number Series values assigned to the transactional entries would be:
+For example, the prefix `SALES-PAY-` with **Start** `1` and **Digits** `3` gives `SALES-PAY-001`, `SALES-PAY-002`, and so on.
 
-_SALES-PAY-000_, _SALES-PAY-001_, _SALES-PAY-002_, _SALES-PAY-003_, etc.
+RareBooks does not add a dash after the prefix. The prefix `INV` gives `INV1001`. A prefix cannot contain `/`, `?`, `&`, `=`, `%`, or some other special characters, such as `@`.
+
+## Create a Number Series
+
+1. Open a new document, such as a sales invoice.
+2. In the **Number Series** field, type the new prefix, such as `INV-`.
+3. Click **Create**.
+4. Make sure that the **Reference Type** is the type of the document.
+5. Enter the **Start** and the **Digits**, and then click **Save**.
+
+RareBooks selects the new series in this document only. To use it for all new documents, [set it as the default](#set-the-default-series).
+
+You can also click **New** in the **Number Series** list, or import series with the [Import Wizard](/getting-started/import-wizard/).
+
+## How Documents Get a Series
+
+A new document starts with the default series of its type. You can select a different series of the same type before you save. RareBooks names the document when you save it for the first time, also as a draft. After that, you cannot change its series.
+
+### Set the Default Series
+
+1. Click **Setup** > **Settings** in the sidebar.
+2. Click **Defaults**.
+3. In the **Number Series** section, select the series for each document type.
+4. Click **Save**, and then click **Yes** to reload RareBooks.
+
+The setup wizard selects the default series for you. Pricing rules do not have a field here. New pricing rules use the `PRLE-` series. See [Settings](/settings/settings/#defaults).
+
+## Change a Series
+
+You cannot edit a series after you save it. To number new documents in a different way, create a new series and set it as the default. The documents that you saved before keep their names.
+
+Each prefix has one counter. If you delete a series and create it again with the same prefix, the numbers continue after the last number that the prefix gave. RareBooks then ignores a lower **Start**.
+
+:::tip[A New Series Each Year]
+To start new numbers each year, create a series with the year in the prefix, such as `SINV-2027-`. At the start of the year, set it as the default.
+:::
+
+Batches and serial numbers do not use these series. See [Batch Series](/inventory/batches/#batch-series) and [Serial Number Series](/inventory/serial-number/#serial-number-series).

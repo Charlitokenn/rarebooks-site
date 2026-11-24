@@ -1,47 +1,68 @@
 ---
-sidebar_position: 4
-sidebar_label: Price List
-title: Price List
+title: "Price List"
+description: "A price list keeps a set of item rates."
 sidebar:
   order: 5
 ---
 
-Using Price List, you can keep track of multiple [Item Prices](https://github.com/frappe/books_docs/blob/master/docs/entries/price-list.md#item-price-table-fields) for sales and purchase.
+A price list keeps a set of item rates. Use price lists to sell or buy the same items at different rates, such as wholesale and retail rates. When you select a price list on an invoice, RareBooks takes the item rates from the list.
 
-An Item can by priced differently depending on whether it is for sale or purchase, if it is discount season, etc.
+## Turn On Price Lists
 
-A Price List helps by grouping multiple item prices under a single entry. You can then select this entry when making a Sales or a Purchase Invoice, and when an item is selected its rate will be fetched from the Price list.
+1. Click **Setup** > **Settings** in the sidebar.
+2. In the **General** tab, turn on **Enable Price List**.
+3. Click **Save**, and then click **Yes** to reload RareBooks.
 
-To use Price Lists you need to first enable them.
-
-## Enable Price List
-
-The Price List feature needs to be enabled first by checking the **Enable Price List** option in the General Settings.
-
-To navigate: `Setup > Settings > General Tab` [![Enable Price List](https://github.com/frappe/books_docs/raw/master/docs/entries/images/enable-price-list.png)](https://github.com/frappe/books_docs/blob/master/docs/entries/images/enable-price-list.png)
+**Price List** now shows in the **Common** group of the sidebar. Sales invoices, sales quotes, and purchase invoices show a **Price List** field. If you turn off price lists later, RareBooks takes the rates from the items again.
 
 ## Create a Price List
 
-To create a Price Lists, go to:`Common > Price List`. And then click on the blue `+` button to open a new Price List creation form.
+Only a **Books Manager** or a **System Manager** can make and change price lists.
 
-[![Price List Form](https://github.com/frappe/books_docs/raw/master/docs/entries/images/price-list.png)](https://github.com/frappe/books_docs/blob/master/docs/entries/images/price-list.png)
+![Price list Wholesale for sales, with item prices for six items.](/images/docs/books-docs-price-list-1-price-list-form-v4.png)
 
-Add Item Prices to your price list, when done click on the Save button.
+1. Click **Common** > **Price List** in the sidebar.
+2. Click **New**.
+3. Enter a **Name**, such as `Wholesale`. You cannot change it after you save.
+4. Select **For Sales**, **For Purchase**, or both. **For Sales** is selected by default.
+5. In **Item Prices**, click **Add row**. Select the **Item** and enter the **Rate**. On a phone, fill in the row in the sheet that opens, and tap **Done**.
+6. Add a row for each item that has a price in this list.
+7. Click **Save**.
 
-Price List Fields:
+| Field | Description |
+| --- | --- |
+| Is Price List Enabled | Only enabled price lists show on invoices. A new list is enabled. |
+| For Sales | Use the list on sales invoices, sales quotes, and in the POS. |
+| For Purchase | Use the list on purchase invoices. |
+| Unit Type | In an item price row. The unit of the price. It starts as the unit of the item. |
+| Rate | In an item price row. The price of one unit, in your company currency. |
 
-1. **Is Price List Enabled**: enables the Price List, if disabled it cannot be used.
-2. **For Sales**: if enabled, the Price List can be selected in Sales Invoices.
-3. **For Purchases**: if enabled, the Price List can be selected in Purchase Invoices.
+Add only one price for each item and unit. If **Enable UOM Conversion** is on, you can add a price for each unit of an item, such as `Unit` and `Box`. See [Inventory Settings](/inventory/inventory-settings/).
 
-:::tip Multiple Prices
+## Use a Price List on an Invoice
 
-You can add multiple prices for an Item in the Price List. When fetching the price from the Price List, the first Item Price with a matching Unit Type will be selected. :::
+1. Open a draft sales invoice, sales quote, or purchase invoice.
+2. In **Price List**, select the price list.
+3. Add the items.
 
-## Setting a Price List
+The field shows only enabled lists for that side: **For Sales** lists on sales documents, and **For Purchase** lists on purchase invoices. A return keeps the price list of its original invoice.
 
-To use a Price List, ou need to select **Price List** in the Sales or Purchase Invoice form.
+When you select an item, RareBooks gets the rate in this order:
 
-[![Price List Selection](https://github.com/frappe/books_docs/raw/master/docs/entries/images/price-list-selection.png)](https://github.com/frappe/books_docs/blob/master/docs/entries/images/price-list-selection.png)
+1. The price in the price list for the unit of the row.
+2. The price in the price list for the unit of the item, converted to the unit of the row.
+3. The **Rate** of the item.
 
-Once this is done, when a new item is selected it's price will be fetched from the selected Price List.
+For an invoice in a different currency, RareBooks converts the rate with the exchange rate. See [Multi-Currency Invoicing](/transactions/multicurrency-accounting/).
+
+RareBooks gets the rates again when you change the **Price List**, the party, the date, the currency, or the exchange rate. It also gets the rate of a row again when you change its unit. If you enter a rate in a row yourself, RareBooks keeps it.
+
+Pricing rules apply after the price list. A rule can replace the rate or give a discount on it. See [Pricing Rule](/masters/pricing-rule/).
+
+## Use a Price List in the POS
+
+1. Click **Price list** above the totals of the cart. On a phone, tap the **…** button in the header, and then tap **Price List**.
+2. Select a **Price List**.
+3. Click **Apply**.
+
+RareBooks gets the rates of the items in the cart again. To stop using the price list, click **Remove price list**, and then click **Apply**. On a phone, tap the delete button next to the field. See [Point of Sale (POS)](/transactions/point-of-sale/).

@@ -1,51 +1,75 @@
 ---
-sidebar_position: 4
-sidebar_label: Items
-title: Items
+title: "Items"
+description: "An item is a product or a service that you buy or sell."
 sidebar:
   order: 2
 ---
 
-_Item_ is term used by RareBooks for anything that is purchased or sold using a Sales or Purchase Invoice.
+An item is a product or a service that you buy or sell. You add items to quotes, invoices, and stock documents.
 
-## Types of Items
+## Item Lists
 
-An Item is classified by what purpose it's used for.
+The **Purpose** of an item tells which documents can use it. The sidebar has a list for each purpose:
 
-| #   | For       | Name           | Usage                       | Navigation                   |
-| --- | --------- | -------------- | --------------------------- | ---------------------------- |
-| 1   | Sales     | Sales Items    | Sales Invoices              | `Sales > Sales Items`        |
-| 2   | Purchases | Purchase Items | Purchase Invoices           | `Purchases > Purchase Items` |
-| 3   | Both      | Common Items   | Sales and Purchase Invoices | `Common > Common Items`      |
+| List | Sidebar | Shows the Items With the Purpose | A New Item Gets the Purpose |
+| --- | --- | --- | --- |
+| Sales Items | **Sales** > **Sales Items** | **Sales** or **Both** | **Sales** |
+| Purchase Items | **Purchases** > **Purchase Items** | **Purchases** or **Both** | **Purchases** |
+| Items | **Common** > **Items** | **Both** | **Both** |
 
-> Usage Make sure that you create the Item under the correct Navigation as this cannot be changed after creation.
+Sales quotes and sales invoices use items with the purpose **Sales** or **Both**. Purchase invoices use **Purchases** or **Both**. A document with an item of the wrong purpose does not save.
+
+## Create an Item
+
+1. Click **Sales** > **Sales Items** in the sidebar.
+2. Click **New**.
+3. Enter the **Item Name**.
+4. Check the **Purpose** and the **Type**.
+5. Enter the **Rate**.
+6. In **Tax**, select a tax template.
+7. Click **Save**.
+
+On the phone dashboard, you can also tap the **+** button in the header, and then tap **Item**. This item gets the purpose **Both**.
+
+You can also make an item from an invoice row. Type the name in **Item**, and click **Create**. The item gets the purpose **Sales** in a sales document, and **Purchases** in a purchase invoice.
+
+Each item must have a unique **Item Name**. You can change the **Purpose** later, but not the **Item Name**, **Type**, **Unit Type**, **Track Inventory**, **Has Batch**, or **Has Serial Number**.
 
 ## Item Fields
 
-When creating a new Item the following fields are displayed:
+| Field | Description |
+| --- | --- |
+| Item Code | Optional. Your own code for the item. RareBooks copies it to the invoice rows. |
+| Unit Type | The unit of the quantity. The default is **Unit**. A quantity in **Unit** must be a whole number. Only a **Books Manager** or a **System Manager** can add a unit. |
+| Rate | The rate of one unit. You can change it in the invoice rows. A [price list](/masters/price-list/) can also set the rate. |
+| Sales Acc. | The income account. A new product gets the **Sales** account, and a new service gets the **Service** account, if your chart of accounts has it. |
+| Purchase Acc. | The expense account. A new item gets the newest ledger account with the account type **Cost of Goods Sold**. |
+| Tax | Optional. The tax template for the invoice rows of the item. See [Taxes](/masters/taxes/). |
+| HSN/SAC | Only for a company in India. The HSN or SAC code of the item, for GST. It has 4 to 8 digits. |
 
-1. Item Image: an image to identify the Item by.
-2. Item Name: a name to identify the Item by, each Item should have a unique name.
-3. Item Code: a unique identifier assigned to each Item for easy tracking, reference, and differentiation.
-4. Item Group: a category or classification under which the Item is grouped for better organization and reporting.
-5. Purpose: specifies whether the Item is meant for Sales, Purchases, or Both.
-6. Type: indicates whether the Item is a Product or a Service.
-7. Unit Type: base unit of the Item to which the rate is applied
-8. Rate: base cost of an Item, this can be changed in the invoice.
-9. Description: textual description of what the Item is.
-10. Sales Acc.: the income account that is credited when the Item is sold.
-11. Purchase Acc.: the expense account that is debited when the Item is purchased.
-12. Tax: tax applied on the Item when making an invoice, this can be changed in the invoice.
-13. HSN/SAC: the HSN/SAC code that is used for classifying Items.
-14. Barcode: a machine-readable code used to quickly identify and scan the Item in transactions.
-15. Track Inventory: enables stock level monitoring for the Item to maintain accurate inventory records.
-16. Has Batch: specifies whether the Item is managed in batches for tracking manufacturing or expiry details.
-17. UOM Conversions: defines conversion rates between the Item’s base unit and other units of measure.
+![Item Darjeeling Tea 250g with item code, item group, purpose, type, rate, sales and purchase accounts, and tax.](/images/docs/books-docs-items-1-item-form-v4.png)
 
-# Customize Columns
+The **Inventory** section has **Barcode**, **Track Inventory**, **Has Batch**, **Has Serial Number**, and their series. They show only when their feature is on in the [inventory settings](/inventory/inventory-settings/). You can select **Track Inventory** only on a new product. Its **Purchase Acc.** must then be a liability account. See [Introduction to Inventory](/inventory/introduction-to-inventory/), [Batches](/inventory/batches/), and [Serial Number](/inventory/serial-number/).
 
-When the **Customize Columns** feature is enabled in system settings, a **“Customize Columns”** button appears in each list view. Clicking this button opens the **Column Selector Modal**, which allows users to choose which columns are shown in the list. The modal provides a simple and interactive way to personalize data views through checkboxes and drag-and-drop actions.
+In **UOM Conversions**, the **Conversion Factor** is the quantity of the **Unit Type** in one **UOM**. For example, a `Box` of 12 units has the factor `12`.
 
-Inside the modal, users see two sections — **Displayed Fields** and **Available Fields**. Displayed Fields show the columns that are currently visible in the list view, while Available Fields contain other fields that can be added. Users can easily reorder displayed columns by dragging them, remove columns by unchecking them or dragging them out, and add new columns by checking or dragging them from the Available Fields section. Required fields are protected from being removed, and hidden or table-type fields are excluded automatically. Once the desired columns are selected and arranged, clicking the **Save** button applies the changes and updates the list view accordingly.
+When you add an item to an invoice, RareBooks copies the rate, the tax, the account, and the description to the row. If you change the item later, the rows of earlier invoices do not change.
 
-[//]: # "![Screenshot from 2025 10 23 11 21 45](/files/Screenshot%20from%202025-10-23%2011-21-45.png)"
+## Item Groups
+
+Item groups put items into categories. To use them, turn on **Enable Item Group** in **Setup** > **Settings** > **General**. You cannot turn off item groups after you turn them on.
+
+To make a group, click **Item Group** on the item, type the name, and click **Create**. If an item has no **HSN/SAC** code, it gets the code of its group. If an item has no **Tax**, its invoice rows get the tax of its group.
+
+## Create a Document From Items
+
+1. Open an item list, such as **Sales** > **Sales Items**.
+2. Click **Select** in the page header. On a phone, tap **Select** next to **Filters**.
+3. Click the items that you want.
+4. Click **Create**, and then click **Sales Quote**, **Sales Invoice**, or **Purchase Invoice**.
+
+A new draft opens with one row for each item, with a quantity of 1. The menu shows only the documents that you can create and that can use all the selected items.
+
+To make an invoice from one item, open the item and click **Create** > **Sales Invoice** or **Create** > **Purchase Invoice**. On a phone, these actions are in the **…** menu in the header.
+
+You cannot delete an item that a document uses. See [Roles and Permissions](/getting-started/roles-and-permissions/).

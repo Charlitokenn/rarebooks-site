@@ -1,0 +1,83 @@
+---
+title: "Roles and Permissions"
+description: "Roles control who can open RareBooks and what each user can do."
+sidebar:
+  order: 3
+---
+
+Roles control who can open RareBooks and what each user can do. You give access with roles.
+
+## Roles
+
+| Role | Use |
+| --- | --- |
+| Books Cashier | For counter staff. A Books Cashier sells and refunds only in the [Point of Sale](/transactions/point-of-sale/), and opens and closes their own POS shifts. |
+| Books User | For staff who record daily work, such as sales, purchases, payments, and stock. |
+| Books Manager | For owners and accountants. A Books Manager can do all the work in RareBooks, see the accounts and the financial reports, and change the settings. |
+| System Manager | The administrator role of the site. The owner who created the site has this role and the Books Manager role. It has all the rights of the Books roles. Only a System Manager can complete the setup wizard, change print templates, and edit forms in Customize Form. |
+
+A user can open RareBooks only with one of these roles.
+
+## What Each Role Can Do
+
+In this table, **All** means create, edit, submit, cancel, and delete. A dash (—) means no access.
+
+| Area | Books Cashier | Books User | Books Manager and System Manager |
+| --- | --- | --- | --- |
+| Sales invoices, including POS sales and returns | Create, edit, and submit POS sales and their returns | Create, edit, submit, and cancel | All |
+| POS shifts | Create, edit, and submit their own | Create, edit, submit, and cancel | All |
+| Payments | Read their own | Create, edit, submit, and cancel | All |
+| Quotes, purchase invoices, shipments, purchase receipts, stock movements | — | Create, edit, submit, and cancel | All |
+| Leads | — | Create, edit, and delete | All |
+| Item enquiries | Create and edit | Create, edit, and delete | All |
+| Customers, suppliers, and addresses | Create and edit | Create, edit, and delete | All |
+| Items, item groups, batches, and serial numbers | Read | Create, edit, and delete | All |
+| Journal entries | — | — | All |
+| Accounts and the chart of accounts | — | — | Create, edit, and delete |
+| Tax templates, price lists, pricing rules, coupon codes, loyalty programs, POS profiles, locations, number series | Read | Read | Create, edit, and delete |
+| Settings | Read | Read | Edit |
+| Print templates | Print | Print | Print. A System Manager can also create, edit, and delete. |
+| Accounting reports and GST reports | — | — | Read |
+| Stock reports | — | Quantities | Quantities and values |
+| Dashboard | Sales invoice cards | Invoice cards | Invoice cards and charts |
+| Import Wizard | — | — | Use |
+| Setup wizard | — | — | System Manager only |
+
+:::note[Ledger Entries]
+RareBooks makes the accounting, stock, and loyalty point ledger entries when you submit or cancel a document. No role can edit or delete a ledger entry directly. When you delete a cancelled document, RareBooks also deletes its ledger entries.
+:::
+
+## Other Rules
+
+- Only a Books Manager can delete a quote, an invoice, a payment, or a stock document. A cancelled document stays as the record that it was cancelled.
+- A Books Cashier sells and takes returns only in the POS. A Books Cashier cannot save a sales invoice that is not a POS sale, or return one.
+- A Books Cashier cannot cancel a sale. To correct a sale, make a return in the POS. A Books Cashier sees all sales invoices, so a cashier can return a POS sale that another cashier made.
+- Each cashier opens and closes their own POS shift. A Books Cashier sees only their own shifts. A Books User or a Books Manager sees the shifts of all cashiers, and can close the open shift of a cashier.
+- A Books Cashier does not make payments directly. The POS makes the payment of each sale. A cashier sees only these payments, and does not see purchase payments.
+- Only a Books Manager sees the value of stock. A Books User sees the quantities, but not the valuation rate or the stock value.
+- The server fills the accounts of the documents that a Books User makes, such as the account of an invoice and the cash or bank account of a payment. A Books User does not see these accounts. To let a Books User pay into different bank accounts, make a payment method for each bank account.
+- When the POS is on, the **Can Change Rate** and **Can Change Discount** settings of the POS apply to all sales invoices, not only to POS invoices. Only a Books Manager or a System Manager can go past them on a normal sales invoice.
+
+## How RareBooks Shows Permissions
+
+RareBooks shows only what your role allows:
+
+- The sidebar shows only the lists and the reports that you can open.
+- The **Setup** group shows only to users who can change the settings.
+- The dashboard shows only the cards and the charts for data that you can read.
+- The **New** button shows only when you can create that document. Actions that make a new document, such as **Create purchase**, also show only then.
+- **Save**, **Submit**, **Cancel**, and **Delete** show only when you have that right.
+- If you cannot edit a document, its fields are read only.
+- [Quick Search](/getting-started/quick-search/) shows only the records that you can read.
+
+## Add a User
+
+RareBooks does not have a page for users. A System Manager adds users in Frappe Desk:
+
+1. Open `https://<your-site>/app/user`.
+2. Click **Add User**, or open a user that exists.
+3. Enter the email address and the name of the user.
+4. In **Roles**, select **Books Cashier**, **Books User**, or **Books Manager**.
+5. Click **Save**.
+
+To change what a role can do, use the Role Permissions Manager at `https://<your-site>/app/permission-manager`. For more information, see the [Frappe documentation on users and permissions](https://docs.frappe.io/framework/user/en/basics/users-and-permissions).

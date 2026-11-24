@@ -1,57 +1,54 @@
 ---
-sidebar_position: 6
-sidebar_label: Stock Ledger
-title: Stock Ledger
+title: "Stock Ledger"
+description: "The Stock Ledger report shows the stock entries of your items."
 sidebar:
   order: 8
 ---
 
-Stock Ledger is a report that displays all the stock entries that are recorded whenever an inventory transaction such as a Shipment or a Stock Movement is submitted.
+The Stock Ledger report shows the stock entries of your items. RareBooks makes stock entries when you submit a stock movement, a shipment, or a purchase receipt. Each entry shows the change in quantity and in value, and the balance after the change. Stock that goes out takes the FIFO rate of the oldest stock that is still in. Only a **Books Manager** or a **System Manager** sees the rates and the values.
 
-The Stock Ledger shows you the change in quantity, value and valuation rate over the course of various inventory transactions.
+## Open the Stock Ledger
 
-[![Stock Ledger](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/stock-ledger.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/stock-ledger.png)
+Click **Reports** > **Stock Ledger** in the sidebar. The report shows only when inventory is on. On a phone, tap **Reports** in the bottom tabs, tap the report title in the header, and then tap **Stock Ledger**.
+
+### Open the Entries of a Document
+
+1. Open a submitted stock movement, shipment, or purchase receipt.
+2. Click **View** > **Stock entries** in the page header. On a phone, tap the **…** button in the header, and then tap **Stock entries**.
+
+The report opens with **Ref Type** and **Ref Name** set to the document. **From Date** and **To Date** change to the date of the document. After you submit one of these documents, you can also click **View stock entries** in the message.
+
+## Columns
+
+| Column | Description |
+| --- | --- |
+| Batch, Serial Number | Show when batches or serial numbers are on. |
+| Quantity | The change in quantity. Stock that comes in is positive and green. Stock that goes out is negative and red. |
+| Balance Qty. | The quantity of the item at the location after the entry. For an item with batches, the quantity of the batch. |
+| Incoming rate | For stock that comes in, the rate of the entry. For stock that goes out, the FIFO rate at which it went out. |
+| Valuation Rate | The balance value divided by the balance quantity. |
+| Balance Value | The value of the stock at the location after the entry. |
+| Value Change | The change in the stock value. Green is an increase, and red is a decrease. |
+| Ref Name, Ref Type | The document that made the entry, such as `SHPM-1001`, and its type. |
+
+![Stock Ledger with the Batch and Serial Number columns, outgoing quantities in red, incoming quantities in green, and the balance quantity.](/images/docs/books-docs-stock-ledger-1-entries-v4.png)
+
+A **Material Transfer** makes two entries for each row. One takes the stock out of the source location. The other puts it into the destination location, with the value that the first entry took out. For an item with serial numbers, each serial number gets its own entry with a quantity of 1.
 
 ## Filters
 
-The Stock Ledger has several filters which can help you narrow the generated report to the entries you would like to see.
+| Filter | Description |
+| --- | --- |
+| Ref Type | **Stock Movements**, **Shipment**, or **Purchase Receipt**. The default is **All**. |
+| Ref Name | One document. Select a **Ref Type** first. |
+| From Date, To Date | The defaults are one year before today and today. The report includes both dates. |
+| Group By | Puts the entries of each **Item**, **Location**, or **Reference** together. |
+| Ascending Order | Shows the oldest entries first. By default, the newest entries show first. |
 
-### Ref Type
+You can also filter by **Item** and **Location**. When batches or serial numbers are on, you can also filter by **Batch** or **Serial Number**.
 
-Setting Ref Type as anything other than All will display entries only of that Transactional entry type.
+## Use the Report
 
-Example setting Ref Type as Shipment will display only entries created due to Shipment.
+To change the dates, move between pages, export, or print, see [Reports](/financial-reports/reports/). The export file is `stock-ledger.csv` or `stock-ledger.json`, with all the rows of the current filters.
 
-### Ref Name
-
-Ref Name filter allows to display all ledger entries that were generated due to a single Transactional Entry.
-
-To enable this you need to first set Ref Type.
-
-### Item
-
-Selecting a Item will display only entries involving the selected item.
-
-### Location
-
-Selecting a Location will display only entries involving the selected location.
-
-### From Date
-
-The initial date after which all the entries are to be displayed. The default value is one year before tomorrow.
-
-### To Date
-
-The final date before which all the entries are to be displayed. The default value is one day after today.
-
-### Group By
-
-Selecting a Group By option other than None groups the entry according to the selected option.
-
-For instance setting Group By as Reference will group the entries by the Name of the Transactional entry.
-
-### Ascending Order
-
-By default the entries are displayed by newest entry first, i.e. descending order of Date.
-
-Checking this will display the entries in ascending order of entry date.
+On a phone, the report shows the entries below their dates, with the change in quantity and the balance quantity on the right. To see all the columns of an entry, tap it. The sheet has a button that opens the document, such as **Open SHPM-1001**. To show more entries, tap **Load more**. You cannot export the report on a phone.

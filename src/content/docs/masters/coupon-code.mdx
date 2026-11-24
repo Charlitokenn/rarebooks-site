@@ -1,59 +1,66 @@
 ---
-sidebar_position: 4
-sidebar_label: Coupon Code
-title: Coupon Code
+title: "Coupon Code"
+description: "A coupon code applies a pricing rule to a sales invoice."
 sidebar:
   order: 7
 ---
 
-A coupon code can be used to get a discount. To use a coupon, you must first
-set up a pricing rule. This rule determines the specific discount or offer
-associated with the coupon. When you apply the coupon, it will follow the rules
-you set up.
+A coupon code applies a pricing rule to a sales invoice. The customer gives you the code, and you add it to the invoice. The pricing rule of the coupon then gives the discount or the free item.
 
-## Enabling Coupon Code
+## Turn On Coupon Codes
 
-1. Go to `Setup > Settings`.
-2. Navigate to the **Features** section.
-3. Check the boxes for the **Enable Discount Accounting**,
-   **Enable Pricing Rule**, and **Enable Coupon Code**.
+Coupon codes need discount accounting and pricing rules.
 
-> Note: **Discount Accounting** and **Pricing Rule** should be enabled to use **Coupon Codes**
+1. Click **Setup** > **Settings** in the sidebar.
+2. In the **General** tab, turn on **Enable Discount Accounting**, **Enable Pricing Rule**, and **Enable Coupon Code**.
+3. Click **Save**, and then click **Yes** to reload RareBooks.
 
-![Enable Coupon Codes](https://raw.githubusercontent.com/frappe/books_docs/5601f51269118621cdd73b3ad47f2033c1eff868/docs/entries/images/enable-coupon-code.png)
+**Coupon Code** now shows in the **Sales** group of the sidebar, and sales invoices have a **Coupons** section. You cannot turn off discount accounting after you save it. If you turn off coupon codes later, RareBooks does not save sales invoices that have coupons.
 
-Once that is done you will have to restart RareBooks to see the Coupon Code
-in the sidebar.
+## Set Up a Coupon Code
 
-> Note: Coupon Code cannot be disabled once it has been enabled.
+Each coupon applies one pricing rule, and the rule must be coupon based. Only a **Books Manager** or a **System Manager** can make coupon codes.
 
-## Creating Coupon Code
+![Coupon code DIWALI10 with its pricing rule, minimum amount, validity dates, maximum use, and used count.](/images/docs/books-docs-coupon-code-1-coupon-form-v4.png)
 
-To create a Coupon Code first navigate to the Coupon Code page
+1. Create a [pricing rule](/masters/pricing-rule/) and select **Is Coupon Code Based**. This rule applies only when the invoice has its coupon.
+2. Click **Sales** > **Coupon Code** in the sidebar.
+3. Click **New**.
+4. Enter a **Name**, such as `Summer Sale`. RareBooks fills the **Coupon Code**, such as `SUMMERSA`. You can change the code before you save, but not after.
+5. Select the **Pricing Rule**.
+6. Set **Valid From** and **Valid To**.
+7. In **Maximum Use**, enter the number of invoices that can use the coupon. Enter `0` for no limit.
+8. Optional: Enter a **Min Amount** and a **Max Amount** for the order value.
+9. Click **Save**.
 
-> **Sales > Coupon Code**
+The order value is the total of the rate multiplied by the quantity of all the rows, without discounts and taxes. Enter the amounts in your company currency.
 
-Then click on the `+` button to open the Coupon Code form.
+The amounts and dates of the coupon must stay inside the limits of its pricing rule. **Used** shows the number of submitted invoices that use the coupon.
 
-![Coupon Code](https://raw.githubusercontent.com/frappe/books_docs/5601f51269118621cdd73b3ad47f2033c1eff868/docs/entries/images/coupon-code.png)
+## Apply a Coupon on a Sales Invoice
 
-- **Is Enabled:** To mark the Coupon Code as active.
-- **Pricing Rule:** Select the pricing rule that applies when a specific coupon
-  code is used.
-- **Min Amount:** Minimum order value for the rule to be applied.
-- **Max Amount:** Maximum order value for the rule to be applied.
-- **Valid From:** The start date for the pricing rule to be active.
-- **Valid To:** End date for the pricing rule to be inactive.
-- **Maximum Use:** Maximum use for the coupon to be applied.
-- **Used:** Count of times the coupon has been applied.
+1. Open a draft sales invoice.
+2. Select the customer and add the items.
+3. In **Coupons**, click **Add row**, and select the coupon code in the new row. On a phone, select it in the sheet that opens, and tap **Done**.
+4. Click **Save**.
 
-## Apply Coupon Code
+RareBooks applies the pricing rule of the coupon. The **Pricing Rule Detail** table shows the rule. You can add more than one coupon, but not the same coupon two times.
 
-You can select coupons to get discounts. The coupon will apply a discount based
-on the rules set for that coupon.
+RareBooks shows an error and does not save the invoice when the coupon is disabled, used up, out of its dates or amounts, or its pricing rule does not apply to an item of the invoice.
 
-![Coupon Code](https://raw.githubusercontent.com/frappe/books_docs/5601f51269118621cdd73b3ad47f2033c1eff868/docs/entries/images/choose-coupon-code.png)
+:::tip[Priority]
+If a different rule with a higher priority applies to the same item, the coupon rule does not apply, and RareBooks shows an error. Give the coupon-based rule a higher **Priority** than the other rules for the same items.
+:::
 
-Applied Pricing rule can be viewed in the Pricing Rule Detail section.
+When you submit an invoice, RareBooks adds 1 to **Used** for each coupon. If this makes **Used** more than **Maximum Use**, the invoice does not submit. When you cancel the invoice, RareBooks takes 1 away from **Used**.
 
-![Coupon Code](https://raw.githubusercontent.com/frappe/books_docs/5601f51269118621cdd73b3ad47f2033c1eff868/docs/entries/images/applyed-coupon-code.png)
+## Apply a Coupon in the POS
+
+1. Select the customer and add the items.
+2. Click **Coupon** above the totals of the cart.
+3. In **Coupons**, select the coupon code. If the coupon does not apply, the reason shows below the field.
+4. Click **Done**.
+
+On a phone, tap **Apply coupon code** on the payment screen.
+
+The coupon does not apply when **Ignore Pricing Rule** is on in the POS settings or the POS profile. If you change the cart or the price list so that the coupon no longer applies, RareBooks removes it from the sale and shows a warning. See [Point of Sale (POS)](/transactions/point-of-sale/).

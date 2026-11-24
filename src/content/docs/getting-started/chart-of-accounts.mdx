@@ -1,52 +1,62 @@
 ---
-sidebar_label: Chart Of Accounts
-title: Chart Of Accounts
+title: "Chart of Accounts"
+description: "The chart of accounts is the list of all the accounts of your company."
 sidebar:
-  order: 2
+  order: 4
 ---
 
-Chart of Accounts is used to refer to the organization of all accounts in a financial system.
+The chart of accounts is the list of all the accounts of your company. RareBooks makes it from the chart that you select in the setup wizard.
 
-Navigate to the chart of accounts from the Sidebar: `Setup > Chart of Accounts`
+To open it, click **Setup** > **Chart of Accounts** in the sidebar. This page is not available on a phone.
 
 ## Organization of Accounts
 
-There are two types of accounts in the Chart of Accounts
+There are two types of accounts:
 
-1. **Ledger Accounts**: Accounts that are used in the transactional entries and that appear in the General Ledger.
-2. **Group Accounts**: Accounts that are used to group other Group and Ledger accounts.
+1. **Ledger accounts**: Transactions use these accounts. They show in the General Ledger. A ledger account has a circle icon and shows its balance, such as `1,000.00 Dr.`
+2. **Group accounts**: These accounts contain other group accounts and ledger accounts. A group account has a folder icon. Some root accounts have a different icon.
 
 ### Root Accounts
 
-At the upper most level there are 4 Group Accounts. These can be thought of as the _Root Accounts_. These _Root Accounts_ have all the other accounts grouped underneath them.
+The accounts at the top level are the root accounts. The Standard Chart of Accounts has five root accounts: **Application of Funds (Assets)**, **Source of Funds (Liabilities)**, **Equity**, **Income**, and **Expenses**. The charts of other countries can have a different number of root accounts.
 
-[![Root Accounts](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/root-accounts.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/root-accounts.png)
+Each root account is a debit account or a credit account. All the accounts below a credit root account are also credit accounts. For more information, see [Credit and Debit](/basics/accounting-basics/#credit-and-debit).
 
-:::tip[Number of Root Accounts]
-The number of Root Accounts depends on your country's CoA.
+### Open the Groups
 
-For example: The Indian CoA has only 4. Whereas the Standard Chart of Accounts has 5.
-:::
+All the groups are closed when the page opens. Click a group, or the arrow before it, to open or close it. Click **Expand** or **Collapse** at the top of the page to open or close all the groups.
 
-Each Root Account is either a Credit or a Debit account. If a Root Account is a Credit account all the accounts underneath it will also be a Credit Account. ([Credit and Debit](https://github.com/frappe/books_docs/blob/master/basics/accounting-basics#credit-and-debit))
+### View an Account
 
-### Other Accounts
+Click a ledger account to open it in a side panel. The panel shows these fields:
 
-Clicking on a Root Account will reveal the accounts other it. This goes for the other Group Accounts too.
+- **Root Type**. It is read only when the account has a **Parent Account**.
+- **Parent Account**
+- **Account Type**
+- **Is Group**
+- **GST Head**, only for a company in India. The GST reports use it to find the GST amounts. Select **CGST**, **SGST**, **IGST**, or **Exempt**. For more information, see [GST Reports](/financial-reports/gst-reports/#gst-accounts-and-tax-templates).
 
-[![Other Accounts](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/other-accounts.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/other-accounts.png)
+To change a value, edit the field and click **Save**. To close the panel, click the **X** button.
 
-Clicking on a Ledger Account will open that accounts Quick Edit Form where the details of the account can be viewed.
+## Create a New Account
 
-[![Ledger Account](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/ledger-account.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/ledger-account.png)
+1. Move the pointer over a group account.
+2. Click the **…** button at the end of the row.
+3. Click **Add account** or **Add group**.
+4. Enter the account name.
+5. Click **Save**, or press `Enter`.
 
-## Creating a New Account
+![Chart of Accounts with the asset and income groups open and the ledger balances, and the menu of the Bank Accounts group with Add account, Add group, and Delete group.](/images/docs/books-docs-chart-of-accounts-1-add-account-menu-v4.png)
 
-To create a new account
+The new account gets the root type and the account type of its group. RareBooks then opens the account in the side panel, where you can change the account type.
 
-1. Hover over a Group Account
-2. Click on Add Account or Add Group
+To make a new root account, click **Add root group** at the top of the page. Enter the account name and the root type in the side panel. Then click **Save**.
 
-[![Create a New Account](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/create-new-account.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/create-new-account.png)
+## Delete an Account
 
-This will display a new row where you can enter the account name. After you are done press Save to create the account.
+1. Move the pointer over the account.
+2. Click the **…** button on the right side of the row.
+3. Click **Delete account** or **Delete group**.
+4. Click **Delete** to confirm. To stop, click **Keep Account**, or **Keep Group** for a group.
+
+You cannot undo a delete. You cannot delete a root account, or a group that contains other accounts.

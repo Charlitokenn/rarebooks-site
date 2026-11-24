@@ -1,54 +1,88 @@
 ---
-sidebar_position: 6
-sidebar_label: Serial Number
-title: Serial Number
+title: "Serial Number"
+description: "A serial number identifies one unit of an item."
 sidebar:
   order: 6
 ---
 
-If an Item is serialized, a Serial Number record is maintained for each unit of quantity of that Item. This information helps to track the location of the Serial Number. The Serial Number status will tell you its current Inventory status.
+A serial number identifies one unit of an item. When an item has serial numbers, RareBooks keeps a Serial Number record for each unit. The status of the record shows if the unit is in stock.
 
-## Enable Serial Numbers
+## Turn On Serial Numbers
 
-The Serial Number feature needs to be enabled first by checking the Enable Serial Number option under [Inventory Settings](https://github.com/frappe/books_docs/blob/master/inventory/settings)
+Serial numbers need [inventory](/inventory/introduction-to-inventory/#turn-on-inventory). Turn on **Enable Serial Number** in the **Features** section of the [inventory settings](/inventory/inventory-settings/#features). Then save the settings and reload RareBooks.
 
-To navigate to the list of Serial Numbers, open [Quick Search](https://github.com/frappe/books_docs/blob/master/miscellaneous/search) and then type "serial number list" and select the first option.
+:::caution
+You cannot turn off serial numbers after you turn them on.
+:::
 
-## Serialized Items
+## Set Up an Item
 
-Once you've [enabled](https://github.com/frappe/books_docs/blob/master/inventory/serial-number#enable-serial-number) Serial Number, you can mark an item as a serialized item by first checking **Track Item** and then **Has Serial Number**
+1. Open the item, for example from **Sales** > **Sales Items** in the sidebar.
+2. Make sure that **Track Inventory** is selected.
+3. Select **Has Serial Number**.
+4. Optional: Enter a **Serial Number Series**, such as `SN`.
+5. Click **Save**.
 
-[![Enable Has Serial Number](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/item-has-serial-number.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/item-has-serial-number.png)
+![Inventory section of Thermal Receipt Printer with Track Inventory, Has Serial Number, and the serial number series TRP-.](/images/docs/books-docs-serial-number-1-item-setup-v4.png)
 
-::: info Track Item **Has Serial Number** can be enabled only if **Track Item** is set. :::
+**Has Serial Number** shows only when **Track Inventory** is selected. You can select **Track Inventory** only on a new [item](/masters/items/).
 
-## Mentioning Item Serial Number
+### Serial Number Series
 
-Once a Serial Number has been enabled for an [Item](https://github.com/frappe/books_docs/blob/master/entries/items), transactions involving the Item that update Inventory (such as Stock Movements, Shipments, and Purchases) must include the Serial Number.
+When you save a purchase receipt or a **Material Receipt**, RareBooks adds the missing serial numbers of the item from its series. This also applies to the purchase receipt that a purchase invoice makes.
 
-This can be done by clicking the edit button on the table row and entering the Serial Number one per quantity.
+RareBooks adds a dash and a number to the series, starting at 1001. For example, the series `SN` gives `SN-1001`, `SN-1002`, and so on. It skips the numbers that are already used. A series cannot contain `/`, `?`, `&`, `=`, or `%`.
 
-[![Mentioning Serial Numbers](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/mentioning-serial-number.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/mentioning-serial-number.png)
+## Enter Serial Numbers
 
-::: info Serial Number Entry For each unit of quantity of a serialized Item a single Serial Number should be provided on a separate line. :::
+Each row of an item with serial numbers needs one serial number for each unit.
+
+1. Add the item to the document and enter the quantity.
+2. Click the **Edit row** button at the end of the row. On a phone, tap the row.
+3. In **Serial Number**, enter one serial number on each line. You can also separate them with commas.
+
+RareBooks also fills the serial numbers in these documents:
+
+| Document | What RareBooks Does |
+| --- | --- |
+| Shipment | Fills the serial numbers that came in first at the location of the row. |
+| Sales invoice, purchase invoice | Passes the serial numbers to its shipment or purchase receipt. If **Serial Number** is empty, that document fills them. |
+| Point of Sale | Fills the serial numbers from the stock of the POS inventory. |
+
+In other stock movements, enter the serial numbers yourself. If you change the quantity later, check the serial numbers again.
+
+## The Serial Number List
+
+There is no sidebar item for serial numbers. Search for `Serial Number` in [Quick Search](/getting-started/quick-search/) and open the **List** result.
+
+RareBooks makes a serial number when a new one comes into stock, so you do not have to make them first. To make one before you use it, click **New** in the list, and enter the **Serial Number** and the **Item**. You cannot change the item after you save.
+
+You cannot delete a serial number that a document uses.
 
 ## Serial Number Status
 
-The status of a Serial Number changes depending on whether the transaction is an inward transaction (eg Purchase Receipt), or an outward transaction (eg Shipment).
+You cannot change the status yourself. RareBooks changes it when you submit a document:
 
-A Serial Number can have one of three Status:
+| Status | Meaning | Set By |
+| --- | --- | --- |
+| Inactive | The unit is not in stock. A serial number that you make by hand starts with this status. | A **Material Issue**, the raw materials of a **Manufacture**, or a return of a purchase receipt |
+| Active | The unit is in stock. | A purchase receipt, a **Material Receipt** or **Material Transfer**, the finished goods of a **Manufacture**, or a return of a shipment |
+| Delivered | A shipment sent the unit to a customer. | A shipment |
 
-| Status    | Description                                                                 |
-| --------- | --------------------------------------------------------------------------- |
-| Active    | Serial Number is in stock and can be used only for outward transactions.    |
-| Inactive  | Serial Number is not in stock and can be used only for inward transactions. |
-| Delivered | Serial Number has been used for an outward transaction and cannot be used.  |
+When you cancel a document that took the unit out, the status changes to **Active**. When you cancel a document that only brought the unit in, it changes to **Inactive**. When you cancel a return of a shipment, it changes back to **Delivered**.
 
-Here is a table that shows how the status of a Serial Number changes:
+## Rules for Serial Numbers
 
-| Status Change      | Transaction                                                                                     |
-| ------------------ | ----------------------------------------------------------------------------------------------- |
-| Inactive → Active  | Inward transactions: Material Receipt or Manufacture (created) Stock Movement, Purchase Receipt |
-| Active → Delivered | Outward transactions: Material Issue or Manufacture (used up) Stock Movement, Shipment          |
+RareBooks shows an error and does not save or submit the document in these cases:
 
-If a transaction is cancelled then the Serial Number status is reverted.
+- The number of serial numbers is not equal to the quantity.
+- A serial number belongs to a different item, or shows more than one time in the document.
+- A serial number that goes out is not in stock at the source location.
+- A serial number that comes in is already in stock.
+- On a return, a serial number is not on the original document, or is returned already.
+
+You also cannot cancel a document that brought a unit into stock after the unit went out again.
+
+## Serial Numbers in Reports
+
+The [Stock Ledger](/inventory/stock-ledger/) has a **Serial Number** column with one row for each serial number. The [Stock Balance](/inventory/stock-balance/) has a **Serial Number** filter that shows the stock of each serial number.

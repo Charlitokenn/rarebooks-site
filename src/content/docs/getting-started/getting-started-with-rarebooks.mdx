@@ -1,39 +1,64 @@
 ---
-title: Getting Started
-description: Getting Started With Rarebooks
+title: "Getting Started with RareBooks"
+description: "RareBooks is an accounting app for small businesses."
 sidebar:
   order: 1
 ---
 
-import { AppConfig } from "../../../constants/index.ts";
+RareBooks is an accounting app for small businesses. It runs on your own RareBooks site, such as `yourcompany.rarebooks.cc`, and you use it in a browser on a computer or a phone. If you do not have a site yet, see [Create Your Site](/getting-started/create-your-site/).
 
-Let’s start applying what we have learned so far by setting up your company in RareBooks.
+## Open RareBooks
 
-If you have not downloaded {AppConfig.appName}, you can download it from the <a href={AppConfig.storeUrl}>Microsoft Store</a>.
+1. Open `https://<your-site>/books` in a browser.
+2. If you are not signed in, sign in with your email and password.
 
-## Setup Instance
+Your user must have a Books role to open RareBooks. For more information, see [Roles and Permissions](/getting-started/roles-and-permissions/).
 
-When you open {AppConfig.appName}, you’ll be presented two options: **New File** and **Existing File**. If this is the first time you are opening {AppConfig.appName}, click on **New File**.
+## Set Up Your Organization
 
-Now select an appropriate location where you want to store the file and give it a name.
+The setup wizard opens the first time a **System Manager** opens RareBooks on a new site. Only a System Manager can complete it, and the setup runs only once. Until then, other users cannot use RareBooks.
 
-![New File](/startup-page.png)
+![Setup wizard on a new site, filled in for Lotus Traders in India with a logo, USD, Standard Chart of Accounts, and the fiscal year April 2026 to March 2027.](/images/docs/books-docs-getting-started-with-frappe-books-1-setup-wizard.png)
 
-:::tip[File Location]
-{AppConfig.appName} stores all your company data and transactions on a local `.db` file on your computer.
-You can change the location of this `.db` file. If you have done so you can find it again by selecting the **Existing File** option.
-:::
+1. Enter the details of your company.
+2. Click **Submit**.
 
-Now, enter your Business Name, Business Email and Country Information. This will help set up the correct Chart of Accounts based on your country.
+On a phone, the wizard has three steps. Tap **Next** to go to the next step, and tap **Submit** on the last step.
 
-![Setup Wizard](https://github.com/frappe/books_docs/raw/master/docs/setting-up/images/setup-wizard.png)
+| Field | Description |
+| --- | --- |
+| Company Logo and Email | They show on printed documents. The logo is optional. |
+| Country | RareBooks uses the country to fill the currency, the chart of accounts, and the fiscal year. |
+| Bank Name | RareBooks makes a bank account with this name. |
+| Chart of Accounts | The list of accounts for your country. If there is no chart for your country, select **Standard Chart of Accounts**. |
+| Fiscal Year Start Date and Fiscal Year End Date | The first and the last day of your financial year. RareBooks fills these dates for some countries only. For other countries, enter the start date, and RareBooks fills the end date. A fiscal year cannot be longer than one year. |
 
-:::tip
-Chart of Accounts If you don't find the Chart of Accounts of your country, you can select the **Standard Chart of Accounts**.
-:::
+After you submit, RareBooks makes the chart of accounts, the bank account, a **Cash** account, and the default settings. Then the **Dashboard** opens. The setup does not turn on automatic payments of invoices. To turn them on, see [Auto Payments](/settings/settings/#auto-payments).
 
----
+## Get Started Page
 
-Congratulations! You now have a company set up on RareBooks.
+The **Get Started** page lists the tasks that prepare your company for use. To open it, click **Get Started** in the sidebar. This page is not available on a phone.
 
-You can now move onto the next step to create some initial entries before you can start recording your invoices and transactions.
+![Get Started page with the title Set up your workspace. Each task card shows its Set up and Documentation buttons, and the complete tasks have green checks.](/images/docs/books-docs-getting-started-with-frappe-books-2-get-started-page-v4.png)
+
+Click **Set up** on a task to open its page, or **Documentation** to open its help page. Some tasks have only one of these buttons. A complete task shows a green check instead. When all the tasks are complete, RareBooks removes **Get Started** from the sidebar.
+
+## Save and Submit Documents
+
+A transaction, such as an invoice or a payment, goes through these states:
+
+| State | Description |
+| --- | --- |
+| Draft | You saved the document. You can still change it. |
+| Submitted | RareBooks made the ledger entries. You cannot change the document. |
+| Cancelled | RareBooks reversed the ledger entries. You cannot change the document. |
+
+On a computer, the main button is in the page header. It shows **Save** while the document has changes that are not saved. After you save, it shows **Submit**. RareBooks asks you to confirm each save and submit. Click **Yes** to continue. On a phone, the main button is at the bottom of the form, and RareBooks asks you to confirm only when you submit.
+
+To cancel a submitted document, click the **…** button in the page header, and then click **Cancel**. To confirm, click **Cancel** and the document type, such as **Cancel Sales Invoice**. To delete a document, click **…** > **Delete**, and then click **Delete** to confirm. In both confirmations, the other button keeps the document, such as **Keep Sales Invoice**.
+
+## Next Steps
+
+1. Review your accounts in the [Chart of Accounts](/getting-started/chart-of-accounts/).
+2. Add your taxes, items, and customers. See [Create Initial Entries](/getting-started/create-initial-entries/).
+3. If you move from a different accounting system, [set up your opening balances](/getting-started/setup-opening-balances/).

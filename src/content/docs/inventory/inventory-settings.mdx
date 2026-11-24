@@ -1,61 +1,77 @@
 ---
-sidebar_position: 6
-sidebar_label: Inventory Settings
-title: Inventory Settings
+title: "Inventory Settings"
+description: "The inventory settings set the default location, the stock accounts, and the inventory features that you use."
 sidebar:
   order: 2
 ---
 
-Inventory settings will allow you to configure the inventory module to your requirements. To navigate to Inventory Settings: `Setup > Settings` then click on the Inventory tab
+The inventory settings set the default location, the stock accounts, and the inventory features that you use. The **Inventory** tab of the settings shows only when inventory is on. To turn on inventory, see [Introduction to Inventory](/inventory/introduction-to-inventory/#turn-on-inventory).
 
-[![Inventory Settings](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/inventory-settings.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/inventory-settings.png)
+## Open the Inventory Settings
 
-## Setting Items
+1. Click **Setup** > **Settings** in the sidebar.
+2. Click **Inventory**.
+3. Change the settings.
+4. Click **Save**.
+5. Click **Yes** to reload RareBooks. Your changes show after the reload.
 
-The following values can be configured
+![Inventory tab of the settings with the default location Stores, the four stock accounts, and the feature switches. Enable Batches and Enable Serial Number are on and locked.](/images/docs/books-docs-inventory-settings-1-inventory-tab-v4.png)
 
-### Valuation Method
+Only a **Books Manager** or a **System Manager** can change the settings. A **Books User** can only read them.
 
-This can be used to select either FIFO or Moving Average valuation methods.
+## Default Location
 
-The valuation rate displayed in the Stock Ledger or the Stock Balance report is calculated on the basis of the Valuation Method selected.
+**Default Location** is the location that RareBooks puts in a stock row when the row has no location. It is used for:
 
-### Default Location
+- The **From** location of a **Material Issue** and the **To** location of a **Material Receipt**. See [Stock Movement](/inventory/stock-movement/).
+- A shipment row or a purchase receipt row that you leave empty.
 
-This is used to set the location that is used whenever an inventory transaction detail is created.
+The setup wizard sets it to **Stores**. To add a location, type its name in the field and click **Create**. Sales invoices and purchase invoices use their own locations. See [Related Settings](#related-settings).
 
-### Stock In Hand Account
+## Accounts
 
-This is used to set the default Stock In Hand Account that is debited whenever stock is received.
+RareBooks posts the value of the stock to these accounts when you submit a shipment, a purchase receipt, or a stock movement. The setup wizard fills them from your chart of accounts.
 
-### Stock Received But Not Billed Account
+| Field | Account Type | Use |
+| --- | --- | --- |
+| Stock In Hand Acc. | Stock | The value of the stock that you have. |
+| Stock Received But Not Billed Acc. | Stock Received But Not Billed | The value of the stock that you received but did not bill yet. |
+| Cost Of Goods Sold Acc. | Cost of Goods Sold | The cost of the stock that you shipped. |
+| Stock Adjustment Acc. | Stock Adjustment | The other side of a stock movement, such as a **Material Receipt**. |
 
-This is used to set the default Stock Received But Not Billed Account that is debited on making a Purchase Invoice for a tracked item, and credited when a Purchase Receipt is made.
+Each list shows only ledger accounts of the account type in the table. To add an account, see [Create a New Account](/getting-started/chart-of-accounts/#create-a-new-account). For the entries that each document makes, see [Stock Accounts](/inventory/introduction-to-inventory/#stock-accounts).
 
-### Cost Of Goods Sold Account
+:::note
+If an account that a document needs is empty, you cannot submit the document.
+:::
 
-This is used to set the default Cost of Goods Sold Account that is debited whenever a Shipment is made.
+RareBooks values stock with the FIFO (first in, first out) method. You cannot select a different method. See [Stock Valuation](/inventory/introduction-to-inventory/#stock-valuation).
 
-### Enable Barcodes
+## Features
 
-Checking this will allow you to set barcodes on items. It will also display a barcode input in forms (such as Sales Invoice and Shipment) where items are entered.
+| Field | What It Does |
+| --- | --- |
+| Enable Barcodes | Adds a **Barcode** field to items, and above the item rows of draft forms. Type or scan a barcode to add the item. A barcode has exactly 12 digits. On a phone, tap the scan button to scan with the camera. |
+| Enable Batches | Adds **Has Batch** to items that track inventory, and a **Batch** field to item rows. See [Batches](/inventory/batches/). |
+| Enable Serial Number | Adds **Has Serial Number** to items, and a **Serial Number** field to item rows. See [Serial Number](/inventory/serial-number/). |
+| Enable UOM Conversion | Adds a **UOM Conversions** table to items. Item rows get a **Transfer Unit** and a **Qty. in Transfer Unit**. |
+| Enable Point of Sale | Shows **POS** in the sidebar and the **POS Settings** tab. See [Point of Sale](/transactions/point-of-sale/). |
 
-### Enable Batches
+After you save, you cannot turn off barcodes, batches, serial numbers, or UOM conversion. You can turn off **Enable Point of Sale**, but not while a POS shift is open.
 
-Checking this will allow the usage of Batches. Items will have a Has Batch option if the item is being tracked.
+:::caution[POS Without Inventory]
+**Enable POS Without Inventory** in the **General** tab also turns on all the options in **Features**. You cannot turn off the first four options after that.
+:::
 
-It will also enable the Batch entry type which can be navigated to by using the Quick Search.
+To return shipments and purchase receipts, turn on **Enable Invoice Returns** in the **General** tab.
 
-### Enable Serial Numbers
+## Related Settings
 
-Checking this will allow the usage of Serial Numbers. Items will have a Has Serial Number option if the item is being tracked.
+These settings are in the **Defaults** tab:
 
-It will also enable the Serial Number entry type which can be navigated to by using the Quick Search.
-
-### Enable UOM Conversion
-
-Checking this will allow setting multiple UOMs for an Items. Then when making a entry that involves the Item, one of the other UOMs can be selected to mention its quantity.
-
-### Enable Stock Returns
-
-Checking this will allow you to create Purchase Receipt and Shipment Returns against the original Purchase Receipts or Shipments.
+| Field | Description |
+| --- | --- |
+| Shipment Location | The location that a sales invoice ships from. While it is empty, only POS sales make shipments on submit. See [Automatic Shipments](/transactions/sales-invoice/#automatic-shipments). |
+| Purchase Receipt Location | The location that a purchase invoice receives into. While it is empty, purchase invoices do not make purchase receipts on submit. See [Purchase Receipts](/transactions/purchase-invoice/#purchase-receipts). |
+| Number series and print templates | The default number series and the print template that opens first for stock movements, shipments, and purchase receipts. See [Number Series](/settings/number-series/) and [Print Templates](/settings/print-templates/). |
+| Shipment Terms, Purchase Receipt Terms | The text that new shipments and purchase receipts get in **Notes**. |

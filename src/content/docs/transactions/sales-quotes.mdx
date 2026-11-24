@@ -1,0 +1,52 @@
+---
+title: "Sales Quotes"
+description: "A sales quote is an offer of prices that you send to a customer or a lead."
+sidebar:
+  order: 2
+---
+
+A sales quote is an offer of prices that you send to a customer or a lead. A quote does not make ledger entries. When the customer accepts the quote, make a sales invoice from it.
+
+## Create a Sales Quote
+
+1. Click **Sales** > **Sales Quotes** in the sidebar.
+2. Click **New**.
+3. In **Type**, select **Party** for a customer or **Lead** for a lead.
+4. In **Party**, select the customer or the lead.
+5. In **Items**, click **Add row**.
+6. Select the **Item** and enter the **Qty**.
+7. Add a row for each item that you offer.
+8. Click **Save**.
+9. Click **Submit** and click **Yes**.
+
+To quote a lead, turn on **Enable Lead** in the **General** settings. You can also open the lead and click **Create** > **Sales Quote**. For more information, see [Lead](/transactions/lead/).
+
+A quote has most of the fields of a sales invoice. RareBooks calculates the taxes, the discounts, and the totals in the same way. A quote does not have an **Account**, and it does not make payments or shipments. For more information, see [Invoice Fields](/transactions/sales-invoice/#invoice-fields). To change the default number series, select the **Sales Quote Number Series** in the **Defaults** settings.
+
+When you submit a quote to a lead, RareBooks sets the status of the lead to **Quotation**.
+
+## Make a Sales Invoice From a Quote
+
+1. Open the submitted quote.
+2. Click **Create** > **Sales Invoice**. A new sales invoice opens with the customer, the items, the price list, and the notes of the quote.
+3. Check the invoice.
+4. Click **Save**.
+5. Click **Submit** and click **Yes**.
+
+![Submitted quote for Kaveri Enterprises with the Submitted badge and the Create menu open, which shows Sales Invoice.](/images/docs/books-docs-sales-quotes-1-create-invoice-menu-v4.png)
+
+The **Quote Reference** field of the invoice shows the quote. To find the invoices of a quote, open the quote and click the link icon in the page header.
+
+:::note
+You can make an invoice only from a quote of the type **Party**. For a lead, first make a customer from the lead. Then make a new quote for the customer.
+:::
+
+## Print a Sales Quote
+
+For the steps, see [Print a Document](/settings/print-templates/#print-a-document). RareBooks has the template **Business - Quote** for quotes. To set the template that opens first, select the **Sales Quote Print Template** in the **Defaults** settings.
+
+## Cancel or Change a Quote
+
+You cannot edit a submitted quote. To change it, cancel it. Then click **Create** > **Duplicate** to make a new quote with the same values. You cannot cancel a quote while a submitted sales invoice refers to it.
+
+A **Books User** can create, submit, cancel, and duplicate quotes. Only a **Books Manager** or a **System Manager** can delete a quote. For more information, see [Roles and Permissions](/getting-started/roles-and-permissions/).

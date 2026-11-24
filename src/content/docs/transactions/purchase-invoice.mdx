@@ -1,93 +1,96 @@
 ---
-sidebar_position: 3
-sidebar_label: Purchase Invoice
-title: Purchase Invoice
+title: "Purchase Invoices"
+description: "A purchase invoice records a bill that a supplier sends you for goods or services."
 sidebar:
-  order: 3
+  order: 4
 ---
 
-Purchase Invoices are bills that your supplier sends you when you make a purchase.
+A purchase invoice records a bill that a supplier sends you for goods or services. When you submit it, RareBooks makes the ledger entries and records the amount that you owe the supplier.
 
-It is a transactional entry that denotes a purchase.
+Before you make purchase invoices, add your suppliers, your purchase items, and your taxes. For the steps, see [Create Initial Entries](/getting-started/create-initial-entries/).
 
 ## Creating Purchase Invoices
 
-If you have set up your RareBooks with Accounts, Taxes, Purchase Items, and Suppliers, creating a Purchase Invoice is as simple as it gets.
+1. Click **Purchases** > **Purchase Invoices** in the sidebar.
+2. Click **New**.
+3. Select the **Supplier**. RareBooks fills the **Account** with the payable account of the supplier.
+4. In **Items**, click **Add row** and select the **Item**.
+5. Enter the **Qty**.
+6. If the supplier charges a different price, change the **Rate**.
+7. Add a row for each of the other items.
+8. Click **Save**.
+9. Click **Submit** and click **Yes**.
 
-First navigate to the Purchase Invoices page
+After you submit the invoice, you cannot edit it. For more information, see [Save and Submit Documents](/getting-started/getting-started-with-rarebooks/#save-and-submit-documents).
 
-`Purchases > Purchase Invoices`
+You can also open a supplier, click the **…** button, and click **Create purchase**.
 
-Then click on the blue `+` button to open the Purchase Invoice form.
+### Items and Taxes
 
-[![Purchase Invoice Form](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/purchase-invoice.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/purchase-invoice.png)
+The item list shows the items with the purpose **Purchases** or **Both**. When you select an item, RareBooks fills the **Rate**, the **Tax**, and the expense **Account** of the row from the item. If you type a different rate, RareBooks keeps your rate. To see all the fields of a row, click **Edit row** at the end of the row. For more information, see [Items](/masters/items/).
 
-1. Select the Supplier from whom you will be making a purchase.
-2. Click on Add Row and select the Item being purchased. Default Tax will be fetched you can change it if required.
-3. Enter the Quantity.
-4. You can add more items or if you are done, click on Save.
-5. Once finalized, click on Submit. RareBooks will do the required ledger entries against the appropriate accounts.
+![Draft purchase invoice from Ink & Nib Supplies with two item rows and the IGST tax.](/images/docs/books-docs-purchase-invoices-1-draft-invoice-v4.png)
 
-This invoice is now in _“Submitted”_ state, it cannot be edited. The purchase transaction has been recorded.
+RareBooks calculates the taxes of each row from its **Tax**. You cannot edit the **Taxes** table. To change a tax, change the **Tax** of the item row. To charge no tax on a row, clear its **Tax**. For more information, see [Taxes](/masters/taxes/) and [Discount Accounting](/transactions/discount-accounting/).
+
+### What Submit Does
+
+When you submit a purchase invoice, RareBooks makes these ledger entries:
+
+| Account | Entry |
+| --- | --- |
+| The payable **Account** of the supplier | Credit with the grand total |
+| The expense account of each item | Debit with the item amount |
+| Each tax account | Debit with the tax amount |
+
+The **Outstanding Amount** is the amount that you still owe. The invoice status is **Unpaid**, **Partly Paid**, or **Paid**. To see the ledger entries, click **View** > **Accounting entries**.
 
 ## Making Purchase Payments
 
-Once a purchase invoice has been submitted, you’ll need to record payment against it to denote that you’ve paid the money.
+1. Open the submitted purchase invoice.
+2. Click **Create** > **Payment**. RareBooks fills the **Amount** with the outstanding amount.
+3. Check the **Payment Method** and the **From Account**.
+4. If the payment method is not **Cash**, enter the **Ref. / Cheque No.**
+5. Click **Save**.
+6. Click **Submit** and click **Yes**.
 
-To make a Payment first navigate to the Purchase Invoice, then click on the `...` menu button. Then click the Make Payment option.
-
-[![Purchase Invoice Status](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/purchase-payment.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/purchase-payment.png)
-
-This will open the Payment quick edit form with the outstanding amount auto-filled.
-
-[![Purchase Invoice Payment](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/purchase-payment-quickedit.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/purchase-payment-quickedit.png)
-
-You can change the values and click on Save. This will Save and Submit the Payment.
-
-On making the Payment, RareBooks will make the necessary ledger entries to increase the payment amount in Accounts Payable and decrease the amount in your Bank or Cash Account.
-
-It will also update the Outstanding Amount on the invoice form.
-
-::: info Purchase Invoice Status Until Payments are made to settel the Outstanding Amount, the Purchase Invoice will be in the **Unpaid** state.
-
-Once the Outstanding Amount reaches 0, the status will change to **Paid**. :::
+RareBooks updates the **Outstanding Amount** and the status of the invoice. To pay less than the outstanding amount, turn on **Enable Partial Payment** in the **General** settings. For more information, see [Payments](/transactions/payments/).
 
 ### Auto Payments
 
-You can simplify the _Purchase Invoice → Payment_ workflow by using Auto Payments. For this you just need to set the default accounts for Purchase Payment.
+To make the payment when you submit the invoice, select the **Purchase Payment Account** in the **Defaults** settings. The list shows only cash and bank accounts.
 
-This can be done in `Setup > Settings > Defaults > Auto Payments`: [![Payment Accounts](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/payment-accounts.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/payment-accounts.png)
+Each new purchase invoice then has **Make Payment On Submit** selected in its **Settings** tab. When you submit the invoice, RareBooks submits a payment for the full amount from this account. The payment uses the invoice number as its reference. To skip the payment for one invoice, clear **Make Payment On Submit** before you submit.
 
-Once this is set, whenever you Submit a Purchase Invoice a Payment entry will automatically be created.
+## Purchase Receipts
 
-::: tip Disable Auto Payment for a Purchase Invoice
+When inventory is on, a purchase invoice can also receive the items into your stock. To do this, select the **Purchase Receipt Location** in the **Defaults** settings.
 
-You can disable Auto Payment for a single Purchase Invoice by unchecking the Make Payment On Submit check box in the Settings tab before Submitting the Purchase Invoice entry.
+Each new purchase invoice then has **Make Purchase Receipt On Submit** selected in its **Settings** tab. When you submit the invoice, RareBooks submits a purchase receipt for the items that have **Track Inventory** selected. The invoice shows the receipt in **Back Reference**.
 
-[![Disable Auto Payment](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/auto-payment.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/auto-payment.png) :::
+To receive the items later, open the submitted invoice and click **Create** > **Purchase Receipt**. **Stock Not Received** shows the quantity that is not received yet. For more information, see [Purchase Receipt](/inventory/purchase-receipt/).
 
 ## Purchase Invoice Return
 
-The user can create a Purchase Invoice Return directly from the original Purchase Invoice document or manually from the New Purchase Invoice Entry.
+A return records the items that you send back to the supplier. It reverses the ledger entries of the original invoice for the returned items. To make returns, turn on **Enable Invoice Returns** in the **General** settings.
 
-### Creating a Purchase Invoice Return
+1. Open the submitted purchase invoice.
+2. Click **Create** > **Return**. A new invoice opens with the items that earlier returns did not take back.
+3. Change the quantities to the quantities that you return. You can enter positive numbers.
+4. Remove the rows of the items that you do not return.
+5. Click **Save**.
+6. Click **Submit** and click **Yes**.
 
-1. Open the original Purchase Invoice document.
-2. Click on **Create > Return**. [![Create Purchase Invoice Return](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/pinv-create-return.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/pinv-create-return.png)
-3. The Party and Item details will be fetched as set in the original Purchase Invoice document. You can set the quantity of Items returned in negative numbers. [![Purchase Invoice Return Form](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/pinv-return-form.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/pinv-return-form.png)
-4. Save and Submit.
+To make a return manually, make a new invoice and select the original invoice in **Return Against**. The supplier must be the same, and each item must be on the original invoice. The returned quantities and value cannot be more than the original invoice.
 
-::: info The Item quantity and Payment amount will be in negative figures to indicate that it's a return. :::
+The return has the status **Return**. The original invoice gets **Return Issued** when it is fully returned, or when it has no outstanding amount. Otherwise, it keeps its payment status, such as **Unpaid**. The outstanding amount of a return is negative. To record the refund from the supplier, open the return and click **Create** > **Payment**.
 
-### Creating Manually
+## Cancelling a Purchase Invoice
 
-1. Navigate to the Purchase Invoice page `Purchases > Purchase Invoice`
-2. Click on **Return Against** then select the target Purchase Invoice against which you returned the Items. [![Set Is Return](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/pinv-select-return-against-invoice.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/pinv-select-return-against-invoice.png)
-3. Fill Item details.
-4. Save and Submit.
+When you cancel an invoice, RareBooks reverses its ledger entries. It also cancels the payments that settle the invoice and the purchase receipt that the invoice made on submit. If a submitted return refers to the invoice, cancel the return first.
 
-## Purchase Invoice impact on General Ledger
+:::caution
+If a payment also settles other invoices, cancelling it changes the outstanding amount of those invoices too.
+:::
 
-The Purchase Invoice Return entry will create General Ledger entries to reverse the impact of the original Purchase Invoice.
-
-[![Purchase Invoice Return in General Ledger](https://github.com/frappe/books_docs/raw/master/docs/transactions/images/pinv-return-in-gl.png)](https://github.com/frappe/books_docs/blob/master/docs/transactions/images/pinv-return-in-gl.png)
+To make a corrected copy, open the cancelled invoice and click **Create** > **Duplicate**.

@@ -1,89 +1,106 @@
 ---
-sidebar_position: 6
-sidebar_label: Purchase Receipt
-title: Purchase Receipt
+title: "Purchase Receipt"
+description: "A purchase receipt records the stock that you receive from a supplier."
 sidebar:
   order: 4
 ---
 
-Purchase Receipt is an inventory transaction that records the receipt stock from a supplier after a purchase has been made.
+A purchase receipt records the stock that you receive from a supplier. It moves the items into a location. A purchase receipt contains only items with **Track Inventory**. For the setup, see [Introduction to Inventory](/inventory/introduction-to-inventory/). For stock that you deliver to a customer, see [Shipment](/inventory/shipment/).
 
-Purchase Receipts record inward movement of stock.
+## Open Purchase Receipts
 
-## Creating a Purchase Receipt
+Click **Inventory** > **Purchase Receipt** in the sidebar. On a phone, tap the menu button in the header, and then tap **Inventory** > **Purchase Receipt**.
 
-There are two ways to create a Purchase Receipt.
+## Create a Purchase Receipt
+
+### Automatically From a Purchase Invoice
+
+To receive automatically, select a **Purchase Receipt Location** in **Setup** > **Settings** > **Defaults**, in **Auto Stock Transfer**. New purchase invoices then have **Make Purchase Receipt On Submit** selected in their **Settings** tab. To submit one invoice without a receipt, clear this option.
+
+When you submit the invoice, RareBooks makes and submits a purchase receipt for the items with **Track Inventory**. The receipt has the date of the invoice. The **Back Reference** field of the invoice shows the receipt. For more information, see [Purchase Invoices](/transactions/purchase-invoice/#purchase-receipts).
 
 ### From a Purchase Invoice
 
-Since a receipt of stock follows a purchase, you can create a Purchase Receipt after submitting a Purchase Invoice.
+1. Open the submitted purchase invoice.
+2. Click **Create** > **Purchase Receipt**. On a phone, tap the **…** button, and then tap **Purchase Receipt**.
+3. Check the **To Loc.** and the **Quantity** of each row.
+4. Click **Save**.
+5. Click **Submit** and click **Yes**.
 
-To do this select Purchase Receipt from under the Create menu button.
+The receipt gets the supplier and the items that are not received yet. **Create** > **Purchase Receipt** shows only when the invoice has stock that is not received. The rows get the **Purchase Receipt Location**, or the **Default Location** of the inventory settings when it is empty. If the invoice uses a different currency, the receipt shows the rates in your company currency.
 
-[![Create Purchase Receipt From a Purchase Invoice](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/from-purchase-invoice.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/from-purchase-invoice.png)
+A supplier can deliver one invoice in more than one delivery. To receive only a part, change the quantities or remove rows before you submit. The **Stock Not Received** field of the invoice shows the quantity that is left. A receipt cannot receive more than that. To receive the rest later, click **Create** > **Purchase Receipt** in the invoice again.
 
-::: tip Back Reference
+### From the List
 
-This will create a Purchase Receipt with a reference to the Purchase Invoice and allows you to view all created Purchase Receipts from the Purchase Invoice. :::
+1. Click **Inventory** > **Purchase Receipt** in the sidebar.
+2. Click **New**.
+3. Select the **Party**. The list shows suppliers and parties with the role **Both**.
+4. In **Items**, click **Add row**.
+5. Select the **Item**. RareBooks fills the **Rate** and the **To Loc.**
+6. Enter the **Quantity**.
+7. Add a row for each of the other items.
+8. Click **Save**.
+9. Click **Submit** and click **Yes**.
 
-### From the List View
+On a phone, fill in each row in the sheet that opens, and tap **Done**.
 
-To do this first navigate to the Purchase Receipt page: `Inventory > Purchase Receipt` then click on the blue `+` button.
+You can also select a purchase invoice in **Back Reference**. RareBooks then fills the supplier and the rows from the invoice.
 
-The creation method is shared with with other transactional entries, for more information check [this link](https://github.com/frappe/books_docs/blob/master/transactions/transactional-entries.html#creating-an-entry).
+After you submit, you cannot edit the receipt. See [Save and Submit Documents](/getting-started/getting-started-with-rarebooks/#save-and-submit-documents).
 
-::: warning No Back Reference
+## Item Rows
 
-This method doesn't create links to any Purchase Invoices and is an isolated entry. :::
+The **Item** list shows items with **Track Inventory** and the purpose **Purchases** or **Both**. To see all the fields of a row, click the **Edit row** button at the end of the row.
 
-### Purchase Receipt Form
+- **Batch**: Each row of an item with **Has Batch** needs a batch. If the item has a **Batch Series**, a row without a batch gets a new batch when you save.
+- **Serial Number**: Enter one serial number for each unit, one on each line. If the item has a **Serial Number Series**, RareBooks adds the missing serial numbers when you save. A serial number that is already in stock cannot come in again.
+- **Barcode**: Type or scan a barcode above the rows to add the item.
 
-After selecting one of the above two methods of creating a Purchase Receipt, you will see the Purchase Receipt form.
+These fields show only when their feature is on in the [inventory settings](/inventory/inventory-settings/). See [Batches](/inventory/batches/) and [Serial Number](/inventory/serial-number/).
 
-[![Purchase Receipt Form](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/purchase-receipt-form.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/purchase-receipt-form.png)
+## Ledger Entries
 
-If you created the Purchase Receipt from a Purchase Invoice, all the rows will be filled out for you. Else you will have to enter the Purchase Receipt details.
+When you submit a purchase receipt, RareBooks adds the items to the stock ledger. It debits the **Stock In Hand Acc.** and credits the **Stock Received But Not Billed Acc.** with the value of the stock. The value is the quantity times the rate, in your company currency. The accounts come from the [inventory settings](/inventory/inventory-settings/#accounts).
 
-Once the Purchase Receipt details have been entered, click on Save and then Submit to make the Purchase Receipt entry.
+![Submitted purchase receipt of three items into Stores, with its purchase invoice in Back Reference and the View menu open with Accounting entries and Stock entries.](/images/docs/books-docs-purchase-receipt-1-receipt-view-menu-v4.png)
 
-A Purchase Receipt can have one of the four following statuses:
+The purchase invoice debits the **Purchase Acc.** of each item. For an item with **Track Inventory**, the default is the **Stock Received But Not Billed Acc.** After you submit both, this account is balanced, and the **Stock In Hand Acc.** shows the value of the stock.
 
-| Status        | Description                                   |
-| ------------- | --------------------------------------------- |
-| Submitted     | Purchase Receipt entry submitted              |
-| Return        | Purchase Receipt Return entry submitted       |
-| Return Issued | Return entry created against Purchase Receipt |
-| Cancelled     | Purchase Receipt entry cancelled              |
+To see the entries, click **View** > **Accounting entries** or **View** > **Stock entries**. On a phone, these are in the **…** menu in the header.
+
+## Bill a Purchase Receipt
+
+If you received the stock before the bill, make the invoice from the receipt:
+
+1. Open the submitted purchase receipt.
+2. Click **Create** > **Purchase Invoice**. On a phone, tap the **…** button, and then tap **Purchase Invoice**.
+3. Check the invoice, and then save and submit it.
+
+The invoice gets the items that are not billed yet, and does not receive the stock again. **Create** > **Purchase Invoice** does not show for a receipt with a **Back Reference**, for a return, or for a fully billed receipt.
 
 ## Purchase Receipt Return
 
-If you created a Purchase Receipt for an item that you returned, you can create a Purchase Receipt Return entry to reflect the return.
+A return is a purchase receipt with negative quantities. It moves the items that you send back to the supplier out of the location. Before you can make returns, turn on **Enable Invoice Returns** in the **General** settings. You cannot turn off this setting later.
 
-A Purchase Receipt Return entry can be created from an existing Purchase Receipt entry that has been submitted or from a new Purchase Receipt entry.
+1. Open the submitted purchase receipt.
+2. Click **Create** > **Return**. On a phone, tap the **…** button, and then tap **Return**.
+3. Change the quantities to the quantities that you return.
+4. Remove the rows of the items that you do not return.
+5. Click **Save**.
+6. Click **Submit** and click **Yes**.
 
-### Enable Stock Returns
+A return cannot send back more than the receipt received. Its date cannot be before the date of the receipt. The location must also have enough stock to send back. The return debits the **Stock Received But Not Billed Acc.** and credits the **Stock In Hand Acc.** with the value at which the receipt received the stock. The original receipt gets the status **Return Issued**.
 
-To create Purchase Receipt Returns the Stock Returns feature needs to be enabled. To do this, check the **Enable Stock Returns** option in [Inventory Settings](https://github.com/frappe/books_docs/blob/master/inventory/settings.html#inventory-settings) under the Features section.
+When you submit a return purchase invoice with **Make Purchase Receipt On Submit**, RareBooks makes the return receipt for you.
 
-### Creating a Purchase Receipt Return
+## Cancel a Purchase Receipt
 
-1. Open the Purchase Receipt entry to be returned.
-2. Click on `Create > Return`. [![Create Purchase Receipt Return](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/create-purchase-receipt-return.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/create-purchase-receipt-return.png)
-3. The Party and Item details will be fetched from the original Purchase Receipt entry. You can set the quantity of Items returned. [![Purchase Receipt Return Form](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/purchase-receipt-return-form.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/purchase-receipt-return-form.png)
-4. Save and Submit.
+Only a **Books Manager** or a **System Manager** can delete a purchase receipt. To cancel, click the **…** button in the page header, and then click **Cancel**. RareBooks removes the stock entries and reverses the accounting entries.
 
-::: info Item quantity and Payment amount will be in negative to indicate that it is a return. :::
+- The received stock must still be at the location. If you shipped or moved it, you cannot cancel the receipt.
+- A receipt that a purchase invoice made on submit: cancel the invoice. RareBooks then cancels the receipt too.
+- A receipt with a submitted invoice or return made from it: cancel the invoice or the return first.
+- A purchase invoice cannot be cancelled while a receipt that you made from it is submitted. Cancel the receipt first.
 
-## How does Purchase Receipt Return affect General Ledger
-
-The Purchase Receipt Return entry will create General Ledger entries to reverse the impact of the original Purchase Receipt.
-
-[![Purchase Receipt Return in General Ledger](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/purchase-receipt-return-in-general-ledger.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/purchase-receipt-return-in-general-ledger.png)
-
-## View Ledger Entries
-
-After a Purchase Receipt is submitted, both Stock Ledger and General Ledger entries are created.
-
-To view these you can click on the View button and select the one you would like to see.
-
-[![View Ledger Entries](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/view-purchase-receipt-ledger-entries.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/view-purchase-receipt-ledger-entries.png)
+To correct a cancelled receipt, click **Create** > **Duplicate**. The copy does not keep the **Back Reference**.

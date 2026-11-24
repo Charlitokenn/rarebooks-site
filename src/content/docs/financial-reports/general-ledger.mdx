@@ -1,67 +1,58 @@
 ---
-sidebar_position: 5
-sidebar_label: General Ledger
-title: General Ledger
+title: "General Ledger"
+description: "The General Ledger lists the accounting entries of your company."
 sidebar:
   order: 3
 ---
 
-The General Ledger is a detailed report for all transactions posted to each account and for every transaction there is a Credit and Debit account so it lists them all up.
+The General Ledger lists the accounting entries of your company. RareBooks makes these entries when you submit a document, such as an invoice or a payment. Use it to see the entries of a period, an account, a party, or a document.
 
-This helps you to get a full update for all entries posted in a period against any account.
+Click **Reports** > **General Ledger** in the sidebar. On a phone, tap **Reports** in the bottom tabs. For the controls that all reports share, such as export and print, see [Reports](/financial-reports/reports/).
 
-[![General Ledger](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/general-ledger.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/general-ledger.png)
+## Open From a Document
 
-Navigate to the General Ledger from the sidebar: `Report > General Ledger`
+- To see the entries of a document, open the submitted document and click **View** > **Accounting entries** in the page header. On a phone, tap the **…** button in the header, and then tap **Accounting entries**.
+- After you submit an invoice, a payment, or a journal entry, you can also click **View accounting entries** in the message.
+- To see the entries of a customer or a supplier, open the saved party and click **View** > **General Ledger**.
+
+The report opens with **Ref Type** and **Ref Name**, or **Party**, set. From a document, **From Date** and **To Date** change to the date of the document. When you open the General Ledger from the sidebar again, RareBooks clears **Ref Type** and **Ref Name**. It also sets the dates back to their default values.
 
 ## Filters
 
-The General Ledger has several filters which can help you narrow the generated report to the entries you would like to see.
+| Filter | Description |
+| --- | --- |
+| **From Date** and **To Date** | The period of the entries. The default period starts one year before today and ends today. |
+| **Ref Type** and **Ref Name** | One type of document, such as **Sales Invoices** or **Payments**, and one document of that type. Select **Ref Type** first. |
+| **Account** | Shows only the entries of this account. For a group account, shows the entries of all the accounts below it. |
+| **Party** | Shows only the entries of this customer or supplier. |
+| **Group By** | Puts the entries in groups by **Party**, **Account**, or **Reference** (document). |
+| **Include Cancelled** | Also shows the entries of cancelled documents. |
+| **Ascending Order** | Shows the oldest entries first. By default, the newest entries show first. |
 
-### Ref Type
+## Balances
 
-Setting Ref Type as anything other than All will display entries only of that Transactional entry type.
+The report starts with an **Opening** row and ends with a **Closing** row.
 
-Example setting Ref Type as Journal Entry will display only entries created due to Journal Entries.
+![General Ledger with the Account filter set to HDFC Bank, which shows the opening balance and a running balance in each row.](/images/docs/books-docs-general-ledger-1-account-filter-v4.png)
 
-### Ref Name
+- **Opening** is the balance before **From Date** of the entries that match the other filters.
+- **Balance** in each entry row is the opening balance, plus the debits, minus the credits, up to that entry. RareBooks adds the entries from the oldest to the newest, also when the newest entries show first.
+- **Closing** shows the total debit, the total credit, and the balance at the end of the period.
 
-Ref Name filter allows to display all ledger entries that were generated due to a single Transactional Entry.
+A negative balance is a credit balance. Each document has equal debits and credits. So, without an **Account** filter, the balance is usually zero. To see the balance of one account, select it in **Account**, or set **Group By** to **Account**.
 
-To enable this you need to first set Ref Type.
+With **Group By**, each group has its own **Opening** row and a **Total** row. An empty row separates the groups.
 
-### Account
+## Cancelled Documents
 
-Selecting an Account will display only entries where an amount is being credited or debited from this account.
+When you cancel a document, RareBooks makes reverse entries with the same date. A reverse entry moves the same amount to the other side. RareBooks marks the original entries and the reverse entries as reverted.
 
-### Party
+By default, the report does not show reverted entries. To show them, select **Include Cancelled**. The **Reverted** column then shows **Reverted** for these entries. They cancel each other, so the closing balance does not change.
 
-Selecting a Party will display only entries involving them.
+## On a Phone
 
-### From Date
+Each entry shows the account, the document number, the party, the amount with **Dr** or **Cr**, and the balance. To open the document of an entry, tap the entry, and then tap the button with the document number, such as **Open SINV-1001**.
 
-The initial date after which all the entries are to be displayed. The default value is one year before tomorrow.
+![Phone General Ledger with the entries below their date, each with the amount in Dr or Cr and the balance.](/images/docs/books-docs-general-ledger-2-phone-ledger-v4.png)
 
-### To Date
-
-The final date before which all the entries are to be displayed. The default value is one day after today.
-
-### Group By
-
-Selecting a Group By option other than None groups the entry according to the selected option.
-
-[![Group By Reference](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/groupby-ref.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/groupby-ref.png)
-
-For instance setting Group By as Reference will group the entries by the Name of the transactional entry.
-
-### Include Cancelled
-
-Checking this will include the cancelled entries in the report.
-
-::: info Reverted Column A new column **Reverted** is added to indicate which of the entries have been cancelled. :::
-
-### Ascending Order
-
-By default the entries are displayed by newest entry first, i.e. descending order of Date.
-
-Checking this will display the entries in ascending order of entry date.
+The buttons below the header show **From Date**, **To Date**, **Account**, and **Party**. To change the filters, see [Change the Filters](/financial-reports/reports/#change-the-filters).

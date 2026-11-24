@@ -1,63 +1,63 @@
 ---
-title: Dashboard
-description: Dashboard
+title: "Dashboard"
+description: "The dashboard shows a summary of your invoices, your cash flow, your profit, and your expenses."
 sidebar:
   order: 2
 ---
 
-Dashboard show an overview of Cash Flow, Profit and Loss, Pending Payments and Expenses.
+The dashboard shows a summary of your invoices, your cash flow, your profit, and your expenses.
 
-You can access the Dashboard from the sidebar.
+![Dashboard for This year with the four invoice cards, the Cashflow chart, the Profit and Loss chart, and the Top expenses chart with Total spending: $ 4,545.37 below its title.](/images/docs/books-docs-dashboard-1-overview-v5.png)
 
-[![Dashboard](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/dashboard.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/dashboard.png)
+To open it, click **Dashboard** in the sidebar. On a phone, tap **Dashboard** in the bottom tabs.
 
-## Period Selector
+The dashboard has four invoice cards at the top. Below them are the **Cashflow** chart, the **Profit and Loss** chart, and the **Top expenses** chart.
 
-All sections of the Dashboard have a Period Selector. The default value is **This Year**. There are three options.
+You see only the cards for the invoices that you can read. Only a **Books Manager** or a **System Manager** sees the charts. See [Roles and Permissions](/getting-started/roles-and-permissions/).
 
-Consider today's date as 16 Jun, 2022. The three options will show analytics for the given range:
+## Period
 
-| #   | Option       | From         | Until (Today) |
-| --- | ------------ | ------------ | ------------- |
-| 1   | This Year    | 16 Jun, 2021 | 16 Jun, 2022  |
-| 2   | This Quarter | 16 Mar, 2022 | 16 Jun, 2022  |
-| 3   | This Month   | 16 May, 2022 | 16 Jun, 2022  |
+All the sections use the same period. To change it, select a period in the page header. On a phone, tap the period button above the cards, and then tap a period.
 
-::: info Options The Cashflow and the Profit and Loss chart don't show the **This Month** option. :::
+Each period ends today:
 
-## Cashflow
+| Period | Starts On |
+| --- | --- |
+| **This year** | The first day of the month 11 months before the current month. This is the default. |
+| **This quarter** | The first day of the month 2 months before the current month |
+| **This month** | The first day of the current month |
+| **Year to date** | The first day of the current fiscal year. See [Fiscal Year](/settings/settings/#fiscal-year). |
 
-[![Cashflow](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/cashflow.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/cashflow.png)
+For example, on 2 October 2026, **This year** starts on 1 November 2025.
 
-The Cashflow chart shows the total amount of money being transferred into and out of your company over a period.
+## Invoice Cards
 
-::: tip Cashflow The Cashflow chart is calculated from the Cash and Bank account balances. :::
+| Card | Shows |
+| --- | --- |
+| **Paid sales** | The grand total of the sales invoices of the period that are fully paid |
+| **Unpaid sales** | The amount that customers must still pay on the other sales invoices of the period |
+| **Paid purchases** | The grand total of the purchase invoices of the period that are fully paid |
+| **Unpaid purchases** | The amount that you must still pay on the other purchase invoices of the period |
 
-::: info Hover Hover tooltip shows the Inflow or Outflow amount for that month. :::
+The cards use only the submitted invoices with an invoice date in the period. A partly paid invoice adds only its outstanding amount to the unpaid card. Returns have negative amounts, so they decrease the amounts.
 
-## Pending Payments
+To see the invoices of a card, click the arrow button on the card. On a phone, tap the card.
 
-[![Pending Payments](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/pending-payments.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/pending-payments.png)
+## Charts
 
-Pending Payments shows the invoice paid and unpaid (outstanding) amounts. It has two sub-sections
+| Chart | Shows |
+| --- | --- |
+| **Cashflow** | The **Inflow** and the **Outflow** of each month, for all the accounts with the account type **Cash** or **Bank** |
+| **Profit and Loss** | The income minus the expenses of each month. A month with a loss shows as a **Loss** bar below the zero line. |
+| **Top expenses** | The five expense accounts with the highest amounts in the period. If more accounts have an amount, their total shows as one **Others** slice. The center shows a short total. The full **Total spending** shows under the chart title. |
 
-1. The Sales Invoice section shows the total outstanding amount which is pending from your customers for your sales.
-2. The Purchase Invoice section shows the total outstanding amount that you have to pay to your suppliers for your purchases.
+To see the amounts of a month in the **Cashflow** or the **Profit and Loss** chart, move the pointer over the month. On a phone, tap the month. For the full statement, see [Profit and Loss Statement](/financial-reports/profit-and-loss-statement/).
 
-::: info Hover Hover tooltip shows the number of Paid and Unpaid invoices. :::
+## Create Entries on a Phone
 
-## Profit and Loss
+1. Tap the **+** button in the header.
+2. Tap the type of entry: **Sales Invoice**, **Receive payment**, **Purchase Invoice**, **Make payment**, **Customer**, or **Item**.
 
-[![Profit and Loss Bar](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/pnl-bar.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/pnl-bar.png) This chart shows the profit (or loss) per month for a given period.
+![Phone dashboard with the + menu open: Sales Invoice, Receive payment, Purchase Invoice, Make payment, Customer, and Item.](/images/docs/books-docs-dashboard-2-phone-create-menu-v5.png)
 
-::: tip Profit and Loss Profit and Loss is the difference between the Income and Expense accounts. :::
-
-::: info Hover Hover tooltip shows the Profit or Loss amount for that month. :::
-
-## Top Expenses
-
-[![Top Expenses](https://github.com/frappe/books_docs/raw/master/docs/analytics/images/top-expenses.png)](https://github.com/frappe/books_docs/blob/master/docs/analytics/images/top-expenses.png)
-
-This section shows your top five expenses sorted from your highest expenses to lowest expenses by category.
-
-::: tip Expenses The Top Expenses chart is calculated from the Expense account balances. :::
+The list shows only the types that you can create.

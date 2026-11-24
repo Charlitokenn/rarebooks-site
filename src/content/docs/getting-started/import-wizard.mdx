@@ -1,141 +1,81 @@
 ---
-sidebar_position: 5
-sidebar_label: Import Wizard
-title: Import Wizard
+title: "Import Wizard"
+description: "Use the Import Wizard to make many entries at once from a .csv file."
 sidebar:
-  order: 5
+  order: 7
 ---
 
-The Import Wizard is a powerful tool that can allow you to:
-
-1. Import Data from a `.csv` file
-2. Make multiple entries quickly
-
-## Basics
-
-To use the Import Wizard navigate to it using the sidebar: `Setup > Import Wizard`. Or alternatively open the Quick Search, type "Import Wizard" and hit enter.
-
-### The Interface
-
-Once the Import Wizard has been opened you will have to select and Import Type which decides the kind of entries to be imported.
-
-[![Select Import Type](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/select-import-type.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/select-import-type.png)
-
-After selecting the import type, you'll see the additional controls that are now available.
-
-[![Import Wizard Controls](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-wizard-controls.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-wizard-controls.png)
-
-### Using a Template
-
-To import data you, it needs to fit some template for this, first click on the Save Import Template button.
-
-This will download a `.csv` template file.
-
-:::tip
-The Template.csv file The Template.csv file can be filled using any spreadsheet software.
-
-[![Import Template CSV](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-template-csv.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-template-csv.png)
-
-The Import Template has three rows:
-
-1. Entry type row: Some entries have child tables and this indicates whether the column belongs to the child table.
-2. Field label row: This tells us which field of the entry (or its child table) does the column belong to.
-3. Field key row: This row allows the Import Wizard to auto assign the columns when the file is selected. If this row is not present then Column Assignment Bar can be used to assign the fields.
-   :::
-
-To use the Template.csv file you must
-
-1. Import it into your spreadsheet software of choice
-2. Enter the values in the spreadsheet cells
-3. Export the sheet as a `.csv` file
-
-Once you have exported the `.csv` file, click on Select File to select the file. The Import Wizard will read the file and add rows to the table.
-
-### Verifying and Importing
-
-You can now check the imported values and if everything seems right. If you want to remove a row, click on the row index to delete it.
-
-[![Import File Selected](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-file-selected.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-file-selected.png)
-
-:::tip
-The Add Row button You can click on the Add Row button to add an additional empty row to the bottom of the import table which can be edited to enter the required values.
-
-This feature can be used for making multiple entries quickly without even selecting a file.
-:::
+Use the Import Wizard to make many entries at once from a `.csv` file. You can also type the entries in its table.
 
 :::note
-Fixing Conversion Errors If the Import Wizard couldn't convert a value then it will be marked with a red border.
-
-[![Conversion Error](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-conversion-error.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-conversion-error.png)
-
-You can hover over the field to view what the raw value was and fix the value to remove the error
+Only a **Books Manager** or a **System Manager** can import entries. The Import Wizard is not available on a phone.
 :::
 
-Finally if everything is fine, click on Import Data to begin importing the data.
+## Prepare the File
 
-### After Importing
+1. Click **Setup** > **Import Wizard** in the sidebar.
+2. Select an **Import Type**, such as **Sales Invoice** or **Item**.
+3. Click **Save template**. The browser downloads a `.csv` template file.
+4. Open the file in a spreadsheet app, and enter the values below the header row.
+5. Save the sheet as a `.csv` file.
+6. Click **Select file**, and select the file.
 
-Once import is done, you'll see the Import Complete modal
+The import types are **Sales Invoice**, **Purchase Invoice**, **Payment**, **Journal Entry**, **Party**, **Item**, **Tax Template**, **Account**, **Address**, and **Number Series**. When inventory is on, you can also import **Stock Movement**, **Shipment**, **Purchase Receipt**, and **Location**.
 
-[![Import Complete](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-complete.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-complete.png)
+The Import Wizard makes new entries only. It does not change entries that exist.
 
-Clicking on Show Me will take you to the List View of the newly created entries. Clicking on Done will reset the Import Wizard allowing you to make more entries.
+A template column for a table field has the table name in brackets, such as `Item (Items)`. The Import Wizard also reads files from the **Export** button of a list view, and templates from the RareBooks desktop app.
 
-:::note
-Fixing Failed Imports If certain entries could not be imported then you can click on the Fix Failed button that is visible only on failed imports.
+## Check the Values
 
-Clicking it will clear all the successful imports and allow you to fix the failed ones and retry.
-:::
+The rows of the file show in a table.
 
-## Picking Import Columns
+- To change a value, click its cell and edit it.
+- To add a row, click **Add row**. You can use this to make entries without a file.
+- To remove a row, click the **x** button in the **#** column.
 
-You can pick the specific columns you want to import by clicking on the `...` button and then clicking on `Pick Import Columns`.
+If the Import Wizard cannot convert a value, the cell gets a red border. Move the pointer over the cell to see the error.
 
-This will open the Pick Import Columns modal
+Each column has a field selector at the top. If your file does not use the template, select the field for each column. Select **None** to ignore a column. You cannot import while two columns have the same field (**Duplicate columns found**), or while a required field has no column (**Required fields not selected**).
 
-[![Pick Import Column](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/picking-import-columns.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/picking-import-columns.png)
+To leave fields out of the template and the import, click the **…** button in the page header, and then click **Pick import columns**. You cannot clear a required field.
 
-The fields marked by the red `*` are required fields and cannot be unselected. Other than these you can choose to keep or remove the rest of the columns.
+## Import the Data
 
-Removing a column will:
+1. Click **Import data**.
+2. For entries that you can submit, such as invoices, the **Submit entries?** dialog opens. Click **Yes** to submit the entries, or **No** to keep them as drafts.
+3. Wait for the import to complete.
 
-1. Remove it from the exported template.
-2. Prevent it from being assigned to a column.
+If the **Cannot import** dialog opens, fix the cells or the links that it lists. Then click **Import data** again.
 
-## Column Assignment Bar
+The **Import complete** dialog shows the number of imported entries, and each failed entry with its error:
 
-The Column Assignment Bar is used to mark a column in the table as a certain field. This is useful if the file you have selected doesn't use the Import Wizard's template.
+- **Show me** opens the list of the new entries. This button shows only when no entry failed.
+- **Done** clears the Import Wizard so that you can make more entries.
+- **Fix failed** keeps only the failed rows. Fix them, and click **Import data** again.
 
-Along with assigning columns you can even de-assign columns by selecting None [![Import Column Assignment](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/import-column-assignment.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/import-column-assignment.png)
+## Import Entries with Child Tables
 
-If None is selected then that column is ignored while importing data.
+Some entries have a child table. For example, a sales invoice has an **Items** table with one row for each item that you sell. For these entries:
 
-## Importing Entries with Child Tables
+![Import Wizard with the Sales Invoice type and a CSV file loaded: six rows that make three invoices, grouped by the Invoice No values A, B, and C.](/images/docs/books-docs-import-wizard-1-rows-loaded-v4.png)
 
-Sales Invoice is an example of an entry with a child table. Here child table refers to the items table which lists all the items included in the sale.
-
-When importing entry with a child table:
-
-1. Unique placeholder names should be provided even if the entry uses a Number Series.
-2. Each row in the child table should be one row.
-3. All rows of an entry should have the same non child table row data.
-
-For Example
-
-| Invoice Name | Customer | Item (Table Row) | Amount (Table Row) |
-| ------------ | -------- | ---------------- | ------------------ |
-| A            | Lin      | Bat              | 100                |
-| A            | Lin      | Ball             | 50                 |
-| B            | Andy     | Pen              | 200                |
-| B            | Andy     | Pencil           | 10                 |
-| B            | Andy     | Ink              | 80                 |
-
-Here the import table has two Sales Invoices with unique names A, and B.
-
-Invoice A has two items and Invoice B has three items. Each item is a single row in the import table.
-
-And for every child table row in the import table the non child table data, i.e. Invoice Name and Customer are repeated.
+1. Put each table row on a different row of the file.
+2. Give all the rows of one entry the same value in the name column, such as **Invoice No**.
+3. Enter the other values of the entry, such as the customer, in the first row. You can also repeat them in each row.
 
 :::caution
-Not following these guidelines may either cause the data to not be imported properly or to fail altogether.
+The Import Wizard ignores a row that has no value in the name column.
 :::
+
+For example:
+
+| Invoice No | Customer | Item (Items) | Quantity (Items) |
+| --- | --- | --- | --- |
+| A | Lin | Bat | 1 |
+| A | Lin | Ball | 3 |
+| B | Andy | Pen | 10 |
+| B | Andy | Pencil | 20 |
+| B | Andy | Ink | 2 |
+
+This file makes two sales invoices. Invoice **A** has two items, and invoice **B** has three items. The name column only groups the rows. RareBooks names each new entry from its [number series](/settings/number-series/), such as `SINV-1001`.

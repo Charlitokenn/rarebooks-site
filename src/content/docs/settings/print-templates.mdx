@@ -1,147 +1,146 @@
 ---
-sidebar_position: 7
-sidebar_label: Print Templates
-title: Print Templates
+title: "Print Templates"
+description: "A print template sets how a document looks when you print it or save it as a PDF."
 sidebar:
   order: 2
 ---
 
-The Print Template feature in RareBooks allows you to create personalized print templates for [Invoices](https://github.com/frappe/books_docs/blob/master/transactions/sales-invoices#printing-the-sales-invoice) and a few other [Entries](https://github.com/frappe/books_docs/blob/master/transactions/transactional-entries).
+A print template sets how a document looks when you print it or save it as a PDF. A template is HTML with Jinja tags.
 
-To view and create Print Templates navigate to its page using the sidebar: `Setup > Print Templates`. Or alternatively open the Quick Search, type "Print Template" and hit enter.
+## Open Print Templates
 
-[![Print Templates](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/print-templates.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/print-templates.png)
+Click **Setup** > **Print Templates** in the sidebar. Click a template to open it in the Template Builder.
 
-:::tip Preloaded Templates
+:::note
+The Print Templates list and the Template Builder are not available on a phone. You can print documents on a phone.
+:::
 
-When you create a new instance of RareBooks, it comes preloaded with a few templates.
+RareBooks has standard templates for sales invoices, POS sales invoices, quotes, purchase invoices, payments, and shipments. You cannot edit or delete a standard template. To change one, [duplicate](#duplicate-a-template) it and edit the copy. Journal entries, purchase receipts, and stock movements have no standard template. To print them, create a template first.
 
-You use these as they are, or you can _Duplicate_ and customize them. :::
+Only a **System Manager** can create, edit, or delete a print template. Other users can print with the templates, and they see the Template Builder as read only.
 
-If you would like to familiarize yourself with the Template Builder interface before learning how to create a Print Template, click [here](https://github.com/frappe/books_docs/blob/master/miscellaneous/print-templates#template-builder-interface).
+## Create a Print Template
 
-## Creating a Print Template
+1. Click **Setup** > **Print Templates** in the sidebar.
+2. Click **New**. The Template Builder opens with a sample template.
+3. Enter the **Template Name** in the page header. You cannot change it after you save.
+4. Below the preview, select the **Template Type**. The default is **Sales Invoice**.
+5. Edit the template in the editor on the right.
+6. Press `Ctrl + Enter` to update the preview.
+7. Click **Save**.
 
-To create a Print Template, first navigate to the Print Template list and click on the blue `+` button.
+The preview shows the newest document of the template type. To preview a different document, select it in **Display Doc**.
 
-You will now see the [Template Builder](https://github.com/frappe/books_docs/blob/master/miscellaneous/print-templates#template-builder-interface) tool.
+You can also start a template from the print view of a document. Click the **…** button, and then click **New template**. The new template gets the type of the document.
 
-You can enable the _Edit Mode_ by clicking the edit button next to the _Save as PDF_ button.
+## Duplicate a Template
 
-Next, select the template type. Sales Invoice is selected by default, but you can create Print Templates for other entry types too.
+Open the template, and click **…** > **Duplicate** in the page header. A copy opens with `CPY` at the end of its name. Edit the copy and click **Save**. To delete a template, click **…** > **Delete**.
 
-[![Template Type](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/template-type.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/template-type.png)
+## Edit a Template
 
-:::tip Display Entry
+The preview does not change while you type. To apply your changes, press `Ctrl + Enter` or click outside the editor. If the template has an error, the preview shows **Template error** and a message.
 
-You can change the example Entry being displayed. By default RareBooks selects the latest entry that has been created. :::
+![Template Builder with the Business - Sales Invoice template: the preview of invoice SINV-1039 (with Assam Tea, HSN/SAC 0902) on the left and the template code on the right.](/images/docs/books-docs-print-templates-1-template-builder-v4.png)
 
-:::tip Custom Sizes
+| Key | Action |
+| --- | --- |
+| `Ctrl + Enter` | Apply the changes to the preview. |
+| `Ctrl + S` | Save the template. In the editor, it applies your changes first. On macOS, press `Cmd + S`. |
+| `Ctrl + E` | Turn edit mode on or off. Edit mode makes the editor larger. |
+| `Ctrl + H` | Show or hide the Key Hints. |
 
-You can adjust the size of the Print Template by clicking on the Set Print Size option in the `···` menu.
+Except for `Ctrl + S`, use the `Ctrl` key also on macOS.
 
-[![Custom Print Template Size](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/custom-print-size.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/custom-print-size.png) :::
+The **…** menu also has these actions:
 
-Now you are ready to edit the Print Template
+- **Set print size**: Select a **Page Size**, such as **A5**, **Letter**, or **POS**, or enter a height and width in cm. The default is A4. Then save the template.
+- **Save template file**: Download the template as a `.template.html` file.
+- **Select template file**: Replace the editor content with a file.
 
-## Editing the Template
+## Write a Template
 
-The left pane contains the Template Editor which is used to edit the template. You can remove the preset template and write the template that you want here.
+For the Jinja syntax, see the [Jinja template documentation](https://jinja.palletsprojects.com/en/stable/templates/). To see complete examples, open the standard templates.
 
-[![Template Editor](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/template-editor.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/template-editor.png)
+To show a value, put its key between double curly braces, such as `{{ doc.name }}`. There are three sets of keys:
 
-:::info Template Syntax
+- `doc`: The values of the printed document, such as `doc.name` and `doc.grand_total`. The keys change with the template type.
+- `print`: The values of the **Print** settings. Set them first with `{%- set print = get_print_settings() -%}`.
+- `totals`: Totals that the document does not store. Set them first with `{%- set totals = get_print_totals(doc) -%}`.
 
-The templates follow the Vue.js template syntax. You can learn more about it [here](https://vuejs.org/guide/essentials/template-syntax.html). :::
+To see the `doc` and `print` keys of the template type, click **Key hints** below the editor. Custom fields also show there. The editor suggests keys while you type inside `{{ }}`.
 
-:::tip Resizing the Template Editor
-
-You can resize the Template Editor by clicking on the border and dragging it.
-
-[![Resize Template Editor](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/resize-template-editor.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/resize-template-editor.png) :::
-
-### Displaying Values
-
-Values can be displayed by mentioning their keys inside curly braces. For example:
+Key Hints shows a table, such as the items of an invoice, as `doc.items[number]`. Use a `for` loop to show each row:
 
 ```
-<h1>{{ doc.name }}</h1>
+{% for row in doc.items %}
+  <p>{{ row.item | e }}: {{ books_format(row.amount, "Currency", doc.currency) }}</p>
+{% endfor %}
 ```
 
-Here `doc.name` is the key for Invoice No and it will be displayed in an `h1` element.
+`books_format(value, fieldtype, currency)` formats a value as RareBooks shows it. Use `"Currency"`, `"Float"`, or `"Date"`. Without a `currency`, it uses the company currency. A `"Float"` value uses the Float Precision of the Frappe System Settings and shows whole numbers without decimals.
 
-The Template Editor can help you by autocompleting the keys as you type the name.
+Add `| e` to text that users enter, such as names and notes. Then HTML characters in the text show as text.
 
-There are two sets of keys to display values:
+To show a value of a linked record, use `frappe.db.get_value`:
 
-1. `doc`: these keys are used to display values from the entry such as Invoice No, Account, Date, etc. These keys vary depending on the Entry Type.
-2. `print`: these keys are used to read Print Settings values such as Logo, Email, Color, etc.
+```
+{{ frappe.db.get_value("Books Party", doc.party, "email") }}
+```
 
-:::tip Key Hints If you want to see the available values you can click on the **Key Hints** section below the Template Editor.
+Add CSS in a `<style>` element in the template, or use `style` attributes.
 
-[![Key Hints](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/key-hints.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/key-hints.png) :::
+### Print Settings Keys
 
-### Template Styling
+| Key | Value |
+| --- | --- |
+| `print.logo`, `print.company_name` | **Logo**, **Company Name** |
+| `print.email`, `print.phone` | **Email**, **Phone** |
+| `print.address` | The full text of the **Address** |
+| `print.color`, `print.font` | **Color**, and the font of the Frappe Print Settings |
+| `print.display_logo` | **Display Logo in Invoice** |
+| `print.amount_in_words` | **Display Amount In Words** |
+| `print.display_time` | **Display Time In Invoice** |
+| `print.display_description` | **Display Description In Invoice** |
+| `print.displaytermsandconditions` | **Display Terms and Conditions** |
+| `print.terms_and_conditions` | **Terms and Conditions** |
+| `print.gstin`, `print.tax_id` | **GSTIN** or **Tax ID** from the **General** settings |
 
-You can either use [inline CSS styles](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/style) or utility classes from [tailwindcss](https://tailwindcss.com/docs/utility-first) to style the different components of your templates.
+The display settings do not change a template by themselves. Check them in your template, such as with `{% if print.display_logo %}`.
 
-### Applying Changes
+### Totals Keys
 
-To apply the changes made in the editor, you can:
+| Key | Template Types | Value |
+| --- | --- | --- |
+| `totals.sub_total` | All except Journal Entry | The total without tax. For stock documents, the total amount. |
+| `totals.grand_total_in_words` | All except Journal Entry | The grand total in words. For payments, the **Amount** in words. |
+| `totals.payment_details` | Sales Invoice, Purchase Invoice | The submitted payments of the invoice. Each row has `payment_method`, `amount` (the part for this invoice), `amount_paid`, and `outstanding_amount`. |
+| `totals.amount_paid_in_words` | Payment | The **Amount Paid** in words. |
+| `totals.taxes` | Payment | The taxes of the paid invoices, with `account` and `amount`. |
 
-1. Click outside the template editor
-2. Press the shortcut keys (`⌃ return` for macOS and `Ctrl Enter` for other operating systems).
+## Set the Default Template
 
-## Using the Template
+The print view opens with the default template of the document type. To set the defaults, use **Print Templates** in the **Defaults** tab of the [Settings](/settings/settings/#defaults). For POS invoices, RareBooks uses the **POS Print Template** of the POS profile that the sale was made with, or else the one in the **Defaults** tab.
 
-After you have edited your template and clicked on the blue Save button to save the changes you have made. You can use the templates save your entries as PDFs which you can send to your customers.
+## Print a Document
 
-To use the template, navigate to the entry and click on the Print button.
+1. Open a saved document.
+2. Click the printer icon in the page header. On a phone, tap **Print** at the bottom of the form.
+3. In **Template Name**, select a print template. On a phone, tap **Template** below the header.
+4. Click **Save as PDF** to download a PDF file, or click **Print** to open the print dialog of your browser.
 
-[![Print Button](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/print-button.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/print-button.png)
+![Print view of a sales invoice with the company logo, address, and GSTIN, three items with their HSN/SAC codes (Assam Tea has 0902), the discount, CGST and SGST, and the grand total in words.](/images/docs/books-docs-print-templates-2-print-view-v4.png)
 
-You will now see the print preview. You can change the template to be used from the list on the left.
+On a computer, you can also press `Ctrl + P` in the form, or `Cmd + P` on macOS. On a phone, you can tap **Share** to send the PDF to a different app, if your browser can share files.
 
-[![Print View](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/print-view.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/print-view.png)
+You cannot print a cancelled document or a document with unsaved changes. The printer icon shows only when a template exists for the document type. **Print** opens a new browser tab. If RareBooks shows **Pop-up blocked**, allow pop-ups for your site and try again.
 
-Once you are satisfied with your selection click on the blue Save as PDF button to save it.
+## Add Your Logo
 
-## Template Builder Interface
+1. Click **Setup** > **Settings** in the sidebar.
+2. Click **Print**.
+3. In **Logo**, click **Upload** and select an image.
+4. Turn on **Display Logo in Invoice**.
+5. Click **Save**.
 
-When you open any of the Print Templates or when you click on the blue `+` button to create a new Template, you will be shown the Template Builder tool.
-
-[![Template Builder Interface](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/template-builder-interface.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/template-builder-interface.png)
-
-Here's a list of what each component does:
-
-1. **Template Name**: text input to edit the Print Template name if it has not been saved.
-2. **Save as PDF**: button to save the selected entry as a PDF file.
-3. **Toggle Edit Mode**: button to toggle edit mode.
-4. **More**: dropdown menu with options such as view the print settings, and selecting and saving the template file.
-5. **Save**: button to save the Print Template after editing its values.
-6. **Template Preview**: preview template after editing without saving it.
-7. **Template Editor**: text input to edit the template.
-8. **Template Type**: drop selector to set the template type.
-9. **Display Entry**: entry to show in the preview area.
-10. **Display Scale**: number input to change the Template Preview scale.
-11. **Key Hints**: component that shows the available keys (such as `doc.name`, `doc.date`, etc) that can be used in the template.
-
-## Tips for Creating Templates
-
-Here are a few tips to help you create custom print templates.
-
-### Duplicating preloaded templates
-
-If you are not familiar with HTML, CSS and Vue.js Template Syntax then you might find creating a custom template to be a bit challenging.
-
-If this is the case, we suggest duplicating one of the Preloaded Templates and editing the duplicate.
-
-[![Duplicating the Templates](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/duplicate-template.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/duplicate-template.png)
-
-This way you can make and apply small changes and see how it affects the Preview and step by step make the template like how you want it to look.
-
-### Precaution when using tailwindcss
-
-A few of the tailwindcss defaults (for example colors) used in RareBooks have been overriden using the `tsconfig.js` file.
-
-Since these values are subject to change we suggest not relying on the overriden tailwindcss styles. Not doing this may cause your templates to change when we update the defaults.
+The **Print** settings also change the **Color** of the standard templates. The font of the Frappe Print Settings applies to all templates. See [Settings](/settings/settings/#print).

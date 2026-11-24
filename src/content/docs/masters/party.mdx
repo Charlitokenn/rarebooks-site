@@ -1,48 +1,74 @@
 ---
-sidebar_position: 4
-sidebar_label: Party
-title: Party
+title: "Party"
+description: "A party is a customer or a supplier."
 sidebar:
   order: 3
 ---
 
-_Party_ is a term used in RareBooks for any entity to whom a Sale or from whom a Purchase is made.
+A party is a customer or a supplier. You sell to customers, and you buy from suppliers. A party can also be both a customer and a supplier.
 
-## Types of Party
+A **Books User** can create, edit, and delete parties. You cannot delete a party that a document uses. See [Roles and Permissions](/getting-started/roles-and-permissions/).
 
-A Party is classified by their Role it's used for.
+## Party Lists
 
-| #   | Role     | Name     | Invoice                     | Navigation              |
-| --- | -------- | -------- | --------------------------- | ----------------------- |
-| 1   | Customer | Customer | Sales Invoices              | `Sales > Customers`     |
-| 2   | Supplier | Supplier | Purchase Invoices           | `Purchases > Suppliers` |
-| 3   | Both     | Party    | Sales and Purchase Invoices | `Common > Party`        |
+| List | Sidebar | Shows the Parties With the Role | A New Party Gets the Role |
+| --- | --- | --- | --- |
+| Customers | **Sales** > **Customers** | **Customer** or **Both** | **Customer** |
+| Suppliers | **Purchases** > **Suppliers** | **Supplier** or **Both** | **Supplier** |
+| Party | **Common** > **Party** | All roles | **Both** |
 
-::: warning Usage Make sure that you create the Party under the correct Navigation as this cannot be changed after creation. :::
+The **Outstanding Amount** column shows the unpaid total of the submitted invoices, in the company currency. For a party with the role **Both**, it is the sales total minus the purchase total.
+
+## Create a Party
+
+1. Click **Sales** > **Customers** in the sidebar. For a supplier, click **Purchases** > **Suppliers**.
+2. Click **New**.
+3. Enter the **Name**. You cannot change it after you save.
+4. Optional: Enter the **Email**, the **Phone**, and the [address](#add-an-address).
+5. Click **Save**.
+
+On the phone dashboard, you can also tap the **+** button in the header, and then tap **Customer**.
+
+You can also type a new name in the **Customer** or **Supplier** field of an invoice and click **Create**. To make a customer from a lead, see [Lead](/transactions/lead/).
+
+## Role
+
+A **Customer** can be on sales quotes and sales invoices. A **Supplier** can be on purchase invoices. **Both** can be on all of them. If an invoice has a party with the wrong role, RareBooks does not save the invoice.
+
+You can change the role after you save. RareBooks then clears the **Default Account**, and fills the account of the new role when you save.
 
 ## Party Fields
 
-1. Party Image: an image to identify the Party by.
-2. Party Name: a name to identify the Party by, each Party should have a unique name.
-3. Email: the Party's email address that may be displayed when printing the invoice.
-4. Phone: the Party's phone number that may be displayed when printing the invoice.
-5. Address: the Party's address that may be displayed when printing the invoice.
-6. Default Account: default account that may be credited or debited when a transaction involving the part is made.
-7. Currency: the currency in which to create the invoice for the Party.
-8. Role: the role of the Party, whether they are a Customer, Supplier or Both.
+| Field | Description |
+| --- | --- |
+| Default Account | The receivable account of a customer or the payable account of a supplier. Invoices take their **Account** from it. If it is empty, RareBooks fills the **Default Receivable Account** or the **Default Payable Account** of the [settings](/settings/settings/#accounts) when you save. If that is also empty, it fills **Debtors** or **Creditors**, if your chart of accounts has them. |
+| Currency | The currency of the invoices of the party. The default is the company currency. See [Multi Currency Invoicing](/transactions/multicurrency-accounting/). |
+| Tax ID | The tax number of the party. It does not show for a company in India. |
+| Loyalty Program | The loyalty program of a customer. Shows only when loyalty programs are on. See [Loyalty Program](/transactions/loyalty-program/). |
+| Loyalty Points | Read only. The points that the customer can use now. |
 
-## Recent Invoices
+A party with the role **Both** does not get a default account. You can select a receivable or a payable account. RareBooks uses it only on the invoices that need that type of account.
 
-The Party Quick Edit Form has a Recent Invoices widget. This shows the last three invoices made for a Party.
+For a company in India, the **Billing** section has **GST Registration** instead of **Tax ID**. For **Registered Regular**, the **GSTIN No.** is required and must be a valid 15-character GSTIN. It shows on printed invoices.
 
-[![Recent Invoices Widget](https://github.com/frappe/books_docs/raw/master/docs/entries/images/recent-invoices.png)](https://github.com/frappe/books_docs/blob/master/docs/entries/images/recent-invoices.png)
+## Add an Address
 
-Each row shows the following information
+1. Open the party.
+2. Click **Address**, and then click **Create**.
+3. Enter **Address Line 1** and **City / Town**, and select the **Country**.
+4. Click **Save**.
+5. Click **Save** in the party form.
 
-- Invoice Name
-- Invoice Status
-- Date
-- Paid Amount
-- Outstanding Amount
+The address shows on printed invoices. To edit an address later, search for `Address` in [Quick Search](/getting-started/quick-search/). For a company in India, select the **State** from the list. RareBooks fills the **Place of Supply** from it.
 
-Clicking on a row will take you to the Invoice from where [Payments can be made](https://github.com/frappe/books_docs/blob/master/transactions/payments#making-payments-from-invoices).
+## Party Actions
+
+The **…** button in the page header has these actions:
+
+![Customer Kaveri Enterprises with address, GST registration, and GSTIN, and the … menu open with Linked entries, Full width, Create sale, View sales, and Delete.](/images/docs/books-docs-party-1-customer-actions-v4.png)
+
+- **Create sale** and **View sales**: Open a new sales invoice, or the sales invoices of the party. They show for **Customer** and **Both**.
+- **Create purchase** and **View purchases**: The same for purchase invoices. They show for **Supplier** and **Both**.
+- **Delete**: You cannot delete a party that a document uses.
+
+**View** > **General Ledger** opens the [General Ledger](/financial-reports/general-ledger/) with the entries of the party. The link icon in the page header shows the linked invoices and payments. On a phone, all these actions are in the **…** menu in the header.

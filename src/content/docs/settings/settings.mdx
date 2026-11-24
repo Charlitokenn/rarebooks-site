@@ -1,95 +1,132 @@
 ---
-sidebar_position: 7
-sidebar_label: Settings
-title: Settings
+title: "Settings"
+description: "The settings control the company details, the features, and the defaults of RareBooks."
 sidebar:
   order: 1
 ---
 
-To navigate to the settings use the Sidebar: `Setup > Settings`
+The settings control the company details, the features, and the defaults of RareBooks. They apply to all users of the site. The **Inventory** and **POS Settings** tabs show only when those features are on.
 
-There are a few tabs under Settings
+## Open the Settings
 
-1. General: Settings used to customize accounting defaults and enable features.
-2. Defaults: Settings that are used to set defaults.
-3. Print: Settings that are used to customize the Invoice Print View.
-4. System: Settings used to customize System defaults.
+Click **Setup** > **Settings** in the sidebar. The settings open in a dialog over the current page. On a phone, they open on a full page. You can also open them from [Quick Search](/getting-started/quick-search/). On a computer, the **…** menu of the print view has **Print Settings**.
 
-:::tip Inventory Settings
+Only a **Books Manager** or a **System Manager** can change the settings. A **Books User** sees all the fields as read only. See [Roles and Permissions](/getting-started/roles-and-permissions/).
 
-[Inventory Settings](https://github.com/frappe/books_docs/blob/master/inventory/settings) are visible only when Inventory has been enabled. :::
+## Save Your Changes
 
-## General Settings
+1. Change the values in one or more tabs.
+2. Click **Save**. On a computer, you can also press `Ctrl + S`, or `Cmd + S` on macOS.
+3. In the **Reload RareBooks?** dialog, click **Yes**.
 
-[![General Settings](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/general-settings.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/general-settings.png)
+RareBooks saves the changes of all the tabs together. Some changes show only after the reload. If you close the settings before you save, RareBooks discards the changes.
 
-These settings are used to set and customize accounting defaults.
+## General
 
-**Settings that cannot be changed**
+### Company Details
 
-1. Full Name
-2. Company Name
-3. Country
-4. Bank Name
+The setup wizard fills these fields. You cannot change **Company Name**, **Bank Name**, or **Country** here. To change the company name on printed documents, use **Company Name** in the **Print** tab.
 
-::: info Setup Wizard These values are set when setting up a new instance using the Setup Wizard. :::
+When the country is India, the tab also has **GSTIN**. After you set it and reload, the **GST** group shows in the sidebar. See [GST Reports](/financial-reports/gst-reports/). When the country is Switzerland, the tab has **Tax ID**.
 
-**Settings that can be changed**
+### Accounts
 
-1. Fiscal Year Start Date: used as the start date when displaying the reports by fiscal year.
-2. Fiscal Year End Date: used as the end date when displaying the reports by fiscal year.
-3. Write Off Account: account used when a Write Off amount is set when making a Payment
-4. Round Off Account: account used to settle the credit and debit difference when the General Ledger is updated.
-5. Enable Discount Accounting: used to enable the setting of discounts in invoices. ([link](https://github.com/frappe/books_docs/blob/master/transactions/discount-accounting))
-6. Enable Inventory: used to enable inventory management features. ([link](https://github.com/frappe/books_docs/blob/master/inventory/introduction))
+| Field | Description |
+| --- | --- |
+| Write Off Account | An expense account. Payments post their write-off amount to this account. See [Payments](/transactions/payments/). |
+| Round Off Account | An expense account for small rounding differences in ledger entries. |
+| Default Receivable Account, Default Payable Account | The accounts that new customers, new suppliers, and their invoices and payments use when they have no account. |
+| Discount Account | Shows only when discount accounting is on. The income account for discounts. See [Discount Accounting](/transactions/discount-accounting/). |
 
-::: info GSTIN GSTIN setting is available only when the country is set to India.
+The setup wizard fills these accounts from the chart of accounts.
 
-Setting this value will enable the GST Reports. :::
+### Features
+
+Use these switches to turn on features. Reload RareBooks after you save to see the feature.
+
+![General tab of the settings with the feature switches. Switches that are on and cannot be turned off, such as Enable Inventory, show as on in grey.](/images/docs/books-docs-settings-1-general-features-v4.png)
+
+| Switch | What It Turns On | Can Turn Off |
+| --- | --- | --- |
+| Enable Discount Accounting | [Discounts](/transactions/discount-accounting/) on invoice items. | No |
+| Enable Inventory | [Stock management](/inventory/introduction-to-inventory/) and the **Inventory** tab. | No |
+| Enable Price List | [Price lists](/masters/price-list/). | Yes |
+| Enable Invoice Returns | [Returns](/transactions/sales-invoice/#returns) of invoices, shipments, and purchase receipts. | No |
+| Enable Form Customization | [Customize Form](/settings/customize-form/) in the sidebar, for a System Manager. | Yes |
+| Enable Lead | [Leads](/transactions/lead/). | No |
+| Enable Pricing Rule | [Pricing rules](/masters/pricing-rule/). Shows only when discount accounting is on. | Yes |
+| Enable Item Enquiry | [Item enquiries](/transactions/point-of-sale/#item-enquiry) in the POS. | Yes |
+| Enable Loyalty Program | [Loyalty programs](/transactions/loyalty-program/). | No |
+| Enable Coupon Code | [Coupon codes](/masters/coupon-code/). Shows only when pricing rules are on. | Yes |
+| Enable Item Group | The **Item Group** field on items, and **Filter by Group** in the POS. | No |
+| Enable POS Without Inventory | The [POS](/transactions/point-of-sale/#turn-on-pos) without **Enable Inventory**. It also turns on all the feature switches of the inventory settings. | No |
+| Enable Partial Payment | [Payments](/transactions/payments/) of less than the outstanding amount. | Yes |
+
+Multi currency invoicing does not have a switch. See [Multi Currency Invoicing](/transactions/multicurrency-accounting/).
+
+:::caution[Switches That You Cannot Turn Off]
+After you save a switch with **No** in the last column, you cannot turn it off.
+:::
+
+### Fiscal Year
+
+**Fiscal Year Start Date** and **Fiscal Year End Date** are the first and last days of your financial year. Reports use these dates when you show a report by fiscal year, and in the date presets of the filters. The end date must be after the start date, and a fiscal year cannot be longer than one year.
+
+## Inventory
+
+This tab shows only when inventory is on. You cannot turn off **Enable Barcodes**, **Enable Batches**, **Enable Serial Number**, or **Enable UOM Conversion** after you save them. You can turn off **Enable Point of Sale**, but not while a POS shift is open. For the fields, see [Inventory Settings](/inventory/inventory-settings/).
 
 ## Defaults
 
-[![Defaults](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/defaults.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/defaults.png)
+The **Defaults** tab sets the values that new documents start with. You can change most of these values in each document. Fields for stock documents show only when inventory is on.
 
-These settings are used to set default values that are selected when creating an entry. They allow for quicker creation of entries but can be changed when making entries.
+### Auto Payments
 
-The following Defaults can be set:
+**Sales Payment Account** and **Purchase Payment Account** are the cash or bank accounts for automatic payments. When an account is set, new invoices of that type have **Make Payment On Submit** selected in their **Settings** tab. When you submit the invoice, RareBooks makes and submits a payment of the outstanding amount with this account.
 
-1. Accounts used for Auto Payments.
-2. Locations used for Auto Stock Transfers.
-3. [Number Series](https://github.com/frappe/books_docs/blob/master/miscellaneous/number-series) for transactional entries.
-4. Terms to be used for certain transactional entries.
-5. [Print Templates](https://github.com/frappe/books_docs/blob/master/miscellaneous/print-templates) to be used when printing an entry.
+The setup wizard does not set these accounts, so automatic payments are off by default. To submit one invoice without a payment, clear **Make Payment On Submit** in that invoice. See [Automatic Payments](/transactions/sales-invoice/#automatic-payments) and [Auto Payments](/transactions/purchase-invoice/#auto-payments).
 
-:::warning Auto Stock Transfer items
+### Other Defaults
 
-An Item from an Invoice is included in the auto Stock Transfer only if these conditions are met:
+| Section | What It Sets |
+| --- | --- |
+| Auto Stock Transfer | **Shipment Location** and **Purchase Receipt Location**. Invoices make [shipments](/transactions/sales-invoice/#automatic-shipments) and [purchase receipts](/transactions/purchase-invoice/#purchase-receipts) automatically only after you select a location. |
+| Number Series | The default series of each document type. See [Number Series](/settings/number-series/). |
+| Terms | The **Notes** of new documents. **Sales Invoice Terms** also fills new sales quotes. |
+| Print Templates | The template that opens first when you print each document type. **POS Print Template** is for POS receipts. See [Print Templates](/settings/print-templates/). |
+| Point of Sale | Shows only when POS is on. The **POS Customer**, the **Cash Denominations**, and the colors of the POS buttons. See [POS Defaults](/transactions/point-of-sale/#pos-defaults). |
 
-1. The item does not use Batches.
-2. The item does not use Serial Numbers.
-3. There is sufficient quantity of the item at the set default Location.
+## POS Settings
 
-:::
+This tab shows only when POS is on. It sets the location, the accounts, the layout, and the rules of the POS. For the fields, see [POS Settings](/transactions/point-of-sale/#pos-settings).
 
-## Print Settings
+## Print
 
-[![Invoice Settings](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/print-settings.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/print-settings.png)
+These settings change the standard print templates, such as **Business - Sales Invoice**. The setup wizard fills the **Logo**, the **Company Name**, and the **Email**.
 
-Settings here can be altered to customize the Print View of an Invoice.
+![Print tab of the settings with the logo, company name, email, phone, address, color, font, and display switches.](/images/docs/books-docs-settings-2-print-tab-v4.png)
 
-::: tip Print View These settings can also be altered from the [Print View](https://github.com/frappe/books_docs/blob/master/transactions/sales-invoices#printing-the-sales-invoice) of an Invoice :::
+| Field | Description |
+| --- | --- |
+| Company Name | The company name on printed documents. |
+| Email, Phone | Show on POS receipts. |
+| Address | The company address on printed documents. |
+| Color, Font | The accent color, and the font of printed documents. The font is the font of the Frappe Print Settings: **Default**, **Helvetica Neue**, **Arial**, **Helvetica**, **Inter**, **Verdana**, or **Monospace**. Only a System Manager can change it. |
 
-## System Settings
+The **Display** switches show or hide the logo, the amount in words, the time, the item descriptions, and the **Terms and Conditions** text.
 
-[![System Settings](https://github.com/frappe/books_docs/raw/master/docs/miscellaneous/images/system-settings.png)](https://github.com/frappe/books_docs/blob/master/docs/miscellaneous/images/system-settings.png)
+## System
 
-These settings are used to alter how values such as currency and time are displayed.
+| Field | Description |
+| --- | --- |
+| Date Format | How dates show in RareBooks and on printed documents. Setup takes it from the company country. RareBooks also sets the closest date format in the Frappe System Settings. Only a System Manager can change it. |
+| Hide Get Started | Hides **Get Started** in the sidebar. RareBooks turns it on when you complete all the tasks on that page. |
+| Allow to bypass filters | When a link field finds no matching entries, it shows **Show unfiltered results**. |
+| Remove Filter | Link fields do not filter their lists. |
+| Locale | The format of numbers and amounts, such as `en-US` or `en-IN`. Setup takes it from the company country. RareBooks also sets the matching number format in the Frappe System Settings. Only a System Manager can change it. |
+| Display Precision | The number of decimal places for amounts, from 0 to 9. It is the Currency Precision of the Frappe System Settings, which only a System Manager can change. Quantities and other decimal numbers use the Float Precision of the Frappe System Settings (3 if it is not set), and whole numbers show no decimals. |
+| Currency | The company currency. You cannot change it. |
 
-1. Date Format: used to set how dates are displayed.
-2. Hide Get Started: used to hide the Get Started section from the Sidebar.
-3. Version: this is a read only field which tells you the current version of RareBooks.
-4. Locale: used to set the currency format, by default locale of the selected country is used.
-5. Display Precision: used to set the number of digits are shown after the decimal.
-6. Currency: used to set the currency used for all transactions.
+To change the colors, open the account menu at the top of the sidebar, click **Theme**, and select **Light**, **Dark**, or **Automatic**. The theme applies to your user only. **Automatic** follows the setting of your computer or phone. On a phone, the account menu is at the top of the menu sheet.
 
-::: info Get Started Get Started is auto hidden on completion. :::
+On a phone, the **System** tab also has the **Install Books** button. See [Install RareBooks](/getting-started/using-rarebooks-on-a-phone/#install-frappe-books).

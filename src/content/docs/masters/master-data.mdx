@@ -1,49 +1,67 @@
 ---
-sidebar_position: 4
-sidebar_label: Master Data
-title: Master Data
+title: "Master Data"
+description: "Master data is the set of records that your transactions use, such as customers, items, and tax templates."
 sidebar:
   order: 1
 ---
 
-Besides [Transactional Entries](https://github.com/frappe/books_docs/blob/master/transactions/transactional-entries) RareBooks has regular entries for documents that don't affect any account's balance directly.
+Master data is the set of records that your transactions use, such as customers, items, and tax templates. A master does not make ledger entries. When you select a master in an invoice, RareBooks copies its values to the invoice.
 
-Examples of these are:
+## Masters in the Sidebar
 
-- [Items](https://github.com/frappe/books_docs/blob/master/entries/items)
-- [Party](https://github.com/frappe/books_docs/blob/master/entries/party)
-- [Taxes](https://github.com/frappe/books_docs/blob/master/entries/taxes)
+| Master | Sidebar |
+| --- | --- |
+| [Customers](/masters/party/) | **Sales** > **Customers** |
+| [Suppliers](/masters/party/) | **Purchases** > **Suppliers** |
+| [All customers and suppliers](/masters/party/) | **Common** > **Party** |
+| [Items that you sell](/masters/items/) | **Sales** > **Sales Items** |
+| [Items that you buy](/masters/items/) | **Purchases** > **Purchase Items** |
+| [Items that you buy and sell](/masters/items/) | **Common** > **Items** |
+| [Tax templates](/masters/taxes/) | **Setup** > **Tax Templates** |
+| [Accounts](/getting-started/chart-of-accounts/) | **Setup** > **Chart of Accounts** (not on a phone) |
+| [Number series](/settings/number-series/) | **Setup** > **Number Series** |
 
-## Creating a New Entry
+The sidebar shows only the lists that you can read. See [Roles and Permissions](/getting-started/roles-and-permissions/).
 
-To create an entry navigate to it's page first, for example for Taxes: `Setup > Taxes`
+### Masters of Optional Features
 
-And click on the blue `+` button, this will open the Quick Edit Form.
+These masters show in the sidebar only after you turn on their switch in the [settings](/settings/settings/#features):
 
-[![Quick Edit Form](https://github.com/frappe/books_docs/raw/master/docs/entries/images/quick-edit.png)](https://github.com/frappe/books_docs/blob/master/docs/entries/images/quick-edit.png)
+| Master | Sidebar | Switch |
+| --- | --- | --- |
+| [Price lists](/masters/price-list/) | **Common** > **Price List** | **Enable Price List** |
+| [Loyalty programs](/transactions/loyalty-program/) | **Sales** > **Loyalty Program** | **Enable Loyalty Program** |
+| [Leads](/transactions/lead/) | **Sales** > **Lead** | **Enable Lead** |
+| [Pricing rules](/masters/pricing-rule/) | **Sales** > **Pricing Rule** | **Enable Pricing Rule** |
+| [Coupon codes](/masters/coupon-code/) | **Sales** > **Coupon Code** | **Enable Coupon Code** |
 
-Enter the values and click the blue Save button. The entry will now be made and can be used in transactions.
+### Masters Without a Sidebar Entry
 
-## Duplicating an Entry
+Some masters do not have a sidebar entry, such as addresses, item groups, and units. You make them from the field that links to them, such as the **Address** field of a party. To open their list, search for the name in [Quick Search](/getting-started/quick-search/) and open the **List** result.
 
-To create the duplicate of an entry, click on the `...` menu button and select Duplicate.
+## Create a Master
 
-[![Duplicate Button](https://github.com/frappe/books_docs/raw/master/docs/entries/images/duplicate.png)](https://github.com/frappe/books_docs/blob/master/docs/entries/images/duplicate.png)
+Open the list in the sidebar, click **New**, fill in the fields, and click **Save**. The list fills some values for you. For example, a new entry in **Customers** gets the role **Customer**, and a new entry in **Sales Items** gets the purpose **Sales**.
 
-This will create a Draft entry, i.e. it is not yet saved, you can change the values and click on Save.
+### Create a Master From a Field
 
-After the entry has been Saved you can use it in transactions.
+You can make a master while you fill in a different form, such as a customer while you make a sales invoice.
 
-## Deleting an Entry
+![New sales invoice with the quick edit panel open for a new customer, Sapphire Interiors, that was made from the Customer field.](/images/docs/books-docs-master-data-1-create-from-field-v4.png)
 
-To delete an entry, click on the `...` menu button and select Delete.
+1. Click the field, such as **Customer**.
+2. Type the name of the new entry.
+3. Click **Create**. The quick edit panel opens next to the form.
+4. Fill in the fields and click **Save**.
 
-[![Delete Button](https://github.com/frappe/books_docs/raw/master/docs/entries/images/delete.png)](https://github.com/frappe/books_docs/blob/master/docs/entries/images/delete.png)
+RareBooks selects the new entry in the field. The panel shows only the main fields. On a phone, the new entry opens in a sheet. **Create** shows only when you can create that type of entry.
 
-::: warning Entry Deletion Entries used in transactions cannot be deleted.
+## Duplicate or Delete a Master
 
-To delete these entries the Transactions where they are used will have to be deleted first. :::
+To copy an entry, click **Create** > **Duplicate** in the page header. The name of the copy ends with `CPY`. To delete an entry, click **…** > **Delete**. On a phone, both actions are in the **…** menu in the header.
 
----
+You cannot delete a master that a document uses. RareBooks shows an error with the name of the document. Only a **Books Manager** or a **System Manager** can change tax templates, accounts, and price lists.
 
-Now that you know the basics of entries you can learn about specific types of entries.
+## Import Masters
+
+To add many masters at one time, use the [Import Wizard](/getting-started/import-wizard/). It can import parties, items, tax templates, accounts, addresses, and number series.

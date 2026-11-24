@@ -1,79 +1,94 @@
 ---
-sidebar_position: 6
-sidebar_label: Introduction To Inventory
-title: Introduction To Inventory
+title: "Introduction to Inventory"
+description: "Inventory keeps track of the stock of your items."
 sidebar:
   order: 1
 ---
 
-RareBooks' inventory features allows you to track the movement of your items as you perform your business transactions.
+Inventory keeps track of the stock of your items. RareBooks records each movement of stock into a location, out of a location, or between two locations. It also calculates the value of your stock and records this value in your accounts.
 
-## Inventory Features
+## Turn On Inventory
 
-The inventory module of RareBooks consists of the following features:
+Only a **Books Manager** or a **System Manager** can change the settings.
 
-1. [Stock Movement](https://github.com/frappe/books_docs/blob/master/inventory/stock-movement): transaction that records the movement of Items to and from selected Locations.
-2. [Shipment](https://github.com/frappe/books_docs/blob/master/inventory/shipment): transaction that records the movement of Items to a Customer after a sale has been made.
-3. [Purchase Receipt](https://github.com/frappe/books_docs/blob/master/inventory/purchase-receipt): transaction that records the movement of Items from a Supplier after a purchase has been made.
-4. [Stock Ledger](https://github.com/frappe/books_docs/blob/master/inventory/stock-ledger): report that keeps a record of all the stock transactions.
-5. [Stock Balance](https://github.com/frappe/books_docs/blob/master/inventory/stock-balance): report that displays the stock balance quantities.
+![Inventory group in the sidebar with Stock Movement, Shipment, and Purchase Receipt, and the list of stock movements.](/images/docs/books-docs-introduction-to-inventory-1-inventory-menu-v4.png)
 
-## Enabling Inventory
+1. Click **Setup** > **Settings** in the sidebar.
+2. In the **General** tab, turn on **Enable Inventory**.
+3. Click **Save**.
+4. Click **Yes** to reload RareBooks.
 
-To enable inventory you will have to first check the Enable Inventory. To navigate: `Setup > Settings > General Tab`.
+:::caution
+You cannot turn off inventory after you turn it on.
+:::
 
-[![Enable Inventory](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/enable-inventory.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/enable-inventory.png)
+The sidebar then shows the **Inventory** group and the stock reports. You can also turn on the [Point of Sale (POS)](/transactions/point-of-sale/).
 
-Once that is done you will have to restart RareBooks to see the Inventory item in the sidebar.
+| Page | Use |
+| --- | --- |
+| [Stock Movement](/inventory/stock-movement/) | Moves stock into, out of, or between locations. |
+| [Shipment](/inventory/shipment/) | Records stock that goes to a customer. |
+| [Purchase Receipt](/inventory/purchase-receipt/) | Records stock that comes from a supplier. |
+| [Stock Ledger](/inventory/stock-ledger/) | Shows each stock entry. |
+| [Stock Balance](/inventory/stock-balance/) | Shows the stock of each item at each location. |
 
-::: warning
+A sales invoice or a purchase invoice can make its shipment or purchase receipt when you submit it. A **Books User** can make, submit, and cancel stock movements, shipments, and purchase receipts. Only a **Books Manager** or a **System Manager** can delete them.
 
-Inventory cannot be disabled once it has been enabled. :::
+## Track an Item
 
-## Tracking an Item
+1. Make a new item. For the steps, see [Items](/masters/items/).
+2. Set **Type** to **Product**.
+3. In the **Inventory** section, select **Track Inventory**.
+4. Click **Save**.
 
-Since you may not want to track the movement of all items, item tracking has to be enabled by setting the Track Item checkbox when creating an item.
+You can select **Track Inventory** only on a new product, and you cannot change it after you save. Stock movements, shipments, and purchase receipts accept only these items. Their **Purchase Acc.** must be a liability account, and RareBooks fills it with the **Stock Received But Not Billed Acc.**
 
-[![Track Item](https://github.com/frappe/books_docs/raw/master/docs/inventory/images/track-item.png)](https://github.com/frappe/books_docs/blob/master/docs/inventory/images/track-item.png)
+## Locations
 
-::: info
-
-Track Item can be enabled only while creating the item. :::
-
-Once you have created an item with tracking enabled, you can track its movement by making inventory specific transactions.
-
-## Location
-
-In RareBooks the movement of an item takes place to and from a _Location_. There are two kinds of movements that can take place:
-
-1. Inward movement: When you move an item to a _Location_, the quantity of the item at that location increases.
-2. Outward movement: When you move an item from a _Location_, the quantity of the item at that location decreases.
-
-The source or destination location for an outward or inward transaction is selected when making the transaction.
-
-::: info Default Location
-
-RareBooks has a default location called Stores set. This can be changed from the Inventory tab under Settings. :::
-
-::: tip Creating Locations
-
-Additional locations can be created when making an inventory transaction. To do so click the Create option in the Location selection dropdown. :::
+Stock is always at a location. RareBooks has a location called **Stores**, which is the [Default Location](/inventory/inventory-settings/#default-location). To add a location, type its name in a location field and click **Create**. Only a **Books Manager** or a **System Manager** can make locations. To see all your locations, search for `Location` in [Quick Search](/getting-started/quick-search/).
 
 ## Stock Quantity
 
-Since an outward movement reduces the stock quantity at a location, if the location has an insufficient quantity of stock, the transaction will not be allowed.
+An entry that takes stock out of a location needs enough stock there, on its date and on all later dates. The same check applies when you cancel an entry that brought stock in. If the stock is not enough, RareBooks shows the available and the required quantity. Select a location that has enough stock, or bring the stock in first with an earlier date. To find a location, see [Stock Balance](/inventory/stock-balance/).
 
-This means that negative stock movement will not be allowed. This applies even to backdated entries that may cause negative stock in the future.
+## Stock Valuation
 
-To enable the outward movement, two things can be done:
+RareBooks values stock with the FIFO (first in, first out) method. Stock that comes in adds a layer at its rate. Stock that goes out takes the value of the oldest layers first, not the rate of its row. Each item, location, and batch has its own layers.
 
-1. Change the location to one that has sufficient quantity.
-2. Create an inward movement of the selected Item to the selected Location before the blocked transaction.
+For example, you receive an item two times and then ship 15 units:
 
-::: tip Stock Balance
+| Entry | Quantity | Rate | Value of the Entry | Stock Value After the Entry |
+| --- | --- | --- | --- | --- |
+| Purchase receipt | 10 | 100 | 1,000 | 1,000 |
+| Purchase receipt | 10 | 120 | 1,200 | 2,200 |
+| Shipment | -15 | | -1,600 | 600 |
 
-To check which Location has sufficient quantity of an Item check the Stock Balance report. :::
+The shipment takes 10 units at 100 and 5 units at 120. The 5 units that stay have a value of 600.
 
----
+A **Material Transfer** and a shipment return bring the stock in at the value that went out.
 
-Now that you know how to enable inventory and are familiar with the basic concepts, you can move onto reading about the inventory transactions.
+When you submit or cancel an entry with an earlier date, RareBooks calculates the later entries again and updates their accounting entries.
+
+## Stock Accounts
+
+RareBooks posts the change in the stock value to the accounts of the [inventory settings](/inventory/inventory-settings/#accounts). If one of the accounts that a document needs is empty, you cannot submit the document.
+
+| Document | Debit | Credit |
+| --- | --- | --- |
+| Purchase receipt | Stock In Hand | Stock Received But Not Billed |
+| Purchase invoice for a tracked item | Stock Received But Not Billed | The payable account, such as Creditors |
+| Shipment | Cost of Goods Sold | Stock In Hand |
+| Stock movement that adds stock value, such as a **Material Receipt** | Stock In Hand | Stock Adjustment |
+| Stock movement that removes stock value, such as a **Material Issue** | Stock Adjustment | Stock In Hand |
+
+The purchase invoice and the purchase receipt cancel each other in **Stock Received But Not Billed**, so the stock value stays in **Stock In Hand**. A shipment then moves the value to **Cost of Goods Sold**. A **Material Transfer** makes no accounting entries.
+
+## Next Steps
+
+1. Check the accounts and the default location in [Inventory Settings](/inventory/inventory-settings/).
+2. Make your products with **Track Inventory** selected.
+3. Record the stock that you have now with a [stock movement](/inventory/stock-movement/) of the type **Material Receipt**.
+
+:::note[Opening Stock Value]
+A **Material Receipt** credits the **Stock Adjustment Acc.** So in your [opening entry](/getting-started/setup-opening-balances/), put the stock value on the **Stock Adjustment Acc.**, not on the **Stock In Hand Acc.** The two entries then cancel each other.
+:::
