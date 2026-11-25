@@ -1,0 +1,21 @@
+---
+// The RareBooks logo as one static link (spec 0018 AC-12): no React. The image is decorative (`alt=""`),
+// since the name beside it is the link text. The name keeps a minimum width, the width Fraunces needs, so the
+// font swap from the fallback face (about 12 px narrower) doesn't shift the nav row (AC-13).
+import { AppConfig } from "../../constants/index.ts";
+
+interface Props {
+  href?: string;
+  class?: string;
+}
+
+const { href = "/", class: className } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={["inline-flex min-h-11 shrink-0 items-center gap-2 rounded-mk-sm no-underline", className]}
+>
+  <img src={AppConfig.logo} alt="" width="32" height="32" class="size-8" loading="eager" decoding="async" />
+  <span class="inline-block min-w-[5.25em] font-mk-serif text-xl font-semibold tracking-tight text-mk-ink">{AppConfig.appName}</span>
+</a>

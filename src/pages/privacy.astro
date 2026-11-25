@@ -1,0 +1,80 @@
+---
+// Draft privacy policy (spec 0018 AC-10, AC-11). For the operator's review, not legal advice. It stays
+// noindex and unlinked until `AppConfig.legal.approved` is true.
+export const prerender = false;
+
+import LegalLayout from "../layouts/LegalLayout.astro";
+import { AppConfig } from "../constants/index.ts";
+
+if (!AppConfig.legal.approved) Astro.response.headers.set("X-Robots-Tag", "noindex");
+
+const { controller } = AppConfig.legal;
+const support = AppConfig.emails.supportEmail;
+---
+
+<LegalLayout
+  title="Privacy policy"
+  description={`How ${AppConfig.appName} collects, uses and shares your personal data.`}
+  canonicalPath="/privacy"
+>
+  <p>
+    This policy explains what personal data {AppConfig.appName} collects when you use rarebooks.cc and your hosted
+    {AppConfig.appName} site, why we collect it, and who we share it with.
+  </p>
+
+  <h2>Who we are</h2>
+  <p>
+    The controller of your personal data is {controller.name || "[legal name, to be supplied]"},
+    {controller.address || "[postal address, to be supplied]"}. For any privacy request, write to
+    <a href={`mailto:${support}`}>{support}</a>.
+  </p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li>Account details: your name, email address and sign in records, when you create an account.</li>
+    <li>Site details: the business name and site address you choose when you start a trial.</li>
+    <li>
+      Your business records: the accounting, invoicing, stock and customer data you enter in your hosted site. We
+      keep them for you and use them only to run your site.
+    </li>
+    <li>Payment details: the plan you pay for, the amount, and the reference the payment provider gives us.</li>
+    <li>Usage data: pages you visit on rarebooks.cc and the buttons you click, through analytics.</li>
+    <li>Support messages: what you write to us by chat or email.</li>
+  </ul>
+
+  <h2>Who we share it with, and why</h2>
+  <ul>
+    <li><strong>Clerk</strong>: to sign you in and keep your account secure.</li>
+    <li>
+      <strong>Cloudflare</strong>: to host rarebooks.cc, store sign up records (Cloudflare D1), and check that a sign up
+      comes from a person (Turnstile).
+    </li>
+    <li><strong>Google Tag Manager</strong>: for analytics about how visitors use rarebooks.cc.</li>
+    <li><strong>tawk.to</strong>: to run the support chat on rarebooks.cc and in your site.</li>
+    <li><strong>Resend</strong>: to send you email, such as sign up and trial reminders.</li>
+    <li>
+      <strong>ClickPesa</strong> and <strong>PayPal</strong>: to take your payments, in Tanzanian shillings and US
+      dollars. We don't see or store your card or mobile money PIN.
+    </li>
+    <li><strong>Frappe Cloud</strong>: to host your {AppConfig.appName} site and its database.</li>
+  </ul>
+  <p>We don't sell your personal data.</p>
+
+  <h2>How long we keep it</h2>
+  <p>
+    Each hosted site starts with a 30 day clock. Days 1 to 21 are a free trial. Days 22 to 30 are the window to pay,
+    and from day 26 an unpaid site turns read only. If no one has paid by day 30, we email the owner a download of all
+    the site's records and then remove the site. A site that paid and then stopped paying is removed the same way
+    after its grace period ends, with warning emails first.
+  </p>
+  <p>We keep account and payment records for as long as the law requires us to.</p>
+
+  <h2>Your rights</h2>
+  <p>
+    You can ask to see, correct, export or delete your personal data, or object to how we use it. Write to
+    <a href={`mailto:${support}`}>{support}</a> and we'll answer within 30 days.
+  </p>
+
+  <h2>Changes</h2>
+  <p>When this policy changes, we update the date at the top of this page.</p>
+</LegalLayout>

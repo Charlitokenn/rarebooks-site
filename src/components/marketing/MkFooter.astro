@@ -1,0 +1,70 @@
+---
+// The marketing footer (spec 0018 AC-9): four link columns, then the logo, tagline, social icons and the
+// copyright. Links come from `footerColumns`, filtered on the server by sign in state, and the Legal column
+// waits for `AppConfig.legal.approved` (AC-10).
+import { AppConfig } from "../../constants/index.ts";
+import { footerColumns } from "../../constants/navigation.ts";
+import { isSignedIn, visibleFooterColumns } from "../../lib/marketing/navigation.ts";
+import MkLogo from "./MkLogo.astro";
+import MkSection from "./MkSection.astro";
+import MkSocialIcon from "./MkSocialIcon.astro";
+
+const columns = visibleFooterColumns(footerColumns, isSignedIn(Astro.locals), AppConfig.legal.approved);
+const socials = [
+  { name: "facebook", label: "Facebook", href: AppConfig.socials.facebook },
+  { name: "instagram", label: "Instagram", href: AppConfig.socials.instagram },
+  { name: "tiktok", label: "TikTok", href: AppConfig.socials.tiktok },
+] as const;
+const year = new Date().getFullYear();
+
+const linkClass =
+  "rounded-mk-sm text-mk-small text-(--mk-subtle) no-underline hover:text-mk-ink hover:underline underline-offset-4 motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-mk";
+---
+
+<MkSection as="footer" tone="tint" padding="py-12 md:py-16">
+  <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      columns.map((column) => (
+        <div>
+          <h2 class="font-mk-sans text-mk-overline text-mk-ink uppercase">{column.title}</h2>
+          <ul class="mt-4 flex flex-col gap-3" role="list">
+            {column.links.map((link) => (
+              <li>
+                <a href={link.href} class={linkClass} data-cta-location={link.ctaLocation}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="mt-12 flex flex-col gap-6 border-t border-mk-border pt-8 md:flex-row md:items-start md:justify-between">
+    <div class="max-w-sm">
+      <MkLogo />
+      <p class="mt-3 text-mk-small text-(--mk-subtle)">{AppConfig.description}</p>
+    </div>
+    <div class="flex flex-col gap-4 md:items-end">
+      <ul class="flex gap-2" role="list">
+        {
+          socials.map((social) => (
+            <li>
+              <a
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${AppConfig.appName} on ${social.label}`}
+                class="inline-flex size-11 items-center justify-center rounded-mk-pill text-mk-ink hover:bg-mk-surface motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-mk"
+              >
+                <MkSocialIcon name={social.name} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="text-mk-small text-(--mk-subtle)">© {year} RareBooks. All rights reserved.</p>
+    </div>
+  </div>
+</MkSection>

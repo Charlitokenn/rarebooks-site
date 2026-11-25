@@ -10,6 +10,8 @@ interface Props extends HTMLAttributes<"section"> {
   id?: string;
   /** The section heading's `id`, so screen readers name the region. */
   labelledby?: string;
+  /** Replaces the band's vertical padding (default `py-16 md:py-28`), such as the footer's `py-12 md:py-16`. */
+  padding?: string;
   class?: string;
 }
 
@@ -19,13 +21,14 @@ const {
   as: Tag = "section",
   id,
   labelledby,
+  padding = "py-16 md:py-28",
   class: className,
   ...rest
 } = Astro.props;
 ---
 
 <Tag
-  class:list={["mk-band px-5 py-16 md:px-8 md:py-28", className]}
+  class:list={["mk-band px-5 md:px-8", padding, className]}
   data-tone={tone}
   id={id}
   aria-labelledby={labelledby}

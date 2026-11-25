@@ -1,0 +1,76 @@
+---
+// The shell of /privacy and /terms (spec 0018 AC-10): the new header and footer, a "Last updated" date, and
+// a draft banner plus noindex until `AppConfig.legal.approved` is true. Each page also sets the
+// X-Robots-Tag header in its own front matter.
+import Layout from "./Layout.astro";
+import MkNav from "@components/marketing/MkNav.astro";
+import MkFooter from "@components/marketing/MkFooter.astro";
+import MkSection from "@components/marketing/MkSection.astro";
+import MkHeading from "@components/marketing/MkHeading.astro";
+import { AppConfig } from "../constants/index.ts";
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+}
+
+const { title, description, canonicalPath } = Astro.props;
+const { approved, updated } = AppConfig.legal;
+// A plain ISO date read at noon UTC, so the long English date is the same in every time zone.
+const updatedText = new Date(`${updated}T12:00:00Z`).toLocaleDateString("en-GB", {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+---
+
+<Layout
+  title={`${title} | ${AppConfig.appName}`}
+  description={description}
+  canonicalPath={canonicalPath}
+  noindex={!approved}
+>
+  <MkNav />
+  <main id="main">
+    <MkSection width="narrow" labelledby="legal-title">
+      {
+        !approved && (
+          <p class="mb-8 rounded-mk-card border-2 border-mk-brand bg-mk-tint px-5 py-4 font-bold text-mk-ink" role="note">
+            Draft for review. Not yet in force.
+          </p>
+        )
+      }
+      <MkHeading level={1} id="legal-title">{title}</MkHeading>
+      <p class="mt-4 text-mk-small text-(--mk-subtle)">Last updated {updatedText}</p>
+      <div class="mk-legal mt-10 flex flex-col gap-4 text-mk-body text-mk-ink">
+        <slot />
+      </div>
+    </MkSection>
+  </main>
+  <MkFooter />
+</Layout>
+
+<style>
+  .mk-legal :global(h2) {
+    margin-top: 1.5rem;
+    font-family: var(--font-mk-serif);
+    font-size: var(--text-mk-h3);
+    line-height: 1.25;
+  }
+
+  .mk-legal :global(ul) {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+
+  .mk-legal :global(li + li) {
+    margin-top: 0.5rem;
+  }
+
+  .mk-legal :global(a) {
+    color: var(--mk-link);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>

@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import Navbar from "@components/Navbar.astro";
-import Footer from "@components/Footer.astro";
+import MkNav from "@components/marketing/MkNav.astro";
+import MkFooter from "@components/marketing/MkFooter.astro";
 import { AppConfig } from "../../constants";
 import { competitors } from "../../data/competitors";
 ---
@@ -11,11 +11,11 @@ import { competitors } from "../../data/competitors";
   description={`See how ${AppConfig.appName} stacks up against QuickBooks Desktop, Sage 50, TallyPrime, GnuCash, and other accounting software — features, pricing, and platform support compared.`}
   canonicalPath="/compare"
 >
-  <Navbar />
-  <main>
+  <MkNav />
+  <main id="main">
     <section class="relative overflow-hidden">
       <div class="absolute inset-0 dotted-bg opacity-70"></div>
-      <div class="relative mx-auto max-w-3xl px-4 pb-14 pt-36 text-center sm:pt-40">
+      <div class="relative mx-auto max-w-3xl px-4 pb-14 pt-16 text-center">
         <div class="mx-auto mb-6 inline-flex items-center gap-2 rounded-pill border border-black/5 bg-white/70 px-4 py-1.5 text-sm font-medium text-muted backdrop-blur">
           <span class="h-2 w-2 rounded-full bg-brand"></span>
           Platform Comparisons
@@ -49,5 +49,5 @@ import { competitors } from "../../data/competitors";
       </div>
     </section>
   </main>
-  <Footer />
+  <MkFooter />
 </Layout>

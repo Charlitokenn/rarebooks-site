@@ -1,15 +1,32 @@
 ---
+// Rendered on demand (spec 0018 AC-1), so an unknown URL goes through the Clerk middleware and the header
+// shows the right buttons for the visitor.
+export const prerender = false;
+
 import Layout from "../layouts/Layout.astro";
-import Footer from "@components/Footer.astro";
+import MkNav from "@components/marketing/MkNav.astro";
+import MkFooter from "@components/marketing/MkFooter.astro";
+import MkSection from "@components/marketing/MkSection.astro";
+import MkHeading from "@components/marketing/MkHeading.astro";
+import MkButton from "@components/marketing/MkButton.astro";
+import { AppConfig } from "../constants/index.ts";
+
+Astro.response.status = 404;
 ---
 
-<Layout>
-    <main class="flex flex-col items-center justify-center gap-4 h-screen dotted-bg">
-            <h1 class="text-5xl font-extrabold">404</h1>
-            <p class="text-md text-primary">Page not found. Check the URL.</p>
-        <div class="flex gap-4 mt-8">
-            <a href="/" class="bg-brand py-2.5 px-4 rounded-3xl text-brand-soft font-bold">← Go Home</a>
-            <a href="/getting-started/getting-started-with-rarebooks" class="bg-brand py-2.5 px-4 rounded-3xl text-brand-soft font-bold">View Documentation</a>
+<Layout title={`Page not found | ${AppConfig.appName}`} noindex>
+  <MkNav />
+  <main id="main">
+    <MkSection width="narrow" labelledby="not-found">
+      <div class="text-center">
+        <MkHeading level={1} id="not-found" overline="404" align="center">Page not found</MkHeading>
+        <p class="mt-4 text-mk-lead text-(--mk-subtle)">Check the address, or pick up from one of these.</p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <MkButton href="/">Go home</MkButton>
+          <MkButton href={AppConfig.urls.docsHomePath} variant="secondary">View documentation</MkButton>
         </div>
-    </main>
+      </div>
+    </MkSection>
+  </main>
+  <MkFooter />
 </Layout>

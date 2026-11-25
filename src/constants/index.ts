@@ -24,6 +24,8 @@ export const AppConfig = {
     portalUrl: "https://rarebooks.cc/dashboard",
     // Spec 0014 AC-7: every "Start free trial" link goes to Clerk sign up, which lands on the start form.
     signUpUrl: "/auth/sign-up",
+    // Spec 0018: the docs home, with the trailing slash Starlight serves, used by the nav, footer and 404.
+    docsHomePath: "/getting-started/getting-started-with-rarebooks/",
   },
   socials: {
     facebook: "https://www.facebook.com/rarebooks",
@@ -42,6 +44,14 @@ export const AppConfig = {
   // Hosted sign up (spec 0014): each site's address is `<subdomain>.<siteDomain>`.
   onboarding: {
     siteDomain: "rarebooks.cc",
+  },
+  // Spec 0018 AC-10: /privacy and /terms stay drafts (noindex, a draft banner, linked from nowhere) until
+  // `approved` is true. Fill in `controller` (the legal name and postal address of whoever runs RareBooks)
+  // before you approve. Bump `updated` (an ISO date) whenever the wording changes.
+  legal: {
+    approved: false as boolean,
+    updated: "2026-11-25",
+    controller: { name: "", address: "" },
   },
   featuredClients: ["TAJ Home Appliances", "Powerlink Innovations"],
   hostedPlan,

@@ -1,0 +1,73 @@
+---
+// Draft terms of service (spec 0018 AC-10, AC-11). For the operator's review, not legal advice. It stays
+// noindex and unlinked until `AppConfig.legal.approved` is true.
+export const prerender = false;
+
+import LegalLayout from "../layouts/LegalLayout.astro";
+import { AppConfig } from "../constants/index.ts";
+
+if (!AppConfig.legal.approved) Astro.response.headers.set("X-Robots-Tag", "noindex");
+
+const { controller } = AppConfig.legal;
+const support = AppConfig.emails.supportEmail;
+---
+
+<LegalLayout
+  title="Terms of service"
+  description={`The terms for using ${AppConfig.appName} and your hosted site.`}
+  canonicalPath="/terms"
+>
+  <p>
+    These terms are an agreement between you and {controller.name || "[legal name, to be supplied]"} for the use of
+    {AppConfig.appName}, including rarebooks.cc and the hosted site we run for you. By starting a trial or paying for a
+    plan, you accept them.
+  </p>
+
+  <h2>Your free trial</h2>
+  <p>
+    Each hosted site starts with a 30 day clock. Days 1 to 21 are a free trial with full access, and you don't need
+    to pay anything to start. From day 22 your site asks you to subscribe. From day 26, if no one has paid, the site
+    turns read only: you can still sign in, view and download your records, but you can't change them. If no one has
+    paid by day 30, we email the owner a download of all the site's records and then remove the site.
+  </p>
+
+  <h2>Plans and renewal</h2>
+  <ul>
+    <li>
+      You pay for one site at a time, monthly or yearly, at the prices shown on our pricing page when you subscribe.
+    </li>
+    <li>
+      Plans paid with PayPal renew on their own at the end of each period until you cancel. You can cancel at any time,
+      and your site stays paid until the end of the period you already paid for.
+    </li>
+    <li>Plans paid with ClickPesa cover the period you pay for and don't renew on their own. You pay again to renew.</li>
+    <li>
+      If a paid plan ends and isn't renewed, your site gets a short grace period, then turns read only. If it stays
+      unpaid, we warn you by email, send the owner a download of all the site's records, and remove the site.
+    </li>
+  </ul>
+
+  <h2>Your data</h2>
+  <p>
+    Your business records belong to you. We keep them, back them up and use them only to run your site. Our
+    {AppConfig.legal.approved ? <a href="/privacy">privacy policy</a> : "privacy policy"} explains how we handle
+    personal data.
+  </p>
+
+  <h2>Acceptable use</h2>
+  <ul>
+    <li>Use {AppConfig.appName} only for lawful business records.</li>
+    <li>Don't try to break, overload or get around the security of {AppConfig.appName} or any site on it.</li>
+    <li>Don't use your site to store or send malware, spam or content you have no right to share.</li>
+    <li>Keep your sign in details safe. You're responsible for what happens under your account.</li>
+  </ul>
+  <p>We may suspend a site that breaks these rules, and we'll tell you why.</p>
+
+  <h2>Support</h2>
+  <p>
+    For help, use the chat on our site or write to <a href={`mailto:${support}`}>{support}</a>.
+  </p>
+
+  <h2>Changes</h2>
+  <p>When these terms change, we update the date at the top of this page and tell account owners by email.</p>
+</LegalLayout>

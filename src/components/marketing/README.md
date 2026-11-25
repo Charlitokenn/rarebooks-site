@@ -1,6 +1,6 @@
 # Marketing design system
 
-The shared look of the redesigned marketing pages (spec 0017 in `rarebooks-web/docs/specs/`). You get one set of `mk` tokens in `src/styles/marketing.css` and ten Astro components in this folder. You can see every token and component live at `/design-system` (not indexed, and no page links to it).
+The shared look of the redesigned marketing pages (spec 0017 in `rarebooks-web/docs/specs/`). You get one set of `mk` tokens in `src/styles/marketing.css` and the Astro components in this folder. You can see every token and component live at `/design-system` (not indexed, and no page links to it).
 
 `Layout.astro` loads `marketing.css`, which imports `global.css` first and adds the `mk` system on top. `/dashboard` and the docs load `global.css` directly, so nothing here changes them.
 
@@ -10,7 +10,7 @@ The shared look of the redesigned marketing pages (spec 0017 in `rarebooks-web/d
 - `marketing.css` adds one page wide rule, `scroll-padding-top: 5rem` on `html`. Every other rule is scoped to `.mk-band` or `[data-tone]`, so a page keeps its current look until you rebuild it with `MkSection`.
 - New marketing code uses only `mk` tokens. The old names (`brand`, `ink`, `muted`, `display`, `pill`, `soft`, `card`) stay only where current pages use them, and each restyle removes them from the pages it rewrites.
 - Every color token is a 6 digit hex value, and any text and background pair you use on a page is in the allowed pairs below. `npm test` (`tests/marketing/contrast.test.ts`) holds them.
-- Components ship no client JavaScript. An interaction that truly needs JS (the pricing toggle) is a React island styled with `mk` classes.
+- Components ship no client JavaScript, with one exception: MkNav carries one inline script of under 1 KB for the phone menu's close rules (spec 0018 AC-12). An interaction that truly needs JS (the pricing toggle) is a React island styled with `mk` classes.
 - `mk-pink-strong` and `mk-border` are decoration only: never the only sign of a control, never behind text.
 - Light only: no `.dark` rules in `marketing.css`.
 
@@ -42,7 +42,7 @@ Spacing is Tailwind's own scale, set inside the components: band padding `py-16 
 
 ### MkSection
 
-A full width band. Props: `tone` (`canvas` | `ink` | `tint` | `pink`, default `canvas`), `width` (`default` | `narrow`), `as` (`section` | `div` | `footer` | `aside`), `id`, `labelledby` (the heading's `id`, so the region gets a name), `class`.
+A full width band. Props: `tone` (`canvas` | `ink` | `tint` | `pink`, default `canvas`), `width` (`default` | `narrow`), `as` (`section` | `div` | `footer` | `aside`), `id`, `labelledby` (the heading's `id`, so the region gets a name), `padding` (replaces the default `py-16 md:py-28`), `class`.
 
 ```astro
 <MkSection tone="tint" labelledby="why">
@@ -131,4 +131,41 @@ Text beside a screenshot: two columns from `md`, the frame on the right unless `
   <p>Every account on one screen.</p>
   <MkButton href="/auth/sign-up">Start free trial</MkButton>
 </MkFeatureRow>
+```
+
+## Site chrome (spec 0018)
+
+Every marketing page renders `MkNav` first and `MkFooter` last, and gives its own `<main>` the `id="main"` the skip link targets. `Layout.astro` adds neither. The auth pages and `/design-system` leave both out. The links live in `src/constants/navigation.ts`, nowhere else.
+
+### MkLogo
+
+The logo image (`alt=""`) and the name in Fraunces, as one static link. Props: `href` (default `/`), `class`. The dashboard sidebar keeps `AppLogo.tsx`.
+
+```astro
+<MkLogo />
+```
+
+### MkNav
+
+No props. Renders the skip link, the 64 px sticky header (`z-40`), the four `navLinks`, and on the right Sign in plus Start free trial, or one Dashboard button for a signed in visitor. The choice is made on the server from `Astro.locals.auth()` (a missing or failing `auth` counts as signed out). Below `md` it shows a Menu button that opens a `<dialog id="mk-nav-menu">` sheet through the Layout `data-open-modal` handler. Its inline script closes the sheet on a backdrop tap, a link tap and a resize to `md`. Compare gets `aria-current` on `/compare` pages.
+
+```astro
+<MkNav />
+<main id="main">…</main>
+```
+
+### MkFooter
+
+No props. The four `footerColumns` (Product, Compare, Resources, and Legal once `AppConfig.legal.approved` is true), links filtered by sign in state, then the logo, `AppConfig.description`, the social icons and the copyright year from the server clock.
+
+```astro
+<MkFooter />
+```
+
+### MkSocialIcon
+
+A 24 px inline SVG, `aria-hidden`. Props: `name` (`facebook` | `instagram` | `tiktok`), `class`. Put the name on the link around it.
+
+```astro
+<a href={AppConfig.socials.facebook} aria-label="RareBooks on Facebook"><MkSocialIcon name="facebook" /></a>
 ```
