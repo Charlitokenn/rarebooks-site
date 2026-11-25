@@ -960,6 +960,190 @@ export const competitors: CompetitorEntry[] = [
       },
     ],
   },
+  // ------------------------------------------------------------------- SAGE
+  // AC-1, checked 2026-11-25: on sale with a 30 day trial, maintained (Sage Copilot for all users, April 2026,
+  // on the product updates page), cloud. UK prices, VAT excluded. sage.com refuses every request from the
+  // build environment, so these pages were read through search excerpts of the exact URLs (see verify.md).
+  {
+    slug: "sage",
+    name: "Sage Accounting",
+    shortName: "Sage",
+    summary: "Sage's online accounting for small businesses, with stock on its top plan. See how it compares.",
+    metaDescription:
+      "Compare RareBooks vs Sage Accounting: price, features and fit for small businesses, and which one suits how you work.",
+    pricingCompetitor:
+      "Three plans in the UK, VAT excluded: Start at GBP 20 a month (1 user), Standard at GBP 43 (3 users) and Plus at GBP 59 (unlimited users). Prices differ by country.",
+    rows: {
+      price: "GBP 20 to GBP 59 a month, by plan (UK prices, VAT excluded)",
+      trial: "30 days",
+      pos: "Not listed",
+      stock: "On Plus only",
+      invoicing: "Quotes and invoices",
+      currency: "On Plus only",
+      users: "1 on Start, 3 on Standard, unlimited on Plus",
+      mobileMoney: "Not listed",
+      support: "Phone and chat, weekdays 8 AM to 8 PM UK time; web chat at weekends",
+    },
+    sources: {
+      pricing: at("https://www.sage.com/en-gb/pricing/"),
+      price: at("https://www.sage.com/en-gb/pricing/"),
+      trial: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
+      pos: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
+      stock: at("https://www.sage.com/en-gb/pricing/"),
+      invoicing: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
+      currency: at("https://www.sage.com/en-gb/pricing/"),
+      users: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
+      mobileMoney: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
+      support: at("https://www.sage.com/en-gb/sage-business-cloud/sage-accounting/switch-to-sage/sage-vs-quickbooks/"),
+    },
+    bestForCompetitor:
+      "UK businesses that want a long established name, Making Tax Digital VAT returns and phone support, with plans that grow to unlimited users.",
+    bestForRareBooks:
+      "Shops and small businesses that sell at a counter and want stock and a point of sale on one plan for {price}.",
+    deepDives: [
+      {
+        title: "Stock on every plan or the top plan",
+        intro: "If you sell goods, when stock tracking arrives in your plan decides what you pay.",
+        rarebooks: {
+          heading: "RareBooks",
+          body: "Stock levels, batches and serial numbers come with the one plan, alongside purchase receipts and shipments.",
+        },
+        competitor: {
+          heading: "Sage",
+          body: "Inventory, more than one currency and unlimited users come together on Plus, the top plan.",
+        },
+      },
+      {
+        title: "Selling at the counter",
+        intro: "If customers pay you in person, how you ring up a sale matters every day.",
+        rarebooks: {
+          heading: "RareBooks",
+          body: "A point of sale is built in, with barcode scanner support and a cashier role for your counter staff.",
+        },
+        competitor: {
+          heading: "Sage",
+          body: "Sage Accounting's features cover quotes, invoices and banking, and list no point of sale of its own.",
+        },
+      },
+    ],
+    recommendationCompetitor:
+      "Choose Sage if you're in the UK and want a long established name, Making Tax Digital VAT returns and phone support.",
+    recommendationRareBooks:
+      "Choose RareBooks if you sell from a counter and keep stock: point of sale, stock and accounting come in one plan, for one price.",
+    whenToChooseCompetitor:
+      "Sage suits a UK business that files VAT under Making Tax Digital, wants phone support, and holds little stock or is ready for the Plus plan.",
+    whySwitchToRareBooks:
+      "Businesses move to RareBooks when they want stock and a point of sale without moving up to the top plan, with unlimited users, for {price}.",
+    migrationSteps: [
+      "Export your contacts, products and closing balances from Sage.",
+      "Start your free trial and set up your company and chart of accounts in RareBooks.",
+      "Bring in your customers, suppliers and items with the import wizard, then enter your opening balances.",
+      "Start selling: send quotes and invoices, ring up sales at the point of sale and watch your stock levels.",
+    ],
+    faqs: [
+      {
+        q: "Can I keep using Sage while I try RareBooks?",
+        a: "Yes. The trial is free for {freeDays} days with no card needed, so you can run both side by side before you decide.",
+      },
+      {
+        q: "Do I need a higher plan for stock in RareBooks?",
+        a: "No. RareBooks has one plan for {price}, with stock, the point of sale and unlimited users included.",
+      },
+    ],
+  },
+
+  // --------------------------------------------------------------- NETSUITE
+  // AC-1, checked 2026-11-25: on sale by quote ("Price, Quote" and "Free Demo"), maintained (NetSuite Version
+  // 2026.2 is the current help version on docs.oracle.com), cloud ("The #1 AI Cloud ERP"). netsuite.com
+  // refuses requests from the build environment; the UK site, netsuite.co.uk, answers.
+  {
+    slug: "netsuite",
+    name: "Oracle NetSuite",
+    shortName: "NetSuite",
+    summary: "Oracle's cloud ERP for growing and larger companies. See how it compares for a small business.",
+    metaDescription:
+      "Compare RareBooks vs NetSuite: price, features and fit for small businesses, and which one suits how you work.",
+    pricingCompetitor: "Quote only. NetSuite offers a price quote and a free demo rather than a public price list.",
+    rows: {
+      price: "Quote only",
+      trial: "No free trial; a free demo instead",
+      pos: "Through connectors to point of sale systems",
+      stock: "Multiple locations, reorder points, lot and serial tracing",
+      invoicing: "Invoices, credit terms and collections",
+      currency: "Multiple currencies",
+      users: "Set in your quote",
+      mobileMoney: "Not listed",
+      support: "Basic, weekdays 8 AM to 6 PM local time; Premium adds 24x7 for urgent cases",
+    },
+    sources: {
+      pricing: at("https://www.netsuite.co.uk/portal/uk/home.shtml"),
+      price: at("https://www.netsuite.co.uk/portal/uk/home.shtml"),
+      trial: at("https://www.netsuite.co.uk/portal/uk/resource/demo.shtml"),
+      pos: at("https://www.netsuite.co.uk/portal/uk/products/suitecommerce.shtml"),
+      stock: at("https://www.netsuite.co.uk/portal/uk/products/erp/warehouse-fulfillment/inventory-management.shtml"),
+      invoicing: at(
+        "https://www.netsuite.co.uk/portal/uk/products/erp/financial-management/finance-accounting/accounts-receivable-software.shtml",
+      ),
+      currency: at("https://www.netsuite.co.uk/portal/uk/products/erp/financial-management/finance-accounting.shtml"),
+      users: at("https://www.netsuite.co.uk/portal/uk/home.shtml"),
+      mobileMoney: at("https://www.netsuite.co.uk/portal/uk/products/erp/financial-management/finance-accounting.shtml"),
+      support: at("https://www.netsuite.co.uk/portal/uk/services/support-services/suitesupport.shtml"),
+    },
+    bestForCompetitor:
+      "Growing and larger companies that need one system for finance, inventory across many locations, orders and more than one company.",
+    bestForRareBooks:
+      "Small businesses that want accounting, stock and a point of sale ready to use the same day, at a published price of {price}.",
+    deepDives: [
+      {
+        title: "Ready today or a project",
+        intro: "How you start, and how long it takes, depends on the size of the system.",
+        rarebooks: {
+          heading: "RareBooks",
+          body: "Start a free trial, set up your company and chart of accounts, and bring your records in with the import wizard.",
+        },
+        competitor: {
+          heading: "NetSuite",
+          body: "NetSuite starts with a demo and a price quote, and covers far more ground: order, warehouse and supply chain management as well as finance.",
+        },
+      },
+      {
+        title: "Stock depth",
+        intro: "If you sell goods, how far stock tracking goes matters.",
+        rarebooks: {
+          heading: "RareBooks",
+          body: "Stock levels and movements, batches and serial numbers, purchase receipts and shipments, on the one plan.",
+        },
+        competitor: {
+          heading: "NetSuite",
+          body: "Inventory across multiple locations with reorder points and lot and serial tracing, built for larger operations.",
+        },
+      },
+    ],
+    recommendationCompetitor:
+      "Choose NetSuite if you're a growing or larger company that needs one system for finance, orders, warehouses and several companies, and you have time for a full rollout.",
+    recommendationRareBooks:
+      "Choose RareBooks if you're a small business that wants accounting, stock and a point of sale working now, for a price you can see up front.",
+    whenToChooseCompetitor:
+      "NetSuite suits a company that has outgrown small business tools and needs a full ERP across locations, warehouses and subsidiaries.",
+    whySwitchToRareBooks:
+      "Small businesses choose RareBooks when they want what they need to sell and keep their books, set up quickly, for {price}.",
+    migrationSteps: [
+      "Export your customers, suppliers, items and closing balances from NetSuite.",
+      "Start your free trial and set up your company and chart of accounts in RareBooks.",
+      "Bring in your customers, suppliers and items with the import wizard, then enter your opening balances.",
+      "Start selling: send quotes and invoices, ring up sales at the point of sale and watch your stock levels.",
+    ],
+    faqs: [
+      {
+        q: "Can I see the RareBooks price before I talk to anyone?",
+        a: "Yes. RareBooks costs {price}, with every feature included, and you can try it free for {freeDays} days.",
+      },
+      {
+        q: "Can I try RareBooks before I decide?",
+        a: "Yes. The trial is free for {freeDays} days with no card needed.",
+      },
+    ],
+  },
 
 ];
 
