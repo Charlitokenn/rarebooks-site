@@ -84,17 +84,6 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
   </body>
 </html>
 
-<script is:inline>
-  (function onTurnstileError(errorCode) {
-      console.error("Turnstile error:", errorCode);
-      document.getElementById("send-free-license").disabled = true;
-    }
-  )();
-  (function onTurnstileSuccess() {
-    document.getElementById("turnstile-container").hidden = true;
-  })()
-</script>
-
 <!--
   Centralized "open modal" handler for every [data-open-modal] trigger on the
   site (Hero, Guarantee, CallToAction, Pricing plans, Compare/Alternatives
