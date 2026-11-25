@@ -192,7 +192,7 @@ export const homeCopy: { local: HomeCopy; abroad: HomeCopy } = {
       ...hero,
       title: "Clear books, confident *stock*",
       lead: "RareBooks keeps your accounting, invoicing, point of sale and stock in one place, hosted for you. Know your numbers and stay ready for tax.",
-      priceLine: "Free for {freeDays} days, then ${usdYear} a year or ${usdMonth} a month.",
+      priceLine: "Free for {freeDays} days, then USD {usdYear} a year or USD {usdMonth} a month.",
     },
     trust,
     features: features(
@@ -200,12 +200,12 @@ export const homeCopy: { local: HomeCopy; abroad: HomeCopy } = {
     ),
     trial: trial(
       "Do it yourself, or take the yearly plan during your trial and we import your data from QuickBooks, Sage, Tally or your spreadsheets.",
-      "Keep going for ${usdYear} a year or ${usdMonth} a month. If not, we send you all your records as CSV files.",
+      "Keep going for USD {usdYear} a year or USD {usdMonth} a month. If not, we send you all your records as CSV files.",
     ),
     pricing: {
       ...pricing,
-      price: "${usdYear}",
-      note: "or ${usdMonth} a month. Save ${usdSaving} with yearly.",
+      price: "USD {usdYear}",
+      note: "or USD {usdMonth} a month. Save USD {usdSaving} with yearly.",
     },
     faq: faq(
       "by card or PayPal",

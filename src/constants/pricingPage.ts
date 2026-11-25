@@ -38,7 +38,7 @@ export interface PricingCopy {
 }
 
 const description =
-  "One plan with every feature: TZS {tzsYear} a year in Tanzania, or ${usdMonth} a month or ${usdYear} a year elsewhere. Start with a {freeDays} day free trial, no card needed.";
+  "One plan with every feature: TZS {tzsYear} a year in Tanzania, or USD {usdMonth} a month or USD {usdYear} a year elsewhere. Start with a {freeDays} day free trial, no card needed.";
 
 const plansTitle = "One plan for your whole *shop*";
 const unlimited = "Every plan includes unlimited users and devices.";
@@ -112,22 +112,22 @@ export const pricingCopy: { local: PricingCopy; abroad: PricingCopy } = {
     description,
     plans: {
       title: plansTitle,
-      lead: "Try every feature free for {freeDays} days, with no card needed. Then pay monthly, or yearly and save ${usdSaving}.",
+      lead: "Try every feature free for {freeDays} days, with no card needed. Then pay monthly, or yearly and save USD {usdSaving}.",
       cards: [
         {
           id: "yearly",
           badge: "Best value",
           name: "Yearly",
-          price: "${usdYear}",
+          price: "USD {usdYear}",
           period: "a year",
-          note: "Save ${usdSaving} on paying monthly. Renews each year until you cancel.",
+          note: "Save USD {usdSaving} on paying monthly. Renews each year until you cancel.",
           extra: "Free data import when you take the yearly plan during your trial",
           primary,
         },
         {
           id: "monthly",
           name: "Monthly",
-          price: "${usdMonth}",
+          price: "USD {usdMonth}",
           period: "a month",
           note: "Billed monthly after your free trial. Renews each month until you cancel.",
           primary,

@@ -73,8 +73,8 @@ test("Tanzania gets TZS and the quick start line, abroad gets USD and the saving
     fill(homeCopy.local.pricing.setup!.text, values),
     "Want us to set up your shop? Quick start is TZS 75,000, and it comes back as 3 free months.",
   );
-  assert.equal(fill(homeCopy.abroad.pricing.price, values), "$399");
-  assert.equal(fill(homeCopy.abroad.pricing.note!, values), "or $39 a month. Save $69 with yearly.");
+  assert.equal(fill(homeCopy.abroad.pricing.price, values), "USD 399");
+  assert.equal(fill(homeCopy.abroad.pricing.note!, values), "or USD 39 a month. Save USD 69 with yearly.");
   assert.equal(homeCopy.abroad.pricing.setup, undefined);
 });
 

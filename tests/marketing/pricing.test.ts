@@ -30,7 +30,9 @@ test("every placeholder in both versions has a value (AC-17)", () => {
   const abroad = allText(pricingCopy.abroad);
   for (const text of [local, abroad]) assert.doesNotMatch(text, /[{}]/);
   assert.match(local, /TZS 300,000/);
-  assert.match(abroad, /\$399 a year/);
+  assert.match(abroad, /USD 399 a year/);
+  // Abroad prices name their currency, never a bare $ (CAD, AUD and others use $ too).
+  for (const text of [local, abroad]) assert.doesNotMatch(text, /\$/);
   assert.match(abroad, /for 7 more days[\s\S]*60 days after that/);
   assert.throws(() => fill("{graceDay}", values), /graceDay/);
 });
@@ -66,8 +68,8 @@ test("anywhere else, unknown included, gets Yearly then Monthly in USD only (AC-
     assert.deepEqual(
       view.plans.cards.map((c) => [c.headingId, c.name, c.price, c.period, c.featured]),
       [
-        ["pricing-plan-yearly", "Yearly", "$399", "a year", true],
-        ["pricing-plan-monthly", "Monthly", "$39", "a month", false],
+        ["pricing-plan-yearly", "Yearly", "USD 399", "a year", true],
+        ["pricing-plan-monthly", "Monthly", "USD 39", "a month", false],
       ],
     );
     assert.equal(view.plans.cards[0].badge, "Best value");
