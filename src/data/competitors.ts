@@ -961,56 +961,57 @@ export const competitors: CompetitorEntry[] = [
     ],
   },
   // ------------------------------------------------------------------- SAGE
-  // AC-1, checked 2026-11-25: on sale with a 30 day trial, maintained (Sage Copilot for all users, April 2026,
-  // on the product updates page), cloud. UK prices, VAT excluded. sage.com refuses every request from the
-  // build environment, so these pages were read through search excerpts of the exact URLs (see verify.md).
+  // AC-1, checked 2026-11-25: on sale (UK pricing page, confirmed from your screenshot), maintained (Sage
+  // Copilot for all users, April 2026, on the product updates page, read through a search excerpt), cloud.
+  // sage.com refuses every request from the build environment. Only what the UK pricing page shows is claimed;
+  // the plan tiers inside Sage Accounting aren't on it, so stock, currencies, users and support say so.
   {
     slug: "sage",
     name: "Sage Accounting",
     shortName: "Sage",
-    summary: "Sage's online accounting for small businesses, with stock on its top plan. See how it compares.",
+    summary: "Sage's online accounting for VAT registered small businesses in the UK. See how it compares.",
     metaDescription:
       "Compare RareBooks vs Sage Accounting: price, features and fit for small businesses, and which one suits how you work.",
     pricingCompetitor:
-      "Three plans in the UK, VAT excluded: Start at GBP 20 a month (1 user), Standard at GBP 43 (3 users) and Plus at GBP 59 (unlimited users). Prices differ by country.",
+      "In the UK, VAT excluded: Sage Accounting starts at GBP 20 a month after an introductory discount. Sage also offers a free Sole Trader plan, and Sage Intacct for firms of 20 or more from GBP 1,200 a month.",
     rows: {
-      price: "GBP 20 to GBP 59 a month, by plan (UK prices, VAT excluded)",
-      trial: "30 days",
+      price: "From GBP 20 a month (UK, VAT excluded)",
+      trial: "Not stated on the pricing page",
       pos: "Not listed",
-      stock: "On Plus only",
-      invoicing: "Quotes and invoices",
-      currency: "On Plus only",
-      users: "1 on Start, 3 on Standard, unlimited on Plus",
+      stock: "Not stated on the pricing page",
+      invoicing: "Create, send and manage invoices",
+      currency: "Not stated on the pricing page",
+      users: "Sole Trader is single user; not stated for Sage Accounting",
       mobileMoney: "Not listed",
-      support: "Phone and chat, weekdays 8 AM to 8 PM UK time; web chat at weekends",
+      support: "Not stated on the pricing page",
     },
     sources: {
       pricing: at("https://www.sage.com/en-gb/pricing/"),
       price: at("https://www.sage.com/en-gb/pricing/"),
-      trial: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
-      pos: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
+      trial: at("https://www.sage.com/en-gb/pricing/"),
+      pos: at("https://www.sage.com/en-gb/pricing/"),
       stock: at("https://www.sage.com/en-gb/pricing/"),
-      invoicing: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
+      invoicing: at("https://www.sage.com/en-gb/pricing/"),
       currency: at("https://www.sage.com/en-gb/pricing/"),
-      users: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
-      mobileMoney: at("https://www.sage.com/en-gb/sage-business-cloud/accounting/features/"),
-      support: at("https://www.sage.com/en-gb/sage-business-cloud/sage-accounting/switch-to-sage/sage-vs-quickbooks/"),
+      users: at("https://www.sage.com/en-gb/pricing/"),
+      mobileMoney: at("https://www.sage.com/en-gb/pricing/"),
+      support: at("https://www.sage.com/en-gb/pricing/"),
     },
     bestForCompetitor:
-      "UK businesses that want a long established name, Making Tax Digital VAT returns and phone support, with plans that grow to unlimited users.",
+      "UK businesses that want a long established, HMRC recognised name for Making Tax Digital, with a path from a free sole trader plan to Sage Intacct.",
     bestForRareBooks:
       "Shops and small businesses that sell at a counter and want stock and a point of sale on one plan for {price}.",
     deepDives: [
       {
-        title: "Stock on every plan or the top plan",
-        intro: "If you sell goods, when stock tracking arrives in your plan decides what you pay.",
+        title: "One plan or a range of products",
+        intro: "How a tool is packaged decides what you pay as your business changes.",
         rarebooks: {
           heading: "RareBooks",
-          body: "Stock levels, batches and serial numbers come with the one plan, alongside purchase receipts and shipments.",
+          body: "One plan for {price}, with stock, the point of sale and unlimited users included.",
         },
         competitor: {
           heading: "Sage",
-          body: "Inventory, more than one currency and unlimited users come together on Plus, the top plan.",
+          body: "Sage Sole Trader is free for sole traders who aren't VAT registered, Sage Accounting covers businesses of 1 to 19 employees, and Sage Intacct serves firms of 20 or more.",
         },
       },
       {
@@ -1022,18 +1023,18 @@ export const competitors: CompetitorEntry[] = [
         },
         competitor: {
           heading: "Sage",
-          body: "Sage Accounting's features cover quotes, invoices and banking, and list no point of sale of its own.",
+          body: "Sage Accounting's pricing page lists invoicing, automatic bank reconciliation and getting paid faster, and no point of sale.",
         },
       },
     ],
     recommendationCompetitor:
-      "Choose Sage if you're in the UK and want a long established name, Making Tax Digital VAT returns and phone support.",
+      "Choose Sage if you're in the UK and want an HMRC recognised name for Making Tax Digital, with automatic bank reconciliation and room to move up to Sage Intacct.",
     recommendationRareBooks:
       "Choose RareBooks if you sell from a counter and keep stock: point of sale, stock and accounting come in one plan, for one price.",
     whenToChooseCompetitor:
-      "Sage suits a UK business that files VAT under Making Tax Digital, wants phone support, and holds little stock or is ready for the Plus plan.",
+      "Sage suits a VAT registered UK business that wants Making Tax Digital handled by a long established name, and doesn't need a point of sale.",
     whySwitchToRareBooks:
-      "Businesses move to RareBooks when they want stock and a point of sale without moving up to the top plan, with unlimited users, for {price}.",
+      "Businesses move to RareBooks when they want stock and a point of sale in the same app as their books, with unlimited users, for {price}.",
     migrationSteps: [
       "Export your contacts, products and closing balances from Sage.",
       "Start your free trial and set up your company and chart of accounts in RareBooks.",
@@ -1046,8 +1047,8 @@ export const competitors: CompetitorEntry[] = [
         a: "Yes. The trial is free for {freeDays} days with no card needed, so you can run both side by side before you decide.",
       },
       {
-        q: "Do I need a higher plan for stock in RareBooks?",
-        a: "No. RareBooks has one plan for {price}, with stock, the point of sale and unlimited users included.",
+        q: "Is stock included in RareBooks?",
+        a: "Yes. RareBooks has one plan for {price}, with stock, the point of sale and unlimited users included.",
       },
     ],
   },
