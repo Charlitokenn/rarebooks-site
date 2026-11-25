@@ -1,5 +1,7 @@
 // A sign up (spec 0014 AC-3): Turnstile first, then the IP limit, then the control site's `request_site`.
-// A failed Turnstile (403) or an attempt over the limit (429) never reaches the control site.
+// A failed Turnstile (403) or an attempt over the limit (429) never reaches the control site. A user with a D1
+// row has it checked after Turnstile and before the limit (spec 0016 AC-9): live, it is answered again; a
+// signed 404 drops it and the sign up goes on as new; anything else answers 503 and keeps it.
 
 import type { APIRoute } from "astro";
 
@@ -8,7 +10,8 @@ import { ControlUnreachable, callControl } from "../../../lib/onboarding/control
 import { failure, json, readJson } from "../../../lib/onboarding/http.ts";
 import { signupOverLimit } from "../../../lib/onboarding/limits.ts";
 import { verifiedOwner } from "../../../lib/onboarding/owner.ts";
-import { saveSignup, signupByUser } from "../../../lib/onboarding/signups.ts";
+import { earlierSignup } from "../../../lib/onboarding/earlier.ts";
+import { deleteSignup, saveSignup, signupByUser } from "../../../lib/onboarding/signups.ts";
 import { turnstilePassed } from "../../../lib/onboarding/turnstile.ts";
 
 export const prerender = false;
@@ -18,6 +21,20 @@ const ZONE_MAX = 64;
 /** The browser's IANA zone, or UTC when it sent none (AC-1). The control site checks the zone is real. */
 function timeZone(value: unknown): string {
   return typeof value === "string" && value && value.length <= ZONE_MAX ? value : "UTC";
+}
+
+/** The control site's word on the user's D1 row; unreachable or unsigned counts as unknown. */
+async function checkEarlier(clerkUserId: string, requestId: string) {
+  try {
+    const answer = await callControl("signup_status", { clerk_user_id: clerkUserId, request_id: requestId });
+    return earlierSignup(answer, requestId);
+  } catch (error) {
+    if (!(error instanceof ControlUnreachable)) {
+      throw error;
+    }
+    console.error("signup: earlier check:", error.message);
+    return earlierSignup(null, requestId);
+  }
 }
 
 export const POST: APIRoute = async ({ request, locals }) => {
@@ -30,15 +47,22 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return failure("Invalid JSON in request body", 400);
   }
 
-  // A user who already has a request gets it back, without counting (AC-3).
-  const existing = await signupByUser(owner.clerkUserId);
-  if (existing) {
-    return json({ request_id: existing.request_id });
-  }
-
   const ip = request.headers.get("CF-Connecting-IP");
   if (!(await turnstilePassed(data.turnstile_token, ip))) {
     return failure("The check that you're a person didn't pass. Try again.", 403);
+  }
+
+  // A user who already has a live request gets it back, without counting (spec 0014 AC-3, spec 0016 AC-9).
+  const existing = await signupByUser(owner.clerkUserId);
+  if (existing) {
+    const earlier = await checkEarlier(owner.clerkUserId, existing.request_id);
+    if (earlier === "live") {
+      return json({ request_id: existing.request_id });
+    }
+    if (earlier === "unknown") {
+      return failure("We couldn't check your earlier sign up. Try again.", 503);
+    }
+    await deleteSignup(owner.clerkUserId, existing.request_id);
   }
   if (await signupOverLimit(ip || "unknown")) {
     return failure("Too many sign ups from your network. Try again in an hour.", 429);

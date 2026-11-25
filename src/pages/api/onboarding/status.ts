@@ -1,12 +1,14 @@
 // The signed in user's request (spec 0014 AC-4). Found by Clerk user id in D1, or, when D1 has no row, by
-// asking the control site with the Clerk user id alone, which also writes the missing row.
+// asking the control site with the Clerk user id alone, which also writes the missing row. A signed 404 for a
+// D1 row means the row is stale (a released sign up, spec 0016 AC-8), so the row is dropped.
 
 import type { APIRoute } from "astro";
 
 import { ControlUnreachable, callControl } from "../../../lib/onboarding/control.ts";
 import { failure, json } from "../../../lib/onboarding/http.ts";
 import { signedInUserId } from "../../../lib/onboarding/owner.ts";
-import { saveSignup, signupByUser } from "../../../lib/onboarding/signups.ts";
+import { earlierSignup } from "../../../lib/onboarding/earlier.ts";
+import { deleteSignup, saveSignup, signupByUser } from "../../../lib/onboarding/signups.ts";
 
 export const prerender = false;
 
@@ -33,6 +35,9 @@ export const GET: APIRoute = async ({ locals }) => {
     return failure("We couldn't read your site's status just now.", 503);
   }
   if (answer.status === 404) {
+    if (row && earlierSignup(answer, row.request_id) === "stale") {
+      await deleteSignup(userId, row.request_id);
+    }
     return failure("No site requested yet.", 404);
   }
   const { request_id: requestId, status, step, address, email } = answer.body;

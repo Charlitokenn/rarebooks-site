@@ -52,6 +52,16 @@ export async function saveSignupFromNotice(requestId: string, email: string): Pr
     .run();
 }
 
+/**
+ * Drops a row the control site answered a signed 404 for (spec 0016 AC-8). Matched on the request too, so a
+ * newer row written for the same user in the meantime is never removed.
+ */
+export async function deleteSignup(clerkUserId: string, requestId: string): Promise<void> {
+  await env.DB.prepare("DELETE FROM signups WHERE clerk_user_id = ? AND request_id = ?")
+    .bind(clerkUserId, requestId)
+    .run();
+}
+
 export async function markEmailed(requestId: string, column: "ready_emailed_at" | "failed_emailed_at") {
   await env.DB.prepare(`UPDATE signups SET ${column} = ? WHERE request_id = ?`)
     .bind(new Date().toISOString(), requestId)
