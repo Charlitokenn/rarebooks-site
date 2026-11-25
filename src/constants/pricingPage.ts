@@ -24,9 +24,8 @@ export interface PricingCopy {
     title: string;
     lead: string;
     cards: PlanCopy[];
-    /** The two lines under the cards (AC-6). */
+    /** The line under the cards (AC-6). Each version shows only its own currency. */
     unlimited: string;
-    otherCurrency: string;
   };
   setup: { title: string; lead: string };
   included: { title: string; lead: string };
@@ -98,7 +97,6 @@ export const pricingCopy: { local: PricingCopy; abroad: PricingCopy } = {
         },
       ],
       unlimited,
-      otherCurrency: "Outside Tanzania: ${usdMonth} a month or ${usdYear} a year, by card or PayPal.",
     },
     setup: {
       title: "Want us to set it up for you?",
@@ -136,7 +134,6 @@ export const pricingCopy: { local: PricingCopy; abroad: PricingCopy } = {
         },
       ],
       unlimited,
-      otherCurrency: "In Tanzania: TZS {tzsYear} a year, by mobile money.",
     },
     setup: {
       title: "Bring your records with you",

@@ -40,7 +40,7 @@ test("the yearly saving is twelve months less the yearly price (AC-17)", () => {
   assert.equal(Number(yearlySaving), Number(monthly) * 12 - Number(yearly));
 });
 
-test("Tanzania gets one TZS plan, the USD line and the two setup offers (AC-3, AC-4, AC-6, AC-8)", () => {
+test("Tanzania gets one TZS plan and the two setup offers (AC-3, AC-4, AC-6, AC-8)", () => {
   const view = pricingView("TZ", false);
   assert.equal(view.local, true);
   assert.deepEqual(
@@ -48,7 +48,8 @@ test("Tanzania gets one TZS plan, the USD line and the two setup offers (AC-3, A
     [["pricing-plan-tz", "The plan", "TZS 300,000", "a year", false]],
   );
   assert.equal(view.plans.cards[0].features, AppConfig.hostedPlan.features);
-  assert.equal(view.plans.otherCurrency, "Outside Tanzania: $39 a month or $399 a year, by card or PayPal.");
+  // Only shillings show to a Tanzania visitor: no dollar price anywhere in the body.
+  assert.doesNotMatch(JSON.stringify(view), /\$\d|USD|PayPal/);
   assert.deepEqual(
     view.setup.offers.map((o) => o.name),
     ["Digitize your notebooks", "Quick start"],
@@ -58,7 +59,7 @@ test("Tanzania gets one TZS plan, the USD line and the two setup offers (AC-3, A
   assert.equal(view.cta, homeCopy.local.cta);
 });
 
-test("anywhere else, unknown included, gets Yearly then Monthly in USD (AC-3, AC-5, AC-6, AC-8)", () => {
+test("anywhere else, unknown included, gets Yearly then Monthly in USD only (AC-3, AC-5, AC-6, AC-8)", () => {
   for (const country of ["KE", "US", undefined]) {
     const view = pricingView(country, false);
     assert.equal(view.local, false);
@@ -71,7 +72,8 @@ test("anywhere else, unknown included, gets Yearly then Monthly in USD (AC-3, AC
     );
     assert.equal(view.plans.cards[0].badge, "Best value");
     assert.equal(view.plans.cards[0].extra, "Free data import when you take the yearly plan during your trial");
-    assert.equal(view.plans.otherCurrency, "In Tanzania: TZS 300,000 a year, by mobile money.");
+    // Only dollars show outside Tanzania: no shilling price anywhere in the body.
+    assert.doesNotMatch(JSON.stringify(view), /TZS|mobile money/);
     assert.deepEqual(
       view.setup.offers.map((o) => [o.name, o.price, o.features.length]),
       [["Free data import", "Free", 0]],

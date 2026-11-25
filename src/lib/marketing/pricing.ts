@@ -63,7 +63,6 @@ export interface PricingView {
     lead: string;
     cards: PlanView[];
     unlimited: string;
-    otherCurrency: string;
   };
   setup: { title: string; lead: string; offers: ServiceOffer[] };
   included: { title: string; lead: string; groups: { title: string; items: string[] }[] };
@@ -107,7 +106,6 @@ export function pricingView(countryCode: string | undefined, signedIn: boolean):
         button: planButton(card.id, card.primary),
       })),
       unlimited: text(copy.plans.unlimited),
-      otherCurrency: text(copy.plans.otherCurrency),
     },
     setup: {
       title: copy.setup.title,
@@ -153,8 +151,8 @@ function offer(url: string, name: string, price: string, priceCurrency: string, 
 }
 
 /**
- * The one fixed structured data block for /pricing (AC-13): the same for every visitor, and every price in
- * it is also visible on the page in both versions (AC-6).
+ * The one fixed structured data block for /pricing (AC-13): the same for every visitor, so it lists all
+ * three prices, while the page body shows only the visitor's own currency.
  */
 export function pricingJsonLd(sources: JsonLdSources) {
   const url = `${sources.urls.rootUrl}/pricing`;

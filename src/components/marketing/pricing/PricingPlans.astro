@@ -1,6 +1,7 @@
 ---
 // The plans band (spec 0020 AC-4 to AC-7): the page's one h1, then one wide Tanzania card or the abroad
-// Yearly (featured) and Monthly cards, then the two lines under them. Every value comes from `pricingView`.
+// Yearly (featured) and Monthly cards, then the unlimited line under them. Every value comes from
+// `pricingView`. Only the visitor's own currency shows: no line names the other version's price.
 // The wide card puts its check list in a second column from 768 pixels; the pair stacks Yearly first.
 import { splitHighlight } from "../../../lib/marketing/home.ts";
 import type { PricingView } from "../../../lib/marketing/pricing.ts";
@@ -71,8 +72,5 @@ const cardClass = (featured: boolean) =>
     }
   </div>
 
-  <div class="mt-8 space-y-2 text-center text-mk-body">
-    <p class="font-bold">{plans.unlimited}</p>
-    <p class="text-(--mk-subtle)">{plans.otherCurrency}</p>
-  </div>
+  <p class="mt-8 text-center text-mk-body font-bold">{plans.unlimited}</p>
 </MkSection>
