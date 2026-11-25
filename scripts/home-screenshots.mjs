@@ -29,6 +29,11 @@ const TIMEOUT = 15_000;
 // The point of sale cart: the first three items of the seed's ITEMS list (frappe_books/demo/shop.py).
 const CART_ITEMS = ["Cement 50kg bag", "Iron sheet 3m gauge 30", "Wire nails 3 inch 1kg"];
 
+// The feature rows show each shot about 566 pixels wide, so a full 1280 wide screen would shrink its text
+// to under half size. Those shots crop to the part that tells the story; only the hero keeps the viewport.
+// Clips are in CSS pixels of the 1280 by 800 viewport.
+const MARGIN = 24;
+
 // Each shot: its name (the `-tzs` or `-usd` set is added), the /books route, and how it gets ready and shot.
 const SHOTS = [
   {
@@ -42,8 +47,15 @@ const SHOTS = [
     name: "home-balances",
     route: "/books/",
     ready: dashboardReady,
-    // The box the Books dashboard marks for this shot, so the script never depends on layout classes.
-    capture: (page, path) => page.locator('[data-shot="home-balances"]').screenshot({ path }),
+    // The box the Books dashboard marks for this shot (so the script never depends on layout classes), with
+    // a margin so the cards' edges aren't cut.
+    async capture(page, path) {
+      const box = await page.locator('[data-shot="home-balances"]').boundingBox();
+      const x = Math.max(0, box.x - MARGIN);
+      const y = Math.max(0, box.y - MARGIN);
+      const clip = { x, y, width: Math.min(1280, box.x + box.width + MARGIN) - x, height: Math.min(800, box.y + box.height + MARGIN) - y };
+      await page.screenshot({ path, clip });
+    },
   },
   {
     name: "home-pos",
@@ -60,8 +72,12 @@ const SHOTS = [
       await page.getByRole("heading", { name: "Point of Sale" }).click();
       await page.getByText(`Net Total · ${CART_ITEMS.length} items`).waitFor({ timeout: TIMEOUT });
       await page.getByRole("listbox").waitFor({ state: "detached", timeout: TIMEOUT });
+      // Item tiles keep each name beside its price, so the crop can drop the left columns.
+      await page.getByRole("radio", { name: "Grid view" }).click({ timeout: TIMEOUT });
+      await page.waitForTimeout(500);
     },
-    capture: (page, path) => page.screenshot({ path }),
+    // The right three tile columns and the whole cart, below the header (whose shift badge the crop would cut).
+    capture: (page, path) => page.screenshot({ path, clip: { x: 352, y: 48, width: 928, height: 752 } }),
   },
   {
     name: "home-stock",
@@ -69,8 +85,10 @@ const SHOTS = [
     async ready(page) {
       // The header row is the first; a second row means the report has data.
       await page.getByRole("table").getByRole("row").nth(1).waitFor({ timeout: TIMEOUT });
+      await hideSidebar(page);
     },
-    capture: (page, path) => page.screenshot({ path }),
+    // The title, filters and the item, location, quantity and value columns.
+    capture: (page, path) => page.screenshot({ path, clip: { x: 0, y: 0, width: 800, height: 600 } }),
   },
   {
     name: "home-profit",
@@ -80,8 +98,10 @@ const SHOTS = [
       `/books/report/ProfitAndLoss?basedOn=Until%20Date&periodicity=Monthly&count=1&toDate=${isoToday()}`,
     async ready(page) {
       await page.getByRole("table").getByText("Income", { exact: true }).first().waitFor({ timeout: TIMEOUT });
+      await hideSidebar(page);
     },
-    capture: (page, path) => page.screenshot({ path }),
+    // The title, the date filters and the income and expense rows, down to Total Expense.
+    capture: (page, path) => page.screenshot({ path, clip: { x: 0, y: 0, width: 732, height: 760 } }),
   },
 ];
 
@@ -166,6 +186,12 @@ async function dashboardReady(page) {
   await page.locator(".animate-pulse").first().waitFor({ state: "detached", timeout: TIMEOUT });
   // Let the donut finish its draw animation.
   await page.waitForTimeout(800);
+}
+
+// Reports read better without the Books sidebar, which would take a third of a cropped shot.
+async function hideSidebar(page) {
+  await page.getByRole("button", { name: "Hide sidebar" }).click({ timeout: TIMEOUT });
+  await page.waitForTimeout(500);
 }
 
 // Today on this machine, as the report's YYYY-MM-DD route filter wants it.

@@ -15,6 +15,10 @@ const SOURCE = "src/assets/screenshots/source";
 const OUT = "public/screenshots";
 const MANIFEST = "src/data/screenshots.json";
 const WIDTHS = [640, 960, 1280, 1920];
+// The default quality suits a full screen shown large. Shots shown small (the homepage feature rows, spec
+// 0019) carry small app text, which blurs at the default, so they get a higher quality.
+const DEFAULT_QUALITY = { avif: 55, webp: 78 };
+const QUALITY = [{ match: /^home-(balances|pos|stock|profit)-/, avif: 70, webp: 88 }];
 
 mkdirSync(OUT, { recursive: true });
 
@@ -31,10 +35,11 @@ for (const file of files) {
   // A source narrower than the smallest width still gets one file, at its own size.
   if (widths.length === 0) widths.push(width);
 
+  const quality = QUALITY.find((rule) => rule.match.test(name)) ?? DEFAULT_QUALITY;
   for (const w of widths) {
     const resized = sharp(input).resize({ width: w });
-    await resized.clone().avif({ quality: 55 }).toFile(join(OUT, `${name}-${w}.avif`));
-    await resized.clone().webp({ quality: 78 }).toFile(join(OUT, `${name}-${w}.webp`));
+    await resized.clone().avif({ quality: quality.avif }).toFile(join(OUT, `${name}-${w}.avif`));
+    await resized.clone().webp({ quality: quality.webp }).toFile(join(OUT, `${name}-${w}.webp`));
   }
 
   manifest[name] = { width, height, widths };
