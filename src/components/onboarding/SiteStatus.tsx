@@ -3,8 +3,9 @@ import { buttonVariants } from "@components/components/ui/button";
 import { AppConfig } from "../../constants";
 import { StartForm } from "./StartForm";
 
-// Where the user's site is while it is prepared (spec 0014 AC-4). Polled every 5 seconds for the first 2
-// minutes, then every 15 seconds, and only while it is Queued, Claiming or Preparing.
+// Where the user's site is while it is prepared (spec 0014 AC-4). Polled every 3 seconds for the first 5
+// minutes, then every 15 seconds, and only while it is Queued, Claiming or Preparing. A visitor who watched it
+// get ready is taken straight to it (AC-5's open route); one who comes back later to a Ready site stays here.
 
 type Status = "Queued" | "Claiming" | "Preparing" | "Ready" | "Failed";
 
@@ -14,9 +15,10 @@ interface SiteState {
   address: string | null;
 }
 
-const FAST_MS = 5_000;
+const FAST_MS = 3_000;
 const SLOW_MS = 15_000;
-const FAST_FOR_MS = 2 * 60 * 1000;
+const FAST_FOR_MS = 5 * 60 * 1000;
+const OPEN_URL = "/dashboard/site/open";
 const WAITING: Status[] = ["Queued", "Claiming", "Preparing"];
 
 function label(status: Status): string {
@@ -35,6 +37,7 @@ export function SiteStatus({ turnstileSiteKey }: { turnstileSiteKey: string }) {
     const started = Date.now();
     let timer: number | undefined;
     let stopped = false;
+    let sawWaiting = false;
 
     async function poll() {
       try {
@@ -47,7 +50,12 @@ export function SiteStatus({ turnstileSiteKey }: { turnstileSiteKey: string }) {
           const data = (await response.json()) as SiteState;
           setSite(data);
           setUnreachable(false);
-          if (!WAITING.includes(data.status)) {
+          if (WAITING.includes(data.status)) {
+            sawWaiting = true;
+          } else {
+            if (sawWaiting && data.status === "Ready" && !stopped) {
+              window.location.assign(OPEN_URL);
+            }
             return;
           }
         } else {
@@ -88,7 +96,8 @@ export function SiteStatus({ turnstileSiteKey }: { turnstileSiteKey: string }) {
 
       {WAITING.includes(site.status) && (
         <p className="text-sm text-muted-foreground">
-          This usually takes a few minutes. You can close this page; we'll email you when your site is ready.
+          This usually takes a few minutes. Keep this page open and we'll take you to your site as soon as it's
+          ready, or close it and we'll email you.
         </p>
       )}
 
@@ -98,7 +107,7 @@ export function SiteStatus({ turnstileSiteKey }: { turnstileSiteKey: string }) {
             Your site is at{" "}
             <span className="font-medium">{site.address.replace(/^https:\/\//, "")}</span>
           </p>
-          <a href="/dashboard/site/open" className={buttonVariants({ className: "h-9" })}>
+          <a href={OPEN_URL} className={buttonVariants({ className: "h-9" })}>
             Set your password
           </a>
         </>
