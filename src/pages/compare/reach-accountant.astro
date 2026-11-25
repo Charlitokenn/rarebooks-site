@@ -1,8 +1,8 @@
 ---
-import CompareLayout from "../../layouts/CompareLayout.astro";
-import { getCompetitor } from "../../data/competitors";
+import LegacyCompareLayout from "../../layouts/LegacyCompareLayout.astro";
+import { getCompetitor } from "../../data/competitorsLegacy";
 
 const entry = getCompetitor("reach-accountant")!;
 ---
 
-<CompareLayout entry={entry} />
+<LegacyCompareLayout entry={entry} />

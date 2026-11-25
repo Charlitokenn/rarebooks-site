@@ -1,0 +1,22 @@
+---
+// /alternatives/<slug> for every entry in `competitors` (spec 0021 AC-2). A static file in this folder still wins
+// over this route, so a legacy page keeps serving until build step 5 removes it. The body varies by country
+// and sign in state, so the page renders on every request.
+import AlternativesLayout from "../../layouts/AlternativesLayout.astro";
+import { isTanzania } from "../../constants/pricing.ts";
+import { getCompetitor } from "../../data/competitors.ts";
+import { isSignedIn } from "../../lib/marketing/navigation.ts";
+
+export const prerender = false;
+
+const entry = getCompetitor(Astro.params.slug ?? "");
+// AC-2: an unknown slug gets the site 404 page, which sets the 404 status itself. The slug is never echoed.
+if (!entry) return Astro.rewrite("/404");
+
+// AC-6: a copy tied to a country or a session must never sit in a shared cache (as on /pricing).
+Astro.response.headers.set("Cache-Control", "private, no-cache");
+
+const local = isTanzania(Astro.locals.countryCode ?? "US");
+---
+
+<AlternativesLayout entry={entry} local={local} signedIn={isSignedIn(Astro.locals)} />

@@ -1,0 +1,60 @@
+---
+// The nine row feature table (spec 0021 AC-3, AC-9). Three columns from `md`; below it each row is a card
+// with the capability as its title and each value under a visible label. `display: block` drops table
+// semantics in some screen readers, so every element carries its role explicitly.
+import { rowLabels, rowOrder, type RowKey } from "../../../data/competitors.ts";
+
+interface Props {
+  shortName: string;
+  rareBooks: Record<RowKey, string>;
+  competitor: Record<RowKey, string>;
+}
+
+const { shortName, rareBooks, competitor } = Astro.props;
+---
+
+<table role="table" class="compare-table w-full border-collapse text-start">
+  <caption class="sr-only">RareBooks and {shortName} compared on nine capabilities</caption>
+  <thead role="rowgroup" class="max-md:sr-only">
+    <tr role="row" class="border-b-2 border-mk-ink">
+      <th scope="col" role="columnheader" class="w-1/4 py-4 pe-4 text-start font-bold">Capability</th>
+      <th scope="col" role="columnheader" class="w-3/8 px-4 py-4 text-start font-bold">RareBooks</th>
+      <th scope="col" role="columnheader" class="w-3/8 py-4 ps-4 text-start font-bold">{shortName}</th>
+    </tr>
+  </thead>
+  <tbody role="rowgroup" class="max-md:block max-md:space-y-4">
+    {
+      rowOrder.map((key) => (
+        <tr
+          role="row"
+          class="border-b border-mk-border max-md:block max-md:rounded-mk-card max-md:border max-md:bg-mk-surface max-md:p-5"
+        >
+          <th scope="row" role="rowheader" class="py-4 pe-4 text-start align-top font-bold max-md:block max-md:p-0 max-md:pb-3 max-md:text-mk-lead">
+            {rowLabels[key]}
+          </th>
+          <td role="cell" data-label="RareBooks" class="px-4 py-4 align-top max-md:block max-md:p-0 max-md:pb-3">
+            {rareBooks[key]}
+          </td>
+          <td role="cell" data-label={shortName} class="py-4 ps-4 align-top text-(--mk-subtle) max-md:block max-md:p-0">
+            {competitor[key]}
+          </td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<style>
+  /* AC-9: the label is shown under md only, and its alt text is empty so screen readers, which already hear
+     the column head, don't hear it twice. The first `content` is the fallback for browsers without alt text. */
+  @media (width < 48rem) {
+    .compare-table td::before {
+      content: attr(data-label);
+      content: attr(data-label) / "";
+      display: block;
+      font-size: var(--text-mk-small);
+      font-weight: 700;
+      color: var(--color-mk-ink);
+    }
+  }
+</style>

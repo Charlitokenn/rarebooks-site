@@ -1,0 +1,61 @@
+---
+// The hero of a comparison detail page (spec 0021 AC-11, AC-13): the breadcrumb, overline, h1 with its one
+// highlighted word, lead, the trial button (the dashboard for a signed in visitor) and a second button.
+import { AppConfig } from "../../../constants";
+import { dashboardLabel } from "../../../constants/home.ts";
+import { splitHighlight } from "../../../lib/marketing/home.ts";
+import MkButton from "../MkButton.astro";
+import MkHeading from "../MkHeading.astro";
+import MkHighlight from "../MkHighlight.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  /** The middle breadcrumb: the section index. */
+  section: { name: string; href: string };
+  /** The last breadcrumb: this page. */
+  pageName: string;
+  overline: string;
+  /** The h1, with its one `*word*`. */
+  title: string;
+  lead: string;
+  /** The trial button's `data-cta-location`. */
+  location: string;
+  secondary: { label: string; href: string };
+  signedIn: boolean;
+}
+
+const { section, pageName, overline, title, lead, location, secondary, signedIn } = Astro.props;
+const [before, word, after] = splitHighlight(title);
+---
+
+<MkSection tone="canvas" labelledby="compare-hero-title" padding="pt-10 pb-16 md:pt-16 md:pb-24">
+  <div class="mx-auto max-w-mk-narrow text-center">
+    <nav aria-label="Breadcrumb" class="mb-8 text-mk-small text-(--mk-subtle)">
+      <ol class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <li><a href="/" class="rounded-sm underline-offset-4 hover:underline">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href={section.href} class="rounded-sm underline-offset-4 hover:underline">{section.name}</a></li>
+        <li aria-hidden="true">/</li>
+        <li aria-current="page" class="font-bold text-mk-ink">{pageName}</li>
+      </ol>
+    </nav>
+    <MkHeading level={1} overline={overline} align="center" id="compare-hero-title">
+      {before}<MkHighlight>{word}</MkHighlight>{after}
+    </MkHeading>
+    <p class="mx-auto mt-6 max-w-2xl text-pretty text-mk-lead text-(--mk-subtle)">{lead}</p>
+    <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+      {
+        signedIn ? (
+          <MkButton href="/dashboard" size="lg" data-cta-location={location}>
+            {dashboardLabel}
+          </MkButton>
+        ) : (
+          <MkButton href={AppConfig.urls.signUpUrl} size="lg" data-cta-location={location}>
+            Start free trial
+          </MkButton>
+        )
+      }
+      <MkButton href={secondary.href} variant="secondary" size="lg">{secondary.label}</MkButton>
+    </div>
+  </div>
+</MkSection>

@@ -13,9 +13,11 @@ import MkSection from "../MkSection.astro";
 interface Props {
   copy: HomeCopy["cta"];
   signedIn: boolean;
+  /** The buttons' `data-cta-location`; the comparison pages pass their own (spec 0021 AC-13). */
+  location?: string;
 }
 
-const { copy, signedIn } = Astro.props;
+const { copy, signedIn, location = "final_cta_section" } = Astro.props;
 const [before, word, after] = splitHighlight(copy.title);
 ---
 
@@ -27,7 +29,7 @@ const [before, word, after] = splitHighlight(copy.title);
   <div class="mt-10 flex justify-center">
     {
       signedIn ? (
-        <MkButton href="/dashboard" variant="on-dark" size="lg" data-cta-location="final_cta_section" class="max-sm:w-full">
+        <MkButton href="/dashboard" variant="on-dark" size="lg" data-cta-location={location} class="max-sm:w-full">
           {dashboardLabel}
         </MkButton>
       ) : (
@@ -35,7 +37,7 @@ const [before, word, after] = splitHighlight(copy.title);
           href={AppConfig.urls.signUpUrl}
           variant="on-dark"
           size="lg"
-          data-cta-location="final_cta_section"
+          data-cta-location={location}
           class="max-sm:w-full"
         >
           {copy.primary}

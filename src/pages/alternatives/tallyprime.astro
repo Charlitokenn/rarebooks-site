@@ -1,8 +1,8 @@
 ---
-import AlternativesLayout from "../../layouts/AlternativesLayout.astro";
-import { getCompetitor } from "../../data/competitors";
+import LegacyAlternativesLayout from "../../layouts/LegacyAlternativesLayout.astro";
+import { getCompetitor } from "../../data/competitorsLegacy";
 
 const entry = getCompetitor("tallyprime")!;
 ---
 
-<AlternativesLayout entry={entry} />
+<LegacyAlternativesLayout entry={entry} />

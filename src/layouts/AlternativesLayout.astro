@@ -1,172 +1,116 @@
 ---
-import Layout from "./Layout.astro";
-import MkNav from "@components/marketing/MkNav.astro";
-import MkFooter from "@components/marketing/MkFooter.astro";
+// An /alternatives/<slug> switching guide (spec 0021 AC-11): six mk bands between MkNav and MkFooter, with
+// the words from the spec's Page copy. The body varies by country and sign in state; the head never does.
 import ContactUsModal from "@components/ContactUsModal.astro";
+import MkCard from "@components/marketing/MkCard.astro";
+import MkFaq from "@components/marketing/MkFaq.astro";
+import MkFooter from "@components/marketing/MkFooter.astro";
+import MkHeading from "@components/marketing/MkHeading.astro";
+import MkNav from "@components/marketing/MkNav.astro";
+import MkSection from "@components/marketing/MkSection.astro";
+import CompareHero from "@components/marketing/compare/CompareHero.astro";
+import CompareTable from "@components/marketing/compare/CompareTable.astro";
+import HomeCta from "@components/marketing/home/HomeCta.astro";
+import Layout from "./Layout.astro";
 import { AppConfig } from "../constants";
-import type { CompetitorEntry } from "../data/competitors";
+import { homeCopy } from "../constants/home.ts";
+import { fillRareBooks, rareBooksRowsFor, rareBooksValues, type CompetitorEntry } from "../data/competitors.ts";
+import { breadcrumbJsonLd } from "../lib/marketing/breadcrumb.ts";
+import { escapeHtml } from "../lib/marketing/escapeHtml.ts";
+import { fill } from "../lib/marketing/home.ts";
 
 interface Props {
   entry: CompetitorEntry;
+  local: boolean;
+  signedIn: boolean;
 }
 
-const { entry } = Astro.props;
-const pageTitle = `Best ${entry.shortName} Alternative for SMEs | ${AppConfig.appName}`;
+const { entry, local, signedIn } = Astro.props;
+const { shortName, slug } = entry;
+const pageName = `${shortName} alternative`;
+const text = (value: string) => fillRareBooks(value, local);
+const values = { ...rareBooksValues(local), shortName, slug };
+// MkFaq writes the answer with set:html, so our plain text answers are escaped first.
+const faqs = entry.faqs.map((faq) => ({ question: text(faq.q), answer: escapeHtml(text(faq.a)) }));
+const cta = {
+  title: "Ready to make the *switch*?",
+  lead: fill("Try every feature free for {freeDays} days, with no card needed.", values),
+  primary: "Start free trial",
+};
 ---
 
 <Layout
-  title={pageTitle}
+  title={`Best ${shortName} Alternative for SMEs | RareBooks`}
   description={entry.metaDescription}
-  canonicalPath={`/alternatives/${entry.slug}`}
+  canonicalPath={`/alternatives/${slug}`}
+  ogImage="/og/home.jpg"
+  ogImageAlt={homeCopy.abroad.hero.screenshotAlt}
+  preloadSerif
+  jsonLd={breadcrumbJsonLd(AppConfig.urls.rootUrl, "alternatives", slug, pageName)}
 >
   <MkNav />
   <main id="main">
-    <!-- Breadcrumb + Header -->
-    <section class="relative overflow-hidden">
-      <div class="absolute inset-0 dotted-bg opacity-70"></div>
-      <div class="relative mx-auto max-w-4xl px-4 pb-14 pt-16 text-center">
-        <nav class="mb-6 flex items-center justify-center gap-1.5 text-sm text-muted" aria-label="Breadcrumb">
-          <a href="/" class="transition-colors hover:text-ink">Home</a>
-          <span aria-hidden="true">/</span>
-          <a href="/alternatives" class="transition-colors hover:text-ink">Alternatives</a>
-          <span aria-hidden="true">/</span>
-          <span class="text-ink">{entry.shortName} Alternative</span>
-        </nav>
+    <CompareHero
+      section={{ name: "Alternatives", href: "/alternatives" }}
+      pageName={pageName}
+      overline="Switching guide"
+      title={`Looking for an alternative to *${shortName}*?`}
+      lead="Meet RareBooks: accounting, stock and point of sale in one app for small businesses, in any browser."
+      location="alternatives_page_header"
+      secondary={{ label: "See the full comparison", href: `/compare/${slug}` }}
+      signedIn={signedIn}
+    />
 
-        <div class="mx-auto mb-6 inline-flex items-center gap-2 rounded-pill border border-black/5 bg-white/70 px-4 py-1.5 text-sm font-medium text-muted backdrop-blur">
-          <span class="h-2 w-2 rounded-full bg-brand"></span>
-          Alternative Guide
-        </div>
-
-        <h1 class="text-balance font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
-          Looking for a {entry.shortName} alternative?
-        </h1>
-        <p class="mx-auto mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted">
-          Meet {AppConfig.appName}. Offline-first accounting, POS, and inventory built for growth-focused SMEs.
-        </p>
-
-        <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
-            href={AppConfig.urls.signUpUrl}
-            data-cta-location="alternatives_page_header"
-            class="inline-flex cursor-pointer items-center rounded-pill bg-brand px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform"
-          >
-            Get Started Free
-          </a>
-          <a
-            href={`/compare/${entry.slug}`}
-            class="inline-flex cursor-pointer items-center rounded-pill border border-black/10 bg-white px-8 py-4 text-base font-semibold text-ink transition-colors hover:bg-black/5"
-          >
-            Detailed vs Comparison
-          </a>
-        </div>
+    <MkSection tone="tint" labelledby="alt-switch-title">
+      <MkHeading level={2} id="alt-switch-title" align="center">Is it time to switch?</MkHeading>
+      <div class="mx-auto mt-10 grid max-w-4xl gap-6 md:mt-12 md:grid-cols-2">
+        <MkCard as="article" class="max-md:order-2">
+          <MkHeading level={3}>When to choose {shortName}</MkHeading>
+          <p class="mt-3 text-(--mk-subtle)">{entry.whenToChooseCompetitor}</p>
+        </MkCard>
+        <MkCard as="article" class="border-2 border-mk-brand max-md:order-1">
+          <MkHeading level={3}>Why businesses switch to RareBooks</MkHeading>
+          <p class="mt-3">{text(entry.whySwitchToRareBooks)}</p>
+        </MkCard>
       </div>
-    </section>
+    </MkSection>
 
-    <!-- When to choose competitor / Why switch -->
-    <section class="mx-auto max-w-5xl px-4 py-8">
-      <div class="grid gap-6 md:grid-cols-2">
-        <div class="rounded-3xl border border-black/5 bg-white p-8">
-          <h2 class="mb-3 font-display text-xl font-bold text-muted">When to choose {entry.shortName}</h2>
-          <p class="text-base leading-relaxed text-muted">{entry.whenToChooseCompetitor}</p>
-        </div>
-        <div class="rounded-3xl border-2 border-brand/20 bg-brand-soft/40 p-8 shadow-card">
-          <h2 class="mb-3 font-display text-xl font-bold text-ink">Why businesses switch to {AppConfig.appName}</h2>
-          <p class="text-base leading-relaxed text-ink/80">{entry.whySwitchToRareBooks}</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Side by side comparison -->
-    <section class="mx-auto max-w-5xl px-4 py-12">
-      <h2 class="mb-2 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-        Side-by-Side Comparison
-      </h2>
-      <p class="mb-8 text-base text-muted">How {AppConfig.appName} compares to {entry.shortName} on core capabilities.</p>
-      <div class="overflow-hidden rounded-3xl border border-black/5 bg-white shadow-card">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm">
-            <thead>
-              <tr class="border-b border-black/5 bg-brand-soft/40">
-                <th class="px-5 py-4 font-display font-bold text-ink">Capability</th>
-                <th class="px-5 py-4 font-display font-bold text-brand">{AppConfig.appName}</th>
-                <th class="px-5 py-4 font-display font-bold text-muted">{entry.shortName}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {entry.featureMatrix.map((row, i) => (
-                <tr class={i % 2 === 1 ? "bg-background/60" : ""}>
-                  <td class="border-t border-black/5 px-5 py-4 font-medium text-ink">{row.capability}</td>
-                  <td class="border-t border-black/5 px-5 py-4 text-ink/80">{row.rarebooks}</td>
-                  <td class="border-t border-black/5 px-5 py-4 text-muted">{row.competitor}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- Migration steps -->
-    <section class="mx-auto max-w-5xl px-4 py-12">
-      <h2 class="mb-2 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-        Migrating from {entry.shortName} to {AppConfig.appName}
-      </h2>
-      <p class="mb-10 max-w-2xl text-base text-muted">
-        Moving your books over is straightforward. Here's the process from start to finish.
+    <MkSection tone="canvas" labelledby="alt-table-title">
+      <MkHeading level={2} id="alt-table-title" align="center">Side by side</MkHeading>
+      <p class="mx-auto mt-4 max-w-2xl text-center text-pretty text-mk-lead text-(--mk-subtle)">
+        {fill("How RareBooks compares to {shortName} on what a small business uses every day.", values)}
       </p>
-      <div class="grid gap-6 sm:grid-cols-2">
-        {entry.migrationSteps.map((step, i) => (
-          <div class="flex gap-4 rounded-3xl border border-black/5 bg-white p-6">
-            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-              {i + 1}
-            </span>
-            <p class="text-base leading-relaxed text-ink/80">{step}</p>
-          </div>
-        ))}
+      <div class="mx-auto mt-10 max-w-4xl md:mt-12">
+        <CompareTable shortName={shortName} rareBooks={rareBooksRowsFor(local)} competitor={entry.rows} />
       </div>
-    </section>
+    </MkSection>
 
-    <!-- FAQ -->
-    <section class="mx-auto max-w-4xl px-4 py-12">
-      <h2 class="mb-2 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-        Frequently Asked Questions
-      </h2>
-      <p class="mb-8 text-base text-muted">Common questions from businesses considering the switch.</p>
-      <div class="space-y-4">
-        {entry.faqs.map((faq) => (
-          <div class="rounded-3xl border border-black/5 bg-white p-6">
-            <h3 class="font-display text-base font-bold text-ink">{faq.q}</h3>
-            <p class="mt-2 text-base leading-relaxed text-muted">{faq.a}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+    <MkSection tone="tint" labelledby="alt-migration-title" width="narrow">
+      <MkHeading level={2} id="alt-migration-title">Moving from {shortName} to RareBooks</MkHeading>
+      <p class="mt-4 text-pretty text-mk-lead text-(--mk-subtle)">Moving your books over takes four steps.</p>
+      <ol class="mt-10 space-y-6">
+        {
+          entry.migrationSteps.map((step, index) => (
+            <li class="flex gap-4">
+              <span
+                aria-hidden="true"
+                class="flex size-10 shrink-0 items-center justify-center rounded-full bg-mk-brand font-bold text-mk-on-dark"
+              >
+                {index + 1}
+              </span>
+              <p class="pt-2">{text(step)}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </MkSection>
 
-    <!-- Final CTA -->
-    <section id="cta" class="mx-auto max-w-6xl px-4 pb-24 pt-8">
-      <div class="relative overflow-hidden rounded-[2.5rem] bg-ink px-6 py-20 text-center text-white">
-        <div class="absolute inset-0 hero-glow opacity-60"></div>
-        <div class="absolute inset-0 dotted-bg opacity-[0.05]"></div>
-        <div class="relative mx-auto max-w-2xl">
-          <h2 class="text-balance font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Ready to make the switch?
-          </h2>
-          <p class="mx-auto mt-5 max-w-lg text-pretty text-lg text-white/70">
-            Start a free trial of {AppConfig.appName} — no credit card required.
-          </p>
-          <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a
-              href={AppConfig.urls.signUpUrl}
-              data-cta-location="alternatives_page_footer"
-              class="inline-flex cursor-pointer items-center rounded-pill bg-brand px-8 py-4 text-base font-semibold text-white shadow-soft transition-transform"
-            >
-              Create Free Account
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+    <MkSection tone="canvas" labelledby="alt-faq-title" width="narrow">
+      <MkHeading level={2} id="alt-faq-title">Questions about switching</MkHeading>
+      <MkFaq items={faqs} class="mt-8" />
+    </MkSection>
+
+    <HomeCta copy={cta} signedIn={signedIn} location="alternatives_page_footer" />
   </main>
   <MkFooter />
 </Layout>
