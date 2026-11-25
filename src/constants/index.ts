@@ -51,7 +51,10 @@ export const AppConfig = {
   legal: {
     approved: false as boolean,
     updated: "2026-11-25",
-    controller: { name: "", address: "" },
+    controller: {
+      name: "Inuweza Group Ltd",
+      address: "Mbweha Street, Kijitonyama, Dar es Salaam, Tanzania",
+    },
   },
   featuredClients: ["TAJ Home Appliances", "Powerlink Innovations"],
   hostedPlan,
