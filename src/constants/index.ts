@@ -12,10 +12,13 @@ export const AppConfig = {
     nonReply: "nonreply@rarebooks.cc"
   },
   logo: "/logo.png",
-  // Spec 0014: every free trial is the 30 day trial of a hosted Books site.
+  // Spec 0019 AC-4: the trial as specs 0005 and 0007 run it. Free for `freeDays`, payable from
+  // `payFromDay`, read only from `readOnlyFromDay`, and the site removed on `removedOnDay` if unpaid.
   trial: {
-    localDuration: "30",
-    abroadDuration: "30",
+    freeDays: 21,
+    payFromDay: 22,
+    readOnlyFromDay: 26,
+    removedOnDay: 30,
   },
   urls: {
     rootUrl: "https://rarebooks.cc",
@@ -26,6 +29,9 @@ export const AppConfig = {
     signUpUrl: "/auth/sign-up",
     // Spec 0018: the docs home, with the trailing slash Starlight serves, used by the nav, footer and 404.
     docsHomePath: "/getting-started/getting-started-with-rarebooks/",
+    // Spec 0019 AC-6: the Arcade product demo, the one fixed URL the homepage ever embeds.
+    demoUrl:
+      "https://demo.arcade.software/FeRaybGnq8w8icVFYOSu?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true",
   },
   socials: {
     facebook: "https://www.facebook.com/rarebooks",

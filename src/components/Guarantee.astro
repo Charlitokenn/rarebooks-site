@@ -5,7 +5,7 @@ import {isTanzania} from "../constants/pricing.ts";
 
 const countryCode = Astro.locals.countryCode || "US";
 const isLocal =  isTanzania(countryCode);
-const trialDays = isLocal ? AppConfig.trial.localDuration : AppConfig.trial.abroadDuration
+const trialDays = AppConfig.trial.freeDays
 const plan = AppConfig.hostedPlan
 
 const trialStep = {

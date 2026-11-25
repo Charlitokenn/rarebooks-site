@@ -3,24 +3,28 @@ import ContactUsModal from "@components/ContactUsModal.astro";
 export const prerender = false;
 
 import MkNav from "@components/marketing/MkNav.astro"
-import Hero from "@components/Hero.astro"
+import HomeHero from "@components/marketing/home/HomeHero.astro"
 import Comparison from "@components/Comparison.astro"
-import HowItWorks from "@components/HowItWorks.astro"
-import Stats from "@components/Stats.astro"
 import Guarantee from "@components/Guarantee.astro"
 import Pricing from "@components/Pricing.astro"
 import CallToAction from "@components/CallToAction.astro"
 import MkFooter from "@components/marketing/MkFooter.astro"
 import Layout from "src/layouts/Layout.astro"
+import { homeCopy } from "../constants/home.ts"
+import { isTanzania } from "../constants/pricing.ts"
+import { isSignedIn } from "../lib/marketing/navigation.ts"
+
+// Spec 0019 AC-3: the Tanzania copy for TZ visitors, the abroad copy for everyone else, unknown included.
+const local = isTanzania(Astro.locals.countryCode ?? "US")
+const copy = local ? homeCopy.local : homeCopy.abroad
+const signedIn = isSignedIn(Astro.locals)
 ---
 
-<Layout>
+<Layout preloadSerif>
     <MkNav />
     <main id="main">
-        <Hero />
+        <HomeHero copy={copy.hero} local={local} signedIn={signedIn} />
         <Comparison />
-        <!--<HowItWorks />-->
-        <!--<Stats />-->
         <Guarantee />
         <Pricing />
         <CallToAction />
@@ -28,7 +32,4 @@ import Layout from "src/layouts/Layout.astro"
     <MkFooter />
 </Layout>
 
-<!-- Modal instance -->
-
-<!-- Modal instance -->
 <ContactUsModal id="contact-us-modal" title="Contact Us" />

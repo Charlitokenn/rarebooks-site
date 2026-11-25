@@ -129,9 +129,7 @@ export default function TrialLicenseEmail({
                               </td>
                               <td style={{ paddingBottom: "12px" }}>
                                 <Text className="m-0 text-sm font-bold text-zinc-900">
-                                  {isLocal
-                                    ? `${AppConfig.trial.localDuration}`
-                                    : `${AppConfig.trial.abroadDuration}`}{" "}
+                                  {AppConfig.trial.freeDays}{" "}
                                   days
                                 </Text>
                               </td>

@@ -1,0 +1,68 @@
+---
+// The homepage hero (spec 0019 AC-5): overline, h1 with one highlighted word, lead, the trial and demo
+// buttons, the price line, then the dashboard screenshot, the page's one eager image.
+import { AppConfig } from "../../../constants";
+import { dashboardLabel, type HomeCopy } from "../../../constants/home.ts";
+import { fill, splitHighlight } from "../../../lib/marketing/home.ts";
+import MkButton from "../MkButton.astro";
+import MkHeading from "../MkHeading.astro";
+import MkHighlight from "../MkHighlight.astro";
+import MkScreenshotFrame from "../MkScreenshotFrame.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  copy: HomeCopy["hero"];
+  local: boolean;
+  signedIn: boolean;
+}
+
+const { copy, local, signedIn } = Astro.props;
+const { trial, hostedPlan } = AppConfig;
+const [before, word, after] = splitHighlight(copy.title);
+const priceLine = fill(copy.priceLine, {
+  freeDays: trial.freeDays,
+  tzsYear: hostedPlan.priceTZS.yearly,
+  usdYear: hostedPlan.priceUSD.yearly,
+  usdMonth: hostedPlan.priceUSD.monthly,
+});
+---
+
+<MkSection tone="canvas" labelledby="home-hero-title" padding="pt-12 pb-16 md:pt-20 md:pb-28">
+  <div class="mx-auto max-w-mk-narrow text-center">
+    <MkHeading level={1} size="display" overline={copy.overline} align="center" id="home-hero-title">
+      {before}<MkHighlight>{word}</MkHighlight>{after}
+    </MkHeading>
+    <p class="mx-auto mt-6 max-w-2xl text-pretty text-mk-lead text-(--mk-subtle)">{copy.lead}</p>
+    <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+      {
+        signedIn ? (
+          <MkButton href="/dashboard" size="lg" data-cta-location="hero">
+            {dashboardLabel}
+          </MkButton>
+        ) : (
+          <MkButton href={AppConfig.urls.signUpUrl} size="lg" data-cta-location="hero">
+            {copy.primary}
+          </MkButton>
+        )
+      }
+      <!-- Until the demo dialog lands (spec 0019 build plan step 5), the demo opens in a new tab. -->
+      <MkButton
+        href={AppConfig.urls.demoUrl}
+        variant="secondary"
+        size="lg"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {copy.demo}
+      </MkButton>
+    </div>
+    <p class="mt-4 text-mk-small text-(--mk-subtle)">{priceLine}</p>
+  </div>
+  <MkScreenshotFrame
+    name={local ? "home-dashboard-tzs" : "home-dashboard-usd"}
+    alt={copy.screenshotAlt}
+    sizes="(min-width: 1200px) 1200px, 100vw"
+    priority
+    class="mx-auto mt-12 max-w-6xl md:mt-16"
+  />
+</MkSection>
