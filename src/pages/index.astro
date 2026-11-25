@@ -1,35 +1,49 @@
 ---
+// The homepage (spec 0019): seven mk bands between MkNav and MkFooter (AC-1). It varies by country and sign
+// in state, so it renders on every request and is never cached at the edge (spec 0018).
 import ContactUsModal from "@components/ContactUsModal.astro";
+import MkFooter from "@components/marketing/MkFooter.astro";
+import MkNav from "@components/marketing/MkNav.astro";
+import HomeCta from "@components/marketing/home/HomeCta.astro";
+import HomeDemoDialog from "@components/marketing/home/HomeDemoDialog.astro";
+import HomeFaq from "@components/marketing/home/HomeFaq.astro";
+import HomeFeatures from "@components/marketing/home/HomeFeatures.astro";
+import HomeHero from "@components/marketing/home/HomeHero.astro";
+import HomePricingTeaser from "@components/marketing/home/HomePricingTeaser.astro";
+import HomeTrial from "@components/marketing/home/HomeTrial.astro";
+import HomeTrust from "@components/marketing/home/HomeTrust.astro";
+import Layout from "src/layouts/Layout.astro";
+import { homeCopy } from "../constants/home.ts";
+import { isTanzania } from "../constants/pricing.ts";
+import { isSignedIn } from "../lib/marketing/navigation.ts";
+
 export const prerender = false;
 
-import MkNav from "@components/marketing/MkNav.astro"
-import HomeHero from "@components/marketing/home/HomeHero.astro"
-import Comparison from "@components/Comparison.astro"
-import Guarantee from "@components/Guarantee.astro"
-import Pricing from "@components/Pricing.astro"
-import CallToAction from "@components/CallToAction.astro"
-import MkFooter from "@components/marketing/MkFooter.astro"
-import Layout from "src/layouts/Layout.astro"
-import { homeCopy } from "../constants/home.ts"
-import { isTanzania } from "../constants/pricing.ts"
-import { isSignedIn } from "../lib/marketing/navigation.ts"
-
 // Spec 0019 AC-3: the Tanzania copy for TZ visitors, the abroad copy for everyone else, unknown included.
-const local = isTanzania(Astro.locals.countryCode ?? "US")
-const copy = local ? homeCopy.local : homeCopy.abroad
-const signedIn = isSignedIn(Astro.locals)
+const local = isTanzania(Astro.locals.countryCode ?? "US");
+const copy = local ? homeCopy.local : homeCopy.abroad;
+const signedIn = isSignedIn(Astro.locals);
 ---
 
-<Layout preloadSerif>
-    <MkNav />
-    <main id="main">
-        <HomeHero copy={copy.hero} local={local} signedIn={signedIn} />
-        <Comparison />
-        <Guarantee />
-        <Pricing />
-        <CallToAction />
-    </main>
-    <MkFooter />
+<Layout
+  title="RareBooks: accounting, stock and point of sale for small businesses"
+  canonicalPath="/"
+  ogImage="/og/home.jpg"
+  ogImageAlt={copy.hero.screenshotAlt}
+  preloadSerif
+>
+  <MkNav />
+  <main id="main">
+    <HomeHero copy={copy.hero} local={local} signedIn={signedIn} />
+    <HomeTrust copy={copy.trust} />
+    <HomeFeatures copy={copy.features} local={local} />
+    <HomeTrial copy={copy.trial} signedIn={signedIn} />
+    <HomePricingTeaser copy={copy.pricing} signedIn={signedIn} />
+    <HomeFaq copy={copy.faq} />
+    <HomeCta copy={copy.cta} signedIn={signedIn} />
+  </main>
+  <MkFooter />
+  <HomeDemoDialog copy={copy.demoDialog} />
 </Layout>
 
 <ContactUsModal id="contact-us-modal" title="Contact Us" />

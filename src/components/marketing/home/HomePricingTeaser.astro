@@ -1,0 +1,64 @@
+---
+// The pricing teaser (spec 0019 AC-10): the one plan's price in the visitor's currency, the first four
+// included points and Start free trial. Tanzania visitors also get the quick start line, whose Talk to us
+// button opens the contact modal. `id="pricing"` keeps the nav's /#pricing link landing here.
+import { AppConfig } from "../../../constants";
+import { dashboardLabel, type HomeCopy } from "../../../constants/home.ts";
+import { fill, homeValues } from "../../../lib/marketing/home.ts";
+import MkButton from "../MkButton.astro";
+import MkCard from "../MkCard.astro";
+import MkCheckList from "../MkCheckList.astro";
+import MkHeading from "../MkHeading.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  copy: HomeCopy["pricing"];
+  signedIn: boolean;
+}
+
+const { copy, signedIn } = Astro.props;
+const values = homeValues(AppConfig);
+const included = AppConfig.hostedPlan.features.slice(0, 4);
+---
+
+<MkSection tone="canvas" id="pricing" labelledby="home-pricing-title" width="narrow">
+  <MkHeading level={2} align="center" id="home-pricing-title">{copy.title}</MkHeading>
+  <MkCard class="mt-10">
+    <div class="grid gap-8 md:grid-cols-[auto_1fr] md:items-center md:gap-12">
+      <div>
+        <p>
+          <span class="font-mk-serif text-mk-h1 whitespace-nowrap text-mk-ink">{fill(copy.price, values)}</span>
+          <span class="ml-1 text-mk-body text-mk-subtle">{copy.period}</span>
+        </p>
+        {copy.note && <p class="mt-2 text-mk-body text-mk-subtle">{fill(copy.note, values)}</p>}
+        {
+          signedIn ? (
+            <MkButton href="/dashboard" size="lg" data-cta-location="pricing" class="mt-6 max-sm:w-full">
+              {dashboardLabel}
+            </MkButton>
+          ) : (
+            <MkButton href={AppConfig.urls.signUpUrl} size="lg" data-cta-location="pricing" class="mt-6 max-sm:w-full">
+              {copy.primary}
+            </MkButton>
+          )
+        }
+      </div>
+      <MkCheckList items={included} />
+    </div>
+  </MkCard>
+  {
+    copy.setup && (
+      <div class="mt-8 flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-center sm:text-start">
+        <p class="text-mk-body text-(--mk-subtle)">{fill(copy.setup.text, values)}</p>
+        <MkButton
+          variant="secondary"
+          data-open-modal="contact-us-modal"
+          data-cta-location="pricing_setup"
+          class="shrink-0 max-sm:w-full"
+        >
+          {copy.setup.button}
+        </MkButton>
+      </div>
+    )
+  }
+</MkSection>

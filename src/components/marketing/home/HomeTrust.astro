@@ -1,0 +1,37 @@
+---
+// The trust row (spec 0019 AC-1, AC-7): the overline, the client names as text, and the quote card only once
+// AppConfig.testimonial is complete. The h2 carries the same words for screen readers; the overline is the
+// visible copy, hidden from them so the words aren't read twice.
+import { AppConfig } from "../../../constants";
+import type { HomeCopy } from "../../../constants/home.ts";
+import { hasQuote } from "../../../lib/marketing/home.ts";
+import MkCard from "../MkCard.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  copy: HomeCopy["trust"];
+}
+
+const { copy } = Astro.props;
+const { featuredClients, testimonial } = AppConfig;
+---
+
+<MkSection tone="tint" labelledby="home-trust-title" padding="py-12 md:py-16">
+  <div class="text-center">
+    <p class="text-mk-overline text-(--mk-overline) uppercase" aria-hidden="true">{copy.title}</p>
+    <h2 id="home-trust-title" class="sr-only">{copy.title}</h2>
+    <ul class="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-3" role="list">
+      {featuredClients.map((client) => <li class="font-mk-serif text-mk-h3 text-mk-ink">{client}</li>)}
+    </ul>
+  </div>
+  {
+    hasQuote(testimonial) && (
+      <MkCard variant="quote" tone="brand" as="figure" class="mx-auto mt-10 max-w-mk-narrow">
+        {testimonial.quote}
+        <span slot="cite">
+          <strong>{testimonial.name}</strong>, {testimonial.business}
+        </span>
+      </MkCard>
+    )
+  }
+</MkSection>

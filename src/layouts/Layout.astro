@@ -12,6 +12,10 @@ interface Props {
    * fold, whose hero usually holds an MkHighlight, so the italic is needed at once (spec 0017 AC-7).
    */
   preloadSerif?: boolean
+  /** A site path to a 1200 by 630 social image, such as "/og/home.jpg" (spec 0019 AC-13). */
+  ogImage?: string
+  /** The social image's alt text, written with `ogImage`. */
+  ogImageAlt?: string
 }
 
 const {
@@ -21,6 +25,8 @@ const {
   ogType = "website",
   noindex = false,
   preloadSerif = false,
+  ogImage,
+  ogImageAlt,
 } = Astro.props
 
 // marketing.css imports global.css first and only adds the `mk` design system on top (spec 0017 AC-3).
@@ -32,6 +38,7 @@ import frauncesItalicUrl from "@fontsource-variable/fraunces/files/fraunces-lati
 import TawkWidget from "@components/TawkWidget.astro";
 
 const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootUrl).toString() : undefined
+const ogImageUrl = ogImage ? new URL(ogImage, AppConfig.urls.rootUrl).toString() : undefined
 ---
 
 <!doctype html>
@@ -65,6 +72,15 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    {ogImageUrl && (
+      <>
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
+        <meta name="twitter:image" content={ogImageUrl} />
+      </>
+    )}
     <link rel="preconnect" href="https://challenges.cloudflare.com" />
     <script
         src="https://challenges.cloudflare.com/turnstile/v0/api.js"
@@ -97,8 +113,8 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
 
 <!--
   Centralized "open modal" handler for every [data-open-modal] trigger on the
-  site (Hero, Guarantee, CallToAction, Pricing plans, Compare/Alternatives
-  pages). This replaces the near-identical copies that used to live in
+  site (the homepage's demo, Talk to us and Contact us buttons, MkNav's menu,
+  the Compare/Alternatives pages). This replaces the near-identical copies that used to live in
   index.astro, CompareLayout.astro, and AlternativesLayout.astro.
 
   It also tracks trial intent: a click on a "Start free trial" link (each

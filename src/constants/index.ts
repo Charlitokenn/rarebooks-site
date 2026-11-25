@@ -5,7 +5,8 @@ import {Cog, LayoutDashboard} from "lucide-react";
 export const AppConfig = {
   appName: "RareBooks",
   version: "0.3.0",
-  description: "Modern desktop accounting app for small and medium businesses",
+  // Spec 0019 AC-13: the meta description and the footer line.
+  description: "Online accounting, stock and point of sale for small businesses, hosted for you.",
   author: "Charles Nkonoki",
   emails: {
     supportEmail: "support@rarebooks.cc",
@@ -63,6 +64,13 @@ export const AppConfig = {
     },
   },
   featuredClients: ["TAJ Home Appliances", "Powerlink Innovations"],
+  // Spec 0019 AC-7: the homepage trust row shows this quote only once all three are filled in, with the
+  // person's permission. Until then no quote markup renders.
+  testimonial: {
+    quote: "" as string,
+    name: "" as string,
+    business: "" as string,
+  },
   hostedPlan,
   localServices,
 };

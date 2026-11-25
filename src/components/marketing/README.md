@@ -10,7 +10,7 @@ The shared look of the redesigned marketing pages (spec 0017 in `rarebooks-web/d
 - `marketing.css` adds one page wide rule, `scroll-padding-top: 5rem` on `html`. Every other rule is scoped to `.mk-band` or `[data-tone]`, so a page keeps its current look until you rebuild it with `MkSection`.
 - New marketing code uses only `mk` tokens. The old names (`brand`, `ink`, `muted`, `display`, `pill`, `soft`, `card`) stay only where current pages use them, and each restyle removes them from the pages it rewrites.
 - Every color token is a 6 digit hex value, and any text and background pair you use on a page is in the allowed pairs below. `npm test` (`tests/marketing/contrast.test.ts`) holds them.
-- Components ship no client JavaScript, with one exception: MkNav carries one inline script of under 1 KB for the phone menu's close rules (spec 0018 AC-12). An interaction that truly needs JS (the pricing toggle) is a React island styled with `mk` classes.
+- Components ship no client JavaScript, with two exceptions, each one inline script of under 1 KB: MkNav's, for the phone menu's close rules (spec 0018 AC-12), and the homepage's `HomeDemoDialog`, which shows the Watch the demo button, loads the Arcade iframe only when the dialog opens and removes it on close (spec 0019 AC-6). An interaction that truly needs JS (the pricing toggle) is a React island styled with `mk` classes.
 - `mk-pink-strong` and `mk-border` are decoration only: never the only sign of a control, never behind text.
 - Light only: no `.dark` rules in `marketing.css`.
 

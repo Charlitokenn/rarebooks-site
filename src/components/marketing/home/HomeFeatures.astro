@@ -1,0 +1,34 @@
+---
+// The features band (spec 0019 AC-8): four rows of real /books screenshots, rows 2 and 4 reversed, from the
+// `-tzs` set for Tanzania visitors and the `-usd` set for everyone else. Every one loads lazily.
+import type { HomeCopy } from "../../../constants/home.ts";
+import { shotName } from "../../../lib/marketing/home.ts";
+import MkFeatureRow from "../MkFeatureRow.astro";
+import MkHeading from "../MkHeading.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  copy: HomeCopy["features"];
+  local: boolean;
+}
+
+const { copy, local } = Astro.props;
+const sizes = "(min-width: 1200px) 600px, (min-width: 768px) 50vw, 100vw";
+---
+
+<MkSection tone="canvas" id="features" labelledby="home-features-title">
+  <MkHeading level={2} overline={copy.overline} align="center" id="home-features-title">
+    {copy.title}
+  </MkHeading>
+  <div class="mt-12 flex flex-col gap-16 md:mt-20 md:gap-24">
+    {
+      copy.rows.map((row, index) => (
+        <MkFeatureRow screenshot={{ name: shotName(row.shot, local), alt: row.alt, sizes }} reverse={index % 2 === 1}>
+          <span slot="overline">{row.overline}</span>
+          <span slot="title">{row.title}</span>
+          <p>{row.text}</p>
+        </MkFeatureRow>
+      ))
+    }
+  </div>
+</MkSection>

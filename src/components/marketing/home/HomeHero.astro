@@ -45,16 +45,25 @@ const priceLine = fill(copy.priceLine, {
           </MkButton>
         )
       }
-      <!-- Until the demo dialog lands (spec 0019 build plan step 5), the demo opens in a new tab. -->
-      <MkButton
-        href={AppConfig.urls.demoUrl}
-        variant="secondary"
-        size="lg"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <!--
+        AC-6: opens HomeDemoDialog. `hidden` until its inline script runs, since without JS the button
+        can't open the dialog; the noscript link takes its place then.
+      -->
+      <MkButton variant="secondary" size="lg" data-open-modal="mk-demo" hidden>
         {copy.demo}
       </MkButton>
+      <noscript>
+        <MkButton
+          href={AppConfig.urls.demoUrl}
+          variant="secondary"
+          size="lg"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:w-auto"
+        >
+          {copy.demo}
+        </MkButton>
+      </noscript>
     </div>
     <p class="mt-4 text-mk-small text-(--mk-subtle)">{priceLine}</p>
   </div>

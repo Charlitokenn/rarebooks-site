@@ -1,0 +1,84 @@
+---
+// The Arcade demo in a dialog (spec 0019 AC-6). The hero's Watch the demo button opens it through the Layout
+// `data-open-modal` handler. The iframe waits in a <template>, so nothing loads from demo.arcade.software
+// until the dialog opens, and it is removed again on close. Full screen below md, at most 64rem wide from md.
+import { AppConfig } from "../../../constants";
+import type { HomeCopy } from "../../../constants/home.ts";
+import MkButton from "../MkButton.astro";
+
+interface Props {
+  copy: HomeCopy["demoDialog"];
+}
+
+const { copy } = Astro.props;
+---
+
+<dialog
+  id="mk-demo"
+  aria-label={copy.label}
+  class="mk-demo m-0 h-dvh max-h-none w-full max-w-none p-0 backdrop:bg-mk-ink/70 md:m-auto md:h-auto md:max-h-[calc(100dvh-4rem)] md:w-[calc(100%-4rem)] md:max-w-[64rem] md:rounded-mk-card"
+>
+  <div class="mk-band mk-on-light flex h-full flex-col gap-4 overflow-y-auto bg-mk-surface p-4 md:p-6">
+    <div class="flex items-center justify-between gap-4">
+      <a
+        href={AppConfig.urls.demoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-sm font-bold text-(--mk-link) underline underline-offset-4"
+      >
+        {copy.newTab}
+      </a>
+      <form method="dialog">
+        <MkButton type="submit" variant="secondary" aria-label={copy.close}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          Close
+        </MkButton>
+      </form>
+    </div>
+    <!-- The box keeps the ratio the inline embed had, so the demo fits as before. -->
+    <div class="relative h-0 w-full" style="padding-bottom: calc(61.24% + 41px)" data-mk-demo-slot></div>
+    <template data-mk-demo-iframe>
+      <iframe
+        src={AppConfig.urls.demoUrl}
+        title={copy.label}
+        allow="clipboard-write"
+        allowfullscreen
+        class="absolute inset-0 h-full w-full border-0"
+        style="color-scheme: light"></iframe>
+    </template>
+  </div>
+</dialog>
+
+<style>
+  :global(body:has(#mk-demo[open])) {
+    overflow: hidden;
+  }
+</style>
+
+<!--
+  What the Layout handler doesn't do (AC-6): show the button once JS runs, load the iframe on the click that
+  opens the dialog, close on a backdrop tap (the only click that targets the dialog itself, since the inner
+  wrapper fills it), and drop the iframe on close so the demo stops. Kept under 1 KB.
+-->
+<script is:inline>
+  (function () {
+    var d = document.getElementById("mk-demo");
+    if (!d) return;
+    var s = d.querySelector("[data-mk-demo-slot]");
+    var t = d.querySelector("[data-mk-demo-iframe]");
+    document.querySelectorAll('[data-open-modal="mk-demo"]').forEach(function (b) {
+      b.hidden = false;
+      b.addEventListener("click", function () {
+        if (!s.firstElementChild) s.appendChild(t.content.cloneNode(true));
+      });
+    });
+    d.addEventListener("click", function (e) {
+      if (e.target === d) d.close();
+    });
+    d.addEventListener("close", function () {
+      s.replaceChildren();
+    });
+  })();
+</script>

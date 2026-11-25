@@ -1,0 +1,46 @@
+---
+// The closing call to action (spec 0019 AC-1, AC-12) on the ink band, so the button is the `on-dark`
+// variant (brand purple on ink is a forbidden pair). Its `final_cta_section` location is the one the old
+// CallToAction used, so the trial_interest history carries on.
+import { AppConfig } from "../../../constants";
+import { dashboardLabel, type HomeCopy } from "../../../constants/home.ts";
+import { splitHighlight } from "../../../lib/marketing/home.ts";
+import MkButton from "../MkButton.astro";
+import MkHeading from "../MkHeading.astro";
+import MkHighlight from "../MkHighlight.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  copy: HomeCopy["cta"];
+  signedIn: boolean;
+}
+
+const { copy, signedIn } = Astro.props;
+const [before, word, after] = splitHighlight(copy.title);
+---
+
+<MkSection tone="ink" id="cta" labelledby="home-cta-title" width="narrow">
+  <MkHeading level={2} size="h1" align="center" id="home-cta-title">
+    {before}<MkHighlight>{word}</MkHighlight>{after}
+  </MkHeading>
+  <p class="mx-auto mt-6 max-w-2xl text-center text-mk-lead text-(--mk-subtle)">{copy.lead}</p>
+  <div class="mt-10 flex justify-center">
+    {
+      signedIn ? (
+        <MkButton href="/dashboard" variant="on-dark" size="lg" data-cta-location="final_cta_section" class="max-sm:w-full">
+          {dashboardLabel}
+        </MkButton>
+      ) : (
+        <MkButton
+          href={AppConfig.urls.signUpUrl}
+          variant="on-dark"
+          size="lg"
+          data-cta-location="final_cta_section"
+          class="max-sm:w-full"
+        >
+          {copy.primary}
+        </MkButton>
+      )
+    }
+  </div>
+</MkSection>

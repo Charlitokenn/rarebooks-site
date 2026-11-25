@@ -1,4 +1,22 @@
 {
+  "home-balances-tzs": {
+    "width": 1792,
+    "height": 642,
+    "widths": [
+      640,
+      960,
+      1280
+    ]
+  },
+  "home-balances-usd": {
+    "width": 1792,
+    "height": 642,
+    "widths": [
+      640,
+      960,
+      1280
+    ]
+  },
   "home-dashboard-tzs": {
     "width": 2560,
     "height": 1600,
@@ -10,6 +28,66 @@
     ]
   },
   "home-dashboard-usd": {
+    "width": 2560,
+    "height": 1600,
+    "widths": [
+      640,
+      960,
+      1280,
+      1920
+    ]
+  },
+  "home-pos-tzs": {
+    "width": 2560,
+    "height": 1600,
+    "widths": [
+      640,
+      960,
+      1280,
+      1920
+    ]
+  },
+  "home-pos-usd": {
+    "width": 2560,
+    "height": 1600,
+    "widths": [
+      640,
+      960,
+      1280,
+      1920
+    ]
+  },
+  "home-profit-tzs": {
+    "width": 2560,
+    "height": 1600,
+    "widths": [
+      640,
+      960,
+      1280,
+      1920
+    ]
+  },
+  "home-profit-usd": {
+    "width": 2560,
+    "height": 1600,
+    "widths": [
+      640,
+      960,
+      1280,
+      1920
+    ]
+  },
+  "home-stock-tzs": {
+    "width": 2560,
+    "height": 1600,
+    "widths": [
+      640,
+      960,
+      1280,
+      1920
+    ]
+  },
+  "home-stock-usd": {
     "width": 2560,
     "height": 1600,
     "widths": [

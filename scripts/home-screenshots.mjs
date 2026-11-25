@@ -26,20 +26,60 @@ const SOURCE = "src/assets/screenshots/source";
 const OG_IMAGE = "public/og/home.jpg";
 const TIMEOUT = 15_000;
 
+// The point of sale cart: the first three items of the seed's ITEMS list (frappe_books/demo/shop.py).
+const CART_ITEMS = ["Cement 50kg bag", "Iron sheet 3m gauge 30", "Wire nails 3 inch 1kg"];
+
 // Each shot: its name (the `-tzs` or `-usd` set is added), the /books route, and how it gets ready and shot.
 const SHOTS = [
   {
     name: "home-dashboard",
     route: "/books/",
     // The hero: the full viewport, scrolled so the account balances card and best sellers chart show.
+    ready: dashboardReady,
+    capture: (page, path) => page.screenshot({ path }),
+  },
+  {
+    name: "home-balances",
+    route: "/books/",
+    ready: dashboardReady,
+    // The box the Books dashboard marks for this shot, so the script never depends on layout classes.
+    capture: (page, path) => page.locator('[data-shot="home-balances"]').screenshot({ path }),
+  },
+  {
+    name: "home-pos",
+    route: "/books/pos",
     async ready(page) {
-      const balances = page.locator("div", { has: page.getByText("Account balances", { exact: true }) }).last();
-      await balances.scrollIntoViewIfNeeded({ timeout: TIMEOUT });
-      await page.getByText("Total", { exact: true }).first().waitFor({ timeout: TIMEOUT });
-      await page.getByText(/^Top \d$/).first().waitFor({ timeout: TIMEOUT });
-      await page.locator(".animate-pulse").first().waitFor({ state: "detached", timeout: TIMEOUT });
-      // Let the donut finish its draw animation.
-      await page.waitForTimeout(800);
+      const search = page.getByRole("combobox", { name: "Search by item name, code or barcode" });
+      await search.waitFor({ timeout: TIMEOUT });
+      for (const item of CART_ITEMS) {
+        await search.fill(item);
+        await page.getByRole("row", { name: `Add ${item}` }).click({ timeout: TIMEOUT });
+      }
+      await search.fill("");
+      await search.press("Escape");
+      await page.getByRole("heading", { name: "Point of Sale" }).click();
+      await page.getByText(`Net Total · ${CART_ITEMS.length} items`).waitFor({ timeout: TIMEOUT });
+      await page.getByRole("listbox").waitFor({ state: "detached", timeout: TIMEOUT });
+    },
+    capture: (page, path) => page.screenshot({ path }),
+  },
+  {
+    name: "home-stock",
+    route: "/books/report/StockBalance",
+    async ready(page) {
+      // The header row is the first; a second row means the report has data.
+      await page.getByRole("table").getByRole("row").nth(1).waitFor({ timeout: TIMEOUT });
+    },
+    capture: (page, path) => page.screenshot({ path }),
+  },
+  {
+    name: "home-profit",
+    // The report has no from and to dates: Until Date with one month counts back from today, so the single
+    // column covers the 30 seeded days (spec 0019, Screenshots).
+    route: () =>
+      `/books/report/ProfitAndLoss?basedOn=Until%20Date&periodicity=Monthly&count=1&toDate=${isoToday()}`,
+    async ready(page) {
+      await page.getByRole("table").getByText("Income", { exact: true }).first().waitFor({ timeout: TIMEOUT });
     },
     capture: (page, path) => page.screenshot({ path }),
   },
@@ -97,7 +137,8 @@ async function captureSite(set, url) {
     if (status !== 200) throw new Error(`Could not sign in to ${url} (HTTP ${status}).`);
 
     for (const shot of SHOTS) {
-      const target = `${url}${shot.route}`;
+      const route = typeof shot.route === "function" ? shot.route() : shot.route;
+      const target = `${url}${route}`;
       try {
         const response = await page.goto(target, { waitUntil: "networkidle", timeout: TIMEOUT });
         if (!response?.ok()) throw new Error(`HTTP ${response?.status()}`);
@@ -114,6 +155,23 @@ async function captureSite(set, url) {
   } finally {
     await context.close();
   }
+}
+
+// The account balances card and the best sellers chart, both with data and done animating.
+async function dashboardReady(page) {
+  const balances = page.locator("div", { has: page.getByText("Account balances", { exact: true }) }).last();
+  await balances.scrollIntoViewIfNeeded({ timeout: TIMEOUT });
+  await page.getByText("Total", { exact: true }).first().waitFor({ timeout: TIMEOUT });
+  await page.getByText(/^Top \d$/).first().waitFor({ timeout: TIMEOUT });
+  await page.locator(".animate-pulse").first().waitFor({ state: "detached", timeout: TIMEOUT });
+  // Let the donut finish its draw animation.
+  await page.waitForTimeout(800);
+}
+
+// Today on this machine, as the report's YYYY-MM-DD route filter wants it.
+function isoToday() {
+  const now = new Date();
+  return [now.getFullYear(), now.getMonth() + 1, now.getDate()].map((n) => String(n).padStart(2, "0")).join("-");
 }
 
 // The social card: 1200 by 630, cut from the top of the USD hero shot, as a JPEG under 150 KB (AC-13).

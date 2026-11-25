@@ -1,0 +1,50 @@
+---
+// The free trial promise (spec 0019 AC-9): three numbered steps, then Start free trial. The day numbers come
+// from AppConfig.trial and the prices from AppConfig.hostedPlan, through `homeValues`.
+import { AppConfig } from "../../../constants";
+import { dashboardLabel, type HomeCopy } from "../../../constants/home.ts";
+import { fill, homeValues } from "../../../lib/marketing/home.ts";
+import MkButton from "../MkButton.astro";
+import MkCard from "../MkCard.astro";
+import MkHeading from "../MkHeading.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  copy: HomeCopy["trial"];
+  signedIn: boolean;
+}
+
+const { copy, signedIn } = Astro.props;
+const values = homeValues(AppConfig);
+---
+
+<MkSection tone="pink" id="trial" labelledby="home-trial-title">
+  <MkHeading level={2} align="center" id="home-trial-title">{fill(copy.title, values)}</MkHeading>
+  <p class="mx-auto mt-4 max-w-2xl text-center text-mk-lead text-(--mk-subtle)">{copy.lead}</p>
+  <ol class="mt-12 grid gap-6 md:grid-cols-3" role="list">
+    {
+      copy.steps.map((step, index) => (
+        <MkCard as="li">
+          <p class="font-mk-serif text-mk-h2 text-mk-brand" aria-hidden="true">
+            {index + 1}
+          </p>
+          <h3 class="mt-2 font-mk-sans text-mk-h3">{fill(step.title, values)}</h3>
+          <p class="mt-3 text-mk-body text-mk-subtle">{fill(step.text, values)}</p>
+        </MkCard>
+      ))
+    }
+  </ol>
+  <div class="mt-10 flex justify-center">
+    {
+      signedIn ? (
+        <MkButton href="/dashboard" size="lg" data-cta-location="trial" class="max-sm:w-full">
+          {dashboardLabel}
+        </MkButton>
+      ) : (
+        <MkButton href={AppConfig.urls.signUpUrl} size="lg" data-cta-location="trial" class="max-sm:w-full">
+          {copy.primary}
+        </MkButton>
+      )
+    }
+  </div>
+</MkSection>
