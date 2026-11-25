@@ -1,0 +1,33 @@
+---
+// Text beside a product screenshot (spec 0017, Component contracts). Two columns from `md`, the frame on
+// the right unless `reverse`; on phones the text comes first, then the frame. Pages space rows with
+// `gap-16 md:gap-24`.
+import MkScreenshotFrame, { type ScreenshotName } from "./MkScreenshotFrame.astro";
+
+interface Props {
+  screenshot: { name: ScreenshotName; alt: string; sizes?: string; priority?: boolean };
+  reverse?: boolean;
+  class?: string;
+}
+
+const { screenshot, reverse = false, class: className } = Astro.props;
+---
+
+<div class:list={["grid items-center gap-10 md:grid-cols-2 md:gap-16", className]}>
+  <div class:list={[reverse && "md:order-2"]}>
+    {
+      Astro.slots.has("overline") && (
+        <p class="mb-3 text-mk-overline text-(--mk-overline) uppercase">
+          <slot name="overline" />
+        </p>
+      )
+    }
+    <h3 class="font-mk-serif text-mk-h2 text-balance"><slot name="title" /></h3>
+    <div class="mt-4 space-y-4 text-mk-lead text-(--mk-subtle)">
+      <slot />
+    </div>
+  </div>
+  <div class:list={[reverse && "md:order-1"]}>
+    <MkScreenshotFrame sizes="(min-width: 768px) 50vw, 100vw" {...screenshot} />
+  </div>
+</div>

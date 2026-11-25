@@ -1,0 +1,55 @@
+---
+// Pill button or link button (spec 0017, Component contracts). `primary` and `secondary` go on light bands,
+// `on-dark` and `secondary-on-dark` on the ink band (brand purple on ink is a forbidden pair). Extra
+// attributes (data-open-modal, data-cta-*, target, rel, aria-*) pass through.
+import type { HTMLAttributes } from "astro/types";
+
+type Variant = "primary" | "secondary" | "on-dark" | "secondary-on-dark" | "link";
+
+interface Props extends Omit<HTMLAttributes<"a">, "type"> {
+  variant?: Variant;
+  size?: "md" | "lg";
+  href?: string;
+  type?: "button" | "submit" | "reset";
+  class?: string;
+}
+
+const { variant = "primary", size = "md", href, type = "button", class: className, ...rest } = Astro.props;
+
+const motion =
+  "motion-safe:transition-[background-color,border-color,color] motion-safe:duration-150 motion-safe:ease-mk";
+
+const variants: Record<Exclude<Variant, "link">, string> = {
+  primary: "bg-mk-brand text-mk-on-dark hover:bg-mk-brand-strong active:bg-mk-brand-strong",
+  secondary: "border-2 border-mk-brand text-mk-brand hover:bg-mk-tint active:bg-mk-tint",
+  "on-dark": "bg-mk-on-dark text-mk-ink hover:bg-mk-tint active:bg-mk-tint",
+  "secondary-on-dark":
+    "border-2 border-mk-on-dark text-mk-on-dark hover:bg-mk-on-dark hover:text-mk-ink active:bg-mk-on-dark active:text-mk-ink",
+};
+
+// md is 44 px tall and lg 52 px (AC-6, WCAG 2.5.8). An inline link is exempt from the target size.
+const sizes = { md: "min-h-11 px-6 text-mk-body", lg: "min-h-13 px-8 text-mk-lead" };
+
+const classes =
+  variant === "link"
+    ? ["rounded-sm font-bold text-(--mk-link) underline-offset-4 hover:underline focus-visible:underline", className]
+    : [
+        "inline-flex items-center justify-center gap-2 rounded-mk-pill text-center font-mk-sans font-bold no-underline",
+        motion,
+        sizes[size],
+        variants[variant],
+        className,
+      ];
+---
+
+{
+  href ? (
+    <a href={href} class:list={classes} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class:list={classes} {...(rest as HTMLAttributes<"button">)}>
+      <slot />
+    </button>
+  )
+}

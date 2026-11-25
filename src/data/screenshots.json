@@ -1,0 +1,11 @@
+{
+  "sample-dashboard": {
+    "width": 1366,
+    "height": 695,
+    "widths": [
+      640,
+      960,
+      1280
+    ]
+  }
+}

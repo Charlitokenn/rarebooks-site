@@ -1,0 +1,37 @@
+---
+// A full width band (spec 0017, Component contracts). `.mk-band` and `data-tone` switch the text,
+// overline, underline, check and focus colors through the rules in marketing.css.
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"section"> {
+  tone?: "canvas" | "ink" | "tint" | "pink";
+  width?: "default" | "narrow";
+  as?: "section" | "div" | "footer" | "aside";
+  id?: string;
+  /** The section heading's `id`, so screen readers name the region. */
+  labelledby?: string;
+  class?: string;
+}
+
+const {
+  tone = "canvas",
+  width = "default",
+  as: Tag = "section",
+  id,
+  labelledby,
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<Tag
+  class:list={["mk-band px-5 py-16 md:px-8 md:py-28", className]}
+  data-tone={tone}
+  id={id}
+  aria-labelledby={labelledby}
+  {...rest}
+>
+  <div class:list={["mx-auto w-full", width === "narrow" ? "max-w-mk-narrow" : "max-w-mk"]}>
+    <slot />
+  </div>
+</Tag>

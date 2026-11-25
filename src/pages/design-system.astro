@@ -1,0 +1,345 @@
+---
+// The marketing design system preview (spec 0017 AC-8): every token and every component, in each variant
+// and on each band. Public but hidden from search engines, and no page links to it. It is also the page for
+// the manual keyboard, axe and Lighthouse checks (AC-6, AC-10).
+export const prerender = false;
+
+import Layout from "../layouts/Layout.astro";
+import MkBadge from "@components/marketing/MkBadge.astro";
+import MkButton from "@components/marketing/MkButton.astro";
+import MkCard from "@components/marketing/MkCard.astro";
+import MkCheckList from "@components/marketing/MkCheckList.astro";
+import MkFaq from "@components/marketing/MkFaq.astro";
+import MkFeatureRow from "@components/marketing/MkFeatureRow.astro";
+import MkHeading from "@components/marketing/MkHeading.astro";
+import MkHighlight from "@components/marketing/MkHighlight.astro";
+import MkScreenshotFrame from "@components/marketing/MkScreenshotFrame.astro";
+import MkSection from "@components/marketing/MkSection.astro";
+import { contrastRatio, parseTokens } from "../lib/marketing/tokens";
+// Inlined at build, so the Worker never reads a file.
+import marketingCss from "../styles/marketing.css?raw";
+
+// The header only works while this page renders on demand (prerender = false); a prerendered page would
+// keep just the robots meta tag.
+Astro.response.headers.set("X-Robots-Tag", "noindex");
+
+const tokens = Object.entries(parseTokens(marketingCss));
+const group = (prefix: string) => tokens.filter(([name]) => name.startsWith(prefix));
+
+const colors = group("--color-mk-");
+const ink = Object.fromEntries(colors)["--color-mk-ink"];
+const onDark = Object.fromEntries(colors)["--color-mk-on-dark"];
+// Each swatch label takes whichever of ink or white contrasts more with the swatch.
+const labelColor = (hex: string) => (contrastRatio(ink, hex) >= contrastRatio(onDark, hex) ? ink : onDark);
+
+const typeScale = group("--text-mk-").filter(([name]) => !name.includes("--", 2));
+const companions = (name: string) =>
+  group(`${name}--`)
+    .map(([n, v]) => `${n.slice(name.length + 2)} ${v}`)
+    .join(", ");
+const textClass: Record<string, string> = {
+  "--text-mk-display": "font-mk-serif text-mk-display",
+  "--text-mk-h1": "font-mk-serif text-mk-h1",
+  "--text-mk-h2": "font-mk-serif text-mk-h2",
+  "--text-mk-h3": "font-mk-sans text-mk-h3",
+  "--text-mk-lead": "font-mk-sans text-mk-lead",
+  "--text-mk-body": "font-mk-sans text-mk-body",
+  "--text-mk-small": "font-mk-sans text-mk-small",
+  "--text-mk-overline": "font-mk-sans text-mk-overline uppercase text-(--mk-overline)",
+};
+
+const fonts = group("--font-mk-");
+const widths = group("--container-mk");
+const radii = group("--radius-mk-");
+const shadows = group("--shadow-mk-");
+const eases = group("--ease-mk");
+
+const spacing = [
+  ["Band padding (MkSection)", "py-16 md:py-28", "4rem, then 7rem from md"],
+  ["Side gutter (MkSection)", "px-5 md:px-8", "1.25rem, then 2rem"],
+  ["Between feature rows", "gap-16 md:gap-24", "4rem, then 6rem"],
+  ["scroll-padding-top on html", "5rem", "the one page wide rule"],
+];
+
+const tones = ["canvas", "tint", "pink", "ink"] as const;
+
+const faq = [
+  {
+    question: "Can I keep my books on my phone?",
+    answer: 'Yes. RareBooks works in the browser on any phone. See <a href="#components">the components</a>.',
+  },
+  {
+    question: "What happens when my trial ends?",
+    answer: "Your data stays. You can <em>read and export</em> it until you choose a plan.",
+  },
+];
+
+const checks = ["Unlimited invoices and bills", "Bank and mobile money accounts", "Reports your accountant reads"];
+---
+
+<Layout
+  title="Design system · RareBooks"
+  description="The RareBooks marketing design system: tokens and components."
+  noindex
+  preloadSerif
+>
+  <main id="top">
+    <MkSection tone="canvas" labelledby="ds-title">
+      <MkHeading level={1} size="display" overline="Marketing design system" id="ds-title">
+        Books that feel <MkHighlight>simple</MkHighlight>
+      </MkHeading>
+      <p class="mt-6 max-w-mk-narrow text-mk-lead text-mk-subtle">
+        Every token and component for the redesigned marketing pages (spec 0017). Build pages with these, using
+        only <code>mk</code> tokens. This page is not indexed and nothing links to it.
+      </p>
+    </MkSection>
+
+    <MkSection tone="canvas" labelledby="ds-colors" class="pt-0 md:pt-0">
+      <MkHeading level={2} id="ds-colors" overline="Tokens">Colors</MkHeading>
+      <ul role="list" class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        {
+          colors.map(([name, value]) => (
+            <li class="overflow-hidden rounded-mk-card border border-mk-border bg-mk-surface">
+              <div
+                class="flex h-24 items-end p-3 text-mk-small font-bold"
+                style={`background:${value};color:${labelColor(value)}`}
+              >
+                {value}
+              </div>
+              <p class="p-3 text-mk-small break-all">{name.replace("--color-", "")}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </MkSection>
+
+    <MkSection tone="canvas" labelledby="ds-type" class="pt-0 md:pt-0">
+      <MkHeading level={2} id="ds-type">Type scale</MkHeading>
+      <p class="mt-4 text-mk-subtle">
+        {fonts.map(([name, value]) => <span class="mr-6 inline-block"><code>{name}</code>: {value}</span>)}
+      </p>
+      <dl class="mt-10 divide-y divide-mk-border">
+        {
+          typeScale.map(([name, value]) => (
+            <div class="grid gap-2 py-6 md:grid-cols-[16rem_1fr] md:gap-8">
+              <dt class="text-mk-small text-mk-subtle">
+                <code class="font-bold text-mk-ink">{name.replace("--text-", "text-")}</code>
+                <br />
+                {value}
+                <br />
+                {companions(name)}
+              </dt>
+              <dd class={textClass[name]}>Keep every shilling in view</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </MkSection>
+
+    <MkSection tone="canvas" labelledby="ds-layout" class="pt-0 md:pt-0">
+      <MkHeading level={2} id="ds-layout">Spacing, widths, radii, shadows and motion</MkHeading>
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        <MkCard>
+          <MkHeading level={3}>Spacing</MkHeading>
+          <dl class="mt-4 space-y-3 text-mk-small">
+            {
+              spacing.map(([label, value, note]) => (
+                <div>
+                  <dt class="font-bold">{label}</dt>
+                  <dd class="text-mk-subtle">
+                    <code>{value}</code>, {note}
+                  </dd>
+                </div>
+              ))
+            }
+            {
+              widths.map(([name, value]) => (
+                <div>
+                  <dt class="font-bold">{name}</dt>
+                  <dd class="text-mk-subtle">
+                    <code>{value}</code>, class <code>{name.replace("--container-", "max-w-")}</code>
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+        </MkCard>
+        <MkCard>
+          <MkHeading level={3}>Radii</MkHeading>
+          <ul role="list" class="mt-4 flex flex-wrap gap-4">
+            {
+              radii.map(([name, value]) => (
+                <li class="text-center text-mk-small">
+                  <div class="mx-auto size-20 border-2 border-mk-brand bg-mk-tint" style={`border-radius:${value}`} />
+                  <p class="mt-2 font-bold">{name.replace("--radius-", "")}</p>
+                  <p class="text-mk-subtle">{value}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </MkCard>
+        <MkCard>
+          <MkHeading level={3}>Shadows</MkHeading>
+          <ul role="list" class="mt-4 grid gap-6 sm:grid-cols-2">
+            {
+              shadows.map(([name, value]) => (
+                <li class="text-mk-small">
+                  <div class="h-20 rounded-mk-card bg-mk-surface" style={`box-shadow:${value}`} />
+                  <p class="mt-3 font-bold">{name.replace("--shadow-", "")}</p>
+                  <p class="break-all text-mk-subtle">{value}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </MkCard>
+        <MkCard>
+          <MkHeading level={3}>Motion</MkHeading>
+          <p class="mt-4 text-mk-small text-mk-subtle">
+            {
+              eases.map(([name, value]) => (
+                <>
+                  <code class="font-bold text-mk-ink">{name}</code>: {value}.{" "}
+                </>
+              ))
+            }
+            Color and shadow changes take 150 ms, only under <code>motion-safe</code>, so reduced motion turns them
+            off.
+          </p>
+        </MkCard>
+      </div>
+    </MkSection>
+
+    <div id="components">
+      {
+        tones.map((tone) => (
+          <MkSection tone={tone} labelledby={`ds-band-${tone}`}>
+            <MkHeading level={2} id={`ds-band-${tone}`} overline={`Band: ${tone}`}>
+              Components on <MkHighlight>{tone}</MkHighlight>
+            </MkHeading>
+            <p class="mt-4 max-w-mk-narrow text-mk-lead text-(--mk-subtle)">
+              Secondary text takes the band's subtle color. Tab through this band to see the focus ring.
+            </p>
+
+            <div class="mt-10 flex flex-wrap items-center gap-4">
+              {tone === "ink" ? (
+                <>
+                  <MkButton variant="on-dark" href="#top">On dark</MkButton>
+                  <MkButton variant="secondary-on-dark">Secondary on dark</MkButton>
+                  <MkButton variant="on-dark" size="lg">On dark, large</MkButton>
+                </>
+              ) : (
+                <>
+                  <MkButton href="#top">Primary</MkButton>
+                  <MkButton variant="secondary">Secondary</MkButton>
+                  <MkButton size="lg">Primary, large</MkButton>
+                  <MkButton variant="secondary" size="lg">
+                    Secondary, large
+                  </MkButton>
+                </>
+              )}
+              <MkButton variant="link" href="#top">
+                Link button
+              </MkButton>
+            </div>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <MkBadge tone="brand">Brand badge</MkBadge>
+              <MkBadge tone="pink">Pink badge</MkBadge>
+              <MkBadge tone="ink">Ink badge</MkBadge>
+            </div>
+
+            <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              <MkCard>
+                <MkHeading level={3} overline="Plain card">
+                  Send an invoice
+                </MkHeading>
+                <p class="mt-3 text-(--mk-subtle)">A white surface with a thin border works on every band.</p>
+                <MkButton class="mt-6" href="#top">
+                  Start free trial
+                </MkButton>
+              </MkCard>
+              <MkCard variant="quote" tone="brand">
+                RareBooks turned month end into an afternoon.
+                <span slot="cite">
+                  <strong>Amina</strong>, shop owner
+                </span>
+              </MkCard>
+              <MkCard variant="quote" tone="pink">
+                I finally see my cash every morning.
+                <span slot="cite">
+                  <strong>Joseph</strong>, pharmacy
+                </span>
+              </MkCard>
+              <MkCard variant="quote" tone="ink">
+                My accountant reads the reports as they are.
+                <span slot="cite">
+                  <strong>Neema</strong>, wholesaler
+                </span>
+              </MkCard>
+            </div>
+
+            <div class="mt-10 grid gap-10 md:grid-cols-2">
+              <div>
+                <MkHeading level={3} id={`ds-checks-${tone}`}>
+                  Check list
+                </MkHeading>
+                <MkCheckList class="mt-4" items={checks} />
+              </div>
+              <div>
+                <MkHeading level={3} id={`ds-faq-${tone}`}>
+                  FAQ
+                </MkHeading>
+                <MkFaq class="mt-4" items={faq} />
+              </div>
+            </div>
+          </MkSection>
+        ))
+      }
+    </div>
+
+    <MkSection tone="canvas" labelledby="ds-screens">
+      <MkHeading level={2} id="ds-screens" overline="Screenshots">
+        Screenshot frame and feature rows
+      </MkHeading>
+      <MkScreenshotFrame
+        class="mt-10"
+        name="sample-dashboard"
+        alt="The RareBooks dashboard with account balances and a sales chart"
+      />
+      <div class="mt-16 flex flex-col gap-16 md:mt-24 md:gap-24">
+        <MkFeatureRow
+          screenshot={{ name: "sample-dashboard", alt: "The RareBooks dashboard showing account balances" }}
+        >
+          <span slot="overline">Feature row</span>
+          <span slot="title">See where your money is</span>
+          <p>Text first, the frame on the right from md. On a phone the text comes first, then the frame.</p>
+          <MkButton href="#top">Start free trial</MkButton>
+        </MkFeatureRow>
+        <MkFeatureRow
+          reverse
+          screenshot={{ name: "sample-dashboard", alt: "The RareBooks dashboard showing a sales chart" }}
+        >
+          <span slot="overline">Reversed</span>
+          <span slot="title">Know what sells</span>
+          <p>With <code>reverse</code>, the frame sits on the left from md.</p>
+          <MkButton variant="secondary" href="#top">See pricing</MkButton>
+        </MkFeatureRow>
+      </div>
+    </MkSection>
+
+    <MkSection tone="ink" labelledby="ds-feature-ink">
+      <MkHeading level={2} id="ds-feature-ink" overline="On ink">
+        A feature row on the <MkHighlight>ink</MkHighlight> band
+      </MkHeading>
+      <MkFeatureRow
+        class="mt-10"
+        screenshot={{ name: "sample-dashboard", alt: "The RareBooks dashboard on the ink band" }}
+      >
+        <span slot="overline">Feature row</span>
+        <span slot="title">Works on every band</span>
+        <p>The overline, subtle text and buttons switch to their on dark colors.</p>
+        <MkButton variant="on-dark" href="#top">Start free trial</MkButton>
+      </MkFeatureRow>
+    </MkSection>
+  </main>
+</Layout>

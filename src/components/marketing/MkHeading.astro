@@ -1,0 +1,30 @@
+---
+// A serif (display, h1, h2) or sans (h3) heading with an optional overline (spec 0017, Component
+// contracts). The text tokens carry size, line height, letter spacing and weight; the family is added here.
+interface Props {
+  level: 1 | 2 | 3;
+  size?: "display" | "h1" | "h2" | "h3";
+  overline?: string;
+  align?: "start" | "center";
+  id?: string;
+  class?: string;
+}
+
+const { level, size = `h${level}` as const, overline, align = "start", id, class: className } = Astro.props;
+
+const Tag = `h${level}` as const;
+
+const sizes = {
+  display: "font-mk-serif text-mk-display",
+  h1: "font-mk-serif text-mk-h1",
+  h2: "font-mk-serif text-mk-h2",
+  h3: "font-mk-sans text-mk-h3",
+};
+---
+
+<div class:list={[align === "center" && "mx-auto text-center", className]}>
+  {overline && <p class="mb-3 text-mk-overline text-(--mk-overline) uppercase">{overline}</p>}
+  <Tag id={id} class:list={["text-balance", sizes[size]]}>
+    <slot />
+  </Tag>
+</div>

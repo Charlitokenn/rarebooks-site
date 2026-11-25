@@ -1,0 +1,61 @@
+---
+// A product screenshot in a rounded, shadowed frame with a slim browser bar (spec 0017, Component
+// contracts). Sizes come from src/data/screenshots.json, written by `npm run screenshots`: the srcset lists
+// only widths that exist, and width and height stop layout shift.
+import screenshots from "../../data/screenshots.json";
+
+export type ScreenshotName = keyof typeof screenshots;
+
+interface Props {
+  /** A key in src/data/screenshots.json; an unknown name fails `astro check`, and throws when rendered. */
+  name: ScreenshotName;
+  alt: string;
+  sizes?: string;
+  /** For the one screenshot above the fold: loads eagerly at high priority. */
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  name,
+  alt,
+  sizes = "(min-width: 1200px) 1200px, 100vw",
+  priority = false,
+  class: className,
+} = Astro.props;
+
+const entry = (screenshots as Record<string, { width: number; height: number; widths: number[] }>)[name];
+if (!entry) {
+  throw new Error(`MkScreenshotFrame: no screenshot named "${name}" in src/data/screenshots.json`);
+}
+
+const srcset = (ext: string) => entry.widths.map((w) => `/screenshots/${name}-${w}.${ext} ${w}w`).join(", ");
+const fallbackWidth = entry.widths.includes(1280) ? 1280 : entry.widths[entry.widths.length - 1];
+---
+
+<div
+  class:list={[
+    "mk-on-light overflow-hidden rounded-mk-frame border border-mk-border bg-mk-surface shadow-mk-frame",
+    className,
+  ]}
+>
+  <div aria-hidden="true" class="flex gap-1.5 border-b border-mk-border px-4 py-3">
+    <span class="size-2.5 rounded-full bg-mk-pink-strong"></span>
+    <span class="size-2.5 rounded-full bg-mk-tint"></span>
+    <span class="size-2.5 rounded-full bg-mk-border"></span>
+  </div>
+  <picture>
+    <source type="image/avif" srcset={srcset("avif")} sizes={sizes} />
+    <source type="image/webp" srcset={srcset("webp")} sizes={sizes} />
+    <img
+      src={`/screenshots/${name}-${fallbackWidth}.webp`}
+      alt={alt}
+      width={entry.width}
+      height={entry.height}
+      loading={priority ? "eager" : "lazy"}
+      decoding={priority ? undefined : "async"}
+      fetchpriority={priority ? "high" : undefined}
+      class="block h-auto w-full"
+    />
+  </picture>
+</div>

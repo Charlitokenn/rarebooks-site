@@ -1,0 +1,21 @@
+---
+// The one italic word of a headline, with a hand drawn underline (spec 0017, Component contracts). The word
+// stays real text; the stroke is decorative, colored by the band (`--mk-underline`).
+---
+
+<em class="relative inline-block font-mk-serif whitespace-nowrap italic"
+  ><slot /><svg
+    aria-hidden="true"
+    focusable="false"
+    class="pointer-events-none absolute -bottom-[0.14em] left-0 h-[0.3em] w-full overflow-visible text-(--mk-underline)"
+    viewBox="0 0 200 12"
+    preserveAspectRatio="none"
+    fill="none"
+    ><path
+      d="M3 8.5C38 4.2 82 2.6 120 3.4c27 .6 52 2.3 77 4.6"
+      stroke="currentColor"
+      stroke-linecap="round"
+      vector-effect="non-scaling-stroke"
+      style="stroke-width: 0.085em"></path></svg
+  ></em
+>

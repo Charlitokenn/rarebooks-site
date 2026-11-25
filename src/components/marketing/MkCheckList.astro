@@ -1,0 +1,35 @@
+---
+// A list with a check icon per item (spec 0017, Component contracts). The icon takes `--mk-check`
+// (brand on light bands, mk-focus-on-dark on ink, 3:1 or more either way); the text takes the band color.
+interface Props {
+  items: string[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<ul role="list" class:list={["space-y-3", className]}>
+  {
+    items.map((item) => (
+      <li class="flex gap-3">
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          class="mt-[0.2em] size-5 shrink-0 text-(--mk-check)"
+          viewBox="0 0 20 20"
+          fill="none"
+        >
+          <path
+            d="M4 10.5l4 4 8-9"
+            stroke="currentColor"
+            stroke-width="2.25"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span>{item}</span>
+      </li>
+    ))
+  }
+</ul>

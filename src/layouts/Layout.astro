@@ -5,6 +5,13 @@ interface Props {
   description?: string
   canonicalPath?: string
   ogType?: string
+  /** Adds a robots noindex meta tag, for pages search engines must not list (the /design-system preview). */
+  noindex?: boolean
+  /**
+   * Preloads both Fraunces files (roman and italic). Set it on pages with a display or h1 heading above the
+   * fold, whose hero usually holds an MkHighlight, so the italic is needed at once (spec 0017 AC-7).
+   */
+  preloadSerif?: boolean
 }
 
 const {
@@ -12,9 +19,15 @@ const {
   description = AppConfig.description,
   canonicalPath,
   ogType = "website",
+  noindex = false,
+  preloadSerif = false,
 } = Astro.props
 
-import "../styles/global.css"
+// marketing.css imports global.css first and only adds the `mk` design system on top (spec 0017 AC-3).
+import "../styles/marketing.css"
+// `?url` gives the hashed build paths, the same files marketing.css's @font-face rules point at.
+import frauncesRomanUrl from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url"
+import frauncesItalicUrl from "@fontsource-variable/fraunces/files/fraunces-latin-wght-italic.woff2?url"
 // import { ClientRouter } from 'astro:transitions';
 import TawkWidget from "@components/TawkWidget.astro";
 
@@ -35,6 +48,13 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootU
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#fbfafc" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {preloadSerif && (
+      <>
+        <link rel="preload" as="font" type="font/woff2" crossorigin href={frauncesRomanUrl} />
+        <link rel="preload" as="font" type="font/woff2" crossorigin href={frauncesItalicUrl} />
+      </>
+    )}
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <meta property="og:type" content={ogType} />

@@ -1,0 +1,25 @@
+---
+// FAQ rows on native <details> (spec 0017, Component contracts): keyboard and screen readers work through
+// the element, with no JavaScript. Rows open independently. The section's MkHeading names the FAQ.
+interface Props {
+  /** `answer` is trusted HTML we write (links and emphasis), rendered with set:html. Never visitor input. */
+  items: { question: string; answer: string }[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<div class:list={["space-y-3", className]}>
+  {
+    items.map((item) => (
+      <details class="mk-faq rounded-mk-sm border border-mk-border">
+        <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded-mk-sm px-5 py-4 font-bold">
+          <span>{item.question}</span>
+          <span aria-hidden="true" class="mk-faq-icon" />
+        </summary>
+        <div class="mk-faq-answer px-5 pb-5 text-(--mk-subtle)" set:html={item.answer} />
+      </details>
+    ))
+  }
+</div>

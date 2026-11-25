@@ -1,0 +1,43 @@
+---
+// A plain bordered card or a bold solid quote card (spec 0017, Component contracts). `mk-on-light` and
+// `mk-on-dark` reset the band values inside the card, so a white card works on the ink band too.
+interface Props {
+  variant?: "plain" | "quote";
+  /** Quote cards only. `brand` and `ink` use on dark text. */
+  tone?: "brand" | "pink" | "ink";
+  as?: "div" | "article" | "li" | "figure";
+  class?: string;
+}
+
+const { variant = "plain", tone = "brand", as: Tag = "div", class: className } = Astro.props;
+
+const quoteTones = {
+  brand: "mk-on-dark bg-mk-brand",
+  pink: "mk-on-light bg-mk-pink",
+  ink: "mk-on-dark bg-mk-ink",
+};
+---
+
+{
+  variant === "plain" ? (
+    <Tag
+      class:list={[
+        "mk-on-light rounded-mk-card border border-mk-border bg-mk-surface p-6 shadow-mk-card md:p-8",
+        className,
+      ]}
+    >
+      <slot />
+    </Tag>
+  ) : (
+    <Tag class:list={["rounded-mk-card p-6 md:p-8", quoteTones[tone], className]}>
+      <blockquote class="font-mk-serif text-mk-lead font-medium text-pretty">
+        <slot />
+      </blockquote>
+      {Astro.slots.has("cite") && (
+        <p class="mt-6 text-mk-small">
+          <slot name="cite" />
+        </p>
+      )}
+    </Tag>
+  )
+}

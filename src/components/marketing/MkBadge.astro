@@ -1,0 +1,23 @@
+---
+// A small pill label (spec 0017, Component contracts).
+interface Props {
+  tone?: "brand" | "pink" | "ink";
+  class?: string;
+}
+
+const { tone = "brand", class: className } = Astro.props;
+
+const tones = {
+  brand: "bg-mk-tint text-mk-brand",
+  pink: "bg-mk-pink text-mk-ink",
+  ink: "bg-mk-ink text-mk-on-dark",
+};
+---
+
+<span
+  class:list={[
+    "inline-flex items-center rounded-mk-pill px-3 py-1 text-mk-small font-bold",
+    tones[tone],
+    className,
+  ]}><slot /></span
+>
