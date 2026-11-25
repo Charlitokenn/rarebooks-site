@@ -15,7 +15,7 @@ import {
   type CompetitorEntry,
   type RowKey,
 } from "../../src/data/competitors.ts";
-import { blogRedirects, blogSlugs, retiredCompetitors } from "../../src/data/retiredCompetitors.ts";
+import { blogRedirects, blogSlugs, retiredCompetitors, retiredTarget } from "../../src/data/retiredCompetitors.ts";
 import { breadcrumbJsonLd } from "../../src/lib/marketing/breadcrumb.ts";
 import { escapeHtml } from "../../src/lib/marketing/escapeHtml.ts";
 import { jsonLdText } from "../../src/lib/marketing/jsonLd.ts";
@@ -318,5 +318,53 @@ test("the table keeps its semantics at every width (AC-9)", () => {
     'content: attr(data-label) / ""',
   ]) {
     assert.ok(table.includes(part), part);
+  }
+});
+
+test("retired slugs answer 301 to their successor or the index, in one hop (AC-10)", () => {
+  assert.equal(retiredTarget("compare", "quickbooks-desktop"), "/compare/quickbooks");
+  assert.equal(retiredTarget("alternatives", "sage-50"), "/alternatives/sage");
+  assert.equal(retiredTarget("compare", "gnucash"), "/compare");
+  assert.equal(retiredTarget("alternatives", "wings-accounting"), "/alternatives");
+  assert.equal(retiredTarget("compare", "xero"), undefined);
+  // An inherited property name is not a retired slug.
+  assert.equal(retiredTarget("compare", "constructor"), undefined);
+  const redirects = blogRedirects(retiredCompetitors);
+  assert.equal(redirects["/blog/rarebooks-vs-quickbooks-desktop"], "/compare/quickbooks");
+  assert.equal(redirects["/blog/rarebooks-vs-sage-50"], "/compare/sage");
+  assert.equal(redirects["/blog/rarebooks-vs-gnucash"], "/compare");
+  assert.equal(redirects["/blog/rarebooks-vs-manager-io"], "/compare/manager-io");
+  // Every old blog slug is now either kept or retired, never left pointing at a page that doesn't exist.
+  const kept = new Set(competitors.map((entry) => entry.slug));
+  for (const slug of blogSlugs) assert.ok(kept.has(slug) || slug in retiredCompetitors, slug);
+  for (const section of ["compare", "alternatives"]) {
+    const route = read(`src/pages/${section}/[slug].astro`);
+    assert.match(route, new RegExp(`retiredTarget\\("${section}", slug\\)`));
+    assert.match(route, /return Astro\.redirect\(retired, 301\)/);
+  }
+  assert.match(read("astro.config.mjs"), /redirects: blogRedirects\(retiredCompetitors\)/);
+});
+
+test("the index pages list every competitor in name order, in mk tokens only (AC-7, AC-14, AC-17)", () => {
+  const index = read("src/components/marketing/compare/CompareIndex.astro");
+  assert.match(index, /sortedCompetitors\(\)\.map/);
+  assert.match(index, /grid gap-6 sm:grid-cols-2 lg:grid-cols-3/);
+  const compare = read("src/pages/compare/index.astro");
+  const alternatives = read("src/pages/alternatives/index.astro");
+  assert.match(compare, /title="Compare RareBooks to Other Accounting Software"/);
+  assert.match(alternatives, /title="RareBooks Alternatives Guides"/);
+  for (const page of [compare, alternatives, index]) {
+    assert.doesNotMatch(page, /bg-brand|text-ink|text-muted|font-display|rounded-pill|shadow-card|shadow-soft|dotted-bg|hero-glow/);
+    assert.doesNotMatch(page, /[\u2013\u2014]/);
+  }
+  // AC-7: the index descriptions name only competitors on the final list.
+  const names = competitors.map((entry) => entry.shortName);
+  for (const page of [compare, alternatives]) {
+    const description = /description="([^"]+)"/.exec(page)?.[1] ?? "";
+    assert.ok(description.length <= 160, description);
+    for (const retired of ["GnuCash", "TallyPrime", "Sage 50", "QuickBooks Desktop", "TurboCASH", "BUSY", "Wings", "Reach"]) {
+      assert.ok(!description.includes(retired), `${retired} in "${description}"`);
+    }
+    assert.ok(names.some((name) => description.includes(name)));
   }
 });

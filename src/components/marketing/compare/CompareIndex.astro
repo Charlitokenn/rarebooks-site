@@ -1,0 +1,61 @@
+---
+// The /compare and /alternatives index pages (spec 0021 AC-11, AC-14): hero (canvas), one MkCard link per
+// competitor in name order (canvas), then a cross link to the other index (tint).
+import { sortedCompetitors } from "../../../data/competitors.ts";
+import { splitHighlight } from "../../../lib/marketing/home.ts";
+import MkButton from "../MkButton.astro";
+import MkCard from "../MkCard.astro";
+import MkHeading from "../MkHeading.astro";
+import MkHighlight from "../MkHighlight.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  section: "compare" | "alternatives";
+  overline: string;
+  /** The h1, with its one `*word*`. */
+  title: string;
+  lead: string;
+  /** Each card's heading, from the entry's short name. */
+  cardHeading: (shortName: string) => string;
+  cardLink: string;
+  cross: { title: string; text: string; button: string; href: string };
+}
+
+const { section, overline, title, lead, cardHeading, cardLink, cross } = Astro.props;
+const [before, word, after] = splitHighlight(title);
+---
+
+<MkSection tone="canvas" labelledby="index-hero-title" padding="pt-12 pb-10 md:pt-20 md:pb-14">
+  <div class="mx-auto max-w-mk-narrow text-center">
+    <MkHeading level={1} overline={overline} align="center" id="index-hero-title">
+      {before}<MkHighlight>{word}</MkHighlight>{after}
+    </MkHeading>
+    <p class="mx-auto mt-6 max-w-2xl text-pretty text-mk-lead text-(--mk-subtle)">{lead}</p>
+  </div>
+</MkSection>
+
+<MkSection tone="canvas" aria-label={section === "compare" ? "Comparisons" : "Switching guides"} padding="pb-16 md:pb-28">
+  <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      sortedCompetitors().map((entry) => (
+        <MkCard as="li" class="relative flex flex-col focus-within:ring-2 focus-within:ring-mk-focus">
+          <MkHeading level={2} size="h3">
+            <a href={`/${section}/${entry.slug}`} class="rounded-sm after:absolute after:inset-0 focus-visible:outline-none">
+              {cardHeading(entry.shortName)}
+            </a>
+          </MkHeading>
+          <p class="mt-3 grow text-(--mk-subtle)">{entry.summary}</p>
+          <p aria-hidden="true" class="mt-6 font-bold text-mk-brand">{cardLink}</p>
+        </MkCard>
+      ))
+    }
+  </ul>
+</MkSection>
+
+<MkSection tone="tint" labelledby="index-cross-title" width="narrow">
+  <div class="text-center">
+    <MkHeading level={2} id="index-cross-title" align="center">{cross.title}</MkHeading>
+    <p class="mx-auto mt-4 max-w-2xl text-pretty text-mk-lead text-(--mk-subtle)">{cross.text}</p>
+    <MkButton href={cross.href} variant="secondary" class="mt-8 max-sm:w-full">{cross.button}</MkButton>
+  </div>
+</MkSection>

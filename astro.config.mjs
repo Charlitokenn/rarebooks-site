@@ -9,6 +9,7 @@ import react from "@astrojs/react";
 // import node from '@astrojs/node'
 import clerk from "@clerk/astro";
 import starlightBlog from 'starlight-blog'
+import { blogRedirects, retiredCompetitors } from "./src/data/retiredCompetitors.ts";
 
 const CLOUDFLARE_WORKERS_STUB = "\0rarebooks:cloudflare-workers-in-node";
 
@@ -45,17 +46,8 @@ export default defineConfig({
   // MDX pages lose GFM (tables render as plain `| a | b |` text). Set it explicitly until we move to Astro 7
   // with @astrojs/mdx 8; the deprecation warning it prints is expected.
   markdown: { gfm: true },
-  redirects: {
-    "/blog/rarebooks-vs-gnucash": "/compare/gnucash",
-    "/blog/rarebooks-vs-busy-accounting": "/compare/busy-accounting",
-    "/blog/rarebooks-vs-manager-io": "/compare/manager-io",
-    "/blog/rarebooks-vs-quickbooks-desktop": "/compare/quickbooks-desktop",
-    "/blog/rarebooks-vs-reach-accountant": "/compare/reach-accountant",
-    "/blog/rarebooks-vs-sage-50": "/compare/sage-50",
-    "/blog/rarebooks-vs-tallyprime": "/compare/tallyprime",
-    "/blog/rarebooks-vs-turbocash": "/compare/turbocash",
-    "/blog/rarebooks-vs-wings-accounting": "/compare/wings-accounting",
-  },
+  // Spec 0021 AC-10: the old /blog/rarebooks-vs-* posts, each sent straight to its final address in one hop.
+  redirects: blogRedirects(retiredCompetitors),
   adapter: cloudflare({
     platformProxy: {
       enabled: process.env.CI !== "true" && process.env.CF_PAGES !== "1",

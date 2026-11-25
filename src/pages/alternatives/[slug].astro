@@ -1,15 +1,20 @@
 ---
-// /alternatives/<slug> for every entry in `competitors` (spec 0021 AC-2). A static file in this folder still wins
-// over this route, so a legacy page keeps serving until build step 5 removes it. The body varies by country
-// and sign in state, so the page renders on every request.
+// /alternatives/<slug> for every entry in `competitors` (spec 0021 AC-2), and a 301 for each retired slug
+// (AC-10). The body varies by country and sign in state, so the page renders on every request.
 import AlternativesLayout from "../../layouts/AlternativesLayout.astro";
 import { isTanzania } from "../../constants/pricing.ts";
 import { getCompetitor } from "../../data/competitors.ts";
+import { retiredTarget } from "../../data/retiredCompetitors.ts";
 import { isSignedIn } from "../../lib/marketing/navigation.ts";
 
 export const prerender = false;
 
-const entry = getCompetitor(Astro.params.slug ?? "");
+const slug = Astro.params.slug ?? "";
+// AC-10: a dropped competitor's old URL moves, in one hop, to its successor or to the index.
+const retired = retiredTarget("alternatives", slug);
+if (retired) return Astro.redirect(retired, 301);
+
+const entry = getCompetitor(slug);
 // AC-2: an unknown slug gets the site 404 page, which sets the 404 status itself. The slug is never echoed.
 if (!entry) return Astro.rewrite("/404");
 
