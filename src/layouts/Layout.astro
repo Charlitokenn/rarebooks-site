@@ -16,6 +16,8 @@ interface Props {
   ogImage?: string
   /** The social image's alt text, written with `ogImage`. */
   ogImageAlt?: string
+  /** Schema.org structured data, written as one ld+json script in the head (spec 0020 AC-13). */
+  jsonLd?: object
 }
 
 const {
@@ -27,6 +29,7 @@ const {
   preloadSerif = false,
   ogImage,
   ogImageAlt,
+  jsonLd,
 } = Astro.props
 
 // marketing.css imports global.css first and only adds the `mk` design system on top (spec 0017 AC-3).
@@ -36,6 +39,7 @@ import frauncesRomanUrl from "@fontsource-variable/fraunces/files/fraunces-latin
 import frauncesItalicUrl from "@fontsource-variable/fraunces/files/fraunces-latin-wght-italic.woff2?url"
 // import { ClientRouter } from 'astro:transitions';
 import TawkWidget from "@components/TawkWidget.astro";
+import { jsonLdText } from "../lib/marketing/jsonLd.ts";
 
 const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootUrl).toString() : undefined
 const ogImageUrl = ogImage ? new URL(ogImage, AppConfig.urls.rootUrl).toString() : undefined
@@ -88,6 +92,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, AppConfig.urls.rootUrl).toString()
         defer
     ></script>
     <title>{title}</title>
+    {jsonLd && <script type="application/ld+json" set:html={jsonLdText(jsonLd)} />}
     <!--<ClientRouter />-->
   </head>
   <body class="min-h-screen overflow-x-hidden">

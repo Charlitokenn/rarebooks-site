@@ -25,6 +25,11 @@ export function compareCurrent(pathname: string): "page" | "true" | undefined {
   return undefined;
 }
 
+/** The Pricing link's `aria-current` (spec 0020 AC-14): `page` on /pricing, nothing elsewhere. */
+export function pricingCurrent(pathname: string): "page" | undefined {
+  return pathname === "/pricing" || pathname === "/pricing/" ? "page" : undefined;
+}
+
 /** The footer columns this visitor sees: links filtered by sign in state, Legal only once approved. */
 export function visibleFooterColumns(
   columns: FooterColumn[],

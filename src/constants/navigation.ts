@@ -1,6 +1,6 @@
 // The marketing nav and footer links (spec 0018). Every link MkNav and MkFooter show comes from here, so a
-// link change is one edit. The homepage must keep its `features` and `pricing` ids, or this list changes in
-// the same commit.
+// link change is one edit. The homepage must keep its `features` id, and its `pricing` id for old /#pricing
+// links (spec 0020 AC-14), or this list changes in the same commit.
 import { AppConfig } from "./index.ts";
 
 export interface NavLink {
@@ -28,7 +28,7 @@ export const dashboardPath = "/dashboard";
 // AC-3: four flat links, in this order.
 export const navLinks: NavLink[] = [
   { label: "Features", href: "/#features" },
-  { label: "Pricing", href: "/#pricing" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Compare", href: "/compare" },
   { label: "Docs", href: AppConfig.urls.docsHomePath },
 ];
@@ -39,7 +39,7 @@ export const footerColumns: FooterColumn[] = [
     title: "Product",
     links: [
       { label: "Features", href: "/#features" },
-      { label: "Pricing", href: "/#pricing" },
+      { label: "Pricing", href: "/pricing" },
       { label: "Start free trial", href: AppConfig.urls.signUpUrl, auth: "signed-out", ctaLocation: "footer" },
       { label: "Sign in", href: signInPath, auth: "signed-out" },
       { label: "Dashboard", href: dashboardPath, auth: "signed-in" },

@@ -36,6 +36,8 @@ export interface HomeCopy {
     /** Abroad only: the monthly price and the yearly saving. */
     note?: string;
     primary: string;
+    /** The link under the card to /pricing (spec 0020 AC-14). */
+    more: string;
     /** Tanzania only: the quick start line and its button (AC-10). */
     setup?: { text: string; button: string };
   };
@@ -112,6 +114,7 @@ const pricing = {
   title: "One plan. Everything included.",
   period: "a year",
   primary: "Start free trial",
+  more: "See full pricing",
 };
 
 const faq = (payMethod: string, bringRecords: string) => ({

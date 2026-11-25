@@ -7,14 +7,14 @@ import { test } from "node:test";
 
 import { AppConfig } from "../../src/constants/index.ts";
 import { footerColumns, navLinks } from "../../src/constants/navigation.ts";
-import { compareCurrent, isSignedIn, visibleFooterColumns } from "../../src/lib/marketing/navigation.ts";
+import { compareCurrent, isSignedIn, pricingCurrent, visibleFooterColumns } from "../../src/lib/marketing/navigation.ts";
 
 const read = (path: string) => readFileSync(new URL(`../../${path}`, import.meta.url), "utf8");
 
 test("the four nav links, in order (AC-3)", () => {
   assert.deepEqual(navLinks, [
     { label: "Features", href: "/#features" },
-    { label: "Pricing", href: "/#pricing" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Compare", href: "/compare" },
     { label: "Docs", href: "/getting-started/getting-started-with-rarebooks/" },
   ]);
@@ -42,6 +42,17 @@ test("only Compare is marked, as page on /compare and true below it (AC-7)", () 
   assert.equal(compareCurrent("/alternatives/gnucash"), undefined);
   assert.equal(compareCurrent("/"), undefined);
   assert.equal(compareCurrent("/comparenot"), undefined);
+});
+
+test("Pricing points at /pricing and is marked only there (spec 0020 AC-14)", () => {
+  const footerPricing = footerColumns[0].links.find((l) => l.label === "Pricing");
+  assert.equal(footerPricing?.href, "/pricing");
+  assert.equal(pricingCurrent("/pricing"), "page");
+  assert.equal(pricingCurrent("/pricing/"), "page");
+  assert.equal(pricingCurrent("/"), undefined);
+  assert.equal(pricingCurrent("/pricing/extra"), undefined);
+  assert.equal(pricingCurrent("/pricingnot"), undefined);
+  assert.match(read("src/components/marketing/MkNav.astro"), /pricingCurrent\(pathname\)/);
 });
 
 test("footer links follow sign in state, and Legal waits for approval (AC-9, AC-10)", () => {
@@ -85,6 +96,7 @@ test("legal pages stay hidden until approved, and approval needs a controller (A
 test("each marketing page has exactly one <main id=\"main\"> (AC-6)", () => {
   const pages = [
     "src/pages/index.astro",
+    "src/pages/pricing.astro",
     "src/pages/404.astro",
     "src/pages/compare/index.astro",
     "src/pages/alternatives/index.astro",

@@ -1,0 +1,35 @@
+---
+// Everything included (spec 0020 AC-9): each group of `hostedPlan.included` as an h3 over its check list, one
+// column under 640 pixels, two from 640 and three from 1024.
+import { splitHighlight } from "../../../lib/marketing/home.ts";
+import type { PricingView } from "../../../lib/marketing/pricing.ts";
+import MkCheckList from "../MkCheckList.astro";
+import MkHeading from "../MkHeading.astro";
+import MkHighlight from "../MkHighlight.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  included: PricingView["included"];
+}
+
+const { included } = Astro.props;
+const [before, word, after] = splitHighlight(included.title);
+---
+
+<MkSection tone="canvas" id="included" labelledby="pricing-included-title">
+  <MkHeading level={2} align="center" id="pricing-included-title">
+    {before}<MkHighlight>{word}</MkHighlight>{after}
+  </MkHeading>
+  <p class="mx-auto mt-4 max-w-2xl text-center text-mk-lead text-(--mk-subtle)">{included.lead}</p>
+
+  <div class="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      included.groups.map((group) => (
+        <div>
+          <h3 class="font-mk-sans text-mk-h3">{group.title}</h3>
+          <MkCheckList items={group.items} class="mt-4" />
+        </div>
+      ))
+    }
+  </div>
+</MkSection>

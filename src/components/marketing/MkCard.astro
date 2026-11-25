@@ -1,7 +1,10 @@
 ---
 // A plain bordered card or a bold solid quote card (spec 0017, Component contracts). `mk-on-light` and
-// `mk-on-dark` reset the band values inside the card, so a white card works on the ink band too.
-interface Props {
+// `mk-on-dark` reset the band values inside the card, so a white card works on the ink band too. Other
+// attributes (`aria-labelledby` on an article card, spec 0020 AC-4) pass through to the element.
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends Omit<HTMLAttributes<"div">, "class"> {
   variant?: "plain" | "quote";
   /** Quote cards only. `brand` and `ink` use on dark text. */
   tone?: "brand" | "pink" | "ink";
@@ -9,7 +12,7 @@ interface Props {
   class?: string;
 }
 
-const { variant = "plain", tone = "brand", as: Tag = "div", class: className } = Astro.props;
+const { variant = "plain", tone = "brand", as: Tag = "div", class: className, ...rest } = Astro.props;
 
 const quoteTones = {
   brand: "mk-on-dark bg-mk-brand",
@@ -25,11 +28,12 @@ const quoteTones = {
         "mk-on-light rounded-mk-card border border-mk-border bg-mk-surface p-6 shadow-mk-card md:p-8",
         className,
       ]}
+      {...rest}
     >
       <slot />
     </Tag>
   ) : (
-    <Tag class:list={["rounded-mk-card p-6 md:p-8", quoteTones[tone], className]}>
+    <Tag class:list={["rounded-mk-card p-6 md:p-8", quoteTones[tone], className]} {...rest}>
       <blockquote class="font-mk-serif text-mk-lead font-medium text-pretty">
         <slot />
       </blockquote>

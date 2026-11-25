@@ -1,0 +1,78 @@
+---
+// The plans band (spec 0020 AC-4 to AC-7): the page's one h1, then one wide Tanzania card or the abroad
+// Yearly (featured) and Monthly cards, then the two lines under them. Every value comes from `pricingView`.
+// The wide card puts its check list in a second column from 768 pixels; the pair stacks Yearly first.
+import { splitHighlight } from "../../../lib/marketing/home.ts";
+import type { PricingView } from "../../../lib/marketing/pricing.ts";
+import MkBadge from "../MkBadge.astro";
+import MkButton from "../MkButton.astro";
+import MkCard from "../MkCard.astro";
+import MkCheckList from "../MkCheckList.astro";
+import MkHeading from "../MkHeading.astro";
+import MkHighlight from "../MkHighlight.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  plans: PricingView["plans"];
+}
+
+const { plans } = Astro.props;
+const [before, word, after] = splitHighlight(plans.title);
+const wide = plans.cards.length === 1;
+
+const cardClass = (featured: boolean) =>
+  [
+    "flex flex-col",
+    wide && "md:grid md:grid-cols-2 md:grid-rows-[auto_1fr] md:gap-x-12",
+    featured && "border-2 border-mk-brand",
+  ]
+    .filter(Boolean)
+    .join(" ");
+---
+
+<MkSection tone="canvas" id="plans" labelledby="pricing-plans-title" padding="pt-10 pb-16 md:py-24">
+  <MkHeading level={1} align="center" id="pricing-plans-title">
+    {before}<MkHighlight>{word}</MkHighlight>{after}
+  </MkHeading>
+  <p class="mx-auto mt-4 max-w-2xl text-center text-mk-lead text-(--mk-subtle)">{plans.lead}</p>
+
+  <div class:list={["mx-auto mt-10 grid gap-6 md:mt-12", wide ? "max-w-mk-narrow" : "max-w-4xl md:grid-cols-2"]}>
+    {
+      plans.cards.map((card) => (
+        <MkCard as="article" aria-labelledby={card.headingId} class={cardClass(card.featured)}>
+          <div>
+            {card.badge && <MkBadge class="mb-4">{card.badge}</MkBadge>}
+            <h2 id={card.headingId} class="font-mk-sans text-mk-h3">
+              {card.name}
+            </h2>
+            <p class="mt-3">
+              <span class="font-mk-serif text-mk-h1 whitespace-nowrap text-mk-ink">{card.price}</span>
+              <span class="ml-1 text-mk-body text-mk-subtle">{card.period}</span>
+            </p>
+            <p class="mt-2 text-mk-body text-mk-subtle">{card.note}</p>
+          </div>
+          <div class:list={["mt-6", wide && "md:col-start-2 md:row-span-2 md:row-start-1 md:mt-0"]}>
+            {card.extra && <p class="mb-4 font-bold text-mk-brand">{card.extra}</p>}
+            <MkCheckList items={card.features} />
+          </div>
+          <div class:list={["pt-8", wide ? "md:col-start-1 md:row-start-2" : "mt-auto"]}>
+            <MkButton
+              href={card.button.href}
+              size="lg"
+              data-cta-location={card.button.ctaLocation}
+              data-plan-name={card.button.planName}
+              class={wide ? "max-sm:w-full" : "w-full"}
+            >
+              {card.button.label}
+            </MkButton>
+          </div>
+        </MkCard>
+      ))
+    }
+  </div>
+
+  <div class="mt-8 space-y-2 text-center text-mk-body">
+    <p class="font-bold">{plans.unlimited}</p>
+    <p class="text-(--mk-subtle)">{plans.otherCurrency}</p>
+  </div>
+</MkSection>

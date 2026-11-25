@@ -1,0 +1,47 @@
+---
+// The setup offers (spec 0020 AC-8): one card per offer, in array order, two across from 768 pixels or one
+// centered card when there's only one. Each button opens the contact modal, signed in or not.
+import type { PricingView } from "../../../lib/marketing/pricing.ts";
+import MkButton from "../MkButton.astro";
+import MkCard from "../MkCard.astro";
+import MkCheckList from "../MkCheckList.astro";
+import MkHeading from "../MkHeading.astro";
+import MkSection from "../MkSection.astro";
+
+interface Props {
+  setup: PricingView["setup"];
+}
+
+const { setup } = Astro.props;
+const single = setup.offers.length === 1;
+---
+
+<MkSection tone="tint" id="setup" labelledby="pricing-setup-title">
+  <MkHeading level={2} align="center" id="pricing-setup-title">{setup.title}</MkHeading>
+  <p class="mx-auto mt-4 max-w-2xl text-center text-mk-lead text-(--mk-subtle)">{setup.lead}</p>
+
+  <div class:list={["mx-auto mt-10 grid gap-6 md:mt-12", single ? "max-w-xl" : "max-w-4xl md:grid-cols-2"]}>
+    {
+      setup.offers.map((offer) => (
+        <MkCard class="flex flex-col">
+          <h3 class="font-mk-sans text-mk-h3">{offer.name}</h3>
+          <p class="mt-3 font-mk-serif text-mk-h2 text-mk-ink">{offer.price}</p>
+          <p class="mt-1 text-mk-small text-mk-subtle">{offer.priceNote}</p>
+          <p class="mt-4 text-mk-body">{offer.blurb}</p>
+          {offer.features.length > 0 && <MkCheckList items={offer.features} class="mt-6" />}
+          <div class="mt-auto pt-8">
+            <MkButton
+              variant="secondary"
+              data-open-modal="contact-us-modal"
+              data-cta-location="pricing_page_setup"
+              data-plan-name={offer.name}
+              class="max-sm:w-full"
+            >
+              {offer.cta}
+            </MkButton>
+          </div>
+        </MkCard>
+      ))
+    }
+  </div>
+</MkSection>

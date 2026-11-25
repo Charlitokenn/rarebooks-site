@@ -1,4 +1,4 @@
-import { hostedPlan, localServices } from "./pricing.ts";
+import { abroadServices, hostedPlan, localServices } from "./pricing.ts";
 import {Cog, LayoutDashboard} from "lucide-react";
 
 
@@ -20,6 +20,13 @@ export const AppConfig = {
     payFromDay: 22,
     readOnlyFromDay: 26,
     removedOnDay: 30,
+  },
+  // Spec 0020 AC-17: after a paid period ends. Full access for `graceDays` more days (spec 0005 AC-14), then
+  // read only, and the site removed `removedAfterDays` after that (spec 0007 AC-1). Check those two
+  // criteria if either number changes; the pricing FAQ reads them.
+  renewal: {
+    graceDays: 7,
+    removedAfterDays: 60,
   },
   urls: {
     rootUrl: "https://rarebooks.cc",
@@ -73,4 +80,5 @@ export const AppConfig = {
   },
   hostedPlan,
   localServices,
+  abroadServices,
 };

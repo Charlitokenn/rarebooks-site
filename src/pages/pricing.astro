@@ -1,0 +1,51 @@
+---
+// Full pricing (spec 0020): five mk bands between MkNav and MkFooter (AC-1). The body varies by country and
+// sign in state, so it renders on every request; the head (title, description, canonical, social card and
+// structured data) is the same for every visitor (AC-12).
+import ContactUsModal from "@components/ContactUsModal.astro";
+import MkFooter from "@components/marketing/MkFooter.astro";
+import MkNav from "@components/marketing/MkNav.astro";
+import HomeCta from "@components/marketing/home/HomeCta.astro";
+import PricingFaq from "@components/marketing/pricing/PricingFaq.astro";
+import PricingIncluded from "@components/marketing/pricing/PricingIncluded.astro";
+import PricingPlans from "@components/marketing/pricing/PricingPlans.astro";
+import PricingSetup from "@components/marketing/pricing/PricingSetup.astro";
+import Layout from "src/layouts/Layout.astro";
+import { AppConfig } from "../constants";
+import { pricingCopy } from "../constants/pricingPage.ts";
+import { fill } from "../lib/marketing/home.ts";
+import { isSignedIn } from "../lib/marketing/navigation.ts";
+import { pricingJsonLd, pricingValues, pricingView } from "../lib/marketing/pricing.ts";
+
+export const prerender = false;
+
+// AC-1: a copy tied to a country or a session must never sit in a shared cache. `no-cache`, not `no-store`,
+// so the back button cache still works.
+Astro.response.headers.set("Cache-Control", "private, no-cache");
+
+const view = pricingView(Astro.locals.countryCode, isSignedIn(Astro.locals));
+// Both versions share one description, so the meta tag doesn't vary by country.
+const description = fill(pricingCopy.abroad.description, pricingValues(AppConfig));
+---
+
+<Layout
+  title="RareBooks pricing: one plan, everything included"
+  description={description}
+  canonicalPath="/pricing"
+  ogImage="/og/home.jpg"
+  ogImageAlt="The RareBooks dashboard showing cash and bank balances, best sellers and profit"
+  preloadSerif
+  jsonLd={pricingJsonLd(AppConfig)}
+>
+  <MkNav />
+  <main id="main">
+    <PricingPlans plans={view.plans} />
+    <PricingSetup setup={view.setup} />
+    <PricingIncluded included={view.included} />
+    <PricingFaq faq={view.faq} />
+    <HomeCta copy={view.cta} signedIn={view.signedIn} />
+  </main>
+  <MkFooter />
+</Layout>
+
+<ContactUsModal id="contact-us-modal" title="Contact Us" />
