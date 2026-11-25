@@ -100,17 +100,6 @@ const ogImageUrl = ogImage ? new URL(ogImage, AppConfig.urls.rootUrl).toString()
   </body>
 </html>
 
-<script is:inline>
-  (function onTurnstileError(errorCode) {
-      console.error("Turnstile error:", errorCode);
-      document.getElementById("send-free-license").disabled = true;
-    }
-  )();
-  (function onTurnstileSuccess() {
-    document.getElementById("turnstile-container").hidden = true;
-  })()
-</script>
-
 <!--
   Centralized "open modal" handler for every [data-open-modal] trigger on the
   site (the homepage's demo, Talk to us and Contact us buttons, MkNav's menu,
