@@ -11,6 +11,7 @@ import clerk from "@clerk/astro";
 import { fileURLToPath } from "node:url";
 import { AppConfig } from "./src/constants/index.ts";
 import { blogRedirects, retiredCompetitors } from "./src/data/retiredCompetitors.ts";
+import rehypeDocsContent from "./src/lib/docs/rehypeDocsContent.ts";
 
 const CLOUDFLARE_WORKERS_STUB = "\0rarebooks:cloudflare-workers-in-node";
 
@@ -60,7 +61,8 @@ export default defineConfig({
   // Astro 6.4 leaves `markdown.gfm` undefined by default, and @astrojs/mdx 5.0.6 reads undefined as off, so
   // MDX pages lose GFM (tables render as plain `| a | b |` text). Set it explicitly until we move to Astro 7
   // with @astrojs/mdx 8; the deprecation warning it prints is expected.
-  markdown: { gfm: true },
+  // Spec 0024 AC-12: public images get their size and wide tables a tab stop (src/lib/docs/rehypeDocsContent.ts).
+  markdown: { gfm: true, rehypePlugins: [rehypeDocsContent] },
   // Spec 0021 AC-10: the old /blog/rarebooks-vs-* posts, each sent straight to its final address in one hop.
   redirects: blogRedirects(retiredCompetitors),
   adapter: cloudflare({
@@ -142,6 +144,9 @@ export default defineConfig({
       expressiveCode: {
         themes: ["github-dark", "github-light"],
         useStarlightUiThemeColors: true,
+        // Spec 0024 AC-12: wrap long lines rather than scroll. A block that scrolls sideways gets an unnamed
+        // `role="region"` from Expressive Code, and two of them on one page fail axe's landmark-unique.
+        defaultProps: { wrap: true },
       },
       disable404Route: true,
       plugins: [],

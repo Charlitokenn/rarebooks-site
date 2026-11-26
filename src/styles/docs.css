@@ -30,6 +30,43 @@
 @import "@fontsource/plus-jakarta-sans/600.css";
 @import "@fontsource/plus-jakarta-sans/700.css";
 
+/* Size adjusted fallback faces, so the swap to Plus Jakarta Sans does not shift the layout (AC-6: font CLS
+   0.01 or less). One face per docs weight, Arial as the reference (Liberation Sans is its metric clone on
+   Linux). The values come from `node scripts/font-fallback-sans.mjs`; run it again and paste its output here
+   if the Plus Jakarta Sans files change. */
+@font-face {
+  font-family: "Plus Jakarta Sans Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
+  size-adjust: 105.04%;
+  ascent-override: 98.82%;
+  descent-override: 21.14%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans Fallback";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold");
+  size-adjust: 99.13%;
+  ascent-override: 104.71%;
+  descent-override: 22.4%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans Fallback";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold");
+  size-adjust: 100.11%;
+  ascent-override: 103.69%;
+  descent-override: 22.18%;
+  line-gap-override: 0%;
+}
+
 /* Starlight mapping, dark (Starlight's default theme). Spec 0024, Starlight mapping. */
 :root {
   --sl-color-white: var(--color-mk-dark-white);
@@ -48,7 +85,9 @@
   --sl-color-hairline-light: var(--color-mk-dark-line);
   --sl-color-hairline-shade: var(--color-mk-dark-canvas);
 
-  --sl-font: var(--font-mk-sans);
+  /* --font-mk-sans with the size adjusted fallback face added (AC-6). The marketing pages keep the token as
+     is, since their Plus Jakarta Sans comes from fonts.css. */
+  --sl-font: "Plus Jakarta Sans", "Plus Jakarta Sans Fallback", system-ui, sans-serif;
   /* The Tailwind bridge would swap in Tailwind's mono stack; keep Starlight's system one (AC-6). */
   --sl-font-mono: var(--sl-font-system-mono);
 
