@@ -1,5 +1,6 @@
 ---
 // import { env } from "cloudflare:workers";
+import { AppConfig } from "../constants";
 
 interface Props {
     /**
@@ -10,9 +11,12 @@ interface Props {
      * (the Contact us links in Layout.astro call it).
      */
     load?: "eager" | "interaction";
+    /** Which tawk.to widget to show: the marketing pages' or the dashboard's (the default). */
+    widget?: keyof typeof AppConfig.tawk.widgets;
 }
 
-const { load = "eager" } = Astro.props;
+const { load = "eager", widget = "dashboard" } = Astro.props;
+const embedUrl = `https://embed.tawk.to/${AppConfig.tawk.propertyId}/${AppConfig.tawk.widgets[widget]}`;
 
 const userDetails = await Astro.locals.currentUser?.();
 const email = userDetails?.emailAddresses?.[0]?.emailAddress ?? "";
@@ -81,7 +85,7 @@ const canLogin = Boolean(userId && loginHash);
     }
 </style>
 
-<script is:inline define:vars={{ fullName, email, visitorHash, loginHash, userId, hasIdentifiedVisitor, canLogin, load }}>
+<script is:inline define:vars={{ fullName, email, visitorHash, loginHash, userId, hasIdentifiedVisitor, canLogin, load, embedUrl }}>
     (function () {
         // FIX: Remove all DOM relocation logic.
         // Relocating tawk.to nodes breaks its internal tracking and causes iframe reloads.
@@ -141,7 +145,7 @@ const canLogin = Boolean(userId && loginHash);
             var s1 = document.createElement("script"),
                 s0 = document.getElementsByTagName("script")[0];
             s1.async = true;
-            s1.src = "https://embed.tawk.to/6a43b438854f801d4378af24/1jsc7fva2";
+            s1.src = embedUrl;
             s1.charset = "UTF-8";
             s1.setAttribute("data-cfasync", "false");
             s1.setAttribute("crossorigin", "*");

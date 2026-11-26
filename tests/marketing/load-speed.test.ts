@@ -7,6 +7,7 @@ import { join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { AppConfig } from "../../src/constants/index.ts";
 import { forward, upstreamHeaders, upstreamUrl } from "../../src/lib/marketing/ingest.ts";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
@@ -58,6 +59,19 @@ test("Layout loads the chat on interaction and PortalLayout keeps it eager (AC-2
   const portal = tawkTags(read("src/layouts/PortalLayout.astro"));
   assert.equal(portal.length, 1);
   assert.doesNotMatch(portal[0], /load=/);
+});
+
+test("the marketing pages use the marketing widget and the dashboard keeps its own", () => {
+  assert.deepEqual(AppConfig.tawk, {
+    propertyId: "6a43b438854f801d4378af24",
+    widgets: { marketing: "1k8bf0dgm", dashboard: "1jsc7fva2" },
+  });
+  assert.match(tawkTags(read("src/layouts/Layout.astro"))[0], /widget="marketing"/);
+  assert.doesNotMatch(tawkTags(read("src/layouts/PortalLayout.astro"))[0], /widget=/);
+  const widget = read("src/components/TawkWidget.astro");
+  assert.match(widget, /widget = "dashboard"/);
+  assert.match(widget, /s1\.src = embedUrl;/);
+  assert.doesNotMatch(widget, /embed\.tawk\.to\/6a43/);
 });
 
 test("the dashboard pages still load Turnstile themselves (AC-10, AC-12)", () => {

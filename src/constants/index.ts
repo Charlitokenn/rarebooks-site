@@ -41,6 +41,16 @@ export const AppConfig = {
     demoUrl:
       "https://demo.arcade.software/FeRaybGnq8w8icVFYOSu?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true",
   },
+  // The tawk.to property and its two chat widgets: one for the marketing pages (Layout.astro) and one for the
+  // dashboard (PortalLayout.astro), so each has its own look and routing in tawk.to. Secure Mode is set per
+  // property, so both use the same TAWK_API_KEY.
+  tawk: {
+    propertyId: "6a43b438854f801d4378af24",
+    widgets: {
+      marketing: "1k8bf0dgm",
+      dashboard: "1jsc7fva2",
+    },
+  },
   socials: {
     facebook: "https://www.facebook.com/rarebooks",
     instagram: "https://www.instagram.com/rarebooks",
