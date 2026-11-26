@@ -41,6 +41,19 @@ import frauncesItalicUrl from "@fontsource-variable/fraunces/files/fraunces-lati
 import TawkWidget from "@components/TawkWidget.astro";
 import { jsonLdText } from "../lib/marketing/jsonLd.ts";
 
+// Spec 0022 AC-9: the PostHog project key, a public `phc_` key set in production only. Empty or missing
+// means no snippet and no /ingest request (local dev, previews).
+let posthogKey = ""
+try {
+  const { env } = await import("cloudflare:workers")
+  posthogKey = (env as { PUBLIC_POSTHOG_KEY?: string }).PUBLIC_POSTHOG_KEY ?? ""
+} catch {
+  // No Worker env (a Node prerender): leave analytics off.
+}
+
+const signUpUrl = AppConfig.urls.signUpUrl
+const supportEmail = AppConfig.emails.supportEmail
+
 const canonicalUrl = canonicalPath ? new URL(canonicalPath, AppConfig.urls.rootUrl).toString() : undefined
 const ogImageUrl = ogImage ? new URL(ogImage, AppConfig.urls.rootUrl).toString() : undefined
 ---
@@ -48,13 +61,6 @@ const ogImageUrl = ogImage ? new URL(ogImage, AppConfig.urls.rootUrl).toString()
 <!doctype html>
 <html lang="en" class="bg-background">
   <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-W4VTMZRK');</script>
-    <!-- End Google Tag Manager -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#fbfafc" />
@@ -85,203 +91,222 @@ const ogImageUrl = ogImage ? new URL(ogImage, AppConfig.urls.rootUrl).toString()
         <meta name="twitter:image" content={ogImageUrl} />
       </>
     )}
-    <link rel="preconnect" href="https://challenges.cloudflare.com" />
-    <script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        async
-        defer
-    ></script>
     <title>{title}</title>
     {jsonLd && <script type="application/ld+json" set:html={jsonLdText(jsonLd)} />}
     <!--<ClientRouter />-->
+    {
+      /*
+        PostHog's official snippet (spec 0022 AC-7): under 2 KB, it only defines the `posthog` stub. `init`
+        runs on the window load event, so the library (/ingest/static/array.js) is requested after load and
+        stays out of first paint. Calls made before then wait in `__rbPending` (see `rbTrack` below).
+      */
+      posthogKey && (
+        <script is:inline define:vars={{ posthogKey }}>
+          !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+          window.addEventListener("load", function () {
+            window.posthog.init(posthogKey, {
+              api_host: "/ingest",
+              ui_host: "https://eu.posthog.com",
+              capture_pageview: true,
+              autocapture: false,
+              disable_session_recording: true,
+              disable_surveys: true,
+              advanced_disable_flags: true,
+              person_profiles: "identified_only",
+              persistence: "cookie",
+            });
+            var pending = window.__rbPending || [];
+            window.__rbPending = [];
+            pending.forEach(function (event) {
+              window.posthog.capture(event[0], event[1]);
+            });
+          });
+        </script>
+      )
+    }
   </head>
   <body class="min-h-screen overflow-x-hidden">
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W4VTMZRK"
-                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
     <slot />
-    <TawkWidget />
+    <TawkWidget load="interaction" />
   </body>
 </html>
 
-<!--
-  Centralized "open modal" handler for every [data-open-modal] trigger on the
-  site (the homepage's demo, Talk to us and Contact us buttons, MkNav's menu,
-  the Compare/Alternatives pages). This replaces the near-identical copies that used to live in
-  index.astro, CompareLayout.astro, and AlternativesLayout.astro.
+<style is:global>
+  /*
+    The AC-3 fallback message that follows each Contact us link. Empty, it is visually hidden and out of the
+    layout (so adding it at DOM ready shifts nothing, even inside a flex row with a gap), but it stays in the
+    accessibility tree so the message is announced when it fills.
+  */
+  .rb-chat-status:empty {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .rb-chat-status:not(:empty) {
+    display: block;
+    margin-top: 0.5rem;
+  }
+  .rb-chat-status a {
+    font-weight: 700;
+    color: var(--mk-link);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>
 
-  It also tracks trial intent: a click on a "Start free trial" link (each
-  goes to Clerk sign up, spec 0014 AC-7) pushes a `trial_interest` event to
-  the GTM dataLayer, with the plan when the link is a pricing plan's.
+<!--
+  The marketing pages' one click handler (spec 0022):
+  - `rbTrack` sends an event to PostHog when it is configured (AC-6), queued until `posthog.init` runs on
+    load (AC-7), and dropped when there is no key (AC-9). It never identifies the visitor.
+  - A "Start free trial" link (href equal to `signUpUrl` and a `data-cta-location`) records `trial_interest`.
+  - A Contact us link (`data-open-chat`, a mailto link) records `contact_click` and, on a plain left click,
+    opens the tawk.to chat through `rbOpenChat` instead of email (AC-3).
+  - Any `[data-open-modal]` trigger (MkNav's menu, the homepage demo) opens its dialog.
 -->
-<script is:inline>
+<script is:inline define:vars={{ signUpUrl, supportEmail }}>
   (function () {
-    window.dataLayer = window.dataLayer || [];
+    var FALLBACK_MS = 8000;
+
+    function rbTrack(name, props) {
+      var ph = window.posthog;
+      if (!ph) return;
+      if (typeof ph.capture === "function") ph.capture(name, props);
+      else (window.__rbPending = window.__rbPending || []).push([name, props]);
+    }
+
+    // --- The chat (AC-3) ---------------------------------------------------------------------------------
+    // TawkWidget sets `Tawk_API.onLoad` (the Secure Mode login) and `window.rbLoadChat`. The hooks below wrap
+    // `onLoad` and `onChatMaximized`, never replace them, and are added at DOM ready, after TawkWidget's
+    // script has run. `ready` is also set by the wrapper, so a chat that loaded before the wrap still counts.
+    var ready = false;
+    var wantMaximize = false;
+    var opened = false;
+    var timer = null;
+
+    function tawk() {
+      return (window.Tawk_API = window.Tawk_API || {});
+    }
+
+    function markOpened() {
+      opened = true;
+      wantMaximize = false;
+      if (timer) clearTimeout(timer);
+      timer = null;
+    }
+
+    function isMaximized() {
+      var api = tawk();
+      try {
+        return typeof api.isChatMaximized === "function" && api.isChatMaximized() === true;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function maximize() {
+      var api = tawk();
+      try {
+        if (typeof api.maximize === "function") api.maximize();
+      } catch (err) {
+        // tawk.to failed inside; the 8 second fallback tells the visitor to write instead.
+      }
+      if (isMaximized()) markOpened();
+    }
+
+    function hookTawk() {
+      var api = tawk();
+      if (typeof api.isChatMaximized === "function") ready = true;
+      var prevLoad = api.onLoad;
+      api.onLoad = function () {
+        ready = true;
+        if (typeof prevLoad === "function") prevLoad.apply(this, arguments);
+        if (wantMaximize) maximize();
+      };
+      var prevMax = api.onChatMaximized;
+      api.onChatMaximized = function () {
+        markOpened();
+        if (typeof prevMax === "function") prevMax.apply(this, arguments);
+      };
+    }
+
+    function statusFor(control) {
+      var next = control.nextElementSibling;
+      return next && next.classList.contains("rb-chat-status") ? next : null;
+    }
+
+    function showFallback(status) {
+      if (!status) return;
+      var link = document.createElement("a");
+      link.href = "mailto:" + supportEmail;
+      link.textContent = supportEmail;
+      status.textContent = "";
+      status.append("Chat could not load. Write to ", link, ".");
+    }
+
+    window.rbOpenChat = function (control) {
+      document.querySelectorAll(".rb-chat-status").forEach(function (s) {
+        s.textContent = "";
+      });
+      opened = false;
+      if (timer) clearTimeout(timer);
+      if (ready && isMaximized()) {
+        markOpened();
+        return;
+      }
+      var status = statusFor(control);
+      timer = setTimeout(function () {
+        timer = null;
+        if (!opened) showFallback(status);
+      }, FALLBACK_MS);
+      if (typeof window.rbLoadChat === "function") window.rbLoadChat();
+      if (ready) maximize();
+      else wantMaximize = true;
+    };
+
+    function onReady() {
+      hookTawk();
+      document.querySelectorAll("[data-open-chat]").forEach(function (control) {
+        if (statusFor(control)) return;
+        var status = document.createElement("span");
+        status.className = "rb-chat-status";
+        status.setAttribute("role", "status");
+        status.setAttribute("aria-live", "polite");
+        control.after(status);
+      });
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", onReady);
+    else onReady();
+
+    // --- Clicks ------------------------------------------------------------------------------------------
+    var trialSelector = 'a[href="' + signUpUrl + '"][data-cta-location]';
 
     document.addEventListener("click", function (e) {
-      const trial = e.target.closest('a[href="/auth/sign-up"][data-cta-location]');
+      var trial = e.target.closest(trialSelector);
       if (trial) {
-        window.dataLayer.push({
-          event: "trial_interest",
+        rbTrack("trial_interest", {
           cta_location: trial.getAttribute("data-cta-location") || "unknown",
           plan_name: trial.getAttribute("data-plan-name") || null,
         });
         return;
       }
-      const btn = e.target.closest("[data-open-modal]");
+
+      var chat = e.target.closest("[data-open-chat]");
+      if (chat) {
+        rbTrack("contact_click", { cta_location: chat.getAttribute("data-cta-location") || "unknown" });
+        // Only a plain left click opens the chat; any other click opens email as a normal link.
+        if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        window.rbOpenChat(chat);
+        return;
+      }
+
+      var btn = e.target.closest("[data-open-modal]");
       if (!btn) return;
-
-      const modalId = btn.getAttribute("data-open-modal");
-      const dialog = document.getElementById(modalId);
-
-      if (modalId === "desktop-payment-modal") {
-        const planName = btn.getAttribute("data-plan-name");
-        const planPrice = btn.getAttribute("data-plan-price");
-        const currency = btn.getAttribute("data-currency");
-        const ctaLocation = btn.getAttribute("data-cta-location") || "unknown";
-
-        // Lets a future purchase-completed step (once payments are automated) attribute back to this click
-        // without re-deriving it.
-        sessionStorage.setItem(
-          "rb_purchase_plan",
-          JSON.stringify({
-            plan_name: planName,
-            plan_price: planPrice || null,
-            currency: currency || null,
-          })
-        );
-
-        window.dataLayer.push({
-          event: "purchase_interest",
-          cta_location: ctaLocation,
-          plan_name: planName || null,
-          plan_price: planPrice || null,
-          billing_period: "one_time",
-          currency: currency || null,
-        });
-      }
-
-      if (dialog && typeof dialog.showModal === "function") {
-        dialog.showModal();
-      }
-    });
-  })();
-</script>
-
-<!--
-  "Send payment confirmation via chat" handler for the desktop payment
-  modal (DesktopPaymentModal.astro). Mirrors the [data-gtm-download]
-  pattern below: opts in via [data-gtm-payment-confirm], fires a
-  `payment_confirmation_started` event - the step after `purchase_interest`
-  in the manual Lipa Namba funnel - copies a pre-filled confirmation
-  message to the clipboard, opens the Tawk chat widget, and closes the
-  modal so the visitor can paste the message straight into the chat.
--->
-<script is:inline>
-  (function () {
-    window.dataLayer = window.dataLayer || [];
-
-    document.addEventListener("click", function (e) {
-      const btn = e.target.closest("[data-gtm-payment-confirm]");
-      if (!btn) return;
-
-      const planName = btn.getAttribute("data-plan-name");
-      const planPrice = btn.getAttribute("data-plan-price");
-      const currency = btn.getAttribute("data-currency");
-      const paymentMethod = btn.getAttribute("data-payment-method") || "unknown";
-      const ctaLocation = btn.getAttribute("data-cta-location") || "unknown";
-      const message = btn.getAttribute("data-confirmation-message") || "";
-
-      window.dataLayer.push({
-        event: "payment_confirmation_started",
-        cta_location: ctaLocation,
-        plan_name: planName || null,
-        plan_price: planPrice || null,
-        currency: currency || null,
-        payment_method: paymentMethod,
-      });
-
-      if (message && navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(message).catch(function () {});
-      }
-
-      const note = document.getElementById("payment-confirm-note");
-      if (note) {
-        note.classList.remove("hidden");
-        setTimeout(function () {
-          note.classList.add("hidden");
-        }, 6000);
-      }
-
-      const dialog = btn.closest("dialog.modal-dialog");
-      if (dialog && typeof dialog.close === "function") {
-        dialog.close();
-      }
-
-      if (window.Tawk_API && typeof window.Tawk_API.maximize === "function") {
-        window.Tawk_API.maximize();
-      }
-    });
-  })();
-</script>
-
-<!--
-  "Buy Lifetime License" PayPal button click, from the international-buyer
-  branch of DesktopPaymentModal.astro. Since the PayPal button is a real
-  <form> that submits to PayPal in a new tab (target="_blank"), this just
-  records the click before the browser follows through - it does not
-  intercept or delay the submission. Fires `payment_checkout_started`, one
-  step before `payment_confirmation_started` above in the PayPal funnel.
--->
-<script is:inline>
-  (function () {
-    window.dataLayer = window.dataLayer || [];
-
-    document.addEventListener("click", function (e) {
-      const btn = e.target.closest("[data-gtm-payment-interest]");
-      if (!btn) return;
-
-      window.dataLayer.push({
-        event: "payment_checkout_started",
-        cta_location: btn.getAttribute("data-cta-location") || "unknown",
-        plan_name: btn.getAttribute("data-plan-name") || null,
-        plan_price: btn.getAttribute("data-plan-price") || null,
-        currency: btn.getAttribute("data-currency") || null,
-        payment_method: "paypal",
-      });
-    });
-  })();
-</script>
-
-<!--
-  Centralized "software download" click tracker for every
-  [data-gtm-download] link on the site (none since the desktop trial was
-  retired in spec 0014; kept for a Microsoft Store link added later). Fires
-  a `software_download` event to the GTM dataLayer.
-
-  Elements opt in with `data-gtm-download`, and can optionally carry:
-    data-download-source  e.g. "pricing_page"
-    data-license-type     e.g. "lifetime"
-    data-country
-  This is a separate listener (not folded into the modal-open handler
-  above) since download links aren't modal triggers - same pattern used
-  for the backdrop-close vs modal-close listeners in the modals.
--->
-<script is:inline>
-  (function () {
-    window.dataLayer = window.dataLayer || [];
-
-    document.addEventListener("click", function (e) {
-      const link = e.target.closest("[data-gtm-download]");
-      if (!link) return;
-
-      window.dataLayer.push({
-        event: "software_download",
-        download_source: link.getAttribute("data-download-source") || "unknown",
-        license_type: link.getAttribute("data-license-type") || null,
-        country: link.getAttribute("data-country") || null,
-      });
+      var dialog = document.getElementById(btn.getAttribute("data-open-modal"));
+      if (dialog && typeof dialog.showModal === "function") dialog.showModal();
     });
   })();
 </script>

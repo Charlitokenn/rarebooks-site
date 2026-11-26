@@ -1,7 +1,6 @@
 ---
 // The homepage (spec 0019): seven mk bands between MkNav and MkFooter (AC-1). It varies by country and sign
 // in state, so it renders on every request and is never cached at the edge (spec 0018).
-import ContactUsModal from "@components/ContactUsModal.astro";
 import MkFooter from "@components/marketing/MkFooter.astro";
 import MkNav from "@components/marketing/MkNav.astro";
 import HomeCta from "@components/marketing/home/HomeCta.astro";
@@ -46,4 +45,3 @@ const signedIn = isSignedIn(Astro.locals);
   <HomeDemoDialog copy={copy.demoDialog} />
 </Layout>
 
-<ContactUsModal id="contact-us-modal" title="Contact Us" />

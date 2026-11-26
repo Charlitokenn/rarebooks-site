@@ -1,6 +1,7 @@
 ---
 // The FAQ (spec 0019 AC-11): one MkFaq with the five questions in order. The last answer ends with a
-// Contact us button, in the MkButton `link` look, that opens the contact modal through the Layout handler.
+// Contact us link, in the MkButton `link` look, that opens the chat through the Layout handler, or email
+// without it (spec 0022 AC-3).
 import { AppConfig } from "../../../constants";
 import type { HomeCopy } from "../../../constants/home.ts";
 import { fill, homeValues } from "../../../lib/marketing/home.ts";
@@ -15,18 +16,18 @@ interface Props {
 const { copy } = Astro.props;
 const values = homeValues(AppConfig);
 
-// The MkButton `link` variant's classes, on a real <button>: MkFaq answers are HTML strings, so the
+// The MkButton `link` variant's classes, on a mailto link: MkFaq answers are HTML strings, so the
 // component itself can't go inside one. The copy is ours, never visitor input.
-const contactButton =
-  '<button type="button" data-open-modal="contact-us-modal" data-cta-location="faq" ' +
-  'class="cursor-pointer rounded-sm font-bold text-(--mk-link) underline-offset-4 hover:underline focus-visible:underline">' +
-  `${copy.contact}</button>`;
+const contactLink =
+  `<a href="mailto:${AppConfig.emails.supportEmail}" data-open-chat data-cta-location="faq" ` +
+  'class="rounded-sm font-bold text-(--mk-link) underline-offset-4 hover:underline focus-visible:underline">' +
+  `${copy.contact}</a>`;
 
 const items = copy.items.map((item, index) => {
   const answer = fill(item.answer, values);
   return {
     question: item.question,
-    answer: index === copy.items.length - 1 ? `${answer} ${contactButton}` : answer,
+    answer: index === copy.items.length - 1 ? `${answer} ${contactLink}` : answer,
   };
 });
 ---

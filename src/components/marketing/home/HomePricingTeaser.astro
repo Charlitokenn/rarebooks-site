@@ -1,7 +1,7 @@
 ---
 // The pricing teaser (spec 0019 AC-10): the one plan's price in the visitor's currency, the first four
 // included points and Start free trial. Tanzania visitors also get the quick start line, whose Talk to us
-// button opens the contact modal. `id="pricing"` keeps old /#pricing links landing here, and the See full
+// link opens the chat (spec 0022 AC-3). `id="pricing"` keeps old /#pricing links landing here, and the See full
 // pricing link under the card goes to /pricing (spec 0020 AC-14).
 import { AppConfig } from "../../../constants";
 import { dashboardLabel, type HomeCopy } from "../../../constants/home.ts";
@@ -56,7 +56,8 @@ const included = AppConfig.hostedPlan.features.slice(0, 4);
         <p class="text-mk-body text-(--mk-subtle)">{fill(copy.setup.text, values)}</p>
         <MkButton
           variant="secondary"
-          data-open-modal="contact-us-modal"
+          href={`mailto:${AppConfig.emails.supportEmail}`}
+          data-open-chat
           data-cta-location="pricing_setup"
           class="shrink-0 max-sm:w-full"
         >

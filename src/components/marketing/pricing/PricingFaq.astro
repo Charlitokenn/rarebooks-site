@@ -1,6 +1,7 @@
 ---
-// The pricing FAQ (spec 0020 AC-10): one MkFaq with the five questions in order, then a Contact us button in
-// the MkButton `link` look that opens the contact modal through the Layout handler.
+// The pricing FAQ (spec 0020 AC-10): one MkFaq with the five questions in order, then a Contact us link in
+// the MkButton `link` look that opens the chat through the Layout handler, or email without it (spec 0022 AC-3).
+import { AppConfig } from "../../../constants";
 import type { PricingView } from "../../../lib/marketing/pricing.ts";
 import MkButton from "../MkButton.astro";
 import MkFaq from "../MkFaq.astro";
@@ -18,7 +19,12 @@ const { faq } = Astro.props;
   <MkHeading level={2} align="center" id="pricing-faq-title">{faq.title}</MkHeading>
   <MkFaq items={faq.items} class="mt-10" />
   <div class="mt-8 text-center">
-    <MkButton variant="link" data-open-modal="contact-us-modal" data-cta-location="pricing_faq">
+    <MkButton
+      variant="link"
+      href={`mailto:${AppConfig.emails.supportEmail}`}
+      data-open-chat
+      data-cta-location="pricing_faq"
+    >
       {faq.contact}
     </MkButton>
   </div>

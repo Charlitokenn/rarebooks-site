@@ -1,6 +1,7 @@
 ---
 // The setup offers (spec 0020 AC-8): one card per offer, in array order, two across from 768 pixels or one
-// centered card when there's only one. Each button opens the contact modal, signed in or not.
+// centered card when there's only one. Each button opens the chat (spec 0022 AC-3), signed in or not.
+import { AppConfig } from "../../../constants";
 import type { PricingView } from "../../../lib/marketing/pricing.ts";
 import MkButton from "../MkButton.astro";
 import MkCard from "../MkCard.astro";
@@ -32,7 +33,8 @@ const single = setup.offers.length === 1;
           <div class="mt-auto pt-8">
             <MkButton
               variant="secondary"
-              data-open-modal="contact-us-modal"
+              href={`mailto:${AppConfig.emails.supportEmail}`}
+              data-open-chat
               data-cta-location="pricing_page_setup"
               data-plan-name={offer.name}
               class="max-sm:w-full"

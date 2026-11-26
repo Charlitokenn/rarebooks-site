@@ -28,4 +28,11 @@ const noTransform = defineMiddleware(async (context, next) => {
   return response;
 });
 
-export const onRequest = sequence(clerk, noTransform);
+const site = sequence(clerk, noTransform);
+
+// Spec 0022 AC-8: the PostHog proxy (/ingest) skips Clerk and the cache header, so an analytics call never
+// pays for a session check or gets a sign in redirect.
+export const onRequest = defineMiddleware((context, next) => {
+  if (context.url.pathname.startsWith("/ingest/")) return next();
+  return site(context, next);
+});

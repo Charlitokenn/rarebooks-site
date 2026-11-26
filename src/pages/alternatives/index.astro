@@ -1,7 +1,6 @@
 ---
 // /alternatives (spec 0021 AC-14): a switching guide for every competitor in `competitors`, in name order.
 // Rendered per request so MkNav shows the right buttons for the visitor; the head is the same for everyone.
-import ContactUsModal from "@components/ContactUsModal.astro";
 import MkFooter from "@components/marketing/MkFooter.astro";
 import MkNav from "@components/marketing/MkNav.astro";
 import CompareIndex from "@components/marketing/compare/CompareIndex.astro";
@@ -42,4 +41,3 @@ Astro.response.headers.set("Cache-Control", "private, no-cache");
   <MkFooter />
 </Layout>
 
-<ContactUsModal id="contact-us-modal" title="Contact Us" />

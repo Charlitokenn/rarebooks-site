@@ -24,6 +24,9 @@ id = "02036753f5744df1b554f612ef075b2a"
 PUBLIC_SITE_URL = "https://rarebooks.cc"
 CONTROL_SITE_URL = "https://rarebooks-control.frappe.cloud"
 PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAADq5yBe8MOqSJN7v"
+# Spec 0022 AC-9: the PostHog EU project key (public, phc_...). Empty means analytics off. Set it here for
+# production; keep `PUBLIC_POSTHOG_KEY=` (empty) in .dev.vars so local dev sends nothing.
+PUBLIC_POSTHOG_KEY = ""
 
 [assets]
 directory = "./dist/client"

@@ -154,7 +154,8 @@ test("the page sends the private cache header and renders the five bands in orde
   assert.ok(order.every((at, i) => at > 0 && (i === 0 || at > order[i - 1])), "bands in order");
   assert.match(page, /canonicalPath="\/pricing"/);
   assert.match(page, /jsonLd=\{pricingJsonLd\(AppConfig\)\}/);
-  assert.equal(page.match(/<ContactUsModal /g)?.length, 1);
+  // Spec 0022 AC-4: the contact modal is gone; its Contact us links open the chat.
+  assert.doesNotMatch(page, /ContactUsModal/);
 });
 
 test("the homepage teaser keeps id pricing and links to /pricing (AC-14)", () => {

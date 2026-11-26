@@ -2,7 +2,6 @@
 // Full pricing (spec 0020): five mk bands between MkNav and MkFooter (AC-1). The body varies by country and
 // sign in state, so it renders on every request; the head (title, description, canonical, social card and
 // structured data) is the same for every visitor (AC-12).
-import ContactUsModal from "@components/ContactUsModal.astro";
 import MkFooter from "@components/marketing/MkFooter.astro";
 import MkNav from "@components/marketing/MkNav.astro";
 import HomeCta from "@components/marketing/home/HomeCta.astro";
@@ -48,4 +47,3 @@ const description = fill(pricingCopy.abroad.description, pricingValues(AppConfig
   <MkFooter />
 </Layout>
 
-<ContactUsModal id="contact-us-modal" title="Contact Us" />

@@ -13,6 +13,8 @@ interface __BaseEnv_Env {
   TURNSTILE_SECRET_KEY: string;
   PUBLIC_TURNSTILE_SITE_KEY: string;
   PUBLIC_SITE_URL: string;
+  // Spec 0022 AC-9: empty or missing turns analytics off.
+  PUBLIC_POSTHOG_KEY: string;
 }
 declare namespace Cloudflare {
   interface Env extends __BaseEnv_Env {}
