@@ -6,7 +6,7 @@ The shared look of the redesigned marketing pages (spec 0017 in `rarebooks-web/d
 
 ## Rules (Key invariants)
 
-- Don't edit `global.css`, `fonts.css`, `PortalLayout.astro` or the Starlight `customCss`. Anything new for marketing goes in `marketing.css`.
+- Don't edit `global.css`, `fonts.css`, `WelcomeLayout.astro` or the Starlight `customCss`. Anything new for marketing goes in `marketing.css`.
 - `marketing.css` adds one page wide rule, `scroll-padding-top: 5rem` on `html`. Every other rule is scoped to `.mk-band` or `[data-tone]`, so a page keeps its current look until you rebuild it with `MkSection`.
 - New marketing code uses only `mk` tokens. The old names (`brand`, `ink`, `muted`, `display`, `pill`, `soft`, `card`) stay only where current pages use them, and each restyle removes them from the pages it rewrites.
 - Every color token is a 6 digit hex value, and any text and background pair you use on a page is in the allowed pairs below. `npm test` (`tests/marketing/contrast.test.ts`) holds them.

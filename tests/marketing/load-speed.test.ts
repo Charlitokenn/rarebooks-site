@@ -14,7 +14,8 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 const read = (path: string) => readFileSync(join(root, path), "utf8");
 
 const SCANNED_DIRS = ["src/layouts", "src/components/marketing", "src/pages"];
-const SKIPPED = ["src/layouts/PortalLayout.astro", "src/pages/dashboard/", "src/pages/api/"];
+// Spec 0023: /welcome loads Turnstile and client:load islands on purpose, so it is not a marketing page.
+const SKIPPED = ["src/layouts/WelcomeLayout.astro", "src/pages/welcome/", "src/pages/api/"];
 const EXTENSIONS = [".astro", ".ts", ".tsx", ".mdx"];
 const FORBIDDEN = ["googletagmanager", "turnstile/v0/api.js", "ContactUs", "client:load"];
 
@@ -43,7 +44,7 @@ test("no marketing file loads GTM, Turnstile, the contact form or a client:load 
   const files = SCANNED_DIRS.flatMap(filesUnder).map((path) => ({ path, text: read(path) }));
   assert.ok(files.length > 20, "the scan found the marketing files");
   assert.ok(files.some((f) => f.path === "src/layouts/Layout.astro"));
-  assert.ok(!files.some((f) => f.path.startsWith("src/pages/dashboard/")), "the dashboard is skipped");
+  assert.ok(!files.some((f) => f.path.startsWith("src/pages/welcome/")), "the welcome page is skipped");
   assert.deepEqual(eagerScriptHits(files), []);
 });
 
@@ -52,32 +53,30 @@ test("the guard catches a client:load put back on a marketing component (AC-12)"
   assert.deepEqual(hits, ["src/components/marketing/X.astro: client:load"]);
 });
 
-test("Layout loads the chat on interaction and PortalLayout keeps it eager (AC-2, AC-12)", () => {
+test("Layout loads the chat on interaction and WelcomeLayout keeps it eager (AC-2, AC-12, spec 0023 AC-11)", () => {
   const layout = tawkTags(read("src/layouts/Layout.astro"));
   assert.equal(layout.length, 1);
   assert.match(layout[0], /load="interaction"/);
-  const portal = tawkTags(read("src/layouts/PortalLayout.astro"));
-  assert.equal(portal.length, 1);
-  assert.doesNotMatch(portal[0], /load=/);
+  const welcome = tawkTags(read("src/layouts/WelcomeLayout.astro"));
+  assert.equal(welcome.length, 1);
+  assert.match(welcome[0], /load="eager"/);
 });
 
-test("the marketing pages use the marketing widget and the dashboard keeps its own", () => {
+test("the marketing pages use the marketing widget and /welcome keeps the dashboard one", () => {
   assert.deepEqual(AppConfig.tawk, {
     propertyId: "6a43b438854f801d4378af24",
     widgets: { marketing: "1k8bf0dgm", dashboard: "1jsc7fva2" },
   });
   assert.match(tawkTags(read("src/layouts/Layout.astro"))[0], /widget="marketing"/);
-  assert.doesNotMatch(tawkTags(read("src/layouts/PortalLayout.astro"))[0], /widget=/);
+  assert.match(tawkTags(read("src/layouts/WelcomeLayout.astro"))[0], /widget="dashboard"/);
   const widget = read("src/components/TawkWidget.astro");
   assert.match(widget, /widget = "dashboard"/);
   assert.match(widget, /s1\.src = embedUrl;/);
   assert.doesNotMatch(widget, /embed\.tawk\.to\/6a43/);
 });
 
-test("the dashboard pages still load Turnstile themselves (AC-10, AC-12)", () => {
-  for (const page of ["src/pages/dashboard/index.astro", "src/pages/dashboard/start.astro"]) {
-    assert.match(read(page), /challenges\.cloudflare\.com\/turnstile\/v0\/api\.js/, page);
-  }
+test("the welcome page still loads Turnstile itself (AC-10, AC-12, spec 0023)", () => {
+  assert.match(read("src/pages/welcome/index.astro"), /challenges\.cloudflare\.com\/turnstile\/v0\/api\.js/);
 });
 
 test("the contact form, its route and its email template are gone (AC-4)", () => {

@@ -2,6 +2,7 @@
 // link change is one edit. The homepage must keep its `features` id, and its `pricing` id for old /#pricing
 // links (spec 0020 AC-14), or this list changes in the same commit.
 import { AppConfig } from "./index.ts";
+import { welcomePath } from "./welcome.ts";
 
 export interface NavLink {
   label: string;
@@ -23,7 +24,9 @@ export interface FooterColumn {
 }
 
 export const signInPath = "/auth/sign-in";
-export const dashboardPath = "/dashboard";
+// Spec 0023 AC-10: a signed in visitor's nav button and footer link go to /welcome.
+export { welcomePath };
+export const welcomeNavLabel = "Your site";
 
 // AC-3: four flat links, in this order.
 export const navLinks: NavLink[] = [
@@ -42,7 +45,7 @@ export const footerColumns: FooterColumn[] = [
       { label: "Pricing", href: "/pricing" },
       { label: "Start free trial", href: AppConfig.urls.signUpUrl, auth: "signed-out", ctaLocation: "footer" },
       { label: "Sign in", href: signInPath, auth: "signed-out" },
-      { label: "Dashboard", href: dashboardPath, auth: "signed-in" },
+      { label: welcomeNavLabel, href: welcomePath, auth: "signed-in" },
     ],
   },
   {

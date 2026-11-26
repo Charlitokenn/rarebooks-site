@@ -4,7 +4,8 @@
 // link opens the chat (spec 0022 AC-3). `id="pricing"` keeps old /#pricing links landing here, and the See full
 // pricing link under the card goes to /pricing (spec 0020 AC-14).
 import { AppConfig } from "../../../constants";
-import { dashboardLabel, type HomeCopy } from "../../../constants/home.ts";
+import { welcomeLabel, type HomeCopy } from "../../../constants/home.ts";
+import { welcomePath } from "../../../constants/welcome.ts";
 import { fill, homeValues } from "../../../lib/marketing/home.ts";
 import MkButton from "../MkButton.astro";
 import MkCard from "../MkCard.astro";
@@ -34,8 +35,8 @@ const included = AppConfig.hostedPlan.features.slice(0, 4);
         {copy.note && <p class="mt-2 text-mk-body text-mk-subtle">{fill(copy.note, values)}</p>}
         {
           signedIn ? (
-            <MkButton href="/dashboard" size="lg" data-cta-location="pricing" class="mt-6 max-sm:w-full">
-              {dashboardLabel}
+            <MkButton href={welcomePath} size="lg" data-cta-location="pricing" class="mt-6 max-sm:w-full">
+              {welcomeLabel}
             </MkButton>
           ) : (
             <MkButton href={AppConfig.urls.signUpUrl} size="lg" data-cta-location="pricing" class="mt-6 max-sm:w-full">

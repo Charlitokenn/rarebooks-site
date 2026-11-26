@@ -1,5 +1,4 @@
 import { abroadServices, hostedPlan, localServices } from "./pricing.ts";
-import {Cog, LayoutDashboard} from "lucide-react";
 
 
 export const AppConfig = {
@@ -32,7 +31,7 @@ export const AppConfig = {
     rootUrl: "https://rarebooks.cc",
     documentationUrl: "rarebooks.cc/getting-started/getting-started-with-rarebooks/",
     storeUrl: "https://apps.microsoft.com/detail/9NTLP4V32WGS",
-    portalUrl: "https://rarebooks.cc/dashboard",
+    portalUrl: "https://rarebooks.cc/welcome",
     // Spec 0014 AC-7: every "Start free trial" link goes to Clerk sign up, which lands on the start form.
     signUpUrl: "/auth/sign-up",
     // Spec 0018: the docs home, with the trailing slash Starlight serves, used by the nav, footer and 404.
@@ -42,7 +41,7 @@ export const AppConfig = {
       "https://demo.arcade.software/FeRaybGnq8w8icVFYOSu?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true",
   },
   // The tawk.to property and its two chat widgets: one for the marketing pages (Layout.astro) and one for the
-  // dashboard (PortalLayout.astro), so each has its own look and routing in tawk.to. Secure Mode is set per
+  // /welcome page (WelcomeLayout.astro), so each has its own look and routing in tawk.to. Secure Mode is set per
   // property, so both use the same TAWK_API_KEY.
   tawk: {
     propertyId: "6a43b438854f801d4378af24",

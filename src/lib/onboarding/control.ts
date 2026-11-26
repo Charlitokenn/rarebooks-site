@@ -8,6 +8,7 @@ import { env } from "cloudflare:workers";
 
 import { SIGNATURE_HEADER, isValidSignature, issuedNow, sign } from "./signing.ts";
 
+// The API routes wait up to 15 seconds; the /welcome page and /welcome/open pass 5 (spec 0023 AC-3, AC-4).
 const TIMEOUT_MS = 15_000;
 
 export type ControlMethod = "check_subdomain" | "request_site" | "signup_status" | "owner_link";
@@ -27,6 +28,7 @@ function controlUrl(): string | null {
 export async function callControl(
   method: ControlMethod,
   payload: Record<string, unknown>,
+  timeoutMs: number = TIMEOUT_MS,
 ): Promise<ControlAnswer> {
   const url = controlUrl();
   const secret = env.CONTROL_SIGNING_SECRET;
@@ -42,7 +44,7 @@ export async function callControl(
       headers: { "Content-Type": "application/json", [SIGNATURE_HEADER]: await sign(body, secret) },
       body,
       redirect: "manual",
-      signal: AbortSignal.timeout(TIMEOUT_MS),
+      signal: AbortSignal.timeout(timeoutMs),
     });
   } catch (error) {
     throw new ControlUnreachable(`${method} failed: ${(error as Error).name}`);

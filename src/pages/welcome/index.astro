@@ -1,0 +1,75 @@
+---
+// The reception page after sign up (spec 0023 AC-3). The server reads the signed in user's sign up once and
+// picks exactly one outcome, so the page never flashes:
+//   Ready (normal load)            → 302 /welcome/open
+//   Ready (HEAD, prefetch, retry)  → the Ready card (no owner link is asked for here)
+//   Queued, Claiming, Preparing    → the waiting card, with the server's state as starting props
+//   Failed                         → the failed card at the step it stopped at
+//   no sign up, email verified     → the start form (spec 0014 AC-1 to AC-3)
+//   no sign up, email not verified → the verify message with Refresh
+//   control unreachable in 5 s     → the loading card, and the browser poll takes over
+// The middleware already sent a signed out visitor to sign in (AC-1).
+import { env } from "cloudflare:workers";
+import { buttonVariants } from "@components/components/ui/button";
+import WelcomeLayout from "../../layouts/WelcomeLayout.astro";
+import { SiteStatus } from "../../components/onboarding/SiteStatus";
+import { StartForm } from "../../components/onboarding/StartForm";
+import { signInPath } from "../../constants/navigation.ts";
+import { welcomeOpenPath, welcomePath } from "../../constants/welcome.ts";
+import { displayName, ownerOf, signedInUserId } from "../../lib/onboarding/owner.ts";
+import { isPrefetch } from "../../lib/onboarding/prefetch.ts";
+import { readSignupStatus } from "../../lib/onboarding/status.ts";
+
+export const prerender = false;
+
+const CONTROL_TIMEOUT_MS = 5_000;
+
+const read = await readSignupStatus(Astro.locals, CONTROL_TIMEOUT_MS);
+if (read.kind === "signed_out") {
+  // Defence in depth only: the middleware sends a signed out visitor to Clerk sign in first.
+  return Astro.redirect(signInPath);
+}
+// `?open=retry` counts only at Ready; with any other status it is ignored.
+const retry = read.kind === "status" && read.status === "Ready" && Astro.url.searchParams.get("open") === "retry";
+if (read.kind === "status" && read.status === "Ready" && !retry && !isPrefetch(Astro.request)) {
+  return new Response(null, { status: 302, headers: { Location: welcomeOpenPath, "Cache-Control": "no-store" } });
+}
+
+// Only outcomes that render read the user, once, for the layout and the card (AC-11).
+const user = await Astro.locals.currentUser();
+const owner = read.kind === "none" ? ownerOf(signedInUserId(Astro.locals) ?? "", user) : null;
+const firstName = displayName(user);
+const turnstileSiteKey = env.PUBLIC_TURNSTILE_SITE_KEY || "";
+// The start form needs Turnstile, and so does the loading card, whose poll may find no sign up.
+const needsTurnstile = (read.kind === "none" && owner) || read.kind === "unreachable";
+const initial =
+  read.kind === "status" ? { status: read.status, step: read.step, address: read.address } : null;
+
+Astro.response.headers.set("Cache-Control", "private, no-store");
+---
+
+<WelcomeLayout user={user}>
+  {needsTurnstile && (
+    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+  )}
+  {read.kind === "none" ? (
+    owner ? (
+      <StartForm client:load turnstileSiteKey={turnstileSiteKey} />
+    ) : (
+      <div class="mx-auto w-full max-w-lg space-y-4 rounded-xl border bg-card p-6 text-sm">
+        <p>Verify your email address first. Open the email we sent you, then come back to this page.</p>
+        <a href={welcomePath} class={buttonVariants({ variant: "outline", className: "h-9 px-4 text-sm" })}>
+          Refresh
+        </a>
+      </div>
+    )
+  ) : (
+    <SiteStatus
+      client:load
+      turnstileSiteKey={turnstileSiteKey}
+      firstName={firstName}
+      initial={initial}
+      retry={retry}
+    />
+  )}
+</WelcomeLayout>

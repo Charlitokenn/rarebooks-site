@@ -2,7 +2,8 @@
 // The free trial promise (spec 0019 AC-9): three numbered steps, then Start free trial. The day numbers come
 // from AppConfig.trial and the prices from AppConfig.hostedPlan, through `homeValues`.
 import { AppConfig } from "../../../constants";
-import { dashboardLabel, type HomeCopy } from "../../../constants/home.ts";
+import { welcomeLabel, type HomeCopy } from "../../../constants/home.ts";
+import { welcomePath } from "../../../constants/welcome.ts";
 import { fill, homeValues } from "../../../lib/marketing/home.ts";
 import MkButton from "../MkButton.astro";
 import MkCard from "../MkCard.astro";
@@ -37,8 +38,8 @@ const values = homeValues(AppConfig);
   <div class="mt-10 flex justify-center">
     {
       signedIn ? (
-        <MkButton href="/dashboard" size="lg" data-cta-location="trial" class="max-sm:w-full">
-          {dashboardLabel}
+        <MkButton href={welcomePath} size="lg" data-cta-location="trial" class="max-sm:w-full">
+          {welcomeLabel}
         </MkButton>
       ) : (
         <MkButton href={AppConfig.urls.signUpUrl} size="lg" data-cta-location="trial" class="max-sm:w-full">

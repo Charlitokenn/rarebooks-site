@@ -3,7 +3,7 @@ import { AppConfig } from "../../constants";
 
 interface SiteReadyEmailProps {
   firstName?: string;
-  /** `/dashboard/site/open` on this site. Never the password link itself (spec 0014 AC-6). */
+  /** `/welcome/open` on this site (spec 0023 AC-10). Never the password link itself (spec 0014 AC-6). */
   openUrl: string;
 }
 
@@ -32,8 +32,8 @@ export default function SiteReadyEmail({ firstName = "there", openUrl }: SiteRea
             </Section>
             <Section className="mt-6">
               <Text className="text-sm text-zinc-500 m-0">
-                The button signs you in to your dashboard first, so only you can open it. Questions? Write
-                to {AppConfig.emails.supportEmail}.
+                The button opens your site. You may be asked to sign in first, so only you can open it.
+                Questions? Write to {AppConfig.emails.supportEmail}.
               </Text>
             </Section>
           </Container>

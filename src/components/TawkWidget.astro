@@ -4,8 +4,8 @@ import { AppConfig } from "../constants";
 
 interface Props {
     /**
-     * When the tawk.to script loads (spec 0022 AC-2). `eager` loads it at once, as the dashboard
-     * (PortalLayout) always has. `interaction` waits for the visitor's first scroll, pointerdown, keydown or
+     * When the tawk.to script loads (spec 0022 AC-2). `eager` loads it at once, as the /welcome page
+     * (WelcomeLayout) does. `interaction` waits for the visitor's first scroll, pointerdown, keydown or
      * touchstart, or 10 seconds after the window load event, so the chat stays out of a marketing page's
      * first paint. Either way it loads once per page view, and `window.rbLoadChat()` loads it at once
      * (the Contact us links in Layout.astro call it).
@@ -13,12 +13,17 @@ interface Props {
     load?: "eager" | "interaction";
     /** Which tawk.to widget to show: the marketing pages' or the dashboard's (the default). */
     widget?: keyof typeof AppConfig.tawk.widgets;
+    /**
+     * The signed in user, when the page already read it, so the page calls `currentUser()` once (spec 0023
+     * AC-11). Pass null for a signed out visitor; leave it out to have the widget read it.
+     */
+    user?: Awaited<ReturnType<App.Locals["currentUser"]>>;
 }
 
 const { load = "eager", widget = "dashboard" } = Astro.props;
 const embedUrl = `https://embed.tawk.to/${AppConfig.tawk.propertyId}/${AppConfig.tawk.widgets[widget]}`;
 
-const userDetails = await Astro.locals.currentUser?.();
+const userDetails = "user" in Astro.props ? Astro.props.user : await Astro.locals.currentUser?.();
 const email = userDetails?.emailAddresses?.[0]?.emailAddress ?? "";
 const userId = userDetails?.id ?? "";
 const fullName = userDetails?.fullName ?? "";

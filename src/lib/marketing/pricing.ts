@@ -2,8 +2,8 @@
 // country and sign in state, so node tests cover it without rendering Astro. Relative imports with their
 // `.ts` extension only (no path aliases), so `node --test` runs this file as it is.
 import { AppConfig } from "../../constants/index.ts";
-import { dashboardLabel, homeCopy, type HomeCopy } from "../../constants/home.ts";
-import { dashboardPath } from "../../constants/navigation.ts";
+import { welcomeLabel, homeCopy, type HomeCopy } from "../../constants/home.ts";
+import { welcomePath } from "../../constants/welcome.ts";
 import { isTanzania, type ServiceOffer } from "../../constants/pricing.ts";
 import { pricingCopy, type PlanId, type PricingCopy } from "../../constants/pricingPage.ts";
 import { fill, homeValues, type HomeSources } from "./home.ts";
@@ -73,7 +73,7 @@ export interface PricingView {
 
 /**
  * What /pricing shows (AC-3 to AC-10): the Tanzania version for `TZ`, the abroad version for anything else,
- * an unknown country included. A signed in visitor's plan buttons go to the dashboard instead of sign up.
+ * an unknown country included. A signed in visitor's plan buttons go to /welcome instead of sign up.
  */
 export function pricingView(countryCode: string | undefined, signedIn: boolean): PricingView {
   const local = isTanzania(countryCode ?? "US");
@@ -83,7 +83,7 @@ export function pricingView(countryCode: string | undefined, signedIn: boolean):
 
   const planButton = (id: PlanId, label: string): CtaButton =>
     signedIn
-      ? { label: dashboardLabel, href: dashboardPath, ctaLocation: "pricing_page", planName: planNames[id] }
+      ? { label: welcomeLabel, href: welcomePath, ctaLocation: "pricing_page", planName: planNames[id] }
       : { label, href: AppConfig.urls.signUpUrl, ctaLocation: "pricing_page", planName: planNames[id] };
 
   return {

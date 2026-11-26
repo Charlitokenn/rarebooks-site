@@ -217,4 +217,4 @@ export const homeCopy: { local: HomeCopy; abroad: HomeCopy } = {
 };
 
 /** Signed in visitors see this in place of every body "Start free trial" (AC-12). */
-export const dashboardLabel = "Go to your dashboard";
+export const welcomeLabel = "Open your site";

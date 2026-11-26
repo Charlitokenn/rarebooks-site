@@ -65,7 +65,7 @@ test("footer links follow sign in state, and Legal waits for approval (AC-9, AC-
     ["Resources", ["Docs", "Support"]],
   ]);
   assert.deepEqual(labels(true, true), [
-    ["Product", ["Features", "Pricing", "Dashboard"]],
+    ["Product", ["Features", "Pricing", "Your site"]],
     ["Compare", ["All comparisons", "Alternatives guides"]],
     ["Resources", ["Docs", "Support"]],
     ["Legal", ["Privacy", "Terms"]],

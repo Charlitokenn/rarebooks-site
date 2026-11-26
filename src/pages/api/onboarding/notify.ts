@@ -12,6 +12,7 @@ import { Resend } from "resend";
 import SiteFailedEmail from "../../../components/templates/site-failed-email.tsx";
 import SiteReadyEmail from "../../../components/templates/site-ready-email.tsx";
 import { AppConfig } from "../../../constants";
+import { welcomeOpenPath } from "../../../constants/welcome.ts";
 import {
   SIGNATURE_HEADER,
   isFresh,
@@ -93,7 +94,7 @@ export const POST: APIRoute = async ({ request }) => {
           "Your RareBooks site is ready",
           React.createElement(SiteReadyEmail, {
             firstName: name,
-            openUrl: `${env.PUBLIC_SITE_URL.replace(/\/+$/, "")}/dashboard/site/open`,
+            openUrl: `${env.PUBLIC_SITE_URL.replace(/\/+$/, "")}${welcomeOpenPath}`,
           }),
         )
       : await sendEmail(email, "We're on it: your RareBooks site", React.createElement(SiteFailedEmail, { firstName: name }));

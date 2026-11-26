@@ -1,8 +1,9 @@
 ---
 // The hero of a comparison detail page (spec 0021 AC-11, AC-13): the breadcrumb, overline, h1 with its one
-// highlighted word, lead, the trial button (the dashboard for a signed in visitor) and a second button.
+// highlighted word, lead, the trial button (Open your site, to /welcome, for a signed in visitor) and a second button.
 import { AppConfig } from "../../../constants";
-import { dashboardLabel } from "../../../constants/home.ts";
+import { welcomeLabel } from "../../../constants/home.ts";
+import { welcomePath } from "../../../constants/welcome.ts";
 import { splitHighlight } from "../../../lib/marketing/home.ts";
 import MkButton from "../MkButton.astro";
 import MkHeading from "../MkHeading.astro";
@@ -46,8 +47,8 @@ const [before, word, after] = splitHighlight(title);
     <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
       {
         signedIn ? (
-          <MkButton href="/dashboard" size="lg" data-cta-location={location}>
-            {dashboardLabel}
+          <MkButton href={welcomePath} size="lg" data-cta-location={location}>
+            {welcomeLabel}
           </MkButton>
         ) : (
           <MkButton href={AppConfig.urls.signUpUrl} size="lg" data-cta-location={location}>

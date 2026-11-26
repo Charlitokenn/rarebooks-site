@@ -18,7 +18,13 @@ export async function verifiedOwner(locals: APIContext["locals"]): Promise<Owner
   if (!userId) {
     return null;
   }
-  const user = await locals.currentUser();
+  return ownerOf(userId, await locals.currentUser());
+}
+
+type ClerkUser = Awaited<ReturnType<APIContext["locals"]["currentUser"]>>;
+
+/** `verifiedOwner` for a user already read, so a page calls `currentUser()` once (spec 0023 AC-11). */
+export function ownerOf(userId: string, user: ClerkUser): Owner | null {
   if (!user || user.id !== userId) {
     return null;
   }
@@ -30,9 +36,19 @@ export async function verifiedOwner(locals: APIContext["locals"]): Promise<Owner
   return {
     clerkUserId: userId,
     email,
-    firstName: (user.firstName || "").trim() || email.split("@")[0],
+    firstName: displayName(user),
     lastName: (user.lastName || "").trim(),
   };
+}
+
+/** The Clerk first name, else the part of the primary email before the `@` (spec 0023 AC-5). */
+export function displayName(user: ClerkUser): string {
+  if (!user) {
+    return "";
+  }
+  const primary = user.emailAddresses.find((address) => address.id === user.primaryEmailAddressId);
+  const email = (primary?.emailAddress || "").trim();
+  return (user.firstName || "").trim() || email.split("@")[0];
 }
 
 export function signedInUserId(locals: APIContext["locals"]): string | null {

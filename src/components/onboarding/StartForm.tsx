@@ -3,6 +3,7 @@ import { Button } from "@components/components/ui/button";
 import { Input } from "@components/components/ui/input";
 import { Label } from "@components/components/ui/label";
 import { AppConfig } from "../../constants";
+import { welcomePath } from "../../constants/welcome.ts";
 
 // The start form (spec 0014 AC-1 to AC-3): a subdomain with its live check, a company name, and Turnstile.
 // The owner's email and name come from Clerk on the server, never from this form.
@@ -125,7 +126,8 @@ export function StartForm({ turnstileSiteKey }: { turnstileSiteKey: string }) {
         }),
       });
       if (response.ok) {
-        window.location.assign("/dashboard");
+        // Spec 0023 AC-6: the server renders the waiting card, with the address, on the reload.
+        window.location.assign(welcomePath);
         return;
       }
       const data = (await response.json().catch(() => ({}))) as { message?: string; field?: string };

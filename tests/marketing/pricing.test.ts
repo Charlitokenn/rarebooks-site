@@ -86,7 +86,7 @@ test("anywhere else, unknown included, gets Yearly then Monthly in USD only (AC-
   }
 });
 
-test("plan buttons start sign up, or go to the dashboard when signed in (AC-7)", () => {
+test("plan buttons start sign up, or go to /welcome when signed in (AC-7, spec 0023 AC-10)", () => {
   const buttons = (country: string, signedIn: boolean) =>
     pricingView(country, signedIn).plans.cards.map((c) => c.button);
 
@@ -98,8 +98,8 @@ test("plan buttons start sign up, or go to the dashboard when signed in (AC-7)",
     { label: "Start free trial", href: "/auth/sign-up", ctaLocation: "pricing_page", planName: "RareBooks Monthly" },
   ]);
   for (const button of [...buttons("TZ", true), ...buttons("KE", true)]) {
-    assert.equal(button.label, "Go to your dashboard");
-    assert.equal(button.href, "/dashboard");
+    assert.equal(button.label, "Open your site");
+    assert.equal(button.href, "/welcome");
     assert.equal(button.ctaLocation, "pricing_page");
   }
   // The setup offers don't change for a signed in visitor.

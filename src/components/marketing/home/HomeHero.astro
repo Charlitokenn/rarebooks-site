@@ -2,7 +2,8 @@
 // The homepage hero (spec 0019 AC-5): overline, h1 with one highlighted word, lead, the trial and demo
 // buttons, the price line, then the dashboard screenshot, the page's one eager image.
 import { AppConfig } from "../../../constants";
-import { dashboardLabel, type HomeCopy } from "../../../constants/home.ts";
+import { welcomeLabel, type HomeCopy } from "../../../constants/home.ts";
+import { welcomePath } from "../../../constants/welcome.ts";
 import { fill, splitHighlight } from "../../../lib/marketing/home.ts";
 import MkButton from "../MkButton.astro";
 import MkHeading from "../MkHeading.astro";
@@ -36,8 +37,8 @@ const priceLine = fill(copy.priceLine, {
     <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
       {
         signedIn ? (
-          <MkButton href="/dashboard" size="lg" data-cta-location="hero">
-            {dashboardLabel}
+          <MkButton href={welcomePath} size="lg" data-cta-location="hero">
+            {welcomeLabel}
           </MkButton>
         ) : (
           <MkButton href={AppConfig.urls.signUpUrl} size="lg" data-cta-location="hero">

@@ -297,7 +297,7 @@ test("the layouts carry the head, bands, buttons and no old tokens (AC-7, AC-11,
   assert.match(alternatives, /escapeHtml\(text\(faq\.a\)\)/);
 
   const hero = read("src/components/marketing/compare/CompareHero.astro");
-  assert.match(hero, /signedIn \?[\s\S]*href="\/dashboard"[\s\S]*dashboardLabel[\s\S]*AppConfig\.urls\.signUpUrl/);
+  assert.match(hero, /signedIn \?[\s\S]*href=\{welcomePath\}[\s\S]*welcomeLabel[\s\S]*AppConfig\.urls\.signUpUrl/);
   assert.match(hero, /aria-current="page"/);
   const cta = read("src/components/marketing/home/HomeCta.astro");
   assert.match(cta, /location = "final_cta_section"/);

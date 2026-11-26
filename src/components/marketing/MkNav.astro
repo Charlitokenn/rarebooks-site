@@ -3,7 +3,7 @@
 // buttons, decided on the server so the first HTML byte is already right (AC-4). Below `md` the links and
 // buttons move into a native <dialog> sheet, opened by the Layout `data-open-modal` handler (AC-5).
 import { AppConfig } from "../../constants/index.ts";
-import { dashboardPath, navLinks, signInPath } from "../../constants/navigation.ts";
+import { navLinks, signInPath, welcomeNavLabel, welcomePath } from "../../constants/navigation.ts";
 import { compareCurrent, isSignedIn, pricingCurrent } from "../../lib/marketing/navigation.ts";
 import MkButton from "./MkButton.astro";
 import MkLogo from "./MkLogo.astro";
@@ -54,7 +54,7 @@ const linkClass = [
     <div class="ml-auto hidden items-center gap-5 md:flex">
       {
         signedIn ? (
-          <MkButton href={dashboardPath}>Dashboard</MkButton>
+          <MkButton href={welcomePath}>{welcomeNavLabel}</MkButton>
         ) : (
           <>
             <a href={signInPath} class:list={linkClass}>
@@ -114,8 +114,8 @@ const linkClass = [
       <div class="flex flex-col gap-3">
         {
           signedIn ? (
-            <MkButton href={dashboardPath} class="w-full">
-              Dashboard
+            <MkButton href={welcomePath} class="w-full">
+              {welcomeNavLabel}
             </MkButton>
           ) : (
             <>

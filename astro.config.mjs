@@ -137,7 +137,8 @@ export default defineConfig({
     }),
     webcore(),
     react(),
-    clerk(),
+    // Spec 0023 AC-11: the UserButton on /welcome signs out to the homepage.
+    clerk({ afterSignOutUrl: "/" }),
   ],
   output: "server",
   vite: {
