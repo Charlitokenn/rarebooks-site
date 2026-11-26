@@ -110,12 +110,27 @@ h1#_top {
 }
 
 /* The current page in Starlight's sidebar: the mk brand marker on the accent background (AC-5). */
-.sidebar-content a[aria-current="page"],
-.sidebar-content a[aria-current="page"]:hover,
-.sidebar-content a[aria-current="page"]:focus {
+/* The menu block also sits in .sidebar-content; its Docs link keeps its own underline style. */
+.sidebar-content a[aria-current="page"]:not(.docs-menu-footer *),
+.sidebar-content a[aria-current="page"]:not(.docs-menu-footer *):hover,
+.sidebar-content a[aria-current="page"]:not(.docs-menu-footer *):focus {
   background-color: var(--sl-color-accent-low);
   color: var(--sl-color-accent-high);
   box-shadow: inset 3px 0 0 var(--sl-color-accent);
+}
+
+/* The menu block at the sidebar foot (spec 0024 AC-3, Header by width). Starlight wraps MobileMenuFooter in
+   `md:sl-hidden`, which hides it from 50rem; show it again until 72rem, where the bar holds everything. */
+@media (min-width: 50rem) {
+  .sidebar-content > .md\:sl-hidden:has(> .docs-menu-footer) {
+    display: block;
+  }
+}
+
+@media (min-width: 72rem) {
+  .sidebar-content > .md\:sl-hidden:has(> .docs-menu-footer) {
+    display: none;
+  }
 }
 
 /* Search sits in the header's end group; give its button the 44 pixel target (AC-3). */
@@ -148,6 +163,12 @@ starlight-menu-button[aria-expanded="true"] button,
 /* The theme switch and the social links in the header and phone menu: 44 pixel targets (AC-3). */
 :is(.docs-header, .docs-menu-footer) starlight-theme-select select {
   min-height: 2.75rem;
+}
+
+/* Starlight pulls its select out by 0.5rem on each side; in the menu block that pokes past the sidebar edge
+   (AC-3: no sideways scroll), so it sits flush there. */
+.docs-menu-footer starlight-theme-select select {
+  margin-inline: 0;
 }
 
 /* Reduced motion: nothing in the docs header, footer, sidebar or pagination animates (AC-14). */

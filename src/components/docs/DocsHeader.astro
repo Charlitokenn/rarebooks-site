@@ -1,9 +1,13 @@
 ---
 // The docs header (spec 0024 AC-3): a Starlight `Header` override that looks like the marketing nav and keeps
 // Starlight's own search, social links and theme switch. Docs pages are prerendered, so there is no session
-// at build time and the buttons are always the signed out pair. Below 50rem (Starlight's phone breakpoint)
-// only the logo and search show; the rest moves into the phone menu (DocsMobileMenuFooter), and Starlight's
-// PageFrame draws the menu toggle in the space its header keeps free on the inline end.
+// at build time and the buttons are always the signed out pair. What the bar holds depends on the width (spec
+// 0024, Header by width), with `min-width` queries only, as Starlight uses, so no two ranges overlap:
+// - below 50rem: logo and search icon; the rest is in the phone menu (DocsMobileMenuFooter), and Starlight's
+//   PageFrame draws the menu toggle in the space its header keeps free on the inline end;
+// - from 50rem: plus Sign in and Start free trial; the nav links, social icons and theme switch show at the
+//   sidebar foot (the same DocsMobileMenuFooter block, shown by docs.css);
+// - from 72rem: everything in the bar; from 76rem search shows its full field.
 import Search from "virtual:starlight/components/Search";
 import SocialIcons from "virtual:starlight/components/SocialIcons";
 import ThemeSelect from "virtual:starlight/components/ThemeSelect";
@@ -25,7 +29,7 @@ const docsCurrent = (href: string) => docsLinkCurrent(href, Astro.url.pathname, 
 <div class="docs-header">
   <MkLogo class="docs-logo" />
 
-  <nav aria-label="Main" class="docs-wide">
+  <nav aria-label="Main" class="docs-full">
     <ul class="docs-nav-list" role="list">
       {
         navLinks.map((link) => (
@@ -41,14 +45,14 @@ const docsCurrent = (href: string) => docsLinkCurrent(href, Astro.url.pathname, 
 
   <div class="docs-end">
     {shouldRenderSearch && <Search />}
-    <div class="docs-wide docs-social">
+    <div class="docs-full docs-social">
       <SocialIcons />
     </div>
-    <div class="docs-wide">
+    <div class="docs-full">
       <ThemeSelect />
     </div>
-    <a href={signInPath} class="docs-wide docs-nav-link">Sign in</a>
-    <MkButton href={AppConfig.urls.signUpUrl} class="docs-wide docs-cta" data-cta-location="docs-nav">
+    <a href={signInPath} class="docs-buttons docs-nav-link">Sign in</a>
+    <MkButton href={AppConfig.urls.signUpUrl} class="docs-buttons docs-cta" data-cta-location="docs-nav">
       Start free trial
     </MkButton>
   </div>
@@ -152,15 +156,28 @@ const docsCurrent = (href: string) => docsLinkCurrent(href, Astro.url.pathname, 
     }
   }
 
-  /* Until 72rem (Starlight's wide breakpoint) search is the icon button, as on a phone, so the full bar fits. */
-  @media (max-width: 71.99rem) {
-    .docs-header :global(button[data-open-modal]) {
-      width: 2.75rem;
-      padding: 0;
+  /* Below 50rem only the logo and search show (spec 0024, Header by width). */
+  .docs-header :global(.docs-full),
+  .docs-header :global(.docs-buttons) {
+    display: none;
+  }
+
+  /* Search is the 44 pixel icon button until 76rem; Starlight hides its label and shortcut below 50rem. */
+  .docs-header :global(button[data-open-modal]) {
+    width: 2.75rem;
+    padding: 0;
+  }
+  .docs-header :global(button[data-open-modal] > :not(svg)) {
+    display: none;
+  }
+
+  @media (min-width: 50rem) {
+    .docs-header :global(.docs-buttons) {
+      display: inline-flex;
     }
-    .docs-header :global(button[data-open-modal] > :not(svg)) {
-      display: none;
-    }
+  }
+
+  @media (min-width: 72rem) {
     .docs-header {
       gap: 1rem;
     }
@@ -170,12 +187,27 @@ const docsCurrent = (href: string) => docsLinkCurrent(href, Astro.url.pathname, 
     .docs-end {
       gap: 0.75rem;
     }
+    .docs-header :global(.docs-full) {
+      display: flex;
+    }
   }
 
-  /* Starlight's phone breakpoint: below it the menu carries everything but the logo and search. */
-  @media (max-width: 49.99rem) {
-    .docs-header :global(.docs-wide) {
-      display: none;
+  @media (min-width: 76rem) {
+    .docs-header {
+      gap: 1.5rem;
+    }
+    .docs-nav-list {
+      gap: 1.25rem;
+    }
+    .docs-end {
+      gap: 1rem;
+    }
+    /* Hand the search button back to Starlight's own wide styles (its label and Ctrl K hint). */
+    .docs-header :global(button[data-open-modal]),
+    .docs-header :global(button[data-open-modal] > :not(svg)) {
+      width: revert-layer;
+      padding: revert-layer;
+      display: revert-layer;
     }
   }
 </style>

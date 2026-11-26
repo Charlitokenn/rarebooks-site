@@ -1,8 +1,9 @@
 ---
-// The phone menu footer (spec 0024 AC-3): a Starlight `MobileMenuFooter` override. Below 50rem the docs
-// header shows only the logo and search, so the four nav links, Sign in, Start free trial, the social links
-// and the theme switch live here, under the sidebar list, in a wrapping row of 44 pixel targets. Starlight
-// renders this only below 50rem.
+// The menu block (spec 0024 AC-3): a Starlight `MobileMenuFooter` override, under the sidebar list, in wrapping
+// rows of 44 pixel targets. Below 50rem it is the phone menu's foot and holds the four nav links, Sign in, Start
+// free trial, the social links and the theme switch. From 50rem to below 72rem docs.css shows it at the
+// sidebar foot without the button row (the bar has the buttons there). From 72rem it is hidden, as Starlight
+// hides it, since the bar holds everything. It scrolls with the sidebar list; it is not pinned.
 import SocialIcons from "virtual:starlight/components/SocialIcons";
 import ThemeSelect from "virtual:starlight/components/ThemeSelect";
 
@@ -15,7 +16,7 @@ const docsCurrent = (href: string) => docsLinkCurrent(href, Astro.url.pathname, 
 ---
 
 <div class="docs-menu-footer">
-  <nav aria-label="Main">
+  <nav aria-label="Site">
     <ul class="docs-menu-row" role="list">
       {
         navLinks.map((link) => (
@@ -29,7 +30,7 @@ const docsCurrent = (href: string) => docsLinkCurrent(href, Astro.url.pathname, 
     </ul>
   </nav>
 
-  <div class="docs-menu-row">
+  <div class="docs-menu-row docs-menu-buttons">
     <a href={signInPath} class="docs-menu-link">Sign in</a>
     <MkButton href={AppConfig.urls.signUpUrl} data-cta-location="docs-menu">Start free trial</MkButton>
   </div>
@@ -81,6 +82,13 @@ const docsCurrent = (href: string) => docsLinkCurrent(href, Astro.url.pathname, 
 
   .docs-menu-link[aria-current] {
     text-decoration-line: underline;
+  }
+
+  /* The bar shows Sign in and Start free trial from 50rem, so this row is for the phone menu only. */
+  @media (min-width: 50rem) {
+    .docs-menu-buttons {
+      display: none;
+    }
   }
 
   .docs-menu-social {
