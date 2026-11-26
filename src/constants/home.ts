@@ -49,7 +49,7 @@ export interface HomeCopy {
     contact: string;
   };
   cta: { title: string; lead: string; primary: string };
-  demoDialog: { label: string; close: string; newTab: string };
+  demoDialog: { label: string };
 }
 
 const hero = {
@@ -152,8 +152,6 @@ const cta = {
 
 const demoDialog = {
   label: "RareBooks interactive demo",
-  close: "Close demo",
-  newTab: "Open the demo in a new tab",
 };
 
 export const homeCopy: { local: HomeCopy; abroad: HomeCopy } = {
