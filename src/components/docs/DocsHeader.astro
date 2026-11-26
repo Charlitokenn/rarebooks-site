@@ -1,0 +1,181 @@
+---
+// The docs header (spec 0024 AC-3): a Starlight `Header` override that looks like the marketing nav and keeps
+// Starlight's own search, social links and theme switch. Docs pages are prerendered, so there is no session
+// at build time and the buttons are always the signed out pair. Below 50rem (Starlight's phone breakpoint)
+// only the logo and search show; the rest moves into the phone menu (DocsMobileMenuFooter), and Starlight's
+// PageFrame draws the menu toggle in the space its header keeps free on the inline end.
+import Search from "virtual:starlight/components/Search";
+import SocialIcons from "virtual:starlight/components/SocialIcons";
+import ThemeSelect from "virtual:starlight/components/ThemeSelect";
+import config from "virtual:starlight/user-config";
+
+import MkButton from "@components/marketing/MkButton.astro";
+import MkLogo from "@components/marketing/MkLogo.astro";
+import { AppConfig } from "../../constants/index.ts";
+import { navLinks, signInPath } from "../../constants/navigation.ts";
+import { docsLinkCurrent } from "../../lib/docs/current.ts";
+
+// Starlight renders search only when Pagefind is on or the Search component is overridden.
+const shouldRenderSearch =
+  config.pagefind || config.components.Search !== "@astrojs/starlight/components/Search.astro";
+// Every docs page sits under the Docs link: `page` on the docs home, `true` on every other docs page.
+const docsCurrent = (href: string) => docsLinkCurrent(href, Astro.url.pathname, AppConfig.urls.docsHomePath);
+---
+
+<div class="docs-header">
+  <MkLogo class="docs-logo" />
+
+  <nav aria-label="Main" class="docs-wide">
+    <ul class="docs-nav-list" role="list">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a href={link.href} class="docs-nav-link" aria-current={docsCurrent(link.href)}>
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div class="docs-end">
+    {shouldRenderSearch && <Search />}
+    <div class="docs-wide docs-social">
+      <SocialIcons />
+    </div>
+    <div class="docs-wide">
+      <ThemeSelect />
+    </div>
+    <a href={signInPath} class="docs-wide docs-nav-link">Sign in</a>
+    <MkButton href={AppConfig.urls.signUpUrl} class="docs-wide docs-cta" data-cta-location="docs-nav">
+      Start free trial
+    </MkButton>
+  </div>
+</div>
+
+<script>
+  // AC-5: "/" opens search, as Ctrl+K does. Starlight 0.39 has only Ctrl+K, so this presses its search button,
+  // unless the reader is typing in a field or holds a modifier key.
+  window.addEventListener("keydown", (event) => {
+    if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey || event.defaultPrevented) return;
+    const target = event.target as HTMLElement | null;
+    if (target?.closest("input, textarea, select, [contenteditable]")) return;
+    const open = document.querySelector<HTMLButtonElement>("site-search button[data-open-modal]");
+    if (!open || open.disabled || document.querySelector("site-search dialog[open]")) return;
+    event.preventDefault();
+    open.click();
+  });
+</script>
+
+<style>
+  .docs-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: var(--container-mk);
+    height: 100%;
+    margin-inline: auto;
+  }
+
+  .docs-nav-list {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .docs-end {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-inline-start: auto;
+  }
+
+  .docs-nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    border-radius: var(--radius-mk-sm);
+    font-family: var(--font-mk-sans);
+    font-size: var(--text-mk-body);
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--mk-docs-strong);
+    text-decoration: none;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+  }
+
+  .docs-nav-link:hover,
+  .docs-nav-link[aria-current] {
+    color: var(--mk-docs-hover);
+  }
+
+  .docs-nav-link[aria-current] {
+    text-decoration-line: underline;
+  }
+
+  .docs-header :global(.docs-cta) {
+    white-space: nowrap;
+  }
+
+  .docs-social {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .docs-social :global(a) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    margin: 0;
+    padding: 0;
+    border-radius: var(--radius-mk-pill);
+    color: var(--mk-docs-strong);
+  }
+
+  .docs-social :global(a:hover) {
+    color: var(--mk-docs-hover);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .docs-nav-link,
+    .docs-social :global(a) {
+      transition: color 150ms var(--ease-mk);
+    }
+  }
+
+  /* Until 72rem (Starlight's wide breakpoint) search is the icon button, as on a phone, so the full bar fits. */
+  @media (max-width: 71.99rem) {
+    .docs-header :global(button[data-open-modal]) {
+      width: 2.75rem;
+      padding: 0;
+    }
+    .docs-header :global(button[data-open-modal] > :not(svg)) {
+      display: none;
+    }
+    .docs-header {
+      gap: 1rem;
+    }
+    .docs-nav-list {
+      gap: 1rem;
+    }
+    .docs-end {
+      gap: 0.75rem;
+    }
+  }
+
+  /* Starlight's phone breakpoint: below it the menu carries everything but the logo and search. */
+  @media (max-width: 49.99rem) {
+    .docs-header :global(.docs-wide) {
+      display: none;
+    }
+  }
+</style>

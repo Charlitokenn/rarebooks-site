@@ -7,7 +7,7 @@ import { test } from "node:test";
 
 import { contrastRatio, isHex6, parseTokens } from "../../src/lib/marketing/tokens.ts";
 
-const css = readFileSync(new URL("../../src/styles/marketing.css", import.meta.url), "utf8");
+const css = readFileSync(new URL("../../src/styles/mk-tokens.css", import.meta.url), "utf8");
 const tokens = parseTokens(css);
 
 // Normal text needs 4.5:1; large text and UI parts (button borders, focus rings, check icons) need 3:1.
@@ -28,7 +28,7 @@ const FORBIDDEN: [foreground: string, background: string, below: number][] = [["
 
 const color = (name: string) => tokens[`--color-mk-${name}`];
 
-test("marketing.css has an @theme static block with mk color tokens", () => {
+test("mk-tokens.css has an @theme static block with mk color tokens", () => {
   // covers: AC-1
   assert.ok(Object.keys(tokens).some((name) => name.startsWith("--color-mk-")));
 });

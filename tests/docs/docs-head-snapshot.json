@@ -1,0 +1,237 @@
+{
+  "/basics/accounting-basics/": {
+    "title": "Accounting Basics | RareBooks",
+    "description": "This page explains the basic ideas of accounting with the example of a new business.",
+    "canonical": "https://rarebooks.cc/basics/accounting-basics/"
+  },
+  "/basics/dashboard/": {
+    "title": "Dashboard | RareBooks",
+    "description": "The dashboard shows a summary of your invoices, your cash flow, your profit, and your expenses.",
+    "canonical": "https://rarebooks.cc/basics/dashboard/"
+  },
+  "/financial-reports/balance-sheet/": {
+    "title": "Balance Sheet | RareBooks",
+    "description": "The Balance Sheet shows the financial position of your company.",
+    "canonical": "https://rarebooks.cc/financial-reports/balance-sheet/"
+  },
+  "/financial-reports/general-ledger/": {
+    "title": "General Ledger | RareBooks",
+    "description": "The General Ledger lists the accounting entries of your company.",
+    "canonical": "https://rarebooks.cc/financial-reports/general-ledger/"
+  },
+  "/financial-reports/gst-reports/": {
+    "title": "GST Reports | RareBooks",
+    "description": "RareBooks has two GST reports for companies in India:",
+    "canonical": "https://rarebooks.cc/financial-reports/gst-reports/"
+  },
+  "/financial-reports/profit-and-loss-statement/": {
+    "title": "Profit and Loss Statement | RareBooks",
+    "description": "The Profit and Loss Statement shows the income, the expenses, and the profit or loss of your company in each period.",
+    "canonical": "https://rarebooks.cc/financial-reports/profit-and-loss-statement/"
+  },
+  "/financial-reports/reports/": {
+    "title": "Reports | RareBooks",
+    "description": "Reports show the data of your submitted documents in tables.",
+    "canonical": "https://rarebooks.cc/financial-reports/reports/"
+  },
+  "/financial-reports/trial-balance/": {
+    "title": "Trial Balance | RareBooks",
+    "description": "A Trial Balance lists the balances of all your accounts for a period.",
+    "canonical": "https://rarebooks.cc/financial-reports/trial-balance/"
+  },
+  "/getting-started/chart-of-accounts/": {
+    "title": "Chart of Accounts | RareBooks",
+    "description": "The chart of accounts is the list of all the accounts of your company.",
+    "canonical": "https://rarebooks.cc/getting-started/chart-of-accounts/"
+  },
+  "/getting-started/create-initial-entries/": {
+    "title": "Create Initial Entries | RareBooks",
+    "description": "Add some initial entries before you record transactions.",
+    "canonical": "https://rarebooks.cc/getting-started/create-initial-entries/"
+  },
+  "/getting-started/create-your-site/": {
+    "title": "Create Your Site | RareBooks",
+    "description": "RareBooks runs on your own site, such as yourcompany.rarebooks.cc.",
+    "canonical": "https://rarebooks.cc/getting-started/create-your-site/"
+  },
+  "/getting-started/getting-started-with-rarebooks/": {
+    "title": "Getting Started with RareBooks | RareBooks",
+    "description": "RareBooks is an accounting app for small businesses.",
+    "canonical": "https://rarebooks.cc/getting-started/getting-started-with-rarebooks/"
+  },
+  "/getting-started/import-wizard/": {
+    "title": "Import Wizard | RareBooks",
+    "description": "Use the Import Wizard to make many entries at once from a .csv file.",
+    "canonical": "https://rarebooks.cc/getting-started/import-wizard/"
+  },
+  "/getting-started/quick-search/": {
+    "title": "Quick Search | RareBooks",
+    "description": "Quick Search finds documents, lists, reports, and pages in RareBooks.",
+    "canonical": "https://rarebooks.cc/getting-started/quick-search/"
+  },
+  "/getting-started/roles-and-permissions/": {
+    "title": "Roles and Permissions | RareBooks",
+    "description": "Roles control who can open RareBooks and what each user can do.",
+    "canonical": "https://rarebooks.cc/getting-started/roles-and-permissions/"
+  },
+  "/getting-started/setup-opening-balances/": {
+    "title": "Setup Opening Balances | RareBooks",
+    "description": "If you move from a different accounting system, enter the account balances from that system in RareBooks.",
+    "canonical": "https://rarebooks.cc/getting-started/setup-opening-balances/"
+  },
+  "/getting-started/using-rarebooks-on-a-phone/": {
+    "title": "Using RareBooks on a Phone | RareBooks",
+    "description": "RareBooks has a layout for phones.",
+    "canonical": "https://rarebooks.cc/getting-started/using-rarebooks-on-a-phone/"
+  },
+  "/inventory/batches/": {
+    "title": "Batches | RareBooks",
+    "description": "A batch is a group of units of an item that you make or buy together, such as one production lot.",
+    "canonical": "https://rarebooks.cc/inventory/batches/"
+  },
+  "/inventory/introduction-to-inventory/": {
+    "title": "Introduction to Inventory | RareBooks",
+    "description": "Inventory keeps track of the stock of your items.",
+    "canonical": "https://rarebooks.cc/inventory/introduction-to-inventory/"
+  },
+  "/inventory/inventory-settings/": {
+    "title": "Inventory Settings | RareBooks",
+    "description": "The inventory settings set the default location, the stock accounts, and the inventory features that you use.",
+    "canonical": "https://rarebooks.cc/inventory/inventory-settings/"
+  },
+  "/inventory/purchase-receipt/": {
+    "title": "Purchase Receipt | RareBooks",
+    "description": "A purchase receipt records the stock that you receive from a supplier.",
+    "canonical": "https://rarebooks.cc/inventory/purchase-receipt/"
+  },
+  "/inventory/serial-number/": {
+    "title": "Serial Number | RareBooks",
+    "description": "A serial number identifies one unit of an item.",
+    "canonical": "https://rarebooks.cc/inventory/serial-number/"
+  },
+  "/inventory/shipment/": {
+    "title": "Shipment | RareBooks",
+    "description": "A shipment records the stock that you deliver to a customer.",
+    "canonical": "https://rarebooks.cc/inventory/shipment/"
+  },
+  "/inventory/stock-balance/": {
+    "title": "Stock Balance | RareBooks",
+    "description": "The Stock Balance report shows the stock of each item at each location.",
+    "canonical": "https://rarebooks.cc/inventory/stock-balance/"
+  },
+  "/inventory/stock-ledger/": {
+    "title": "Stock Ledger | RareBooks",
+    "description": "The Stock Ledger report shows the stock entries of your items.",
+    "canonical": "https://rarebooks.cc/inventory/stock-ledger/"
+  },
+  "/inventory/stock-movement/": {
+    "title": "Stock Movement | RareBooks",
+    "description": "A stock movement records stock that moves into a location, out of a location, or between locations.",
+    "canonical": "https://rarebooks.cc/inventory/stock-movement/"
+  },
+  "/masters/coupon-code/": {
+    "title": "Coupon Code | RareBooks",
+    "description": "A coupon code applies a pricing rule to a sales invoice.",
+    "canonical": "https://rarebooks.cc/masters/coupon-code/"
+  },
+  "/masters/items/": {
+    "title": "Items | RareBooks",
+    "description": "An item is a product or a service that you buy or sell.",
+    "canonical": "https://rarebooks.cc/masters/items/"
+  },
+  "/masters/master-data/": {
+    "title": "Master Data | RareBooks",
+    "description": "Master data is the set of records that your transactions use, such as customers, items, and tax templates.",
+    "canonical": "https://rarebooks.cc/masters/master-data/"
+  },
+  "/masters/party/": {
+    "title": "Party | RareBooks",
+    "description": "A party is a customer or a supplier.",
+    "canonical": "https://rarebooks.cc/masters/party/"
+  },
+  "/masters/price-list/": {
+    "title": "Price List | RareBooks",
+    "description": "A price list keeps a set of item rates.",
+    "canonical": "https://rarebooks.cc/masters/price-list/"
+  },
+  "/masters/pricing-rule/": {
+    "title": "Pricing Rule | RareBooks",
+    "description": "A pricing rule changes the price of an item on a sales invoice when the invoice meets the conditions of the rule.",
+    "canonical": "https://rarebooks.cc/masters/pricing-rule/"
+  },
+  "/masters/taxes/": {
+    "title": "Taxes | RareBooks",
+    "description": "A tax template has one or more tax rates and the accounts that get the tax.",
+    "canonical": "https://rarebooks.cc/masters/taxes/"
+  },
+  "/settings/customize-form/": {
+    "title": "Customize Form | RareBooks",
+    "description": "Customize Form adds your own fields to the forms of RareBooks.",
+    "canonical": "https://rarebooks.cc/settings/customize-form/"
+  },
+  "/settings/number-series/": {
+    "title": "Number Series | RareBooks",
+    "description": "A number series names documents with a prefix and a number, such as SINV-1001.",
+    "canonical": "https://rarebooks.cc/settings/number-series/"
+  },
+  "/settings/print-templates/": {
+    "title": "Print Templates | RareBooks",
+    "description": "A print template sets how a document looks when you print it or save it as a PDF.",
+    "canonical": "https://rarebooks.cc/settings/print-templates/"
+  },
+  "/settings/settings/": {
+    "title": "Settings | RareBooks",
+    "description": "The settings control the company details, the features, and the defaults of RareBooks.",
+    "canonical": "https://rarebooks.cc/settings/settings/"
+  },
+  "/transactions/discount-accounting/": {
+    "title": "Discount Accounting | RareBooks",
+    "description": "A discount decreases the price of an item on an invoice.",
+    "canonical": "https://rarebooks.cc/transactions/discount-accounting/"
+  },
+  "/transactions/journal-entries/": {
+    "title": "Journal Entries | RareBooks",
+    "description": "A journal entry records a transaction directly in your accounts.",
+    "canonical": "https://rarebooks.cc/transactions/journal-entries/"
+  },
+  "/transactions/lead/": {
+    "title": "Lead | RareBooks",
+    "description": "A lead is a person or a company that is interested in your products or services.",
+    "canonical": "https://rarebooks.cc/transactions/lead/"
+  },
+  "/transactions/loyalty-program/": {
+    "title": "Loyalty Program | RareBooks",
+    "description": "A loyalty program gives points to customers when they buy from you.",
+    "canonical": "https://rarebooks.cc/transactions/loyalty-program/"
+  },
+  "/transactions/multicurrency-accounting/": {
+    "title": "Multi Currency Invoicing | RareBooks",
+    "description": "You can make a sales invoice or a purchase invoice in the currency of the customer or the supplier.",
+    "canonical": "https://rarebooks.cc/transactions/multicurrency-accounting/"
+  },
+  "/transactions/payments/": {
+    "title": "Payments | RareBooks",
+    "description": "A payment records money that moves between you and a party.",
+    "canonical": "https://rarebooks.cc/transactions/payments/"
+  },
+  "/transactions/point-of-sale/": {
+    "title": "Point of Sale (POS) | RareBooks",
+    "description": "Use the POS to sell over the counter.",
+    "canonical": "https://rarebooks.cc/transactions/point-of-sale/"
+  },
+  "/transactions/purchase-invoice/": {
+    "title": "Purchase Invoices | RareBooks",
+    "description": "A purchase invoice records a bill that a supplier sends you for goods or services.",
+    "canonical": "https://rarebooks.cc/transactions/purchase-invoice/"
+  },
+  "/transactions/sales-invoice/": {
+    "title": "Sales Invoices | RareBooks",
+    "description": "A sales invoice is the bill that you send to a customer for a sale.",
+    "canonical": "https://rarebooks.cc/transactions/sales-invoice/"
+  },
+  "/transactions/sales-quotes/": {
+    "title": "Sales Quotes | RareBooks",
+    "description": "A sales quote is an offer of prices that you send to a customer or a lead.",
+    "canonical": "https://rarebooks.cc/transactions/sales-quotes/"
+  }
+}

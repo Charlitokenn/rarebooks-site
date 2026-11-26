@@ -1,138 +1,19 @@
 /*
   Marketing design system (spec 0017). Only the marketing layout (Layout.astro) loads this file. It imports
   global.css first, unchanged, so the old marketing names (bg-brand, text-ink, font-display, ...) keep their
-  values, and /dashboard and the docs, which load global.css directly, are not touched (AC-2, AC-3).
+  values, and /welcome, which loads global.css directly, is not touched (AC-2, AC-3). The docs load their own
+  docs.css (spec 0024), never this file.
 
-  Rules for this file (spec 0017, Key invariants):
-  - Every new token sits in the one `@theme static` block below, under the `mk` prefix. Colors are 6 digit
-    hex only, so tests/marketing/contrast.test.ts can read them (AC-5).
+  Rules for this file (spec 0017, Key invariants; spec 0024 AC-1):
+  - The `mk` tokens live in mk-tokens.css and the Fraunces faces in mk-fonts.css, imported right after
+    global.css. This file only references them.
   - The only page wide rule is `scroll-padding-top` on `html`. Every other rule is scoped to `.mk-band` or
     `[data-tone]`, so a page keeps its current look until it is rebuilt with MkSection.
   - Light only: no `.dark` rules.
 */
 @import "./global.css";
-
-/* Fraunces, self hosted: weight axis only, Latin subset, roman and italic (AC-7). Layout.astro preloads both
-   on pages that set `preloadSerif`. The package's index.css is not imported, since it pulls every subset. */
-@font-face {
-  font-family: "Fraunces Variable";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 100 900;
-  src: url("../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2")
-    format("woff2-variations");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: "Fraunces Variable";
-  font-style: italic;
-  font-display: swap;
-  font-weight: 100 900;
-  src: url("../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-italic.woff2")
-    format("woff2-variations");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-/* Size adjusted fallback faces, so the swap to Fraunces does not shift the layout (AC-7). The values come
-   from `node scripts/font-fallback.mjs` (Georgia as the reference, Fraunces at weight 500); run it again
-   and paste its output here if the Fraunces files change. */
-@font-face {
-  font-family: "Fraunces Fallback";
-  font-style: normal;
-  src: local("Georgia"), local("Noto Serif"), local("Times New Roman");
-  size-adjust: 105.61%;
-  ascent-override: 92.61%;
-  descent-override: 24.15%;
-  line-gap-override: 0%;
-}
-
-@font-face {
-  font-family: "Fraunces Fallback";
-  font-style: italic;
-  src: local("Georgia Italic"), local("Georgia"), local("Noto Serif Italic"), local("Noto Serif"),
-    local("Times New Roman Italic"), local("Times New Roman");
-  size-adjust: 101.37%;
-  ascent-override: 96.48%;
-  descent-override: 25.16%;
-  line-gap-override: 0%;
-}
-
-/* `static` makes Tailwind output every variable even when no class uses it, so the var(--color-mk-*) rules
-   below always resolve. */
-@theme static {
-  /* Colors. Allowed text and background pairs are listed in spec 0017 and held by the contrast test. */
-  --color-mk-canvas: #faf8f5;
-  --color-mk-surface: #ffffff;
-  --color-mk-ink: #1b1530;
-  --color-mk-subtle: #5c566b;
-  --color-mk-brand: #5b3df5;
-  --color-mk-brand-strong: #4a2ee0;
-  --color-mk-tint: #efeafe;
-  --color-mk-pink: #fce4f2;
-  --color-mk-pink-strong: #f7a8d8;
-  --color-mk-border: #e6e1ec;
-  --color-mk-on-dark: #ffffff;
-  --color-mk-on-dark-subtle: #cfc8e6;
-  --color-mk-focus: #5b3df5;
-  --color-mk-focus-on-dark: #c9bdfb;
-
-  /* Fonts. Plus Jakarta Sans is already loaded by fonts.css. */
-  --font-mk-serif: "Fraunces Variable", "Fraunces Fallback", Georgia, serif;
-  --font-mk-sans: "Plus Jakarta Sans", system-ui, sans-serif;
-
-  /* Type scale. The family is not part of a text token: MkHeading adds font-mk-serif or font-mk-sans. */
-  --text-mk-display: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
-  --text-mk-display--line-height: 1.05;
-  --text-mk-display--letter-spacing: -0.02em;
-  --text-mk-display--font-weight: 500;
-  --text-mk-h1: clamp(2.25rem, 1.7rem + 2.4vw, 3.5rem);
-  --text-mk-h1--line-height: 1.1;
-  --text-mk-h1--letter-spacing: -0.015em;
-  --text-mk-h1--font-weight: 500;
-  --text-mk-h2: clamp(1.875rem, 1.5rem + 1.6vw, 2.75rem);
-  --text-mk-h2--line-height: 1.15;
-  --text-mk-h2--letter-spacing: -0.01em;
-  --text-mk-h2--font-weight: 500;
-  --text-mk-h3: 1.25rem;
-  --text-mk-h3--line-height: 1.35;
-  --text-mk-h3--font-weight: 700;
-  --text-mk-lead: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
-  --text-mk-lead--line-height: 1.6;
-  --text-mk-lead--font-weight: 400;
-  --text-mk-body: 1rem;
-  --text-mk-body--line-height: 1.65;
-  --text-mk-body--font-weight: 400;
-  --text-mk-small: 0.875rem;
-  --text-mk-small--line-height: 1.5;
-  --text-mk-small--font-weight: 500;
-  --text-mk-overline: 0.8125rem;
-  --text-mk-overline--line-height: 1.2;
-  --text-mk-overline--letter-spacing: 0.12em;
-  --text-mk-overline--font-weight: 700;
-
-  /* Content widths (max-w-mk, max-w-mk-narrow). Responsive spacing lives in the components as Tailwind's
-     own spacing classes, since it can't be one token. */
-  --container-mk: 75rem;
-  --container-mk-narrow: 48rem;
-
-  /* Radii */
-  --radius-mk-pill: 999px;
-  --radius-mk-sm: 0.5rem;
-  --radius-mk-card: 1rem;
-  --radius-mk-frame: 1.25rem;
-
-  /* Shadows */
-  --shadow-mk-card: 0 8px 30px -12px rgba(27, 21, 48, 0.14);
-  --shadow-mk-frame: 0 24px 60px -24px rgba(27, 21, 48, 0.28);
-
-  /* Motion: 150 ms color and shadow changes, used only under motion-safe (AC-11). */
-  --ease-mk: cubic-bezier(0.2, 0, 0, 1);
-}
+@import "./mk-tokens.css";
+@import "./mk-fonts.css";
 
 @layer base {
   /* The one page wide rule: a sticky nav (feature 17) never covers a focused or anchored element

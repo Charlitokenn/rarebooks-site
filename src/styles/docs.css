@@ -1,0 +1,160 @@
+/*
+  The docs stylesheet (spec 0024 AC-2): the only entry in Starlight's `customCss`. It gives the Starlight docs
+  the marketing look by mapping Starlight's own variables to the mk tokens.
+
+  Rules for this file (spec 0024, Key invariants):
+  - No value is written here: every color is var(--color-mk-*) from mk-tokens.css, and the Fraunces faces
+    come from mk-fonts.css.
+  - Never import global.css, marketing.css, fonts.css, shadcn, tw-animate-css, Inter or Bricolage.
+  - No `.mk-band`, `[data-tone]` or `.dark` rule. Dark docs follow Starlight's `data-theme`.
+  - The mapping, the component variables and the docs rules sit outside any layer, last, so they win over
+    the Tailwind bridge's own --sl-* values (which it sets in the utilities layer).
+*/
+@layer base, starlight, theme, components, utilities;
+
+@import "@astrojs/starlight-tailwind";
+@import "tailwindcss/theme.css" layer(theme);
+/* No preflight, so Starlight's own reset stays. Utilities are generated only from the files docs pages
+   render with Tailwind classes (MkLogo and MkButton; the docs components use scoped styles and the docs
+   content uses none), not the whole project, so the docs carry no marketing utilities. */
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@source "../components/marketing/MkLogo.astro";
+@source "../components/marketing/MkButton.astro";
+@source "../components/docs";
+
+@import "./mk-tokens.css";
+@import "./mk-fonts.css";
+
+/* Plus Jakarta Sans for all text but the page title (AC-6): only the weights the docs use. */
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
+
+/* Starlight mapping, dark (Starlight's default theme). Spec 0024, Starlight mapping. */
+:root {
+  --sl-color-white: var(--color-mk-dark-white);
+  --sl-color-gray-1: var(--color-mk-dark-strong);
+  --sl-color-gray-2: var(--color-mk-dark-text);
+  --sl-color-gray-3: var(--color-mk-dark-subtle);
+  --sl-color-gray-4: var(--color-mk-dark-faint);
+  --sl-color-gray-5: var(--color-mk-dark-line);
+  --sl-color-gray-6: var(--color-mk-dark-raised);
+  --sl-color-black: var(--color-mk-dark-canvas);
+  --sl-color-accent-low: var(--color-mk-dark-brand-low);
+  --sl-color-accent: var(--color-mk-dark-brand);
+  --sl-color-accent-high: var(--color-mk-focus-on-dark);
+  --sl-color-bg-nav: var(--color-mk-dark-canvas);
+  --sl-color-hairline: var(--color-mk-dark-line);
+  --sl-color-hairline-light: var(--color-mk-dark-line);
+  --sl-color-hairline-shade: var(--color-mk-dark-canvas);
+
+  --sl-font: var(--font-mk-sans);
+  /* The Tailwind bridge would swap in Tailwind's mono stack; keep Starlight's system one (AC-6). */
+  --sl-font-mono: var(--sl-font-system-mono);
+
+  /* AC-3: a 4rem bar at every width, and a 44 pixel phone menu toggle (WCAG 2.5.8). */
+  --sl-nav-height: 4rem;
+  --sl-menu-button-size: 2.75rem;
+
+  /* Docs component variables (spec 0024): the marketing components read these, which marketing.css only
+     sets inside `.mk-band`. `--mk-docs-strong` is the logo wordmark and nav link color (AC-3). */
+  --mk-focus: var(--color-mk-focus-on-dark);
+  --mk-subtle: var(--color-mk-dark-subtle);
+  --mk-link: var(--color-mk-focus-on-dark);
+  --mk-docs-strong: var(--color-mk-dark-strong);
+  --mk-docs-hover: var(--color-mk-focus-on-dark);
+}
+
+/* Starlight mapping, light. */
+:root[data-theme="light"] {
+  --sl-color-white: var(--color-mk-ink);
+  --sl-color-gray-1: var(--color-mk-dark-raised);
+  --sl-color-gray-2: var(--color-mk-docs-text);
+  --sl-color-gray-3: var(--color-mk-subtle);
+  --sl-color-gray-4: var(--color-mk-docs-faint);
+  --sl-color-gray-5: var(--color-mk-docs-line);
+  --sl-color-gray-6: var(--color-mk-border);
+  --sl-color-gray-7: var(--color-mk-docs-raised);
+  --sl-color-black: var(--color-mk-canvas);
+  --sl-color-accent-low: var(--color-mk-tint);
+  --sl-color-accent: var(--color-mk-brand);
+  --sl-color-accent-high: var(--color-mk-brand-strong);
+  --sl-color-bg-nav: var(--color-mk-canvas);
+  --sl-color-hairline: var(--color-mk-border);
+  --sl-color-hairline-light: var(--color-mk-border);
+  --sl-color-hairline-shade: var(--color-mk-border);
+
+  --mk-focus: var(--color-mk-focus);
+  --mk-subtle: var(--color-mk-subtle);
+  --mk-link: var(--color-mk-brand);
+  --mk-docs-strong: var(--color-mk-ink);
+  --mk-docs-hover: var(--color-mk-brand);
+}
+
+/* The page title in Fraunces roman (AC-6). Every other heading stays in Plus Jakarta Sans. */
+h1#_top {
+  font-family: var(--font-mk-serif);
+  font-weight: 500;
+}
+
+/* Docs focus ring (spec 0024, Docs component variables): keyboard focus only, on the docs header, the
+   footer strip, the phone menu footer and the pagination. */
+:is(.docs-header, .docs-footer-strip, .docs-menu-footer, .docs-pagination) :focus-visible {
+  outline: 2px solid var(--mk-focus);
+  outline-offset: 3px;
+}
+
+/* MkLogo's wordmark carries `text-mk-ink`, which is too dark on the dark canvas: follow the theme (AC-3). */
+.docs-logo span {
+  color: var(--mk-docs-strong);
+}
+
+/* The current page in Starlight's sidebar: the mk brand marker on the accent background (AC-5). */
+.sidebar-content a[aria-current="page"],
+.sidebar-content a[aria-current="page"]:hover,
+.sidebar-content a[aria-current="page"]:focus {
+  background-color: var(--sl-color-accent-low);
+  color: var(--sl-color-accent-high);
+  box-shadow: inset 3px 0 0 var(--sl-color-accent);
+}
+
+/* Search sits in the header's end group; give its button the 44 pixel target (AC-3). */
+.docs-header site-search button[data-open-modal] {
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  justify-content: center;
+}
+
+/* Starlight's phone menu toggle (drawn by PageFrame), in the mk outline style: 44 pixels, centered icon. */
+starlight-menu-button button {
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--mk-docs-strong);
+  background-color: var(--sl-color-bg-nav);
+  color: var(--mk-docs-strong);
+  box-shadow: none;
+}
+
+:root[data-theme="light"] starlight-menu-button button {
+  background-color: var(--sl-color-bg-nav);
+  color: var(--mk-docs-strong);
+}
+
+starlight-menu-button[aria-expanded="true"] button,
+:root[data-theme="light"] starlight-menu-button[aria-expanded="true"] button {
+  background-color: var(--sl-color-accent-low);
+}
+
+/* The theme switch and the social links in the header and phone menu: 44 pixel targets (AC-3). */
+:is(.docs-header, .docs-menu-footer) starlight-theme-select select {
+  min-height: 2.75rem;
+}
+
+/* Reduced motion: nothing in the docs header, footer, sidebar or pagination animates (AC-14). */
+@media (prefers-reduced-motion: reduce) {
+  :is(.docs-header, .docs-footer-strip, .docs-menu-footer, .docs-pagination, .sidebar-content),
+  :is(.docs-header, .docs-footer-strip, .docs-menu-footer, .docs-pagination, .sidebar-content) * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

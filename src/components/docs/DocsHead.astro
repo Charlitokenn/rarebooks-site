@@ -1,0 +1,13 @@
+---
+// The docs head (spec 0024 AC-6, AC-11): a Starlight `Head` override. It renders Starlight's default head
+// unchanged (title, description, canonical and the rest), then preloads only the Fraunces roman file the page
+// title uses, and marks the page as a docs page so the Clerk guard (src/lib/docs/clerkGuard.ts) skips Clerk.
+// The `head` config can't do this, since the hashed font URL comes from a `?url` import.
+import Default from "@astrojs/starlight/components/Head.astro";
+import frauncesRomanUrl from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url";
+import { DOCS_PAGE_META } from "../../lib/docs/clerkGuard.ts";
+---
+
+<Default />
+<link rel="preload" as="font" type="font/woff2" crossorigin href={frauncesRomanUrl} />
+<meta name={DOCS_PAGE_META} content="docs" />

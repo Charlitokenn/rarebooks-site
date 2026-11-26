@@ -1,4 +1,4 @@
-// Reads the marketing design tokens out of marketing.css and measures contrast (spec 0017 AC-5, AC-8).
+// Reads the mk design tokens out of mk-tokens.css and measures contrast (spec 0017 AC-5, AC-8; spec 0024 AC-1).
 // Pure functions with no imports or path aliases, so `node --test` runs them as they are and the preview
 // page can call them on the CSS it imports with `?raw`.
 

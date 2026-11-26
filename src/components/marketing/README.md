@@ -1,12 +1,15 @@
 # Marketing design system
 
-The shared look of the redesigned marketing pages (spec 0017 in `rarebooks-web/docs/specs/`). You get one set of `mk` tokens in `src/styles/marketing.css` and the Astro components in this folder. You can see every token and component live at `/design-system` (not indexed, and no page links to it).
+The shared look of the redesigned marketing pages (spec 0017 in `rarebooks-web/docs/specs/`) and the docs (spec 0024). You get one set of `mk` tokens in `src/styles/mk-tokens.css`, the Fraunces faces in `src/styles/mk-fonts.css`, and the Astro components in this folder. You can see every token and component live at `/design-system` (not indexed, and no page links to it).
 
-`Layout.astro` loads `marketing.css`, which imports `global.css` first and adds the `mk` system on top. `/dashboard` and the docs load `global.css` directly, so nothing here changes them.
+`Layout.astro` loads `marketing.css`, which imports `global.css` first, then `mk-tokens.css` and `mk-fonts.css`, and adds the marketing rules on top. `WelcomeLayout.astro` loads `global.css` directly, so nothing here changes `/welcome`.
+
+The Starlight docs load `src/styles/docs.css`, the only entry in Starlight's `customCss`. It imports the same `mk-tokens.css` and `mk-fonts.css` and maps Starlight's `--sl-*` variables to the `mk` tokens, in light and dark. The docs header, phone menu footer, footer and head are Starlight overrides in `src/components/docs/` that reuse `MkLogo` and `MkButton`.
 
 ## Rules (Key invariants)
 
-- Don't edit `global.css`, `fonts.css`, `WelcomeLayout.astro` or the Starlight `customCss`. Anything new for marketing goes in `marketing.css`.
+- `mk-tokens.css` is the only place an `mk` color value is written, and `mk-fonts.css` the only place a Fraunces face is declared. `marketing.css` and `docs.css` only reference tokens (`var(--color-mk-*)`).
+- Don't edit `global.css`, `fonts.css` or `WelcomeLayout.astro`. Anything new for marketing goes in `marketing.css`; anything new for the docs goes in `docs.css` or `src/components/docs/`.
 - `marketing.css` adds one page wide rule, `scroll-padding-top: 5rem` on `html`. Every other rule is scoped to `.mk-band` or `[data-tone]`, so a page keeps its current look until you rebuild it with `MkSection`.
 - New marketing code uses only `mk` tokens. The old names (`brand`, `ink`, `muted`, `display`, `pill`, `soft`, `card`) stay only where current pages use them, and each restyle removes them from the pages it rewrites.
 - Every color token is a 6 digit hex value, and any text and background pair you use on a page is in the allowed pairs below. `npm test` (`tests/marketing/contrast.test.ts`) holds them.
@@ -14,9 +17,17 @@ The shared look of the redesigned marketing pages (spec 0017 in `rarebooks-web/d
 - `mk-pink-strong` and `mk-border` are decoration only: never the only sign of a control, never behind text.
 - Light only: no `.dark` rules in `marketing.css`.
 
+**Docs rules** (spec 0024, Key invariants):
+
+- `docs.css` never imports `global.css` or `marketing.css`, and `marketing.css` never imports `docs.css`.
+- No marketing band rule (`.mk-band`, `[data-tone]`) and no `.dark` rule enters the docs; dark docs follow Starlight's `data-theme`. The docs palette tokens (`mk-docs-*`, `mk-dark-*`) and their allowed pairs are held by `npm test` (`tests/docs/contrast.test.ts`); `mk-docs-faint` and `mk-dark-faint` are decoration only, never text.
+- Docs pages stay prerendered and script light: no third party scripts, no Clerk, no `client:` islands. Clerk's page script skips docs pages through `src/lib/docs/clerkGuard.ts` (`tests/docs/no-scripts.test.ts` holds this).
+- Docs URLs live at the site root, as Starlight serves them; `AppConfig.urls.docsHomePath` stays the docs home. `tests/docs/docs-head.test.ts` checks every docs URL, title, description and canonical against `tests/docs/docs-head-snapshot.json`.
+- The docs header and footer are always the signed out version, since docs pages are built ahead of time with no session.
+
 ## Tokens
 
-All in the `@theme static` block of `marketing.css`, so Tailwind classes work (`bg-mk-canvas`, `text-mk-h2`, `rounded-mk-card`).
+All in the `@theme static` block of `mk-tokens.css`, so Tailwind classes work (`bg-mk-canvas`, `text-mk-h2`, `rounded-mk-card`).
 
 | Group | Tokens | Classes |
 |---|---|---|

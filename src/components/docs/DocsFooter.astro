@@ -1,0 +1,140 @@
+---
+// The docs footer (spec 0024 AC-4): a Starlight `Footer` override. It renders Starlight's own edit link, last
+// updated date and pagination (through the virtual modules, so the Pagination override is used), then a
+// compact marketing strip: the logo, the footer link columns as inline groups, and the copyright. No
+// Starlight credits. Docs pages are prerendered, so the columns are the signed out ones.
+import EditLink from "virtual:starlight/components/EditLink";
+import LastUpdated from "virtual:starlight/components/LastUpdated";
+import Pagination from "virtual:starlight/components/Pagination";
+
+import MkLogo from "@components/marketing/MkLogo.astro";
+import { AppConfig } from "../../constants/index.ts";
+import { footerColumns } from "../../constants/navigation.ts";
+import { visibleFooterColumns } from "../../lib/marketing/navigation.ts";
+
+const columns = visibleFooterColumns(footerColumns, false, AppConfig.legal.approved);
+// Build time, since the page is prerendered.
+const year = new Date().getFullYear();
+---
+
+<footer class="docs-footer">
+  <div class="docs-meta">
+    <EditLink />
+    <LastUpdated />
+  </div>
+  <Pagination />
+
+  <div class="docs-footer-strip">
+    <MkLogo class="docs-logo" />
+    <div class="docs-footer-columns">
+      {
+        columns.map((column) => (
+          <nav aria-label={column.title} class="docs-footer-group">
+            <h2 class="docs-footer-title">{column.title}</h2>
+            <ul class="docs-footer-links" role="list">
+              {column.links.map((link) => (
+                <li>
+                  <a href={link.href} class="docs-footer-link" data-cta-location={link.ctaLocation}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+    <p class="docs-copyright">© {year} RareBooks. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .docs-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .docs-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 3rem;
+    margin-top: 3rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+
+  .docs-meta > :global(p:only-child) {
+    margin-inline-start: auto;
+  }
+
+  .docs-footer-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  .docs-footer-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+  }
+
+  .docs-footer-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 0.75rem;
+  }
+
+  .docs-footer-title {
+    margin: 0;
+    font-family: var(--font-mk-sans);
+    font-size: var(--text-mk-overline);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mk-docs-strong);
+  }
+
+  .docs-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .docs-footer-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    border-radius: var(--radius-mk-sm);
+    font-size: var(--sl-text-sm);
+    color: var(--mk-subtle);
+    text-decoration: none;
+    text-underline-offset: 4px;
+  }
+
+  .docs-footer-link:hover {
+    color: var(--sl-color-white);
+    text-decoration-line: underline;
+  }
+
+  .docs-copyright {
+    margin: 0;
+    font-size: var(--sl-text-sm);
+    color: var(--mk-subtle);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .docs-footer-link {
+      transition: color 150ms var(--ease-mk);
+    }
+  }
+</style>

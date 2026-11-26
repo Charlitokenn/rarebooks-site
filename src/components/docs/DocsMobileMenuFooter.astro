@@ -1,0 +1,107 @@
+---
+// The phone menu footer (spec 0024 AC-3): a Starlight `MobileMenuFooter` override. Below 50rem the docs
+// header shows only the logo and search, so the four nav links, Sign in, Start free trial, the social links
+// and the theme switch live here, under the sidebar list, in a wrapping row of 44 pixel targets. Starlight
+// renders this only below 50rem.
+import SocialIcons from "virtual:starlight/components/SocialIcons";
+import ThemeSelect from "virtual:starlight/components/ThemeSelect";
+
+import MkButton from "@components/marketing/MkButton.astro";
+import { AppConfig } from "../../constants/index.ts";
+import { navLinks, signInPath } from "../../constants/navigation.ts";
+import { docsLinkCurrent } from "../../lib/docs/current.ts";
+
+const docsCurrent = (href: string) => docsLinkCurrent(href, Astro.url.pathname, AppConfig.urls.docsHomePath);
+---
+
+<div class="docs-menu-footer">
+  <nav aria-label="Main">
+    <ul class="docs-menu-row" role="list">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a href={link.href} class="docs-menu-link" aria-current={docsCurrent(link.href)}>
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div class="docs-menu-row">
+    <a href={signInPath} class="docs-menu-link">Sign in</a>
+    <MkButton href={AppConfig.urls.signUpUrl} data-cta-location="docs-menu">Start free trial</MkButton>
+  </div>
+
+  <div class="docs-menu-row">
+    <div class="docs-menu-social">
+      <SocialIcons />
+    </div>
+    <ThemeSelect />
+  </div>
+</div>
+
+<style>
+  .docs-menu-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  .docs-menu-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .docs-menu-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    border-radius: var(--radius-mk-sm);
+    font-family: var(--font-mk-sans);
+    font-weight: 600;
+    color: var(--mk-docs-strong);
+    text-decoration: none;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+  }
+
+  .docs-menu-link:hover,
+  .docs-menu-link[aria-current] {
+    color: var(--mk-docs-hover);
+  }
+
+  .docs-menu-link[aria-current] {
+    text-decoration-line: underline;
+  }
+
+  .docs-menu-social {
+    display: flex;
+    gap: 0.25rem;
+    margin-inline-end: auto;
+  }
+
+  .docs-menu-social :global(a) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    margin: 0;
+    padding: 0;
+    border-radius: var(--radius-mk-pill);
+    color: var(--mk-docs-strong);
+  }
+
+  .docs-menu-social :global(a:hover) {
+    color: var(--mk-docs-hover);
+  }
+</style>

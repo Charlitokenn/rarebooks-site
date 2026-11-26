@@ -8,7 +8,8 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 // import node from '@astrojs/node'
 import clerk from "@clerk/astro";
-import starlightBlog from 'starlight-blog'
+import { fileURLToPath } from "node:url";
+import { AppConfig } from "./src/constants/index.ts";
 import { blogRedirects, retiredCompetitors } from "./src/data/retiredCompetitors.ts";
 
 const CLOUDFLARE_WORKERS_STUB = "\0rarebooks:cloudflare-workers-in-node";
@@ -39,6 +40,20 @@ const cloudflareWorkersInNodeDev = {
   },
 };
 
+// Spec 0024 AC-11: @clerk/astro injects one "page" script into every page, docs included, and it loads Clerk's
+// browser script. Point that script's `@clerk/astro/internal` import at src/lib/docs/clerkGuard.ts, which
+// loads Clerk only on pages that are not docs pages. Only the page script is redirected: the guard's own
+// import, the before hydration script (which runs only on pages with React islands) and the server keep the
+// real module.
+const CLERK_GUARD = fileURLToPath(new URL("./src/lib/docs/clerkGuard.ts", import.meta.url));
+const clerkOffDocs = {
+  name: "rarebooks:clerk-off-docs",
+  enforce: "pre",
+  resolveId(id, importer) {
+    if (id === "@clerk/astro/internal" && importer?.includes("astro:scripts/page")) return CLERK_GUARD;
+  },
+};
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://rarebooks.cc",
@@ -60,22 +75,11 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "RareBooks",
+      // Spec 0024 AC-10: the URLs come from AppConfig.socials; the labels are written here.
       social: [
-        {
-          icon: "facebook",
-          label: "Facebook",
-          href: "https://facebook.com/rarebooks",
-        },
-        {
-          icon: "instagram",
-          label: "Facebook",
-          href: "https://instagram.com/rarebooks",
-        },
-        {
-          icon: "tiktok",
-          label: "TikTok",
-          href: "https://tiktok.com/@rarebooks_",
-        },
+        { icon: "facebook", label: "Facebook", href: AppConfig.socials.facebook },
+        { icon: "instagram", label: "Instagram", href: AppConfig.socials.instagram },
+        { icon: "tiktok", label: "TikTok", href: AppConfig.socials.tiktok },
       ],
       sidebar: [
         {
@@ -124,13 +128,20 @@ export default defineConfig({
         replacesTitle: false,
       },
       favicon: "./src/assets/logo.png",
-      customCss: [
-        // Path to your Tailwind base styles:
-        "./src/styles/global.css",
-      ],
+      // Spec 0024 AC-2: docs.css is the only stylesheet Starlight loads.
+      customCss: ["./src/styles/docs.css"],
+      // Spec 0024 AC-3 to AC-6: the marketing look on Starlight's own parts. Starlight's sidebar is used as is.
       components: {
-        Sidebar: "./src/components/Sidebar.astro",
+        Head: "./src/components/docs/DocsHead.astro",
+        Header: "./src/components/docs/DocsHeader.astro",
+        MobileMenuFooter: "./src/components/docs/DocsMobileMenuFooter.astro",
+        Footer: "./src/components/docs/DocsFooter.astro",
         Pagination: "./src/components/Pagination.astro",
+      },
+      // Spec 0024 AC-8: GitHub's code colors per theme, with the frame following the --sl-* mapping.
+      expressiveCode: {
+        themes: ["github-dark", "github-light"],
+        useStarlightUiThemeColors: true,
       },
       disable404Route: true,
       plugins: [],
@@ -142,7 +153,7 @@ export default defineConfig({
   ],
   output: "server",
   vite: {
-    plugins: [cloudflareWorkersInNodeDev, tailwindcss()],
+    plugins: [cloudflareWorkersInNodeDev, clerkOffDocs, tailwindcss()],
     define: {},
     css: {
       preprocessorOptions: {

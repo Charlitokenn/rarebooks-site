@@ -17,13 +17,13 @@ import MkScreenshotFrame from "@components/marketing/MkScreenshotFrame.astro";
 import MkSection from "@components/marketing/MkSection.astro";
 import { contrastRatio, parseTokens } from "../lib/marketing/tokens";
 // Inlined at build, so the Worker never reads a file.
-import marketingCss from "../styles/marketing.css?raw";
+import tokensCss from "../styles/mk-tokens.css?raw";
 
 // The header only works while this page renders on demand (prerender = false); a prerendered page would
 // keep just the robots meta tag.
 Astro.response.headers.set("X-Robots-Tag", "noindex");
 
-const tokens = Object.entries(parseTokens(marketingCss));
+const tokens = Object.entries(parseTokens(tokensCss));
 const group = (prefix: string) => tokens.filter(([name]) => name.startsWith(prefix));
 
 const colors = group("--color-mk-");
