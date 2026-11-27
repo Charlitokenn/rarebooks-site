@@ -137,8 +137,8 @@ h1#_top {
 }
 
 /* Docs focus ring (spec 0024, Docs component variables): keyboard focus only, on the docs header, the
-   footer strip, the phone menu footer and the pagination. */
-:is(.docs-header, .docs-footer-strip, .docs-menu-footer, .docs-pagination) :focus-visible {
+   phone menu footer and the pagination. */
+:is(.docs-header, .docs-menu-footer, .docs-pagination) :focus-visible {
   outline: 2px solid var(--mk-focus);
   outline-offset: 3px;
 }
@@ -212,8 +212,8 @@ starlight-menu-button[aria-expanded="true"] button,
 
 /* Reduced motion: nothing in the docs header, footer, sidebar or pagination animates (AC-14). */
 @media (prefers-reduced-motion: reduce) {
-  :is(.docs-header, .docs-footer-strip, .docs-menu-footer, .docs-pagination, .sidebar-content),
-  :is(.docs-header, .docs-footer-strip, .docs-menu-footer, .docs-pagination, .sidebar-content) * {
+  :is(.docs-header, .docs-menu-footer, .docs-pagination, .sidebar-content),
+  :is(.docs-header, .docs-menu-footer, .docs-pagination, .sidebar-content) * {
     transition: none !important;
     animation: none !important;
   }
