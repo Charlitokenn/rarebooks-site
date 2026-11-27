@@ -129,7 +129,8 @@ export default defineConfig({
         src: "./src/assets/logo.png",
         replacesTitle: false,
       },
-      favicon: "./src/assets/logo.png",
+      favicon: "/icon.svg",
+      head: [{ tag: "link", attrs: { rel: "apple-touch-icon", href: "/apple-touch-icon.png" } }],
       // Spec 0024 AC-2: docs.css is the only stylesheet Starlight loads.
       customCss: ["./src/styles/docs.css"],
       // Spec 0024 AC-3 to AC-6: the marketing look on Starlight's own parts. Starlight's sidebar is used as is.

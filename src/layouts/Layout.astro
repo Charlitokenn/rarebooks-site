@@ -73,6 +73,8 @@ const ogImageUrl = ogImage ? new URL(ogImage, AppConfig.urls.rootUrl).toString()
       </>
     )}
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
