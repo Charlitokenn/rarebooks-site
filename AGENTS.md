@@ -1,6 +1,6 @@
 # RareBooks marketing site (rarebooks-site)
 
-The public site at `rarebooks.cc`: marketing pages, compare and alternatives pages, the Starlight user docs and blog, Clerk sign in, and the customer dashboard at `/dashboard`. It is one Astro app served by one Cloudflare Worker.
+The public site at `rarebooks.cc`: marketing pages, compare and alternatives pages, the pricing page, the Starlight user docs, Clerk sign in, and the sign up reception page at `/welcome` (old `/dashboard` links redirect there, spec 0023). It is one Astro app served by one Cloudflare Worker.
 
 ## Stack
 
@@ -28,6 +28,10 @@ npm run check
 # Unit tests (node --test over tests/**/*.test.ts)
 npm test
 
+# Screenshots: resize the sources in src/assets/screenshots/source/, or capture the homepage shots from two served demo shop sites
+npm run screenshots
+BOOKS_SHOTS_PASSWORD=<admin password> npm run screenshots:home
+
 # Build, then build and deploy to Cloudflare
 npm run build
 npm run flare:deploy
@@ -38,13 +42,15 @@ npx wrangler d1 migrations apply rarebooks --remote
 
 ## Specs
 
-Specs are not stored here. They live in the sibling `rarebooks-web` repo (`docs/specs/`); spec 0014 (self serve onboarding) covers this repo.
+Specs are not stored here. They live in the sibling `rarebooks-web` repo (`docs/specs/`); specs 0014 and 0016 (sign up), 0017 to 0022 (marketing redesign), 0023 (welcome page) and 0024 (docs restyle) cover this repo.
 
 ## Rules
 
 - Server code reads bindings and secrets with `import { env } from "cloudflare:workers"`, never `process.env`. Add a new binding or secret to `wrangler.toml` (or `wrangler secret put`) and to `worker-configuration.d.ts`.
 - Every API route and server rendered page sets `export const prerender = false`; routes answer JSON with `{ message }` on errors.
-- Identity comes from Clerk on the server (`Astro.locals.currentUser()`, `locals.auth()`, or `@clerk/backend`), never from a form field. `/dashboard(.*)` is protected in `src/middleware.ts`.
+- Identity comes from Clerk on the server (`Astro.locals.currentUser()`, `locals.auth()`, or `@clerk/backend`), never from a form field. `/welcome(.*)` is protected in `src/middleware.ts`.
+- Link to `/welcome`, never `/dashboard`; `tests/welcome/no-dashboard-links.test.ts` fails on one (spec 0023 AC-12).
+- Marketing pages and the docs build to the `mk` design system in [src/components/marketing/README.md](src/components/marketing/README.md): tokens only in `src/styles/mk-tokens.css`, `docs.css` the only Starlight `customCss`, no scripts on docs pages (specs 0017, 0024).
 - Visitor country comes from `locals.countryCode` (set in the middleware from `cf-ipcountry`); `isTanzania()` in `src/constants/pricing.ts` picks local (TZS) or international (USD) pricing.
 - Import with the path aliases `@components/*`, `@assets/*`, `@blocks/*` and `@stores/*`. shadcn components go in `src/components/components/ui` (see `components.json`).
 - App wide constants (names, emails, URLs, product ids, prices) live in `src/constants/`, not in components.
@@ -70,6 +76,7 @@ MCP servers: Cloudflare API MCP `https://mcp.cloudflare.com/mcp` (recommended), 
 
 ## Context files
 
+- [src/components/marketing/AGENTS.md](src/components/marketing/AGENTS.md): the `mk` design system components, the site chrome and the docs look (specs 0017, 0018, 0024)
 - [src/pages/api/AGENTS.md](src/pages/api/AGENTS.md): the server API routes, their outside services (Clerk, Resend, ClickPesa, D1, the control site) and gotchas
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
